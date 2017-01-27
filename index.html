@@ -4,7 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Hello World!</title>
+
+    <!-- code mirror styles -->
+    <link rel=stylesheet href="node_modules/codemirror/lib/codemirror.css">
+    <link rel=stylesheet href="node_modules/codemirror/addon/merge/merge.css">
+    <!-- bootstrap -->
     <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- custom styles -->
     <link href="assets/css/style.css" rel="stylesheet">
   </head>
   <body>
@@ -78,6 +84,15 @@
           <button id="btn-restart" type="button" class="btn btn-primary">Compare Other ...</button>
         </div>
       </div>
+
+      <div id="diff-container" class="row">
+        <div class="col-xs-12">
+          <div id="diff-view">
+
+          </div>
+        </div>
+      </div>
+
     </div>
   </body>
 
@@ -86,8 +101,18 @@
   -->
   <script type="text/javascript">
     window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min.js');
-    require('./renderer.js')
+    require('./diff-view.js');
+    require('./renderer.js');
   </script>
+
+
   <script src="node_modules/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="node_modules/codemirror/lib/codemirror.js"></script>
+  <script src="node_modules/codemirror/mode/xml/xml.js"></script>
+  <script src="node_modules/codemirror/mode/css/css.js"></script>
+  <script src="node_modules/codemirror/mode/javascript/javascript.js"></script>
+  <script src="node_modules/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js"></script>
+  <script src="node_modules/codemirror/addon/merge/merge.js"></script>
 
 </html>

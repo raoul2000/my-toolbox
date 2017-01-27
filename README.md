@@ -36,6 +36,7 @@ mocha test
 ### Diff
 - [ ] compare remote folders
 - [ ] display diff for remote files
+- [ ] diff files application configuration
 - [ ] copy remote file to local
 - [ ] copy remote file from source to target
 - [ ] modify and save remote file
