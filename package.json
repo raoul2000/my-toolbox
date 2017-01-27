@@ -1,0 +1,32 @@
+{
+  "name": "electron-quick-start",
+  "version": "1.0.0",
+  "description": "A minimal Electron application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --debug"
+  },
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo"
+  ],
+  "author": "GitHub",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "devtron": "^1.4.0",
+    "electron": "^1.4.1"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "codemirror": "^5.23.0",
+    "jquery": "^3.1.1",
+    "ssh-utils": "^1.0.3",
+    "ssh2-sftp-client": "^1.0.5"
+  }
+}

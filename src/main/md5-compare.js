@@ -1,0 +1,47 @@
+"use strict";
+const electron = require('electron');
+const ipcMain = electron.ipcMain;
+const compare = require('../node/md5-compare.js');
+
+ipcMain.on('remoteCompare.start',function(event,arg){
+  console.log(event);
+
+  event.sender.send('remoteCompare.progress', {
+    "task" : "read-source-start"
+  });
+
+   compare.md5Folder(arg.src.connection,arg.src.folderPath)
+  .then(function(srcResult){
+    event.sender.send('remoteCompare.progress', {
+      "task" : "read-source-end",
+      "count" : srcResult.length}
+    );
+    console.log("SOURCE ======");
+    console.log(srcResult);
+
+    event.sender.send('remoteCompare.progress', {
+      "task" : "read-target-start"
+    });
+
+    return compare.md5Folder(arg.trg.connection,arg.trg.folderPath)
+    .then(function(trgResult){
+      event.sender.send('remoteCompare.progress', {
+        "task" : "read-target-end",
+        "count" : trgResult.length
+      })
+      ;
+      console.log("TARGET ======");
+      console.log(trgResult);
+      var final = compare.diff(srcResult,trgResult);
+      event.sender.send('remoteCompare.done', final );
+    })
+    .fail(function(error){
+      event.sender.send('remoteCompare.error', error);
+    });
+  })
+  .fail(function(error){
+    console.error(error);
+    event.sender.send('remoteCompare.error', error);
+  });
+
+});

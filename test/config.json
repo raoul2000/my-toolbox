@@ -1,0 +1,13 @@
+{
+  "ssh_source" : {
+    "host": "127.0.0.1",
+    "username": "meth01",
+    "password" : "meth01"
+  },
+  "ssh_target" : {
+    "host": "127.0.0.1",
+    "username": "meth01",
+    "password" : "meth01"
+  },
+  "homeDir" : "/mnt/c/dev/ws/lab/my-toolbox"
+}
