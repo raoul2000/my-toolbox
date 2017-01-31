@@ -14,13 +14,16 @@
     <link href="assets/css/style.css" rel="stylesheet">
   </head>
   <body>
-    <div class="container">
+    <div id="main-container" class="container" data-view="form">
+
+      <button id="btn-test-winnmerge" type="button" class="btn btn-primary">test winMerge</button>
+
       <div id="form-container" class="row">
         <div class="col-xs-12">
           <h2>Folder</h2>
           <form>
             <div class="form-group">
-              <input value="/mnt/c/dev/ws/lab/my-toolbox/test" type="text" class="form-control" id="folder-path" placeholder="Remote Folder to Compare">
+              <input value="/mnt/c/dev/ws/lab/my-toolbox/test/data/fs1" type="text" class="form-control" id="folder-path" placeholder="Remote Folder to Compare">
             </div>
           </form>
         </div>
@@ -64,14 +67,15 @@
         </div>
       </div>
 
-      <div id="progress-container" class="row  hidden">
+      <div id="progress-container" class="row">
         <h3>Operation in progress ...</h3>
         <hr/>
         <div id="progress-message">
 
         </div>
       </div>
-      <div id="result-container" class="row hidden">
+
+      <div id="result-container" class="row">
         <div class="col-xs-12">
           <h2>Result</h2>
           <hr/>
@@ -87,24 +91,21 @@
 
       <div id="diff-container" class="row">
         <div class="col-xs-12">
+          <h3>Diff View</h3>
+          <hr/>
           <div id="diff-view">
 
           </div>
+          <button id="btn-show-result" type="button" class="btn btn-primary">Back to Result</button>
         </div>
       </div>
 
     </div>
   </body>
 
-  <!--
-    Javascript
-  -->
   <script type="text/javascript">
     window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min.js');
-    require('./diff-view.js');
-    require('./renderer.js');
   </script>
-
 
   <script src="node_modules/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
   <script src="node_modules/codemirror/lib/codemirror.js"></script>
@@ -114,5 +115,10 @@
   <script src="node_modules/codemirror/mode/htmlmixed/htmlmixed.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js"></script>
   <script src="node_modules/codemirror/addon/merge/merge.js"></script>
+
+  <script type="text/javascript">
+    require('./diff-view.js');
+    require('./renderer.js');
+  </script>
 
 </html>

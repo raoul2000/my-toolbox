@@ -1,0 +1,15 @@
+#form-container,
+#progress-container,
+#progress-container,
+#result-container,
+#diff-container {
+  display:none;
+}
+
+
+#main-container[data-view=form] #form-container,
+#main-container[data-view=progress] #progress-container,
+#main-container[data-view=result] #result-container,
+#main-container[data-view=diff] #diff-container {
+  display:block;
+}

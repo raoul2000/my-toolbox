@@ -14,7 +14,7 @@ function md5Folder(cnx, folderPath) {
   //   find . -type f ! -path "./Movies/*.log" ! -path "./Downloads/*" ! -path "./Music/*"
   var script = ". .bash_profile\n" +
   "find "+folderPath+" -type f -exec md5sum \"{}\" +";
-  
+
   return execCmd(cnx, script)
   .then(function(result){
     return result.value.split('\n')
@@ -39,7 +39,8 @@ function diff(source, target) {
 
   source.forEach(function(src){
     var trg = target.find(function(trgItem){
-      return src.path === trgItem.path;
+      return src.path.replace(/fs1/,"FS") === trgItem.path.replace(/fs1/,"FS");
+      //return src.path === trgItem.path;
     });
     src.existInTarget = trg !== undefined;
     src.md5Match =  src.existInTarget ? trg.md5 === src.md5 : undefined;

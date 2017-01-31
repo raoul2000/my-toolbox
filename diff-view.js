@@ -7,13 +7,10 @@ function initUI(leftContent,rightContent) {
   var target = document.getElementById("diff-view");
   target.innerHTML = "";
 
-  var original = 'Original text';
-  var compareTo = 'Modified text';
-
   dv = CodeMirror.MergeView(target, {
-    value: "this is the modifiable (target) text",
+    value: rightContent, // target
     orig: null,
-    origLeft: "this is the source text",
+    origLeft: leftContent,  // source
     lineNumbers: true,
     mode: "text/html",
     highlightDifferences: highlight,
@@ -26,17 +23,6 @@ function toggleDifferences() {
   dv.setShowDifferences(highlight = !highlight);
 }
 
-window.onload = function() {
-  value = document.documentElement.innerHTML;
-  var leftContent = "<!doctype html>\n\n" + value.replace(/\.\.\//g, "codemirror/").replace("yellow", "orange");
-  var rightContent = value.replace(/\u003cscript/g, "\u003cscript type=text/javascript ")
-    .replace("white", "purple;\n      font: comic sans;\n      text-decoration: underline;\n      height: 15em");
-  initUI(leftContent, rightContent);
-};
-
-function showDiffView(leftContent, rightContent) {
-
-}
 
 function mergeViewHeight(mergeView) {
   function editorHeight(editor) {

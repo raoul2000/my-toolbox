@@ -36,7 +36,7 @@ function list(cnx,path) {
 }
 exports.list = list;
 
-function get(cnx,filepath, localFilepath, useCompression) {
+function get(cnx,remoteFilepath, localFilepath, useCompression) {
   return Q.Promise(function(resolve,reject,notify){
 
     let writable =  null;
@@ -49,7 +49,7 @@ function get(cnx,filepath, localFilepath, useCompression) {
     let sftp = new SFTPClient();
     sftp.connect(cnx)
     .then(() => {
-      return sftp.get(filepath, useCompression);
+      return sftp.get(remoteFilepath, useCompression);
     }).then((stream) => {
       stream.pipe(writable);
       stream.on('end', function(){
