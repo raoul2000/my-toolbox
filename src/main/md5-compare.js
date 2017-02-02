@@ -111,7 +111,6 @@ ipcMain.on('remoteCompare.start',function(event,arg){
     console.error(error);
     event.sender.send('remoteCompare.error', error);
   });
-
 });
 
 ipcMain.on('compareExternal.start',function(event,arg){
