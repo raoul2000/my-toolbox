@@ -1,10 +1,19 @@
 "use strict";
 const ipcRenderer = require('electron').ipcRenderer;
 
+/**
+ * Manage the  initialization form where the user enters :
+ * - source connection parameters
+ * - target connection parameters
+ * - remote folder to compare
+ */
+
 // for test only
 document.getElementById('btn-test-winnmerge').addEventListener('click',function(event){
   ipcRenderer.send('compareExternal.start');
 });
+
+
 /**
  * Start the comparaison
  */
@@ -26,7 +35,8 @@ btn_start.addEventListener('click',function(event){
   const folderPath = document.getElementById('folder-path').value;
   // TODO : validate user input
 
-  showView(VIEW.NONE);
+  app.showView(app.VIEW.NONE);
+  //app.showView(app.VIEW.NONE);
 
   const arg = {
     "src" : {
@@ -48,15 +58,10 @@ btn_start.addEventListener('click',function(event){
   };
 
   compareCtx.arg = arg;
-  // clean progress
-  var progressMessage = document.getElementById("progress-message")
-  while(progressMessage.firstChild) {
-    progressMessage.removeChild(progressMessage.firstChild);
-  }
-  showView(VIEW.PROGRESS);
 
   console.log('sending ...');
   console.log(arg);
 
+  app.progress.start();
   ipcRenderer.send('remoteCompare.start',arg);
 });

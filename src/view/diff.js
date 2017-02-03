@@ -6,10 +6,10 @@ var  dv = null;
  * Display the diff view
  */
  document.getElementById('btn-show-result').addEventListener('click',function(event){
-   showView(VIEW.RESULT);
+   app.showView(app.VIEW.RESULT);
  });
 
- document.getElementById('btnt-save-changes').addEventListener('click',function(evnt){
+ document.getElementById('btn-save-changes').addEventListener('click',function(evnt){
 
  });
 
@@ -51,7 +51,7 @@ document.getElementById('result-compare').addEventListener('click',function(even
     // time to show the diff-view !!!
     //
     //initUI(fileContent.src, fileContent.trg);
-    showView(VIEW.DIFF);
+    app.showView(app.VIEW.DIFF);
     var target = document.getElementById("diff-view");
     target.innerHTML = "";
 

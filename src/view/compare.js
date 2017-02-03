@@ -20,10 +20,7 @@ ipcRenderer.on('remoteCompare.progress',function(event,data){
     case "read-target-end": msg = "Target file found : "+data.count;
     break;
   }
-
-  document
-    .getElementById("progress-message")
-    .insertAdjacentHTML('beforeend','<p>'+msg+'</p>');
+  app.progress.message(msg);
 });
 
 
@@ -52,7 +49,7 @@ ipcRenderer.on('remoteCompare.done',function(event,data){
     +  "</tr>";
     tableBody.insertAdjacentHTML('beforeend',html);
   });
-  showView(VIEW.RESULT);
+  app.showView(app.VIEW.RESULT);
 
   console.log(event);
   console.log(data);
@@ -63,5 +60,5 @@ ipcRenderer.on('remoteCompare.done',function(event,data){
  */
 const btn_restart = document.getElementById('btn-restart')
 .addEventListener('click',function(){
-  showView(VIEW.FORM);
+  app.showView(app.VIEW.FORM);
 });
