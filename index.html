@@ -149,6 +149,18 @@
   <script type="text/javascript">
 
     const app = {
+      config : {
+        diffTool : {
+          external : true,
+          command : {
+            program : "c:\\Program Files (x86)\\WinMerge\\WinMergeU.exe",
+            arg : [
+              "c:\\tmp\\srcf1.txt",
+              "c:\\tmp\\trgf1.txt"
+            ]
+          }
+        }
+      },
       ui : {
         progress_message : document.getElementById("progress-message")
       },
@@ -158,10 +170,17 @@
         FORM     : "form",
         PROGRESS : "progress",
         RESULT   : "result",
+        ERROR    : "error",
         DIFF     : "diff"
       },
       showView : function (viewName){
         document.getElementById('main-container').dataset.view = viewName;
+      },
+      alert :  function(msg) {
+        alert(msg);
+      },
+      confirm : function(msg) {
+        return app.confirm(msg);
       },
       progress : {
         start : function() {
@@ -187,8 +206,8 @@
           body : document.getElementById('error-modal').querySelector('.modal-body')
         },
         show : function(title, description){
-          app.error.title.innerHTML = title;
-          app.error.body.innerHTML = '<p>'+description+"</p>";
+          app.error.el.title.innerHTML = title;
+          app.error.el.body.innerHTML = '<p>'+description+"</p>";
           $('#error-modal').modal('show');
         }
       }

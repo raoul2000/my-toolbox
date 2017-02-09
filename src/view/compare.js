@@ -29,8 +29,16 @@ ipcRenderer.on('remoteCompare.progress',function(event,progress){
 });
 
 /**
- * Render  the comparaison table
+ * Render  the comparaison table.
+ * The 'data' is the list of files that could be found in the "source" host and were compared
+ * to the one found in the "target" host.
  *
+ * data : [
+ *  { "md5" : "erqdfqsd", "path" : "/folder/file-1.txt", existInTarget : true, md5Match : true},
+ *  { "md5" : "223ER",    "path" : "/folder/file-2.txt", existInTarget : true, md5Match : false},
+ *  etc ...
+ * ]
+ * 
  * @param  {object} data the comparaison data
  */
 var renderCompareReport = function(data) {

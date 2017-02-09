@@ -3,6 +3,18 @@
 var execCmd = require('ssh-utils').exec.command;
 var catFile = require('ssh-utils').readFileContent;
 
+/**
+ * List all files in the remote folder and calculate a MD5 on their content.
+ *
+ * Return : [
+ *  { "md5" : '81a2aa505b2820fec6ee0b0fa515d8a3' , path : "/folder/folder/file1.txt"},
+ *  { "md5" : '8f197698cdb25d56eb64187b46f345c8' , path : "/folder/folder/file2.txt"},
+ *  etc ...
+ * ]
+ * @param  {object} cnx        connection info for SSH
+ * @param  {string} folderPath path of the folder to process
+ * @return {object}            array describing each files listed
+ */
 function md5Folder(cnx, folderPath) {
 
   // find  /home/meth01 -maxdepth 1 -type f  -exec md5sum "{}" +
@@ -35,6 +47,21 @@ function md5Folder(cnx, folderPath) {
 }
 exports.md5Folder = md5Folder;
 
+/**
+ * Compute the diff between source and target.
+ * 'source and 'target' are arrays containing a list of objects, each one describing a file.
+ * example : [
+ *  { md5 : "12EE34", path : "/folder/file.txt"}
+ * ]
+ * The comparaison is done ONE WAY, taking 'source' as the reference list.
+ * The returned object is  the "source" object where each object has 2 new properties :
+ * - existInTarget : boolean
+ * - md5match : boolean
+ *
+ * @param  {array} source list of objects describing files in the SOURCE location
+ * @param  {array} target  list of objects describing files in the TARGET location
+ * @return {[type]}        [description]
+ */
 function diff(source, target) {
 
   source.forEach(function(src){
@@ -50,6 +77,7 @@ function diff(source, target) {
 
 exports.diff = diff;
 
+// Not used anymore
 function render(path, file) {
   console.log("\n\nCOMPARE "+path+ " ======== \n\n");
   file.forEach(function(item){
@@ -67,4 +95,4 @@ function render(path, file) {
   });
   console.log("\n\n = end ======= \n\n");
 }
-exports.render = render;
+//exports.render = render;

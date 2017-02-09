@@ -8,7 +8,7 @@ const fs = require('fs');
 
 /**
  * PUT a local file to a remote server.
- * 
+ *
  * arg = {
  *  connection : {}
  *  localFilepath : "",
@@ -18,11 +18,11 @@ const fs = require('fs');
  */
 ipcMain.on('putLocalFile.start', function(event, arg) {
 
-  if( typeof arg.updateContent) {
+  if( arg.updateContent === true) {
     fs.writeFileSync(arg.localFilepath, arg.fileContent, 'utf8');
   }
 
-  sftp.put(arg.connection, arg.remoteFilepath, arg.localFilepath)
+  sftp.put(arg.connection, arg.localFilepath,  arg.remoteFilepath)
   .then(function(result){
     event.sender.send('putLocalFile.end');
   })
@@ -35,7 +35,10 @@ ipcMain.on('putLocalFile.start', function(event, arg) {
 /**
  * arg : {
  *  src : {
- *    connection : {..}
+ *    connection : {..},
+ *    localFilepath : "/folder/file.txt",
+ *    remoteFilepath : "/mnt/folder/file.txt"
+ *
  *  }
  * }
  */
@@ -47,6 +50,7 @@ ipcMain.on('getRemoteFilePair.start', function(event, arg){
     "trg" : null
   };
   event.sender.send('getRemoteFilePair.progress',"loading source file");
+
   sftp.get(arg.src.connection, arg.src.remoteFilepath, arg.src.localFilepath)
   .then(function(result){
     content.src = fs.readFileSync(arg.src.localFilepath,'utf8');
@@ -100,10 +104,11 @@ ipcMain.on('remoteCompare.start',function(event,arg){
 
    compare.md5Folder(arg.src.connection,arg.src.folderPath)
   .then(function(srcResult){
-    event.sender.send('remoteCompare.progress', {
+    event.sender.send('remoteCompare.progress', { // progress notification
       "task" : "read-source-end",
       "count" : srcResult.length}
     );
+
     console.log("SOURCE ======");
     console.log(srcResult);
 
@@ -113,7 +118,7 @@ ipcMain.on('remoteCompare.start',function(event,arg){
 
     return compare.md5Folder(arg.trg.connection,arg.trg.folderPath)
     .then(function(trgResult){
-      event.sender.send('remoteCompare.progress', {
+      event.sender.send('remoteCompare.progress', { // progress notification
         "task" : "read-target-end",
         "count" : trgResult.length
       })
@@ -143,9 +148,19 @@ ipcMain.on('remoteCompare.start',function(event,arg){
 });
 
 ipcMain.on('compareExternal.start',function(event,arg){
-  //child_process.execSync('"C:/Program Files (x86)/WinMerge/WinMergeU.exe "',
-  //['"c:/tmp/srcf1.txt"', '"c:/tmp/trgf1.txt"']);
-  child_process.execSync('"C:/Program Files (x86)/WinMerge/WinMergeU.exe " "c:/tmp/srcf1.txt" "c:/tmp/trgf1.txt"');
+  console.log(arg);
 
-console.log("end of winmerge");
+  // prepare external diffTool command line argument
+  var cmdArg = arg.diffTool.arg.map(function(item){
+    return item.replace("${SOURCE}", arg.leftFile)
+      .replace("${TARGET}",arg.rightFile);
+  });
+
+  child_process.execFileSync(
+    arg.diffTool.program,
+    cmdArg
+  );
+
+
+  console.log("end of winmerge");
 });

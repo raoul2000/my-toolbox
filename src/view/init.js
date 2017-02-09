@@ -8,12 +8,6 @@ const ipcRenderer = require('electron').ipcRenderer;
  * - remote folder to compare
  */
 
-// for test only
-document.getElementById('btn-test-winnmerge').addEventListener('click',function(event){
-  ipcRenderer.send('compareExternal.start');
-});
-
-
 var submitForm = function(){
 
     // get form values
@@ -34,7 +28,7 @@ var submitForm = function(){
     app.compareCtx.arg = {
       "src" : {
         "connection" : {
-          "host" : srcHost,
+          "host"     : srcHost,
           "username" : srcUsername,
           "password" : srcPassword
         },
@@ -42,7 +36,7 @@ var submitForm = function(){
       },
       "trg" : {
         "connection" :  {
-          "host" : trgHost,
+          "host"     : trgHost,
           "username" : trgUsername,
           "password" : trgPassword
         },

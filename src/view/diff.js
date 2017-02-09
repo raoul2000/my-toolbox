@@ -2,23 +2,61 @@
 const ipcRenderer = require('electron').ipcRenderer;
 
 var codeMirror = null;
-var diffCtx = null;
+var diffCtx = {
+  "src" : {
+    "connection"     :  null,
+    "remoteFilepath" :  null,
+    "localFilepath"  : null,
+    'fileContent'    : null
+  },
+  "trg" : {
+    "connection"     :  null,
+    "remoteFilepath" :  null,
+    "localFilepath"  : null,
+    'fileContent'    : null
+  }
+};
 
+////////////////////////////////////////////////////////////////////////////////
 
-var renderDiffView = function(fileContent){
-  // fileContent : {
-  //   src : "file source content",
-  //   trg : "file target content",
-  // }
-  diffCtx.src.fileContent = fileContent.src;
-  diffCtx.trg.fileContent = fileContent.trg;
+/**
+* Initiates the Get Remote File pair action.
+*
+ * @param  {string} filepath remote filepath to get
+ */
+var getRemoteFilePair = function(filepath) {
+  console.log("view diff on file : "+filepath);
 
-  console.log(fileContent);
+  // TODO : WIP
+  var localSrcFilepath = "c:/tmp/srcf1.txt";
+  var localTrgFilepath = "c:/tmp/trgf1.txt";
 
+  diffCtx = {
+    "src" : {
+      "connection"     :  app.compareCtx.arg.src.connection,
+      "remoteFilepath" :  filepath.replace(/FS/,"fs1"), // TODO : debug - replace with "filepath"
+      "localFilepath"  : localSrcFilepath,
+      'fileContent'    : null
+    },
+    "trg" : {
+      "connection"     : app.compareCtx.arg.trg.connection,
+      "remoteFilepath" :  filepath.replace(/FS/,"fs2"), // TODO : debug
+      "localFilepath"  : localTrgFilepath,
+      'fileContent'    : null
+    }
+  };
+  app.progress.start();
+  ipcRenderer.send("getRemoteFilePair.start",diffCtx);
+};
+
+/**
+ * Display the diff view for the files passed as arguments
+ *
+ * @param  {object} fileContent description of the files to compare
+ */
+var renderDiffView = function(){
   // time to show the diff-view !!!
-  //
-  //initUI(fileContent.src, fileContent.trg);
-
+  app.showView(app.VIEW.DIFF);
   var target = document.getElementById("diff-view");
   target.innerHTML = "";
 
@@ -32,50 +70,26 @@ var renderDiffView = function(fileContent){
     connect: null,
     collapseIdentical: false
   });
-
-  app.showView(app.VIEW.DIFF);
 };
 
+////////////////////////////////////////////////////////////////////////////////
 
+
+// for test only
+document.getElementById('btn-test-winnmerge').addEventListener('click',function(event){
+  ipcRenderer.send('compareExternal.start');
+});
 
 /**
-* Fetch remote file content
- * @param  {[type]} filepath [description]
- * @return {[type]}          [description]
- */
-var getRemoteFilePair = function(filepath) {
-  console.log("view diff on file : "+filepath);
-
-  // TODO : WIP
-  var localSrcFilepath = "c:/tmp/srcf1.txt";
-  var localTrgFilepath = "c:/tmp/trgf1.txt";
-
-  diffCtx = {
-    "src" : {
-      "connection" :  app.compareCtx.arg.src.connection,
-      "remoteFilepath" :  filepath.replace(/FS/,"fs1"), // TODO : debug
-      "localFilepath" : localSrcFilepath,
-      'fileContent' : null
-    },
-    "trg" : {
-      "connection" : app.compareCtx.arg.trg.connection,
-      "remoteFilepath" :  filepath.replace(/FS/,"fs2"), // TODO : debug
-      "localFilepath" : localTrgFilepath,
-      'fileContent' : null
-    }
-  };
-  app.progress.start();
-  ipcRenderer.send("getRemoteFilePair.start",diffCtx);
-};
-
-////////////////////////////////////////////////////////////////////////////////////
-/**
- * Display the diff view
+ * Display the built-in diff view
  */
 document.getElementById('btn-show-result').addEventListener('click',function(event){
   app.showView(app.VIEW.RESULT);
 });
 
+/**
+ * Save the target to its remote location only if it has been modified
+ */
 document.getElementById('btn-save-changes').addEventListener('click',function(evnt){
  if(codeMirror && codeMirror.edit.isClean() === false) {
    // the target document has been modified
@@ -84,9 +98,20 @@ document.getElementById('btn-save-changes').addEventListener('click',function(ev
      diffCtx.trg.updateContent = true;
      ipcRenderer.send('putLocalFile.start',diffCtx.trg);
    }
+ } else {
+   app.alert('the Target has not been modified');
  }
 });
 
+ipcRenderer.on('putLocalFile.end',function(event){
+  app.alert("target file saved successfully");
+  app.showView(app.VIEW.RESULT);
+});
+
+ipcRenderer.on('putLocalFile.error',function(event){
+  app.error.show("Failed to save the target to its remote location","sorry !! : ");
+});
+//////////////////////////////////////////////////////////////////////
 /**
  * Get Remote file PROGRESS
  */
@@ -105,7 +130,19 @@ ipcRenderer.on('getRemoteFilePair.error',function(event,msg){
  */
 ipcRenderer.on('getRemoteFilePair.end',function(event, fileContent){
   app.progress.end();
-  renderDiffView(fileContent);
+  diffCtx.src.fileContent = fileContent.src;
+  diffCtx.trg.fileContent = fileContent.trg;
+
+  if(app.config.diffTool.external) {
+    ipcRenderer.send('compareExternal.start', {
+      "diffTool"  : app.config.diffTool.command,
+      "leftFile"  : diffCtx.src.localFilepath,
+      "rightFile" : diffCtx.trg.localFilepath
+    });
+  } else {
+    // use internal diff view tool
+    renderDiffView();
+  }
 });
 /**
  * Get Remote file START

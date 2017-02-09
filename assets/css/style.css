@@ -2,12 +2,14 @@
 #progress-container,
 #progress-container,
 #result-container,
+#error-container,
 #diff-container {
   display:none;
 }
 
 
 #main-container[data-view=form] #form-container,
+#main-container[data-view=error] #error-container,
 #main-container[data-view=progress] #progress-container,
 #main-container[data-view=result] #result-container,
 #main-container[data-view=diff] #diff-container {

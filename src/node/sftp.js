@@ -36,6 +36,24 @@ function list(cnx,path) {
 }
 exports.list = list;
 
+function put(cnx, localFilepath, remoteFilepath, useCompression ) {
+    return Q.Promise(function(resolve, reject, notify) {
+      let sftp = new SFTPClient();
+      sftp.connect(cnx)
+      .then(() => {
+        return sftp.put(localFilepath, remoteFilepath, useCompression);
+      }).then((data) => {
+        console.log(data);
+        sftp.end();
+        resolve(data);
+      }).catch((error) => {
+        console.error(error);
+        reject(error);
+      });
+    });
+}
+exports.put = put;
+
 function get(cnx,remoteFilepath, localFilepath, useCompression) {
   return Q.Promise(function(resolve,reject,notify){
 
