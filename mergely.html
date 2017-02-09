@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello World!</title>
+    <!-- bootstrap -->
+    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- mergely styles -->
+    <link type="text/css" rel="stylesheet" href="assets/js/mergely/codemirror.css" />
+    <link type="text/css" rel="stylesheet" href="assets/js/mergely/mergely.css" />
+    <!-- custom styles -->
+    <link href="assets/css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <div id="main-container" class="container" data-view="diff">
+      <div id="diff-container" class="row">
+        <div class="col-xs-12">
+          <h3>Diff View</h3>
+          <hr/>
+          <div id="compare">
+
+          </div>
+          <hr/>
+        </div>
+      </div>
+
+    </div>
+  </body>
+
+  <script src="node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+  <script type="text/javascript" src="assets/js/mergely/codemirror.min.js"></script>
+  <script type="text/javascript" src="assets/js/mergely/mergely.js"></script>
+
+
+  <script type="text/javascript">
+    $(function(){
+
+      $('#compare').mergely({
+    		cmsettings: { readOnly: false, lineNumbers: true },
+        editor_width : '500px',
+    		lhs: function(setValue) {
+    			setValue('the quick red fox\njumped over the hairy dog');
+    		},
+    		rhs: function(setValue) {
+    			setValue('the quick brown fox\njumped over the lazy dog');
+    		}
+    	});
+    });
+  </script>
+
+</html>
