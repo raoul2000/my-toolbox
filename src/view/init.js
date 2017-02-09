@@ -36,7 +36,6 @@ btn_start.addEventListener('click',function(event){
   // TODO : validate user input
 
   app.showView(app.VIEW.NONE);
-  //app.showView(app.VIEW.NONE);
 
   const arg = {
     "src" : {
@@ -57,7 +56,7 @@ btn_start.addEventListener('click',function(event){
     }
   };
 
-  compareCtx.arg = arg;
+  app.compareCtx.arg = arg;
 
   console.log('sending ...');
   console.log(arg);

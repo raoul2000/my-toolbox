@@ -7,6 +7,32 @@ const child_process   = require('child_process');
 const fs = require('fs');
 
 /**
+ * PUT a local file to a remote server.
+ * 
+ * arg = {
+ *  connection : {}
+ *  localFilepath : "",
+ *  remoteFilepath : "",
+ *  updateContent : true | false
+ * }
+ */
+ipcMain.on('putLocalFile.start', function(event, arg) {
+
+  if( typeof arg.updateContent) {
+    fs.writeFileSync(arg.localFilepath, arg.fileContent, 'utf8');
+  }
+
+  sftp.put(arg.connection, arg.remoteFilepath, arg.localFilepath)
+  .then(function(result){
+    event.sender.send('putLocalFile.end');
+  })
+  .catch(function(error){
+    event.sender.send('putLocalFile.error', error);
+  });
+
+});
+
+/**
  * arg : {
  *  src : {
  *    connection : {..}
@@ -20,13 +46,16 @@ ipcMain.on('getRemoteFilePair.start', function(event, arg){
     "src" : null,
     "trg" : null
   };
+  event.sender.send('getRemoteFilePair.progress',"loading source file");
   sftp.get(arg.src.connection, arg.src.remoteFilepath, arg.src.localFilepath)
   .then(function(result){
     content.src = fs.readFileSync(arg.src.localFilepath,'utf8');
+    event.sender.send('getRemoteFilePair.progress',"loading target file");
     return sftp.get(arg.trg.connection, arg.trg.remoteFilepath, arg.trg.localFilepath);
   })
   .then(function(result){
     content.trg = fs.readFileSync(arg.trg.localFilepath, 'utf8');
+    event.sender.send('getRemoteFilePair.progress',"done");
     event.sender.send('getRemoteFilePair.end', content);
   })
   .catch(function(error){

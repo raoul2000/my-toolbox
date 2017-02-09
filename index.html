@@ -120,7 +120,7 @@
               <h4 class="modal-title">Modal title</h4>
             </div>
             <div class="modal-body">
-              <p>One fine body&hellip;</p>
+
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -152,6 +152,7 @@
       ui : {
         progress_message : document.getElementById("progress-message")
       },
+      compareCtx : {},
       VIEW : {
         NONE     : "",
         FORM     : "form",
@@ -182,16 +183,17 @@
       error : {
         el : {
           container : document.getElementById('error-modal'),
-          title : document.getElementById('error-modal').querySelector('.modal-title')
+          title : document.getElementById('error-modal').querySelector('.modal-title'),
+          body : document.getElementById('error-modal').querySelector('.modal-body')
         },
         show : function(title, description){
-          app.error.title.innerHTML = "HELLO";
+          app.error.title.innerHTML = title;
+          app.error.body.innerHTML = '<p>'+description+"</p>";
           $('#error-modal').modal('show');
         }
       }
     };
 
-    const compareCtx = {};
 
     require('./src/view/init.js');
     require('./src/view/compare.js');

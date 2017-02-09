@@ -39,12 +39,13 @@
   <script src="node_modules/codemirror/mode/css/css.js"></script>
   <script src="node_modules/codemirror/mode/javascript/javascript.js"></script>
   <script src="node_modules/codemirror/mode/htmlmixed/htmlmixed.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js"></script>
+  <script src="assets/js/diff_match_patch.js"></script>
   <script src="node_modules/codemirror/addon/merge/merge.js"></script>
 
   <script type="text/javascript">
+    var  dv;
     $(function(){
-      var dv = CodeMirror.MergeView($('#diff-view'), {
+      dv = CodeMirror.MergeView(document.getElementById('diff-view'), {
         value: "target content", // target
         orig: null,
         origLeft: "source content",  // source
@@ -55,6 +56,16 @@
         collapseIdentical: false
       });
 
+
+      $('#btn-save-changes').on('click',function(event){
+        if(dv.edit.isClean()) {
+          console.log("no changes : doc  is clean");
+        } else {
+          console.log("doc is dirty");
+          var newContent = dv.edit.getValue();
+          console.log(newContent);
+        }
+      });
     });
   </script>
 

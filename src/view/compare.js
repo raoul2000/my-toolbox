@@ -26,13 +26,14 @@ ipcRenderer.on('remoteCompare.progress',function(event,data){
 
 
 ipcRenderer.on('remoteCompare.done',function(event,data){
-  // clear existing progress messages
+
+  // clear existing compare result
   var tableBody = document.getElementById("result-compare");
   while(tableBody.firstChild) {
     tableBody.removeChild(tableBody.firstChild);
   }
 
-  // add progress messages
+  // render compare results
   data.forEach(function(item){
     var compareStatus = "";
     if(item.existInTarget === false) {
@@ -40,6 +41,8 @@ ipcRenderer.on('remoteCompare.done',function(event,data){
     } else if(item.md5Match === true) {
       compareStatus = '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
     } else {
+      // NOTE : the data-filepath attribute is used by the diff to get the path of the file
+      // to display diff view.
       compareStatus = '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
       "<button  type=\"button\" class\"view-diff\" data-filepath=\""+item.path+"\">diff</button>";
     }
