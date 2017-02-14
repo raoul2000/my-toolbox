@@ -38,7 +38,7 @@ ipcRenderer.on('remoteCompare.progress',function(event,progress){
  *  { "md5" : "223ER",    "path" : "/folder/file-2.txt", existInTarget : true, md5Match : false},
  *  etc ...
  * ]
- * 
+ *
  * @param  {object} data the comparaison data
  */
 var renderCompareReport = function(data) {
@@ -75,6 +75,10 @@ var renderCompareReport = function(data) {
 
 ipcRenderer.on('remoteCompare.done',function(event,data){
   renderCompareReport(data);
+});
+
+ipcRenderer.on('remoteCompare.error',function(event,data){
+  app.error.show('Error','failed to read remote files');
 });
 
 /**
