@@ -4,6 +4,7 @@ const ipcMain  = electron.ipcMain;
 const compare  = require('../node/md5-compare.js');
 const sftp     = require('../node/sftp.js');
 const child_process   = require('child_process');
+const Q = require('q');
 const fs = require('fs');
 
 /**
@@ -17,6 +18,8 @@ const fs = require('fs');
  * }
  */
 ipcMain.on('putLocalFile.start', function(event, arg) {
+  console.log("## putLocalFile.start");
+  console.log(arg);
 
   if( arg.updateContent === true) {
     fs.writeFileSync(arg.localFilepath, arg.fileContent, 'utf8');
@@ -24,12 +27,46 @@ ipcMain.on('putLocalFile.start', function(event, arg) {
 
   sftp.put(arg.connection, arg.localFilepath,  arg.remoteFilepath)
   .then(function(result){
-    event.sender.send('putLocalFile.end');
+    event.sender.send('putLocalFile.end', arg);
   })
   .catch(function(error){
-    event.sender.send('putLocalFile.error', error);
+    event.sender.send('putLocalFile.error', arg, error);
   });
 
+});
+
+
+ipcMain.on('putLocalFilePair.start', function(event, arg) {
+  console.log('putLocalFilePair.start : ');
+  console.log(arg);
+
+  var putLocalFile = function(event, itemRole) {
+    event.sender.send('putLocalFilePair.progress', itemRole.remoteFilepath);
+    console.log('putLocalFile : '+itemRole.remoteFilepath);
+    return sftp.put(itemRole.connection, itemRole.localFilepath, itemRole.remoteFilepath)
+      .then(function(result){
+        itemRole.modified = false;
+      });
+  };
+
+  var promises = [];
+  if(arg.src.modified ) {
+    promises.push(putLocalFile(event, arg.src));
+  }
+
+  if(arg.trg.modified ) {
+    promises.push(putLocalFile(event, arg.trg));
+  }
+
+  Q.allSettled(promises)
+  .then(function(results){
+    console.log(results);
+    event.sender.send('putLocalFilePair.done');
+  })
+  .catch(function(error){
+    console.error(error);
+    event.sender.send('putLocalFilePair.error');
+  });
 });
 
 /**
@@ -147,20 +184,36 @@ ipcMain.on('remoteCompare.start',function(event,arg){
   });
 });
 
+
 ipcMain.on('compareExternal.start',function(event,arg){
+  console.log("## compareExternal.start");
   console.log(arg);
+
+  var rightFilename = arg.ctx.src.localFilepath;
+  var leftFilename  = arg.ctx.trg.localFilepath;
+
+  var lmtime = fs.statSync(leftFilename).mtime.getTime();
+  var rmtime = fs.statSync(rightFilename).mtime.getTime();
 
   // prepare external diffTool command line argument
   var cmdArg = arg.diffTool.arg.map(function(item){
-    return item.replace("${SOURCE}", arg.leftFile)
-      .replace("${TARGET}",arg.rightFile);
+    return item.replace("${SOURCE}", leftFilename)
+      .replace("${TARGET}",rightFilename);
   });
 
   child_process.execFileSync(
     arg.diffTool.program,
     cmdArg
   );
+  console.log("end of external compare tools ----");
 
+  // merge done. Check if changes have been done on left and right files
+  console.log("#compareExternal.end");
+  console.log(arg);
 
-  console.log("end of winmerge");
+  event.sender.send('compareExternal.end',  {
+    "srcModified" : lmtime !== fs.statSync(leftFilename).mtime.getTime(),
+    "trgModified" : rmtime !== fs.statSync(rightFilename).mtime.getTime()
+  });
+
 });
