@@ -33,6 +33,7 @@ var submitForm = function(){
           "password" : srcPassword
         },
         "folderPath" : "/mnt/c/dev/ws/lab/my-toolbox/test/data/fs1" // folderPath // source folder to compare
+        //"folderPath" : folderPath
       },
       "trg" : {
         "connection" :  {
@@ -41,6 +42,7 @@ var submitForm = function(){
           "password" : trgPassword
         },
         "folderPath" : "/mnt/c/dev/ws/lab/my-toolbox/test/data/fs2" // folderPath // target folder to compare
+        //"folderPath" : folderPath
       }
     };
 
