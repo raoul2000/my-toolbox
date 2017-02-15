@@ -3,6 +3,7 @@ const electron = require('electron');
 const ipcMain  = electron.ipcMain;
 const compare  = require('../node/md5-compare.js');
 const sftp     = require('../node/sftp.js');
+const cache    = require('../node/cache.js');
 const child_process   = require('child_process');
 const Q = require('q');
 const fs = require('fs');
@@ -72,36 +73,51 @@ ipcMain.on('putLocalFilePair.start', function(event, arg) {
 /**
  * arg : {
  *  src : {
- *    connection : {..},
- *    localFilepath : "/folder/file.txt",
+ *    connection : {
+ *      host : "",
+ *      username : ""
+ *    },
  *    remoteFilepath : "/mnt/folder/file.txt"
- *
- *  }
+ *  },
+ *  trg : ...
  * }
  */
 ipcMain.on('getRemoteFilePair.start', function(event, arg){
   console.log('getRemoteFilePair.start : ');
   console.log(arg);
-  var content = {
-    "src" : null,
-    "trg" : null
-  };
-  event.sender.send('getRemoteFilePair.progress',"loading source file");
 
-  sftp.get(arg.src.connection, arg.src.remoteFilepath, arg.src.localFilepath)
-  .then(function(result){
-    content.src = fs.readFileSync(arg.src.localFilepath,'utf8');
-    event.sender.send('getRemoteFilePair.progress',"loading target file");
-    return sftp.get(arg.trg.connection, arg.trg.remoteFilepath, arg.trg.localFilepath);
-  })
-  .then(function(result){
-    content.trg = fs.readFileSync(arg.trg.localFilepath, 'utf8');
-    event.sender.send('getRemoteFilePair.progress',"done");
-    event.sender.send('getRemoteFilePair.end', content);
-  })
-  .catch(function(error){
-    event.sender.send('getRemoteFilePair.error',error);
-  });
+  try {
+    var ResultfilePair = {
+      'src' : {
+        'localFilepath' : cache.createTmpLocalFile(arg.src.connection, arg.src.remoteFilepath, "c:\\tmp\\cache"),
+        'content' : null
+      },
+      'trg' : {
+        'localFilepath' : cache.createTmpLocalFile(arg.trg.connection, arg.trg.remoteFilepath, "c:\\tmp\\cache"),
+        'content' : null
+      }
+    };
+
+    event.sender.send('getRemoteFilePair.progress',"loading source file");
+
+    sftp.get(arg.src.connection, arg.src.remoteFilepath, ResultfilePair.src.localFilepath)
+    .then(function(result){
+      ResultfilePair.src.content = fs.readFileSync(ResultfilePair.src.localFilepath,'utf8');
+      event.sender.send('getRemoteFilePair.progress',"loading target file");
+      return sftp.get(arg.trg.connection, arg.trg.remoteFilepath, ResultfilePair.trg.localFilepath);
+    })
+    .then(function(result){
+      ResultfilePair.trg.content = fs.readFileSync(ResultfilePair.trg.localFilepath, 'utf8');
+      event.sender.send('getRemoteFilePair.progress',"done");
+      event.sender.send('getRemoteFilePair.end', ResultfilePair);
+    })
+    .catch(function(error){
+      event.sender.send('getRemoteFilePair.error',error);
+    });
+
+  } catch (err) {
+    event.sender.send('getRemoteFilePair.error',err);
+  }
 });
 
 
@@ -189,8 +205,8 @@ ipcMain.on('compareExternal.start',function(event,arg){
   console.log("## compareExternal.start");
   console.log(arg);
 
-  var rightFilename = arg.ctx.src.localFilepath;
-  var leftFilename  = arg.ctx.trg.localFilepath;
+  var leftFilename  = arg.ctx.src.localFilepath;
+  var rightFilename = arg.ctx.trg.localFilepath;
 
   var lmtime = fs.statSync(leftFilename).mtime.getTime();
   var rmtime = fs.statSync(rightFilename).mtime.getTime();

@@ -143,14 +143,19 @@ ipcRenderer.on('getRemoteFilePair.error',function(event,msg){
 /**
  * Get Remote file END
  */
-ipcRenderer.on('getRemoteFilePair.end',function(event, fileContent){
+ipcRenderer.on('getRemoteFilePair.end',function(event, result){
+  console.log("## getRemoteFilePair.end");
+  console.log(result);
+
   app.progress.end();
 
-  diffCtx.src.fileContent = fileContent.src;
-  diffCtx.src.modified    = false;
+  diffCtx.src.fileContent   = result.src.content;
+  diffCtx.src.localFilepath = result.src.localFilepath;
+  diffCtx.src.modified      = false;
 
-  diffCtx.trg.fileContent = fileContent.trg;
-  diffCtx.trg.modified    = false;
+  diffCtx.trg.fileContent   = result.trg.content;
+  diffCtx.trg.localFilepath = result.trg.localFilepath;
+  diffCtx.trg.modified      = false;
 
   if(app.config.diffTool.external) {
     ipcRenderer.send('compareExternal.start', {
@@ -167,10 +172,15 @@ ipcRenderer.on('getRemoteFilePair.end',function(event, fileContent){
 ipcRenderer.on('compareExternal.end',function(event,result){
   console.log("## compareExternal.end");
   console.log(result);
+
   diffCtx.src.modified = result.srcModified;
   diffCtx.trg.modified = result.trgModified;
 
-  ipcRenderer.send('putLocalFilePair.start',diffCtx);
+  if( diffCtx.src.modified || diffCtx.trg.modified) {
+    ipcRenderer.send('putLocalFilePair.start',diffCtx);
+  } else {
+    app.showView(app.VIEW.RESULT);
+  }
 });
 
 /**
