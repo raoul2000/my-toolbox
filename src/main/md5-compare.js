@@ -208,7 +208,7 @@ ipcMain.on('compareExternal.start',function(event,arg){
   var leftFilename  = arg.ctx.src.localFilepath;
   var rightFilename = arg.ctx.trg.localFilepath;
 
-  var lmtime = fs.statSync(leftFilename).mtime.getTime();
+  var lmtime = fs.statSync(leftFilename ).mtime.getTime();
   var rmtime = fs.statSync(rightFilename).mtime.getTime();
 
   // prepare external diffTool command line argument

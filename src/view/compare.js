@@ -29,6 +29,40 @@ ipcRenderer.on('remoteCompare.progress',function(event,progress){
 });
 
 /**
+ * create HTML markup for one line for the compare result table
+ *
+ * cmpitem = {
+ *  "md5"  : "erqdfqsd",
+ *  "path" : "/folder/file-1.txt",
+ *  existInTarget : true,
+ *  md5Match : true
+ * }
+ *
+ * @param  {object} cmpItem the compared item to render
+ * @return {string}         HTML string
+ */
+var createRowHTML = function(cmpItem) {
+  var compareStatus = "";
+  if(cmpItem.existInTarget === false) {
+    compareStatus = 'not in target';
+  } else if(cmpItem.md5Match === true) {
+    compareStatus = '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
+  } else {
+    // NOTE : the data-filepath attribute is used by the diff to get the path of the file
+    // to display diff view.
+    compareStatus = '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
+    "<button  type=\"button\" class=\"view-diff\" data-filepath=\""+cmpItem.path+"\">diff</button>";
+  }
+  var refreshButton = "<button  type=\"button\" class=\"refresh-diff\" data-filepath=\""+cmpItem.path+"\">refresh</button>";
+
+  return "<tr>"
+    + "<td>" + cmpItem.path + "</td>"
+    + "<td>" + compareStatus + "</td>"
+    + "<td>" + refreshButton + "</td>"
+  +  "</tr>";
+
+};
+/**
  * Render  the comparaison table.
  * The 'data' is the list of files that could be found in the "source" host and were compared
  * to the one found in the "target" host.
@@ -42,36 +76,24 @@ ipcRenderer.on('remoteCompare.progress',function(event,progress){
  * @param  {object} data the comparaison data
  */
 var renderCompareReport = function(data) {
+    app.ctx.compareResult = data;
 
     // clear existing compare result
     var tableBody = document.getElementById("result-compare");
     while(tableBody.firstChild) {
       tableBody.removeChild(tableBody.firstChild);
     }
+    // add HTML rows inside the table body
+    tableBody.insertAdjacentHTML('beforeend',
+      data.map(function(item){
+        return createRowHTML(item);
+      }).join('\n')
+    );
 
-    // render compare results
-    data.forEach(function(item){
-      var compareStatus = "";
-      if(item.existInTarget === false) {
-        compareStatus = 'not in target';
-      } else if(item.md5Match === true) {
-        compareStatus = '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
-      } else {
-        // NOTE : the data-filepath attribute is used by the diff to get the path of the file
-        // to display diff view.
-        compareStatus = '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
-        "<button  type=\"button\" class\"view-diff\" data-filepath=\""+item.path+"\">diff</button>";
-      }
-      var html = "<tr>"
-        + "<td>" + item.path + "</td>"
-        + "<td>" + compareStatus + "</td>"
-      +  "</tr>";
-      tableBody.insertAdjacentHTML('beforeend',html);
-    });
+    // show the compare result table
     app.showView(app.VIEW.RESULT);
     console.log(data);
 };
-
 
 ipcRenderer.on('remoteCompare.done',function(event,data){
   renderCompareReport(data);

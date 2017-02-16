@@ -33,17 +33,17 @@ var getRemoteFilePair = function(filepath) {
   // TODO : WIP
   var localSrcFilepath = "c:/tmp/srcf1.txt";
   var localTrgFilepath = "c:/tmp/trgf1.txt";
-
+  console.log(getRemoteFilePair);
   diffCtx = {
     "src" : {
-      "connection"     : app.compareCtx.arg.src.connection,
+      "connection"     : app.ctx.src.connection,
       "remoteFilepath" : filepath.replace(/FS/,"fs1"), // TODO : debug - replace with "filepath"
       "localFilepath"  : localSrcFilepath,
       'fileContent'    : null,
       'modified'       : false
     },
     "trg" : {
-      "connection"     : app.compareCtx.arg.trg.connection,
+      "connection"     : app.ctx.trg.connection,
       "remoteFilepath" : filepath.replace(/FS/,"fs2"), // TODO : debug
       "localFilepath"  : localTrgFilepath,
       'fileContent'    : null,
@@ -116,8 +116,6 @@ ipcRenderer.on('putLocalFilePair.error',function(event, arg, error){
   app.error.show("Failed to save file to its remote location : "+arg.remoteFilepath,"sorry !! : ");
 });
 
-
-
 ipcRenderer.on('putLocalFile.end',function(event, arg){
   app.alert("file saved successfully : "+arg.remoteFilepath);
   app.showView(app.VIEW.RESULT);
@@ -187,9 +185,19 @@ ipcRenderer.on('compareExternal.end',function(event,result){
  * Get Remote file START
  */
 document.getElementById('result-compare').addEventListener('click',function(event){
+  console.log('result-compare');
   if( ! event.target.dataset.hasOwnProperty('filepath')){
     console.error("missing filepath in target dataset");
   } else {
-    getRemoteFilePair(event.target.dataset.filepath);
+    if(event.target.classList.contains('view-diff')) {
+      getRemoteFilePair(event.target.dataset.filepath);
+    }else if(event.target.classList.contains('refresh-diff') ){
+      // do something
+      ipcRenderer.send('refreshSingleFileResult.start',{
+        'filepath' : event.target.dataset.filepath,
+        'src'      : diffCtx.src,
+        'trg'      : diffCtx.trg
+      });
+    }
   }
 });

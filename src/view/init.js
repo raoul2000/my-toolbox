@@ -25,7 +25,7 @@ var submitForm = function(){
 
     app.showView(app.VIEW.NONE);
 
-    app.compareCtx.arg = {
+    app.ctx = {
       "src" : {
         "connection" : {
           "host"     : srcHost,
@@ -45,12 +45,8 @@ var submitForm = function(){
         //"folderPath" : folderPath
       }
     };
-
-    console.log('sending ...');
-    console.log(app.compareCtx.arg);
-
     app.progress.start();
-    ipcRenderer.send('remoteCompare.start',app.compareCtx.arg);
+    ipcRenderer.send('remoteCompare.start',app.ctx);
 };
 
 /**
