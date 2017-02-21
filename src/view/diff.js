@@ -1,7 +1,6 @@
 "use strict";
 const ipcRenderer = require('electron').ipcRenderer;
 
-var codeMirror = null;
 var diffCtx = {
   "src" : {
     "connection"     : null,
@@ -20,7 +19,6 @@ var diffCtx = {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-
 
 /**
 * Initiates the Get Remote File pair action.
@@ -54,77 +52,7 @@ var getRemoteFilePair = function(filepath) {
   ipcRenderer.send("getRemoteFilePair.start",diffCtx);
 };
 
-/**
- * Display the diff view for the files passed as arguments
- *
- * @param  {object} fileContent description of the files to compare
- */
-var renderDiffView = function(){
-  // time to show the diff-view !!!
-  app.showView(app.VIEW.DIFF);
-  var target = document.getElementById("diff-view");
-  target.innerHTML = "";
-
-  codeMirror = CodeMirror.MergeView(target, {
-    value: diffCtx.trg.fileContent, // target
-    orig: null,
-    origLeft: diffCtx.src.fileContent,  // source
-    lineNumbers: true,
-    mode: "text/html",
-    highlightDifferences: true,
-    connect: null,
-    collapseIdentical: false
-  });
-};
-
 ////////////////////////////////////////////////////////////////////////////////
-
-/**
- * Display the built-in diff view
- */
-document.getElementById('btn-show-result').addEventListener('click',function(event){
-  app.showView(app.VIEW.RESULT);
-});
-
-/**
- * Save the target to its remote location only if it has been modified
- */
-document.getElementById('btn-save-changes').addEventListener('click',function(evnt){
- if(codeMirror && codeMirror.edit.isClean() === false) {
-   // the target document has been modified
-   if(confirm('save changes ?')) {
-     diffCtx.trg.fileContent =  codeMirror.edit.getValue();
-     diffCtx.trg.modified    = true;
-     //ipcRenderer.send('putLocalFile.start',diffCtx.trg);
-     ipcRenderer.send('putLocalFilePair.start',diffCtx);
-   }
- } else {
-   app.alert('the Target has not been modified');
- }
-});
-
-ipcRenderer.on('putLocalFilePair.end',function(event, arg){
-  app.alert("file saved successfully : ");
-  app.showView(app.VIEW.RESULT);
-});
-
-ipcRenderer.on('putLocalFilePair.progress',function(event, remoteFilepath){
-  app.alert("file saved successfully : "+remoteFilepath);
-});
-
-ipcRenderer.on('putLocalFilePair.error',function(event, arg, error){
-  app.error.show("Failed to save file to its remote location : "+arg.remoteFilepath,"sorry !! : ");
-});
-
-ipcRenderer.on('putLocalFile.end',function(event, arg){
-  app.alert("file saved successfully : "+arg.remoteFilepath);
-  app.showView(app.VIEW.RESULT);
-});
-
-ipcRenderer.on('putLocalFile.error',function(event, arg, error){
-  app.error.show("Failed to save file to its remote location : "+arg.remoteFilepath,"sorry !! : ");
-});
-//////////////////////////////////////////////////////////////////////
 /**
  * Get Remote file PROGRESS
  */
@@ -155,18 +83,18 @@ ipcRenderer.on('getRemoteFilePair.end',function(event, result){
   diffCtx.trg.localFilepath = result.trg.localFilepath;
   diffCtx.trg.modified      = false;
 
-  if(app.config.diffTool.external) {
-    ipcRenderer.send('compareExternal.start', {
-      "diffTool"  : app.config.diffTool.command,
-      "ctx"       : diffCtx
-    });
-    app.showView(app.VIEW.RESULT);
-  } else {
-    // use internal diff view tool
-    renderDiffView();
-  }
+  ipcRenderer.send('compareExternal.start', {
+    "diffTool"  : app.config.diffTool.command,
+    "ctx"       : diffCtx
+  });
+  app.showView(app.VIEW.RESULT);
 });
 
+/**
+ * Comparaison using the external program is done
+ * Copy local file to remote host if needed by calling putLocalFilePair
+ *
+ */
 ipcRenderer.on('compareExternal.end',function(event,result){
   console.log("## compareExternal.end");
   console.log(result);
@@ -180,6 +108,21 @@ ipcRenderer.on('compareExternal.end',function(event,result){
     app.showView(app.VIEW.RESULT);
   }
 });
+
+
+ipcRenderer.on('putLocalFilePair.end',function(event, arg){
+  app.alert("file saved successfully : ");
+  app.showView(app.VIEW.RESULT);
+});
+
+ipcRenderer.on('putLocalFilePair.progress',function(event, remoteFilepath){
+  app.alert("file saved successfully : "+remoteFilepath);
+});
+
+ipcRenderer.on('putLocalFilePair.error',function(event, arg, error){
+  app.error.show("Failed to save file to its remote location : "+arg.remoteFilepath,"sorry !! : ");
+});
+
 
 /**
  * Get Remote file START
