@@ -15,3 +15,18 @@
 #main-container[data-view=diff] #diff-container {
   display:block;
 }
+
+
+.cmp-ok,
+.cmp-diff,
+.cmp-missing-src,
+.cmp-missing-trg {
+  display:none;
+}
+
+.state-cmp-ok .cmp-ok,
+.state-cmp-diff .cmp-diff,
+.state-cmp-missing-trg .cmp-missing-trg,
+.state-cmp-missing-src .cmp-missing-src {
+  display:block;
+}

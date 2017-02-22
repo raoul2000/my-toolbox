@@ -41,6 +41,38 @@ ipcRenderer.on('remoteCompare.progress',function(event,progress){
  * @param  {object} cmpItem the compared item to render
  * @return {string}         HTML string
  */
+var createRowHTML_new = function(cmpItem) {
+  var rowClass = "";
+  var compareStatus = "";
+  if(cmpItem.existInTarget === false) {
+    rowClass = "container-cmp-not-in-target";
+    compareStatus = 'not in target';
+  } else if(cmpItem.md5Match === true) {
+    compareStatus = '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
+  } else {
+    // NOTE : the data-filepath attribute is used by the diff to get the path of the file
+    // to display diff view.
+    rowClass = "container-cmp-diff";
+    compareStatus = '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
+    "<button  type=\"button\" class=\"view-diff\" data-filepath=\""+cmpItem.path+"\">diff</button>";
+  }
+  var refreshButton = "<button  type=\"button\" class=\"refresh-diff\" data-filepath=\""+cmpItem.path+"\">refresh</button>";
+
+  return "<tr>"
+    + "<td>" + cmpItem.path + "</td>"
+    + "<td class=\""+rowClass+"\">"
+    +    "<div class=\"cmp-diff\"">
+    +        '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>'
+    +        "<button  type=\"button\" class=\"view-diff\" data-filepath=\""+cmpItem.path+"\">diff</button>"
+    +     "</div>"
+    +     '<span class="cmp-not-in-target">not in target</span>'
+    + "</td>"
+    + "<td>" + refreshButton + "</td>"
+    + "</tr>";
+};
+
+
+
 var createRowHTML = function(cmpItem) {
   var compareStatus = "";
   if(cmpItem.existInTarget === false) {
@@ -60,7 +92,6 @@ var createRowHTML = function(cmpItem) {
     + "<td>" + compareStatus + "</td>"
     + "<td>" + refreshButton + "</td>"
   +  "</tr>";
-
 };
 /**
  * Render  the comparaison table.
