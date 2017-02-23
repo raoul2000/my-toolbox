@@ -41,58 +41,34 @@ ipcRenderer.on('remoteCompare.progress',function(event,progress){
  * @param  {object} cmpItem the compared item to render
  * @return {string}         HTML string
  */
-var createRowHTML_new = function(cmpItem) {
-  var rowClass = "";
-  var compareStatus = "";
-  if(cmpItem.existInTarget === false) {
-    rowClass = "container-cmp-not-in-target";
-    compareStatus = 'not in target';
-  } else if(cmpItem.md5Match === true) {
-    compareStatus = '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
-  } else {
-    // NOTE : the data-filepath attribute is used by the diff to get the path of the file
-    // to display diff view.
-    rowClass = "container-cmp-diff";
-    compareStatus = '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
-    "<button  type=\"button\" class=\"view-diff\" data-filepath=\""+cmpItem.path+"\">diff</button>";
-  }
-  var refreshButton = "<button  type=\"button\" class=\"refresh-diff\" data-filepath=\""+cmpItem.path+"\">refresh</button>";
-
-  return "<tr>"
-    + "<td>" + cmpItem.path + "</td>"
-    + "<td class=\""+rowClass+"\">"
-    +    "<div class=\"cmp-diff\"">
-    +        '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>'
-    +        "<button  type=\"button\" class=\"view-diff\" data-filepath=\""+cmpItem.path+"\">diff</button>"
-    +     "</div>"
-    +     '<span class="cmp-not-in-target">not in target</span>'
-    + "</td>"
-    + "<td>" + refreshButton + "</td>"
-    + "</tr>";
-};
-
-
-
 var createRowHTML = function(cmpItem) {
-  var compareStatus = "";
+  var rowClass = "";
   if(cmpItem.existInTarget === false) {
-    compareStatus = 'not in target';
+    rowClass = "state-cmp-missing-trg";
   } else if(cmpItem.md5Match === true) {
-    compareStatus = '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
+    rowClass = "state-cmp-ok";
   } else {
+
     // NOTE : the data-filepath attribute is used by the diff to get the path of the file
     // to display diff view.
-    compareStatus = '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
-    "<button  type=\"button\" class=\"view-diff\" data-filepath=\""+cmpItem.path+"\">diff</button>";
+    rowClass = "state-cmp-diff";
   }
-  var refreshButton = "<button  type=\"button\" class=\"refresh-diff\" data-filepath=\""+cmpItem.path+"\">refresh</button>";
 
-  return "<tr>"
-    + "<td>" + cmpItem.path + "</td>"
-    + "<td>" + compareStatus + "</td>"
-    + "<td>" + refreshButton + "</td>"
-  +  "</tr>";
+  var tmplRowHTML = '<tr class="'+rowClass+'">'
+  +  '<td>'+cmpItem.path+'</td>'
+  +  '<td>'
+  +    '<div class="cmp-ok">ok</div>'
+  +    '<div class="cmp-diff">'
+  +      '<button class="view-diff" data-filepath="'+cmpItem.path+'" type="button">view  diff</button>'
+  +    '</div>'
+  +    '<div class="cmp-missing-trg">missing trg</div>'
+  +    '<div class="cmp-missing-src">missing src</div>'
+  +  '</td>'
+  + '</tr>';
+
+  return tmplRowHTML;
 };
+
 /**
  * Render  the comparaison table.
  * The 'data' is the list of files that could be found in the "source" host and were compared
