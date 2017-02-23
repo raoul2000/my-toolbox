@@ -15,7 +15,8 @@ var diffCtx = {
     "localFilepath"  : null,
     'fileContent'    : null,
     'modified'       : false  // TRUE : local and  remote copies have different content
-  }
+  },
+  "filesMatch" : false
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -101,6 +102,9 @@ ipcRenderer.on('compareExternal.end',function(event,result){
 
   diffCtx.src.modified = result.srcModified;
   diffCtx.trg.modified = result.trgModified;
+  diffCtx.filesMatch   = result.filesMatch;
+
+
 
   if( diffCtx.src.modified || diffCtx.trg.modified) {
     ipcRenderer.send('putLocalFilePair.start',diffCtx);
@@ -111,7 +115,18 @@ ipcRenderer.on('compareExternal.end',function(event,result){
 
 
 ipcRenderer.on('putLocalFilePair.end',function(event, arg){
-  app.alert("file saved successfully : ");
+  console.log("# putLocalFilePair.end");
+  diffCtx.src.modified = false;
+  diffCtx.trg.modified = false;
+
+  // TODO : debug only
+  var devFilename = diffCtx.src.remoteFilepath.replace(/fs1/,"FS");
+
+  var newRowClass = diffCtx.filesMatch === true ? 'state-cmp-ok' : 'state-cmp-diff';
+  $('tr[data-filepath="'+devFilename+'"]')
+    .removeClass()
+    .addClass(newRowClass);
+
   app.showView(app.VIEW.RESULT);
 });
 

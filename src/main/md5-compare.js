@@ -62,7 +62,7 @@ ipcMain.on('putLocalFilePair.start', function(event, arg) {
   Q.allSettled(promises)
   .then(function(results){
     console.log(results);
-    event.sender.send('putLocalFilePair.done');
+    event.sender.send('putLocalFilePair.end');
   })
   .catch(function(error){
     console.error(error);
@@ -223,13 +223,16 @@ ipcMain.on('compareExternal.start',function(event,arg){
   );
   console.log("end of external compare tools ----");
 
+  var filesMatch = fs.readFileSync(leftFilename, 'utf8') === fs.readFileSync(rightFilename,'utf8');
+
   // merge done. Check if changes have been done on left and right files
   console.log("#compareExternal.end");
   console.log(arg);
 
   event.sender.send('compareExternal.end',  {
     "srcModified" : lmtime !== fs.statSync(leftFilename).mtime.getTime(),
-    "trgModified" : rmtime !== fs.statSync(rightFilename).mtime.getTime()
+    "trgModified" : rmtime !== fs.statSync(rightFilename).mtime.getTime(),
+    "filesMatch"  : filesMatch
   });
 
 });

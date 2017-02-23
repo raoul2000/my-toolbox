@@ -54,7 +54,7 @@ var createRowHTML = function(cmpItem) {
     rowClass = "state-cmp-diff";
   }
 
-  var tmplRowHTML = '<tr class="'+rowClass+'">'
+  var tmplRowHTML = '<tr class="'+rowClass+'" data-filepath="'+cmpItem.path+'" >'
   +  '<td>'+cmpItem.path+'</td>'
   +  '<td>'
   +    '<div class="cmp-ok">ok</div>'
