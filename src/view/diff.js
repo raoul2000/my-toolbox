@@ -87,7 +87,7 @@ ipcRenderer.on('getRemoteFilePair.end',function(event, result){
   app.progress.start();
   app.progress.message("merging in progress ...");
 
-  ipcRenderer.send('compareExternal.start', {
+  ipcRenderer.send('merge.start', {
     "diffTool"  : app.config.diffTool.command,
     "ctx"       : diffCtx
   });
@@ -99,8 +99,8 @@ ipcRenderer.on('getRemoteFilePair.end',function(event, result){
  * Copy local file to remote host if needed by calling putLocalFilePair
  *
  */
-ipcRenderer.on('compareExternal.end',function(event,result){
-  console.log("## compareExternal.end");
+ipcRenderer.on('merge.end',function(event,result){
+  console.log("## merge.end");
   console.log(result);
 
   diffCtx.src.modified = result.srcModified;
