@@ -52,7 +52,7 @@ const app = {
     alert(msg);
   },
   confirm : function(msg) {
-    return app.confirm(msg);
+    //  NOT IMPLEMENTED
   },
   progress : {
     start : function() {
@@ -64,7 +64,7 @@ const app = {
       return app.progress;
     },
     message : function(msg) {
-      app.ui.progress_message.insertAdjacentHTML('beforeend','<pre>'+msg+'</pre>');
+      app.ui.progress_message.insertAdjacentHTML('beforeend','<li>'+msg+'</li>');
     },
     end :  function() {
       app.showView(app.VIEW.NONE);

@@ -84,11 +84,14 @@ ipcRenderer.on('getRemoteFilePair.end',function(event, result){
   diffCtx.trg.localFilepath = result.trg.localFilepath;
   diffCtx.trg.modified      = false;
 
+  app.progress.start();
+  app.progress.message("merging in progress ...");
+
   ipcRenderer.send('compareExternal.start', {
     "diffTool"  : app.config.diffTool.command,
     "ctx"       : diffCtx
   });
-  app.showView(app.VIEW.RESULT);
+
 });
 
 /**
@@ -104,15 +107,18 @@ ipcRenderer.on('compareExternal.end',function(event,result){
   diffCtx.trg.modified = result.trgModified;
   diffCtx.filesMatch   = result.filesMatch;
 
-
-
   if( diffCtx.src.modified || diffCtx.trg.modified) {
     ipcRenderer.send('putLocalFilePair.start',diffCtx);
+    app.progress.message("updating remote files");
   } else {
+    app.progress.end();
     app.showView(app.VIEW.RESULT);
   }
 });
 
+ipcRenderer.on('putLocalFilePair.progress',function(event, remoteFilepath){
+  app.progress.message("file :  "+remoteFilepath);
+});
 
 ipcRenderer.on('putLocalFilePair.end',function(event, arg){
   console.log("# putLocalFilePair.end");
@@ -122,17 +128,14 @@ ipcRenderer.on('putLocalFilePair.end',function(event, arg){
   // TODO : debug only
   var devFilename = diffCtx.src.remoteFilepath.replace(/fs1/,"FS");
 
-  var newRowClass = diffCtx.filesMatch === true ? 'state-cmp-ok' : 'state-cmp-diff';
   $('tr[data-filepath="'+devFilename+'"]')
     .removeClass()
-    .addClass(newRowClass);
+    .addClass(diffCtx.filesMatch === true ? 'state-cmp-ok' : 'state-cmp-diff');
 
+  app.progress.end();
   app.showView(app.VIEW.RESULT);
 });
 
-ipcRenderer.on('putLocalFilePair.progress',function(event, remoteFilepath){
-  app.alert("file saved successfully : "+remoteFilepath);
-});
 
 ipcRenderer.on('putLocalFilePair.error',function(event, arg, error){
   app.error.show("Failed to save file to its remote location : "+arg.remoteFilepath,"sorry !! : ");

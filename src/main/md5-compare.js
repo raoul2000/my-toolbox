@@ -46,6 +46,7 @@ ipcMain.on('putLocalFilePair.start', function(event, arg) {
     console.log('putLocalFile : '+itemRole.remoteFilepath);
     return sftp.put(itemRole.connection, itemRole.localFilepath, itemRole.remoteFilepath)
       .then(function(result){
+        event.sender.send('putLocalFilePair.progress', itemRole.remoteFilepath + " : done");
         itemRole.modified = false;
       });
   };

@@ -117,3 +117,7 @@ const btn_restart = document.getElementById('btn-restart')
 .addEventListener('click',function(){
   app.showView(app.VIEW.FORM);
 });
+
+document.getElementById('btn-refresh-compare').addEventListener('click',function(){
+  //document.getElementById('btn-start')
+});

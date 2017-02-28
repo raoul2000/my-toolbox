@@ -68,35 +68,20 @@
       <div id="progress-container" class="row">
         <h3>Operation in progress ...</h3>
         <hr/>
-        <div id="progress-message">
-
-        </div>
+        <p>
+          <ul id="progress-message">
+          </ul>
+        </p>
       </div>
 
       <div id="result-container" class="row">
         <div class="col-xs-12">
           <h2>Result</h2>
           <hr/>
+          <button id="btn-refresh-compare" type="button" name="button">refresh</button>
           <table class="table table-striped table-hover table-condensed">
             <tbody id="result-compare">
 
-            </tbody>
-          </table>
-          <h2>sample</h2>
-
-          <table class="table table-striped table-hover table-condensed">
-            <tbody id="result-compare">
-              <tr class="state-cmp-diff">
-                <td>/folder/folder/file.txt</td>
-                <td>
-                  <div class="cmp-ok">ok</div>
-                  <div class="cmp-diff">
-                    <button class="view-diff" type="button">view  diff</button>
-                  </div>
-                  <div class="cmp-missing-trg">missing trg</div>
-                  <div class="cmp-missing-src">missing src</div>
-                </td>
-              </tr>
             </tbody>
           </table>
           <hr/>
