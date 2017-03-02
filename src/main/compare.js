@@ -36,15 +36,19 @@ ipcMain.on('remoteCompare.start',function(event,arg){
       ;
       console.log("TARGET ======");
       console.log(trgResult);
-      // DEBUG
-      // this is to simulate 2 remote servers
-      srcResult.forEach(function(item){
-        item.path = item.path.replace(/fs1/,"FS");
-      });
-      trgResult.forEach(function(item){
-        item.path = item.path.replace(/fs2/,"FS");
-      });
-      // END  DEBUG
+      if( true ) {
+        // DEBUG
+        // this is to simulate 2 remote servers
+        srcResult.forEach(function(item){
+          item.path = item.path.replace(/fs1/,"FS");
+        });
+        trgResult.forEach(function(item){
+          item.path = item.path.replace(/fs2/,"FS");
+        });
+        // END  DEBUG
+        //
+      }
+
       var final = compare.diff(srcResult,trgResult);
       event.sender.send('remoteCompare.done', final );
     })

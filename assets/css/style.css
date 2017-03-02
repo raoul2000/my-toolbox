@@ -30,3 +30,11 @@
 .state-cmp-missing-src .cmp-missing-src {
   display:block;
 }
+
+tr.header-folder-path td {
+  font-size: 1.3em;
+  background-color: antiquewhite;
+  border: none;
+  border-bottom: 1px solid black;
+  background-color: #f2f2f2;
+}

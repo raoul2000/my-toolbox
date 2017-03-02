@@ -127,6 +127,7 @@ ipcRenderer.on('putLocalFilePair.end',function(event, arg){
 
   // TODO : debug only
   var devFilename = diffCtx.src.remoteFilepath.replace(/fs1/,"FS");
+  //var devFilename = diffCtx.src.remoteFilepath;
 
   $('tr[data-filepath="'+devFilename+'"]')
     .removeClass()
@@ -153,7 +154,7 @@ document.getElementById('result-compare').addEventListener('click',function(even
     if(event.target.classList.contains('view-diff')) {
       getRemoteFilePair(event.target.dataset.filepath);
     }else if(event.target.classList.contains('refresh-diff') ){
-      // do something
+      // TODO : implement ?
       ipcRenderer.send('refreshSingleFileResult.start',{
         'filepath' : event.target.dataset.filepath,
         'src'      : diffCtx.src,

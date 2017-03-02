@@ -1,6 +1,8 @@
 "use strict";
 const ipcRenderer = require('electron').ipcRenderer;
 
+
+
 /**
  * Manage the  initialization form where the user enters :
  * - source connection parameters
@@ -48,6 +50,28 @@ var submitForm = function(){
     app.progress.start();
     ipcRenderer.send('remoteCompare.start',app.ctx);
 };
+
+ipcRenderer.on('remoteCompare.progress',function(event,progress){
+  var msg = "";
+  switch(progress.task) {
+    case "read-source-start": msg = "reading source file";
+    break;
+    case "read-source-end": msg = "source file found : "+progress.count;
+    break;
+    case "read-target-start": msg = "Reading Target file ";
+    break;
+    case "read-target-end": msg = "Target file found : "+progress.count;
+    break;
+  }
+  app.progress.message(msg);
+});
+
+ipcRenderer.on('remoteCompare.error',function(event,err){
+  console.log(event);
+  console.error(err);
+  app.error.show('Error','failed to read remote files');
+  app.showView(app.VIEW.FORM);
+});
 
 /**
  * Start the comparaison
