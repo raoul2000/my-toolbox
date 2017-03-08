@@ -72,7 +72,7 @@ var renderCompareReport = function(data) {
     + '     <h3 class="panel-title">'+app.ctx.src.folderPath+'</h3>'
     + '    </div>'
     + '    <div class="panel-body">'
-    + '      <table class="table table-striped table-hover table-condensed">'
+    + '      <table class="table table-hover table-condensed">'
     + '         <tbody>'
     +               resultRowsHTML
     + '         </tbody>'
@@ -97,6 +97,10 @@ ipcRenderer.on('remoteCompare.done',function(event,data){
 const btn_restart = document.getElementById('btn-restart')
 .addEventListener('click',function(){
   app.showView(app.VIEW.FORM);
+});
+
+document.getElementById('btn-show-only-diff').addEventListener('click',function(){
+  $('#result-container').toggleClass('show-only-diff');
 });
 
 document.getElementById('btn-refresh-compare').addEventListener('click',function(){

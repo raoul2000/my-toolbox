@@ -16,6 +16,19 @@
   display:block;
 }
 
+.show-only-diff .state-cmp-ok {
+  display : none;
+}
+
+.show-only-diff .btn-label-show-only-diff,
+.btn-label-show-all {
+  display:none;
+}
+
+.show-only-diff .btn-label-show-all,
+.btn-label-show-only-diff {
+  display:block;
+}
 
 .cmp-ok,
 .cmp-diff,
