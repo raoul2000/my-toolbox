@@ -43,14 +43,6 @@ var createRowHTML = function(cmpItem) {
   return tmplRowHTML;
 };
 
-var createHeaderTable = function(folderPath) {
-
-  var tmplHeaderHTML = '<tr class="header-folder-path">'
-  +  '<td colspan="3">'+folderPath+'</td>'
-  +'</tr>';
-
-  return tmplHeaderHTML;
-};
 /**
  * Render  the comparaison table.
  * The 'data' is the list of files that could be found in the "source" host and were compared
@@ -72,13 +64,23 @@ var renderCompareReport = function(data) {
     while(tableBody.firstChild) {
       tableBody.removeChild(tableBody.firstChild);
     }
-    tableBody.insertAdjacentHTML('beforeend',createHeaderTable('/d/f/g'));
-    // add HTML rows inside the table body
-    tableBody.insertAdjacentHTML('beforeend',
-      data.map(function(item){
-        return createRowHTML(item);
-      }).join('\n')
-    );
+    var resultRowsHTML = data.map(function(item){
+      return createRowHTML(item);
+    }).join('\n');
+    var panelResultHTML  = '<div class="panel panel-default">'
+    + '    <div class="panel-heading">'
+    + '     <h3 class="panel-title">'+app.ctx.src.folderPath+'</h3>'
+    + '    </div>'
+    + '    <div class="panel-body">'
+    + '      <table class="table table-striped table-hover table-condensed">'
+    + '         <tbody>'
+    +               resultRowsHTML
+    + '         </tbody>'
+    + '      </table>'
+    + '    </div>'
+    + '  </div>';
+
+    tableBody.insertAdjacentHTML('beforeend',panelResultHTML);
 
     // show the compare result table
     app.showView(app.VIEW.RESULT);

@@ -149,7 +149,7 @@ ipcRenderer.on('putLocalFilePair.error',function(event, arg, error){
 document.getElementById('result-compare').addEventListener('click',function(event){
   console.log('result-compare');
   if( ! event.target.dataset.hasOwnProperty('filepath')){
-    console.error("missing filepath in target dataset");
+    console.warn("missing filepath in target dataset : click ignored");
   } else {
     if(event.target.classList.contains('view-diff')) {
       getRemoteFilePair(event.target.dataset.filepath);
