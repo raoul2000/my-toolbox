@@ -22,7 +22,11 @@ ipcMain.on('remoteCompare.start',function(event,arg){
 
     console.log("SOURCE ======");
     console.log(srcResult);
-
+    /*
+    if(srcResult.error ) {
+      event.sender.send('remoteCompare.error', srcResult);
+    }
+    */
     event.sender.send('remoteCompare.progress', {
       "task" : "read-target-start"
     });

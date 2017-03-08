@@ -57,16 +57,16 @@ var createRowHTML = function(cmpItem) {
  * @param  {object} data the comparaison data
  */
 var renderCompareReport = function(data) {
-    app.ctx.compareResult = data;
-
     // clear existing compare result
     var tableBody = document.getElementById("result-compare");
     while(tableBody.firstChild) {
       tableBody.removeChild(tableBody.firstChild);
     }
+    // create HTML
     var resultRowsHTML = data.map(function(item){
       return createRowHTML(item);
     }).join('\n');
+
     var panelResultHTML  = '<div class="panel panel-default">'
     + '    <div class="panel-heading">'
     + '     <h3 class="panel-title">'+app.ctx.src.folderPath+'</h3>'
@@ -80,14 +80,15 @@ var renderCompareReport = function(data) {
     + '    </div>'
     + '  </div>';
 
+    // insert HTML
     tableBody.insertAdjacentHTML('beforeend',panelResultHTML);
 
     // show the compare result table
     app.showView(app.VIEW.RESULT);
-    console.log(data);
 };
 
 ipcRenderer.on('remoteCompare.done',function(event,data){
+  app.ctx.compareResult = data;
   renderCompareReport(data);
 });
 
@@ -104,5 +105,6 @@ document.getElementById('btn-show-only-diff').addEventListener('click',function(
 });
 
 document.getElementById('btn-refresh-compare').addEventListener('click',function(){
-  //document.getElementById('btn-start')
+  app.progress.start();
+  ipcRenderer.send('remoteCompare.start',app.ctx);
 });
