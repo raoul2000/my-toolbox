@@ -38,7 +38,9 @@ var createRowHTML = function(rootPath, cmpItem) {
   +    '<div class="cmp-diff">'
   +      '<button class="view-diff" data-filepath="'+cmpItem.path+'" type="button">view  diff</button>'
   +    '</div>'
-  +    '<div class="cmp-missing-trg">missing trg</div>'
+  +    '<div class="cmp-missing-trg">'
+  +      '<button class="copy-to-trg" data-filepath="'+cmpItem.path+'" type="button">copy to target</button>'
+  +    '</div>'
   +    '<div class="cmp-missing-src">missing src</div>'
   +  '</td>'
   + '</tr>';
