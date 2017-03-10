@@ -15,7 +15,7 @@ const ipcRenderer = require('electron').ipcRenderer;
  * @param  {object} cmpItem the compared item to render
  * @return {string}         HTML string
  */
-var createRowHTML = function(cmpItem) {
+var createRowHTML = function(rootPath, cmpItem) {
   var rowClass = "";
   if(cmpItem.existInTarget === false) {
     rowClass = "state-cmp-missing-trg";
@@ -27,9 +27,12 @@ var createRowHTML = function(cmpItem) {
     // to display diff view.
     rowClass = "state-cmp-diff";
   }
+  // debug
+  var absolutePath = cmpItem.path.replace('FS','fs1');
+  var relativePath = absolutePath.replace(rootPath + '/',"");
 
   var tmplRowHTML = '<tr class="'+rowClass+'" data-filepath="'+cmpItem.path+'" >'
-  +  '<td>'+cmpItem.path+'</td>'
+  +  '<td title="'+absolutePath+'">'+relativePath+'</td>'
   +  '<td>'
   +    '<div class="cmp-ok">ok</div>'
   +    '<div class="cmp-diff">'
@@ -64,7 +67,7 @@ var renderCompareReport = function(data) {
     }
     // create HTML
     var resultRowsHTML = data.map(function(item){
-      return createRowHTML(item);
+      return createRowHTML(app.ctx.src.folderPath, item);
     }).join('\n');
 
     var panelResultHTML  = '<div class="panel panel-default">'
