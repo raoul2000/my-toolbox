@@ -7,13 +7,13 @@ const compare  = require('../node/md5-compare.js');
  * Compare Start
  */
 ipcMain.on('remoteCompare.start',function(event,arg){
-  console.log(event);
+  console.log(arg);
 
   event.sender.send('remoteCompare.progress', {
     "task" : "read-source-start"
   });
 
-   compare.md5Folder(arg.src.connection,arg.src.folderPath)
+   compare.md5Folder(arg.src.connection,arg.src.folderPath, arg.options)
   .then(function(srcResult){
     event.sender.send('remoteCompare.progress', { // progress notification
       "task" : "read-source-end",
@@ -31,7 +31,7 @@ ipcMain.on('remoteCompare.start',function(event,arg){
       "task" : "read-target-start"
     });
 
-    return compare.md5Folder(arg.trg.connection,arg.trg.folderPath)
+    return compare.md5Folder(arg.trg.connection,arg.trg.folderPath, arg.options)
     .then(function(trgResult){
       event.sender.send('remoteCompare.progress', { // progress notification
         "task" : "read-target-end",
@@ -40,7 +40,7 @@ ipcMain.on('remoteCompare.start',function(event,arg){
       ;
       console.log("TARGET ======");
       console.log(trgResult);
-      if( true ) {
+      if( false ) {
         // DEBUG
         // this is to simulate 2 remote servers
         srcResult.forEach(function(item){

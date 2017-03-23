@@ -23,6 +23,9 @@ var submitForm = function(){
     const trgPassword = document.getElementById('trg-password').value;
 
     const folderPath = document.getElementById('folder-path').value;
+
+    const reInclude = document.getElementById('re-include').value;
+    const reExclude = document.getElementById('re-exclude').value;
     // TODO : validate user input
 
     app.showView(app.VIEW.NONE);
@@ -43,8 +46,12 @@ var submitForm = function(){
           "username" : trgUsername,
           "password" : trgPassword
         },
-        "folderPath" : "/mnt/c/dev/ws/lab/my-toolbox/test/data/fs2" // folderPath // target folder to compare
-        //"folderPath" : folderPath
+        //"folderPath" : "/mnt/c/dev/ws/lab/my-toolbox/test/data/fs2" // folderPath // target folder to compare
+        "folderPath" : folderPath
+      },
+      "options" : {
+        "include" : reInclude,
+        "exclude" : reExclude
       }
     };
     app.progress.start();
@@ -77,3 +84,7 @@ ipcRenderer.on('remoteCompare.error',function(event,err){
  * Start the comparaison
  */
 document.getElementById('btn-start').addEventListener('click',submitForm);
+
+document.getElementById('show-hide-options').addEventListener('click',function(ev){
+  $('#options-container').toggleClass('hidden');
+})

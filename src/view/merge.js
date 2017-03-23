@@ -36,14 +36,16 @@ var getRemoteFilePair = function(filepath) {
   diffCtx = {
     "src" : {
       "connection"     : app.ctx.src.connection,
-      "remoteFilepath" : filepath.replace(/FS/,"fs1"), // TODO : debug - replace with "filepath"
+      //"remoteFilepath" : filepath.replace(/FS/,"fs1"), // TODO : debug - replace with "filepath"
+      "remoteFilepath" : filepath,
       "localFilepath"  : localSrcFilepath,
       'fileContent'    : null,
       'modified'       : false
     },
     "trg" : {
       "connection"     : app.ctx.trg.connection,
-      "remoteFilepath" : filepath.replace(/FS/,"fs2"), // TODO : debug
+      //"remoteFilepath" : filepath.replace(/FS/,"fs2"), // TODO : debug
+      "remoteFilepath" : filepath,
       "localFilepath"  : localTrgFilepath,
       'fileContent'    : null,
       'modified'       : false
@@ -126,8 +128,8 @@ ipcRenderer.on('putLocalFilePair.end',function(event, arg){
   diffCtx.trg.modified = false;
 
   // TODO : debug only
-  var devFilename = diffCtx.src.remoteFilepath.replace(/fs1/,"FS");
-  //var devFilename = diffCtx.src.remoteFilepath;
+  //var devFilename = diffCtx.src.remoteFilepath.replace(/fs1/,"FS");
+  var devFilename = diffCtx.src.remoteFilepath;
 
   $('tr[data-filepath="'+devFilename+'"]')
     .removeClass()
