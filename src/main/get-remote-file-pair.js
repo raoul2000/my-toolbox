@@ -47,10 +47,12 @@ ipcMain.on('getRemoteFilePair.start', function(event, arg){
       event.sender.send('getRemoteFilePair.end', ResultfilePair);
     })
     .catch(function(error){
+      console.log(error);
       event.sender.send('getRemoteFilePair.error',error);
     });
 
   } catch (err) {
+    console.log(err);
     event.sender.send('getRemoteFilePair.error',err);
   }
 });
