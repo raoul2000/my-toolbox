@@ -7,10 +7,7 @@ const BrowserWindow = electron.BrowserWindow
 const path = require('path')
 const url  = require('url')
 
-const merge_external        = require('./src/main/merge')
-const cmp                   = require('./src/main/compare')
-const get_remote_file_pair  = require('./src/main/get-remote-file-pair')
-const put_local_file_pair   = require('./src/main/put-local-file-pair')
+const diff = require('./src/diff/main.js');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
