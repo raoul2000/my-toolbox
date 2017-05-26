@@ -1,0 +1,44 @@
+{
+  "m1Release": {
+    "data" :
+      [
+        {
+          "resourceURI": "http://hostname:8080/nexus/service/local/repositories/releases/content/com/company/webapp/m1/2.3.19/",
+          "relativePath": "/com/company/webapp/m1/2.3.19/",
+          "text": "2.3.19",
+          "leaf": false,
+          "lastModified": "2013-10-15 10:27:00.0 UTC",
+          "sizeOnDisk": -1
+        },
+        {
+          "resourceURI": "http://hostname:8080/nexus/service/local/repositories/releases/content/com/company/webapp/m1/2.3.19/",
+          "relativePath": "/com/company/webapp/m1/2.3.19/",
+          "text": "2.3.18",
+          "leaf": false,
+          "lastModified": "2013-10-15 10:27:00.0 UTC",
+          "sizeOnDisk": -1
+        }
+      ]
+  },
+  "m1Snapshot": {
+    "data" :
+      [
+        {
+          "resourceURI": "http://hostname:8080/nexus/service/local/repositories/releases/content/com/company/webapp/m1/2.3.19/",
+          "relativePath": "/com/company/webapp/m1/2.3.19/",
+          "text": "2.3.19_sn",
+          "leaf": false,
+          "lastModified": "2013-10-15 10:27:00.0 UTC",
+          "sizeOnDisk": -1
+        },
+        {
+          "resourceURI": "http://hostname:8080/nexus/service/local/repositories/releases/content/com/company/webapp/m1/2.3.19/",
+          "relativePath": "/com/company/webapp/m1/2.3.19/",
+          "text": "2.3.18_sn",
+          "leaf": false,
+          "lastModified": "2013-10-15 10:27:00.0 UTC",
+          "sizeOnDisk": -1
+        }
+      ]
+  }
+}

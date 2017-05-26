@@ -8,7 +8,7 @@
     <!-- bootstrap -->
     <link href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- custom styles -->
-    <link href="../../assets/css/style.css" rel="stylesheet">
+    <link href="../../assets/css/nexus.css" rel="stylesheet">
   </head>
   <body>
     <div id="nexus-container" class="container">
@@ -26,27 +26,39 @@
             <th>version</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="module-list">
 
-          <tr>
+          <tr id="modue-1" class="init" >
             <td>
-              <input type="checkbox"  value="1">
+              <input class="chk-module" type="checkbox"  value="1">
             </td>
             <td>mis</td>
             <td>Long Servlet Name</td>
-            <td>
-              <select class="" name="">
-                <option value="">release</option>
-                <option value="">snapshot</option>
-              </select>
-              <select class="" name="">
-                <option value="">latest (4.3.2)</option>
-                <option value="">4.3.1</option>
-                <option value="">4.3.0</option>
-              </select>
+            <td nowrap>
+              <div class="sel-package-widget">
+                <select class="sel-version-cat" name="">
+                  <option value="release" selected="true">release</option>
+                  <option value="snapshot">snapshot</option>
+                </select>
+                <select class="sel-version-val" name="">
+                  <option value="4.3.2">latest (4.3.2)</option>
+                  <option value="4.3.1">4.3.1</option>
+                  <option value="4.3.0">4.3.0</option>
+                </select>
+              </div>
             </td>
             <td>
-              <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span> Loading ...
+              <div class="status">
+                <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span> Loading ...
+              </div>
+              <div class="action">
+                <button class="but-download" type="button" name="button">download</button>
+              </div>
+              <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;">
+                  0%
+                </div>
+              </div>              
             </td>
           </tr>
         </tbody>
@@ -63,6 +75,7 @@
   <script src="app.js"></script>
 
   <script type="text/javascript">
+    require('./view/main-list.js');
   </script>
 
 </html>

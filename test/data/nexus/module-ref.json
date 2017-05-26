@@ -1,0 +1,22 @@
+{
+  "m1" : {
+    "id" : "m1",
+    "name" : "m1 module long name",
+    "url" : {
+      "release" : "http://hostname/m1",
+      "snapshot": "http://hostname/m1",
+      "changes" : "http://hostname/m1/changes",
+      "doc" : "http://hostname/m1/doc",
+    }
+  },
+  "m2" : {
+    "id" : "m2",
+    "name" : "m2 module long name",
+    "url" : {
+      "release" : "http://hostname/m2",
+      "snapshot": "http://hostname/m2",
+      "changes" : "http://hostname/m2/changes",
+      "doc" : "http://hostname/m2/doc",
+    }
+  }
+}
