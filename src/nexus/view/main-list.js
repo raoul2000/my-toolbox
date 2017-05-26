@@ -1,8 +1,12 @@
 "use strict";
 const ipcRenderer = require('electron').ipcRenderer;
 
-ipcRenderer.on('nx-download-mod.progress', function(sender, progress){
-    console.log(progress);
+ipcRenderer.on('nx-download-mod.progress', function(sender, data){
+    console.log(data);
+    let percent = Math.round(data.progress.percent * 100);
+    let $progress = $('#'+ data.moduleId + '-progress');
+    $progress.css('width',percent+"%");
+    $progress.text(percent + "%");
 });
 
 $('.but-download').on('click',function(el){

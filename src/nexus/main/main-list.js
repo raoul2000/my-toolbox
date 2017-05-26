@@ -39,16 +39,24 @@ ipcMain.on('nx-download-mod.start', function(event, arg) {
   console.log("nx-download-mod.start");
   console.log(arg);
   nexusDownloader.download(
-    'https://az412801.vo.msecnd.net/vhd/VMBuild_20141027/VirtualBox/IE11/Windows/IE11.Win8.1.For.Windows.VirtualBox.zip',
+    'https://download.docker.com/win/stable/InstallDocker.msi',
     'd:\\tmp\\file.zip'
     )
     .then(function(result) {
-      event.sender.send('nx-download-mod.done', {});
+      event.sender.send('nx-download-mod.done', {
+        moduleId : arg.moduleId
+      });
     }, function(error) {
-      event.sender.send('nx-download-mod.error', error);
+      event.sender.send('nx-download-mod.error', {
+        moduleId : arg.moduleId,
+        error : error
+      });
     }, function(progress) {
       console.log(progress);
-      event.sender.send('nx-download-mod.progress', progress);
+      event.sender.send('nx-download-mod.progress', {
+        moduleId : arg.moduleId,
+        progress : progress
+      });
     });
 
 });
