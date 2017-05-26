@@ -1,6 +1,6 @@
 "use strict";
 
-var sftp = require('../../src/node/sftp'),
+var sftp = require('../../../src/node/sftp'),
 		fs 			= require('fs'),
 		assert  = require('chai').assert;
 

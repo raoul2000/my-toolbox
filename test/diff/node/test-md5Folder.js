@@ -1,6 +1,6 @@
 "use strict";
 
-var compare = require('../../src/node/md5-compare'),
+var compare = require('../../../src/node/md5-compare'),
 		fs 			= require('fs'),
 		assert  = require('chai').assert;
 

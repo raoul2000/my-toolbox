@@ -8,6 +8,7 @@ const path = require('path')
 const url  = require('url')
 
 const diff = require('./src/diff/main.js');
+const nexus = require('./src/nexus/main.js');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -19,7 +20,7 @@ function createWindow () {
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
+    pathname: path.join(__dirname, 'src/nexus/index.html'),
     protocol: 'file:',
     slashes: true
   }))

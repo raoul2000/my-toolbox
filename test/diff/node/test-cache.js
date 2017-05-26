@@ -1,6 +1,6 @@
 "use strict";
 
-var cache = require('../../src/node/cache'),
+var cache = require('../../../src/node/cache'),
 		fs 			= require('fs'),
 		assert  = require('chai').assert;
 const path = require('path');
@@ -19,7 +19,7 @@ describe('cache module',function(done){
 		cache.createTmpLocalFile({
 			"host" : "localhost",
 			"username" : "user"
-		},"/some/folder/file.txt", path.join(__dirname, '..','data','cache'));
+		},"/some/folder/file.txt", path.join(__dirname, '../..','data','cache'));
 		done();
 	});
 });
