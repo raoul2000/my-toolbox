@@ -23,13 +23,31 @@
 
 tr.init .sel-package-widget,
 tr.loading-version .sel-package-widget,
+tr.loading-version .action,
+tr.loading-version .download-progress,
 tr.init .status,
-tr.loaded .status {
+tr.loaded .status,
+tr.loaded .download-progress,
+tr.init .action,
+tr.init .download-progress {
   display:none;
 }
 tr.loading-version .status {
   display:block;
 }
-tr.loaded .sel-package-widget {
+tr.loaded .sel-package-widget,
+tr.loaded .action {
   display:block;
+}
+
+.but-download-start {
+  cursor: pointer;
+}
+
+.progress-percent {
+  font-size: 0.8em;
+}
+.progress {
+  height: 2px;
+  margin-bottom: 5px;
 }

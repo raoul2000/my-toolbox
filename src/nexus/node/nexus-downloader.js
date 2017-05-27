@@ -5,11 +5,12 @@ var progress = require('request-progress');
 var fs = require('fs');
 var Q = require('q');
 
-exports.download = function(url, filepath) {
+exports.download = function(url, filepath, canContinue) {
 
   var deferred = Q.defer();
   // The options argument is optional so you can omit it
-  progress(request(url), {
+  let req = request(url);
+  progress(req , {
       // throttle: 2000,                    // Throttle the progress event to 2000ms, defaults to 1000ms
       // delay: 1000,                       // Only start to emit after 1000ms delay, defaults to 0ms
       // lengthHeader: 'x-transfer-length'  // Length header to use, defaults to content-length
@@ -29,7 +30,12 @@ exports.download = function(url, filepath) {
       //     }
       // }
       console.log('progress', state);
-      deferred.notify(state);
+      if(canContinue && canContinue() === false) {
+        req.abort();
+        deferred.resolve(true);
+      } else {
+        deferred.notify(state);
+      }
     })
     .on('error', function(err) {
       // Do something with err

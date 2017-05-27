@@ -1,19 +1,41 @@
 "use strict";
 const ipcRenderer = require('electron').ipcRenderer;
 
+
 ipcRenderer.on('nx-download-mod.progress', function(sender, data){
     console.log(data);
+    let row = $('#'+data.moduleId);
+
     let percent = Math.round(data.progress.percent * 100);
     let $progress = $('#'+ data.moduleId + '-progress');
     $progress.css('width',percent+"%");
-    $progress.text(percent + "%");
+    row.find('.progress-percent').text(percent + "%");
 });
 
-$('.but-download').on('click',function(el){
+$('.but-download-cancel').on('click',function(){
+  let $button = $(this);
+  let row = $button.closest('tr');
+  let modId = row.prop('id');
+
+  // update UI
+  row.find('.download-progress').hide();
+  row.find('.progress-percent').text("");
+  $button.prop('disabled', true);
+  row.find('.but-download-start').prop('disabled', false);
+
+  ipcRenderer.send('nx-download-mod.cancel',{ moduleId : modId });
+});
+
+$('.but-download-start').on('click',function(el){
   let $button = $(this);
   let row = $button.closest('tr');
   let modId = row.prop('id');
   let modVersion = row.data('version');
+
+  // update UI
+  row.find('.download-progress').show();
+  $button.prop('disabled', true);
+  row.find('.but-download-cancel').prop('disabled', false);
 
   console.log(modVersion);
 
