@@ -26,7 +26,7 @@ $('#nx-but-save-settings').on('click',function(){
   } else {
     config.set('nexus.downloadFolder', downloadFolder);
     $('.mtb-view').hide();
-    $('#nexus-servlet-list').show();
+    $('#nexus-download-mod').show();
 
   }
   console.log(downloadFolder);
