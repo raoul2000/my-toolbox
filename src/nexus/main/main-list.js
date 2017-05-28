@@ -71,10 +71,13 @@ ipcMain.on('nx-download-mod.start', function(event, arg) {
         console.log('TRUE');
         return true;
       }
-    }
-  }
+    };
+  };
+  let urlTest = 'https://github.com/raoul2000/my-toolbox/archive/master.zip';
+  //let urlTest = 'https://download.docker.com/win/stable/InstallDocker.msi';
+
   nexusDownloader.download(
-    'https://download.docker.com/win/stable/InstallDocker.msi',
+    urlTest,
     'd:\\tmp\\file.zip',
     downloadContinue(arg.moduleId)
     )

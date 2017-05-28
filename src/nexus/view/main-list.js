@@ -49,7 +49,8 @@ $('tbody').on('click',function(ev){
       row.find('.download-progress').show();
       $button.prop('disabled', true);
       row.find('.but-download-cancel').prop('disabled', false);
-
+      row.find('.sel-version-val').first().prop('disabled',true);
+      row.find('.sel-version-cat').first().prop('disabled',true);
       console.log(modVersion);
 
       let selVersion = row.find('.sel-version-val > option:selected').prop('value');
@@ -92,12 +93,26 @@ $('tbody').on('change',function(ev){
 //
 ipcRenderer.on('nx-download-mod.progress', function(sender, data){
     console.log(data);
-    let row = $('#'+data.moduleId);
-
+    let row     = $('#'+data.moduleId);
     let percent = Math.round(data.progress.percent * 100);
-    let $progress = $('#'+ data.moduleId + '-progress');
-    $progress.css('width',percent+"%");
-    row.find('.progress-percent').text(percent + "%");
+
+    row.find('.progress-percent').first().text(percent + "%");
+    row.find('.progress-bar').first().css('width',percent+"%");
+
+});
+
+ipcRenderer.on('nx-download-mod.done',function(sender, data){
+  console.log(data);
+  let row     = $('#'+data.moduleId);
+
+  row.find('.progress-percent').first().text("100%");
+  row.find('.progress-bar').first().css('width',"100%");
+  row.find('.but-download-cancel').prop('disabled', true)
+  row.find('.but-download-start').prop('disabled', false);
+  row.find('.sel-version-val').first().prop('disabled',false);
+  row.find('.sel-version-cat').first().prop('disabled',false);
+
+
 });
 
 ipcRenderer.on('nx-fetch-version.done',function(event,data){

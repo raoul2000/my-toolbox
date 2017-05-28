@@ -1,5 +1,5 @@
 {
-  "name": "electron-quick-start",
+  "name": "my-toolbox",
   "version": "1.0.0",
   "description": "A minimal Electron application",
   "main": "main.js",
@@ -8,7 +8,7 @@
     "dev": "electron . --debug",
     "jsonserver": "json-server --delay 2000 ./test/data/nexus/db.json"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/raoul2000/my-toolbox",
   "keywords": [
     "Electron",
     "quick",
@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "conf": "^1.1.1",
     "jquery": "^3.1.1",
     "mkdirp": "^0.5.1",
     "request": "^2.81.0",

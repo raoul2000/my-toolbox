@@ -2,6 +2,16 @@
 
 const ipcRenderer = require('electron').ipcRenderer;
 
+$('.mtb-link').on('click',function(){
+  console.log(this);
+  let $el = $(this);
+  let view = $el.data('view');
+  if( view !== '') {
+    $('.mtb-view').hide();
+    $('#'+view).show();
+  }
+});
+
 /*
 document.getElementsByClassName('app-route').addEventListener('click',function(el){
   console.log(el);
