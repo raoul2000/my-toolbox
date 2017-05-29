@@ -3,6 +3,7 @@ const electron = require('electron');
 const ipcMain = electron.ipcMain;
 const nexusAPI = require('../node/nexus-api');
 const nexusDownloader = require('../node/nexus-downloader');
+const config = require('../../config').config;
 const fs = require('fs');
 const path = require('path');
 
@@ -120,8 +121,9 @@ ipcMain.on('nx-download-mod.start', function(event, arg) {
   nexusAPI.getWarfileDescriptor(versionListUrl)
   .then(function(warfileDesc){
     console.log(warfileDesc);
+
     // compute local filepath
-    let localFilePath = "c:\\tmp\\" + warfileDesc.text;
+    let localFilePath = path.join(config.get('nexus.downloadFolder'),warfileDesc.text);
     console.log("localFilePath = "+localFilePath);
 
     // ok, we have th war file url to download, and the local file path for the
@@ -176,6 +178,11 @@ ipcMain.on('nx-download-mod.start', function(event, arg) {
         });
       });
 
+  })
+  .catch(function(error){
+    console.log('nx-download-mod.error');
+    console.log(error);
+    event.sender.send('nx-download-mod.error',error);
   });
 
 

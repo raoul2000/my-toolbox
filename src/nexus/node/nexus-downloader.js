@@ -9,7 +9,8 @@ exports.download = function(url, filepath, canContinue) {
 
   var deferred = Q.defer();
   // The options argument is optional so you can omit it
-  let req = request(url);
+  let req = request(url,{timeout: 3000}); // assign to be able to abort request on user demand
+
   progress(req , {
       // throttle: 2000,                    // Throttle the progress event to 2000ms, defaults to 1000ms
       // delay: 1000,                       // Only start to emit after 1000ms delay, defaults to 0ms
@@ -39,6 +40,8 @@ exports.download = function(url, filepath, canContinue) {
     })
     .on('error', function(err) {
       // Do something with err
+      console.log("## ERROR ##");
+      console.log(err);
       deferred.reject(err);
     })
     .on('end', function() {

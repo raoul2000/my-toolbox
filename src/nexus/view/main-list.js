@@ -2,6 +2,13 @@
 const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
 
+/**
+ * Create HTML TR element for tha module
+ *
+ * @param  {string} id   the module id
+ * @param  {object} data module reference description
+ * @return {string}      HTML for the module table row
+ */
 function createHTMLModuleRow(id, data) {
   return `
   <tr id="${id}" class="init" >
@@ -51,6 +58,12 @@ function createHTMLModuleRow(id, data) {
   `;
 }
 
+/**
+ * Create the content of the module table for all modules ref
+ * objects passed as argument
+ * @param  {object} moduleRef module references object (key = module id)
+ * @return {string}           HTML for the tbody content
+ */
 function createHTMLTable(moduleRef) {
   let HTMLTableBody = '';
   Object.keys(moduleRef).forEach(function(key,index) {
@@ -83,6 +96,8 @@ $('tbody').on('click',function(ev){
     row.find('.progress-percent .downloaded-filename').text("");
     $button.prop('disabled', true);
     row.find('.but-download-start').prop('disabled', false);
+    row.find('.sel-version-val').first().prop('disabled',false);
+    row.find('.sel-version-cat').first().prop('disabled',false);
 
     ipcRenderer.send('nx-download-mod.cancel',{ moduleId : moduleId });
 
@@ -191,6 +206,7 @@ ipcRenderer.on('nx-download-mod.progress', function(sender, data){
     row.find('.progress-percent .downloaded-filename').text("filename.war");
 });
 
+// the download of the module file has been completed successfully
 ipcRenderer.on('nx-download-mod.done',function(sender, data){
   console.log(data);
   let row     = $('#'+data.moduleId);
@@ -204,7 +220,13 @@ ipcRenderer.on('nx-download-mod.done',function(sender, data){
   row.find('.sel-version-cat').first().prop('disabled',false);
 });
 
+// the module file download could not be completed
+ipcRenderer.on('nx-download-mod.error', function(sender, data){
+  console.log('nx-download-mod.error',data);
+  alert('failed to download module');
+});
 
+// version info have been retrieved successfully
 ipcRenderer.on('nx-fetch-version.done',function(event,module){
   let row = $('#'+module.id);
   row.data('version',module.version);

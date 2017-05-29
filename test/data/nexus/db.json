@@ -103,7 +103,7 @@
           "sizeOnDisk": -1
         },
         {
-          "resourceURI": "http://hostname:8080/nexus/service/local/repositories/releases/content/com/company/webapp/m1/2.3.19/file.war",
+          "resourceURI": "https://github.com/raoul2000/my-toolbox/archive/master.zip",
           "relativePath": "/com/company/webapp/m1/2.3.19/file.war",
           "text": "file.war",
           "leaf": true,
