@@ -1,6 +1,6 @@
 'use strict';
 const electron = require('electron');
-const Conf = require('conf');
+const Conf     = require('conf');
 
 const config = new Conf({
   defaults : {

@@ -7,7 +7,7 @@ const path = require('path');
 
 var config = {};
 
-describe('cache module',function(done){
+describe('nexus API (1)',function(done){
 	this.timeout(5000);
 
 	before(function() {
@@ -19,8 +19,8 @@ describe('cache module',function(done){
     return nexusAPI.fetchModuleVersion({
       "id" : "m1",
       "url" : {
-        "release" : "http://localhost:3000/m1",
-        "snapshot" : "http://localhost:3000/m1"
+        "release" : "http://localhost:3000/m1Release",
+        "snapshot" : "http://localhost:3000/m1Snapshot"
       }
     })
     .then(function(result){
@@ -40,8 +40,8 @@ describe('cache module',function(done){
     return nexusAPI.fetchModuleVersion({
       "id" : "m1",
       "url" : {
-        "release" : "http://localhost:3000/m2",
-        "snapshot" : "http://localhost:3000/m2"
+        "release" : "http://localhost:3000/m1FAILED",
+        "snapshot" : "http://localhost:3000/m1FAILED"
       }
     })
     .then(function(result){

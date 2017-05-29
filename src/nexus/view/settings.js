@@ -22,12 +22,9 @@ $('#nx-but-choose-folder').on('click',function(ev){
 $('#nx-but-save-settings').on('click',function(){
   let downloadFolder = document.forms["nx-form-settings"]["nx-input-download-folder"].value.trim();
   if( downloadFolder === '') {
-    alert('A download folder  required');
+    alert('A download folder  is required');
   } else {
     config.set('nexus.downloadFolder', downloadFolder);
-    $('.mtb-view').hide();
-    $('#nexus-download-mod').show();
-
   }
   console.log(downloadFolder);
 });

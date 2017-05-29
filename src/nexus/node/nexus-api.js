@@ -4,6 +4,49 @@ var request = require('request');
 var Q = require('q');
 
 /**
+ * Extract the war file descriptor from the modVersionUrl.
+ * The war file is found based on following rules :
+ * - must be leaf
+ * - must end with '.war'
+ * The returned descriptor :
+ *
+ *     {
+ *      "resourceURI": "http://hostname:8080/nexus/service/release/moduleName/2.3.19/filename.war",
+ *      "relativePath": "/service/release/moduleName/2.3.19/filename.war",
+ *      "text": "filename.war",
+ *      "leaf": true,
+ *      "lastModified": "2013-10-15 10:27:00.0 UTC",
+ *      "sizeOnDisk": 334456
+ *    }
+ * @param  {string} modVersionUrl url of the version folder for a given module
+ * @return {object}               war file descriptor
+ */
+exports.getWarfileDescriptor = function( modVersionUrl ) {
+
+  return Q.Promise(function(resolve, reject, notify){
+    request({
+      url : modVersionUrl,
+      headers : {
+        'Accept' : ' application/json'
+      }
+    }, function(error, response, body){
+      console.log('error:', error); // Print the error if one occurred
+      console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+      console.log('body:', body); // Print the HTML for the Google homepage.
+      if(error || (response && response.statusCode !== 200)) {
+        reject(error);
+      } else {
+        let items = JSON.parse(body);
+        let foundItem = items.data.find(function(element){
+          return element.leaf === true && element.text.endsWith('.war');
+        });
+        resolve(foundItem);
+      }
+    });
+
+  }); //promise
+};
+/**
  * Get module description.
  * Performs 2 requests to the maven repo : one for release and one for snapshot information
  * for a module
@@ -73,7 +116,7 @@ exports.fetchModuleVersion = function(module) {
     results.forEach(function(result){
       if(result.state === 'fulfilled') {
         final[result.value.type] = JSON.parse(result.value.body);
-      } 
+      }
     });
     console.log(final);
     return final;
