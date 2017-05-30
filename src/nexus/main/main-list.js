@@ -21,11 +21,12 @@ function init() {
   try {
     let modRefFilename = path.join(
       electron.app.getAppPath(),
-      'test/data/nexus/module-ref.json'
+      'test/data/nexus/module-ref.json___'
     );
     console.log("loading module-ref from file : "+modRefFilename);
     moduleReference = JSON.parse(fs.readFileSync(modRefFilename, "utf-8" ));
   } catch (e) {
+    moduleReference.error = e;
     console.error(e);
   }
 }
@@ -34,7 +35,11 @@ init();
 // provide the moduleRef data
 ipcMain.on('nx-load-module-ref.start',function(event){
   console.log('nx-load-module-ref.start');
-  event.sender.send('nx-load-module-ref.done', moduleReference);
+  if( moduleReference.error) {
+    event.sender.send('nx-load-module-ref.error', moduleReference.error);
+  } else {
+    event.sender.send('nx-load-module-ref.done', moduleReference);
+  }
 });
 
 /**

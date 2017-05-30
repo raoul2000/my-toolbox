@@ -2,7 +2,7 @@
 const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
 
-notify('welcome', "success",'downloader is ready');
+//notify('welcome', "success",'downloader is ready');
 
 /**
  * Create HTML TR element for tha module
@@ -195,6 +195,9 @@ ipcRenderer.on('nx-load-module-ref.done',function(sender, data){
 
 ipcRenderer.on('nx-load-module-ref.error',function(sender, error){
   console.error(error);
+  notify('failed to load the module definition ','error','error');
+  //+error.path
+  $('#nexus-download-mod table').hide();
 });
 
 // update GUI on download progress for a specific module

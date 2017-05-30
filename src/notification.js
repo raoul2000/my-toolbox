@@ -12,7 +12,7 @@ PNotify.prototype.options.styling = "bootstrap3";
 function notify(text, type, title) {
   let notif = new PNotify({
     title : title || "",
-    text: "text",
+    text: text,
     type: type || "success",
     animate_speed: "fast",
     animate: "slide",
