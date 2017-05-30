@@ -1,30 +1,21 @@
 const {dialog} = require('electron').remote
 const config = require('../../config').config;
+const userConfig = require('../../config').userConfig;
 const defaultConfig = require('../../config').defaultConfig;
-
-//console.log(config);
-//console.log(config.get('nexus'));
-//console.log(config.get('nexus.downloadFolder'));
 
 // initialize setting forms with configured values
 function loadSettingsForm() {
 
   $('#nexus-settings *[data-cfg-key]').each(function(el){
+    console.log('config loaded from : '+config.path);
     let $el = $(this);
     let cfgKey = $el.data('cfg-key');
-    $el.prop('placeholder', "Default : " + config.get(cfgKey+'.def'));
-    console.log(cfgKey);
+    $el.prop('placeholder', "Default : " + defaultConfig.get(cfgKey));
+    if( userConfig.has(cfgKey)) {
+      $el.val(userConfig.get(cfgKey))
+    }
   });
-
-  // downloadFolder
-  console.log("load settings");
-  if(config.get('nexus.downloadFolder.val')) {
-    $('#nx-input-download-folder').val(
-      config.get('nexus.downloadFolder.val')
-    );
-  }
 }
-
 loadSettingsForm();
 
 
@@ -49,9 +40,9 @@ $('#nx-input-download-folder').on('blur', function(ev){
   let inputVal = $input.val().trim();
   if( inputVal === '') {
     $input.val('');
-    config.set('nexus.downloadFolder.val', null);
+    userConfig.set('nexus.downloadFolder', null);
   } else {
-    config.set('nexus.downloadFolder.val', inputVal);
+    userConfig.set('nexus.downloadFolder', inputVal);
   }
 });
 
@@ -75,23 +66,8 @@ $('#nx-input-conf-folder').on('blur', function(ev){
   let inputVal = $input.val().trim();
   if( inputVal === '') {
     $input.val('');
-    config.set('nexus.confFolder.val', null);
+    userConfig.set('nexus.confFolder', null);
   } else {
-    config.set('nexus.confFolder.val', inputVal);
+    userConfig.set('nexus.confFolder', inputVal);
   }
-});
-
-
-// TODO : implement config folder
-//
-
-// user save settings : validation is required
-$('#nx-but-save-settings').on('click',function(){
-  let downloadFolder = document.forms["nx-form-settings"]["nx-input-download-folder"].value.trim();
-  if( downloadFolder === '') {
-    alert('A download folder  is required');
-  } else {
-    config.set('nexus.downloadFolder.val', downloadFolder);
-  }
-  console.log(downloadFolder);
 });

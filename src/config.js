@@ -2,19 +2,36 @@
 const electron = require('electron');
 const Conf     = require('conf');
 
-const config = new Conf({
+// Default Config (Read only) /////////////////////////////////////////////////
+//
+const defaultConfig = {
+  'nexus.downloadFolder' : (electron.app || electron.remote.app).getPath('downloads'),
+  'nexus.confFolder'     : (electron.app || electron.remote.app).getPath('userData')
+};
+const getdefaultConfig = function(key) {
+  return defaultConfig[key];
+};
+
+exports.defaultConfig = {
+  get : getdefaultConfig
+};
+
+// user Config (read/write) ///////////////////////////////////////////////////
+const userConfig = new Conf({
   defaults : {
     nexus : {
-      downloadFolder : {
-        val : null,
-        def : (electron.app || electron.remote.app).getPath('userData') // TODO: change to user download 
-      },
-      confFolder : {
-        val : null,
-        def : (electron.app || electron.remote.app).getPath('userData')
-      }
+      downloadFolder : null,
+      confFolder     : null
     }
   }
 });
 
-exports.config = config;
+exports.userConfig = userConfig;
+
+// safe Config Reader //////////////////////////////////////////////////////////
+//
+exports.config = {
+  get : function(key) {
+    return userConfig.get(key, getdefaultConfig(key));
+  }
+};
