@@ -123,7 +123,8 @@ ipcMain.on('nx-download-mod.start', function(event, arg) {
     console.log(warfileDesc);
 
     // compute local filepath
-    let localFilePath = path.join(config.get('nexus.downloadFolder'),warfileDesc.text);
+    let downloadFolder = config.get('nexus.downloadFolder.val') || config.get('nexus.downloadFolder.def');
+    let localFilePath = path.join(downloadFolder ,warfileDesc.text);
     console.log("localFilePath = "+localFilePath);
 
     // ok, we have th war file url to download, and the local file path for the

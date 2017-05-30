@@ -7,8 +7,13 @@
 
     <!-- bootstrap -->
     <link href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- PNotify plugin -->
+    <link href="../../node_modules/pnotify/dist/pnotify.css"         rel="stylesheet">
+    <link href="../../node_modules/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+
     <!-- custom styles -->
-    <link href="../../assets/css/nexus.css" rel="stylesheet">
+    <link href="../../assets/css/nexus.css"                          rel="stylesheet">
   </head>
   <body>
     <div id="nexus-container" class="container">
@@ -57,10 +62,11 @@
 
           <form name="nx-form-settings" class="form-horizontal">
             <div class="form-group">
-              <label for="dest-folder" class="col-sm-2 control-label">Download folder</label>
+              <label for="nx-input-download-folder" class="col-sm-2 control-label">Download folder</label>
               <div class="col-sm-10">
                 <div class="input-group">
                   <input id="nx-input-download-folder"
+                    data-cfg-key="nexus.downloadFolder"
                     required
                     name="nx-input-download-folder" type="text" class="form-control" placeholder="">
                   <span class="input-group-btn">
@@ -70,12 +76,32 @@
                   </span>
                 </div>
                 <span id="helpBlock" class="help-block">
-                  Path to the local folder where all modules are downloaded to.
+                  Path to the existing local folder where all modules are downloaded to.
                 </span>
               </div>
             </div> <!-- input destination folder -->
 
             <div class="form-group">
+              <label for="nx-input-conf-folder" class="col-sm-2 control-label">Configuration folder</label>
+              <div class="col-sm-10">
+                <div class="input-group">
+                  <input id="nx-input-conf-folder"
+                    data-cfg-key="nexus.confFolder"
+                    required
+                    name="nx-conf-folder" type="text" class="form-control" placeholder="">
+                  <span class="input-group-btn">
+                    <button id="nx-but-choose-conf-folder" class="btn btn-default" type="button">
+                      <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+                    </button>
+                  </span>
+                </div>
+                <span id="helpBlock" class="help-block">
+                  Folder path where configuration is stored.
+                </span>
+              </div>
+            </div> <!-- input destination folder -->
+
+            <div class="form-group" style="display:none">
               <div class="col-sm-offset-2 col-sm-10">
                 <button id="nx-but-save-settings" type="button" class="btn btn-primary">Save</button>
               </div>
@@ -167,7 +193,11 @@
   </script>
 
   <script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="../../node_modules/pnotify/dist/pnotify.js"            type="text/javascript"></script>
+  <script src="../../node_modules/pnotify/dist/pnotify.buttons.js"    type="text/javascript"></script>
+
   <script src="app.js"></script>
+  <script src="../notification.js"></script>
 
   <script type="text/javascript">
     require('../router.js');

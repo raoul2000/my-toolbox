@@ -21,6 +21,9 @@
     to { -moz-transform: rotate(360deg);}
 }
 
+/**
+ * Main views States
+ */
 tr.init .sel-package-widget,
 tr.loading-version .sel-package-widget,
 tr.loading-version .action,
@@ -53,4 +56,8 @@ tr.loaded .action {
 }
 .mtb-view {
   margin-top : 70px;
+}
+
+.help-block {
+  font-size: 0.8em;
 }

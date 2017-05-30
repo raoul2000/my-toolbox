@@ -31,6 +31,7 @@
     "request": "^2.81.0",
     "request-progress": "^3.0.0",
     "ssh-utils": "^1.0.3",
-    "ssh2-sftp-client": "^1.0.5"
+    "ssh2-sftp-client": "^1.0.5",
+    "pnotify": "^3.0.0"
   }
 }

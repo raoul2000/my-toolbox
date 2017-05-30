@@ -2,6 +2,8 @@
 const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
 
+notify('welcome', "success",'downloader is ready');
+
 /**
  * Create HTML TR element for tha module
  *
