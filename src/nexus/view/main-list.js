@@ -2,8 +2,6 @@
 const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
 
-//notify('welcome', "success",'downloader is ready');
-
 /**
  * Create HTML TR element for tha module
  *
@@ -144,7 +142,7 @@ const uiStateManager = {
 };
 // in order to not create one event handler per row, delegate event handle to the
 // tbody element.
-$('tbody').on('click',function(ev){
+$('#module-list').on('click',function(ev){
 
   let $target    = $(ev.target);            // the HTML element clicked
   let row        = $target.closest('tr');   // the TR wrapper (row)
@@ -205,7 +203,7 @@ $('tbody').on('click',function(ev){
 });
 
 // handle dependent select box : release/snapshot - version
-$('tbody').on('change',function(ev){
+$('#module-list').on('change',function(ev){
 
   let $target = $(ev.target);
   let row = $target.closest('tr');
@@ -228,6 +226,11 @@ $('tbody').on('change',function(ev){
   }
 });
 
+$('#btn-reload-module-ref').on('click', function(){
+  $('#module-list-panel, #init-error-panel').hide();
+  $('#module-list').empty();
+  ipcRenderer.send('nx-load-module-ref.start');
+});
 //////////////////////////////////////////////////////////////////
 // Custom Event handlers
 //
@@ -249,13 +252,14 @@ ipcRenderer.on('nx-load-module-ref.done',function(sender, data){
       let $this = $(this);
       $this.data('ref', data[$this.prop('id')]);
     });
+    $('#module-list-panel').show();
 });
 
+// show the init error panel
 ipcRenderer.on('nx-load-module-ref.error',function(sender, error){
   console.error(error);
-  notify('failed to load the module definition ','error','error');
-  //+error.path
-  $('#nexus-download-mod table').hide();
+  $('#module-ref-source').text(error.path);
+  $('#init-error-panel').show();
 });
 
 // update GUI on download progress for a specific module

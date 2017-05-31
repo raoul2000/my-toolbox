@@ -18,6 +18,8 @@ let moduleReference = {};
  * perform initialisation
  */
 function init() {
+  download = {};  // reset download module states
+  moduleReference = {};
   try {
     let modRefFilename = path.join(
       config.get('nexus.confFolder'),
@@ -30,11 +32,11 @@ function init() {
     console.error(e);
   }
 }
-init();
 
 // provide the moduleRef data
 ipcMain.on('nx-load-module-ref.start',function(event){
   console.log('nx-load-module-ref.start');
+  init();
   if( moduleReference.error) {
     event.sender.send('nx-load-module-ref.error', moduleReference.error);
   } else {
@@ -184,15 +186,19 @@ ipcMain.on('nx-download-mod.start', function(event, arg) {
       .then(function(result) {
         download[arg.moduleId] = {state : "done" }; // update download state
         event.sender.send('nx-download-mod.done', {
-          moduleId : arg.moduleId
+          moduleId      : arg.moduleId,
+          url           : warfileDesc.resourceURI,
+          localFilePath : localFilePath
         });
       })
       .progress(function(progress) {
         console.log(progress);
         download[arg.moduleId] = { state : "progress" };  // update download state
         event.sender.send('nx-download-mod.progress', {
-          moduleId : arg.moduleId,
-          progress : progress
+          moduleId      : arg.moduleId,
+          progress      : progress,
+          url           : warfileDesc.resourceURI,
+          localFilePath : localFilePath
         });
       })
       .catch(function(error){
@@ -214,40 +220,4 @@ ipcMain.on('nx-download-mod.start', function(event, arg) {
       input   : arg
     });
   });
-  /*
-    return nexusDownloader.download(
-        warfileDesc.resourceURI,
-        localFilePath,
-        downloadContinue(arg.moduleId)
-      )
-      .then(function(result) {
-        download[arg.moduleId] = {state : "done" }; // update download state
-        event.sender.send('nx-download-mod.done', {
-          moduleId : arg.moduleId
-        });
-      }, function(error) {
-        download[arg.moduleId] = { state : "error" };  // update download state
-        event.sender.send('nx-download-mod.error', {
-          message : "error",
-          error : error
-        });
-      }, function(progress) {
-        console.log(progress);
-        download[arg.moduleId] = { state : "progress" };  // update download state
-        event.sender.send('nx-download-mod.progress', {
-          moduleId : arg.moduleId,
-          progress : progress
-        });
-      });
-  })
-  .catch(function(error){
-    console.log('nx-download-mod.error');
-    console.log(error);
-    event.sender.send('nx-download-mod.error', {
-      message : "error",
-      error : error
-    });
-  });
-*/
-
 });

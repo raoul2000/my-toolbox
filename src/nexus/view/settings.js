@@ -79,7 +79,7 @@ $('#nx-input-conf-folder').on('blur', function(ev){
   let inputVal = $input.val().trim();
   if( inputVal === '') {
     $input.val('');
-    userConfig.delete('nexus.downloadFolder');
+    userConfig.delete('nexus.confFolder');
   } else {
 
     if ( ! fs.existsSync(inputVal)) {
