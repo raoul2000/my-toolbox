@@ -1,1 +1,3 @@
-// put here js loaded in the render process
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip({trigger: 'manual'});
+});

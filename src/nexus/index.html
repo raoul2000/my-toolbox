@@ -67,7 +67,7 @@
                 <div class="input-group">
                   <input id="nx-input-download-folder"
                     data-cfg-key="nexus.downloadFolder"
-                    required
+                     data-toggle="tooltip" title=""
                     name="nx-input-download-folder" type="text" class="form-control" placeholder="">
                   <span class="input-group-btn">
                     <button id="nx-but-choose-folder" class="btn btn-default" type="button">
@@ -87,7 +87,7 @@
                 <div class="input-group">
                   <input id="nx-input-conf-folder"
                     data-cfg-key="nexus.confFolder"
-                    required
+                    data-toggle="tooltip" title=""
                     name="nx-conf-folder" type="text" class="form-control" placeholder="">
                   <span class="input-group-btn">
                     <button id="nx-but-choose-conf-folder" class="btn btn-default" type="button">
@@ -201,6 +201,7 @@
 
   <script type="text/javascript">
     require('../router.js');
+    require('./app.js');
     require('./view/main-list.js');
     require('./view/settings.js');
   </script>

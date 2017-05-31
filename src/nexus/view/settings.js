@@ -2,6 +2,8 @@ const {dialog} = require('electron').remote
 const config = require('../../config').config;
 const userConfig = require('../../config').userConfig;
 const defaultConfig = require('../../config').defaultConfig;
+const fs = require('fs');
+
 
 // initialize setting forms with configured values
 function loadSettingsForm() {
@@ -42,7 +44,18 @@ $('#nx-input-download-folder').on('blur', function(ev){
     $input.val('');
     userConfig.set('nexus.downloadFolder', null);
   } else {
-    userConfig.set('nexus.downloadFolder', inputVal);
+    console.log(inputVal);
+    if ( ! fs.existsSync(inputVal)) {
+        $input.attr('data-original-title','folder not found');
+        $input.tooltip('show');
+        setTimeout(function(){
+          $input.tooltip('hide');
+        },2000);
+        $input.val('');
+        userConfig.set('nexus.downloadFolder', null);
+    } else {
+      userConfig.set('nexus.downloadFolder', inputVal);
+    }
   }
 });
 
@@ -64,9 +77,15 @@ $('#nx-but-choose-conf-folder').on('click',function(ev){
 $('#nx-input-conf-folder').on('blur', function(ev){
   let $input = $(ev.target);
   let inputVal = $input.val().trim();
-  if( inputVal === '') {
-    $input.val('');
-    userConfig.set('nexus.confFolder', null);
+
+  if ( ! fs.existsSync(inputVal)) {
+      $input.attr('data-original-title','folder not found');
+      $input.tooltip('show');
+      setTimeout(function(){
+        $input.tooltip('hide');
+      },2000);
+      $input.val('');
+      userConfig.set('nexus.confFolder', null);
   } else {
     userConfig.set('nexus.confFolder', inputVal);
   }
