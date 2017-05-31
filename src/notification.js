@@ -17,7 +17,7 @@ function notify(text, type, title) {
     type: type || "success",
     animate_speed: "fast",
     animate: "slide",
-    delay: 30000,
+    delay: 3000,
     buttons: {
       "closer": true
     }

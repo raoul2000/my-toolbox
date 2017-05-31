@@ -200,7 +200,8 @@ ipcMain.on('nx-download-mod.start', function(event, arg) {
           console.log(error);
           event.sender.send('nx-download-mod.error', {
             message : error && error.message ? error.message : "failed to download module",
-            error : error
+            error   : error,
+            input   : arg
           });
         });
   })
@@ -209,7 +210,8 @@ ipcMain.on('nx-download-mod.start', function(event, arg) {
     console.log(error);
     event.sender.send('nx-download-mod.error', {
       message :  error && error.message ? error.message : "unexpected error",
-      error   : error
+      error   : error,
+      input   : arg
     });
   });
   /*

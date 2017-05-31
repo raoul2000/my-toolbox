@@ -52,9 +52,21 @@ function createHTMLModuleRow(id, data) {
 
         <div class="progress" style="min-width:100px">
           <div id="${id}-progress" class="progress-bar" role="progressbar"
-          aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+          </div>
         </div>
       </div>
+
+      <div class="download-status" style="display:none">
+        <div class="download-success">
+          <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+        </div>
+        <div class="download-error">
+          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </div>
+        <span class="downloaded-filename"></span>
+      </div>
+
     </td>
   </tr>
   `;
@@ -76,6 +88,60 @@ function createHTMLTable(moduleRef) {
   return HTMLTableBody;
 }
 
+/**
+ * User Interface State Manager
+ */
+const uiStateManager = {
+  download_module_start : function(row, $target) {
+    console.log("starting");
+    row.find('.download-status').hide();
+    row.find('.download-progress').show();
+    $target.closest('.but-download-start').first().prop('disabled', true);
+    row.find('.but-download-cancel').prop('disabled', false);
+    row.find('.sel-version-val').first().prop('disabled',true);
+    row.find('.sel-version-cat').first().prop('disabled',true);
+  },
+  download_module_done : function(row) {
+    row.find('.download-progress').hide();
+    row.find('.download-success').show();
+    row.find('.download-error').hide();
+    row.find('.download-status').show();
+    row.find('.progress-percent .percent-value').first().text("100%");
+    row.find('.progress-bar').first().css('width',"100%");
+    row.find('.but-download-cancel').prop('disabled', true);
+    row.find('.but-download-start').prop('disabled', false);
+    row.find('.sel-version-val').first().prop('disabled',false);
+    row.find('.sel-version-cat').first().prop('disabled',false);
+  },
+  download_module_progress : function(row, percent) {
+    row.find('.progress-percent .percent-value').first().text(percent + "%");
+    row.find('.progress-percent .downloaded-filename').text("filename.war");
+  },
+  download_module_cancel : function(row, $button) {
+    row.find('.download-progress').hide();
+    row.find('.download-status').hide();
+    row.find('.progress-percent .percent-value').text("");
+    row.find('.progress-percent .downloaded-filename').text("");
+    row.find('.but-download-cancel').prop('disabled', true);
+    row.find('.but-download-start').prop('disabled', false);
+    row.find('.but-download-start').prop('disabled', false);
+    row.find('.sel-version-val').first().prop('disabled',false);
+    row.find('.sel-version-cat').first().prop('disabled',false);
+  },
+  download_module_error : function(row) {
+    row.find('.download-progress').hide();
+    row.find('.download-success').hide();
+    row.find('.download-error').show();
+    row.find('.download-status').show();
+    row.find('.but-download-cancel').prop('disabled', true);
+    row.find('.but-download-start').prop('disabled', false);
+    row.find('.sel-version-val').first().prop('disabled',false);
+    row.find('.sel-version-cat').first().prop('disabled',false);
+  },
+  loading_version : function(row) {
+    row.removeClass().addClass('loading-version');
+  }
+};
 // in order to not create one event handler per row, delegate event handle to the
 // tbody element.
 $('tbody').on('click',function(ev){
@@ -88,18 +154,12 @@ $('tbody').on('click',function(ev){
   console.log(moduleId);
   //////////////////////////////////////////////////////////////////////////////
   if( $target.closest('.but-download-cancel').length > 0 ) {
-    // usser cancel the current download (in progress)
+    // usser canceled the current download (in progress)
     console.log('but-download-cancel');
     let $button = $target.closest('.but-download-cancel').first();
 
     // update UI
-    row.find('.download-progress').hide();
-    row.find('.progress-percent .percent-value').text("");
-    row.find('.progress-percent .downloaded-filename').text("");
-    $button.prop('disabled', true);
-    row.find('.but-download-start').prop('disabled', false);
-    row.find('.sel-version-val').first().prop('disabled',false);
-    row.find('.sel-version-cat').first().prop('disabled',false);
+    uiStateManager.download_module_cancel(row);
 
     ipcRenderer.send('nx-download-mod.cancel',{ moduleId : moduleId });
 
@@ -114,7 +174,9 @@ $('tbody').on('click',function(ev){
       if( ! modVersion ) {
         // get module version data
         console.log("downloading version data for module "+moduleId);
-        row.removeClass().addClass('loading-version');
+        // update UI
+        uiStateManager.loading_version(row);
+
         ipcRenderer.send('nx-fetch-version.start', row.data('ref'));
       }
     }
@@ -126,11 +188,7 @@ $('tbody').on('click',function(ev){
       console.log('.but-download-start');
 
       // update UI
-      row.find('.download-progress').show();
-      $target.closest('.but-download-start').first().prop('disabled', true);
-      row.find('.but-download-cancel').prop('disabled', false);
-      row.find('.sel-version-val').first().prop('disabled',true);
-      row.find('.sel-version-cat').first().prop('disabled',true);
+      uiStateManager.download_module_start(row,$target);
 
       // read user input : version number and category
       let selVersion = row.find('.sel-version-val > option:selected').prop('value');
@@ -206,29 +264,24 @@ ipcRenderer.on('nx-download-mod.progress', function(sender, data){
     let row     = $('#'+data.moduleId);
     let percent = Math.round(data.progress.percent * 100);
 
+    uiStateManager.download_module_progress(row, percent);
     // update UI
-    row.find('.progress-percent .percent-value').first().text(percent + "%");
-    row.find('.progress-percent .downloaded-filename').text("filename.war");
 });
 
 // the download of the module file has been completed successfully
 ipcRenderer.on('nx-download-mod.done',function(sender, data){
   console.log(data);
   let row     = $('#'+data.moduleId);
-
+  uiStateManager.download_module_done(row);
   // update UI
-  row.find('.progress-percent .percent-value').first().text("100%");
-  row.find('.progress-bar').first().css('width',"100%");
-  row.find('.but-download-cancel').prop('disabled', true)
-  row.find('.but-download-start').prop('disabled', false);
-  row.find('.sel-version-val').first().prop('disabled',false);
-  row.find('.sel-version-cat').first().prop('disabled',false);
 });
 
 // the module file download could not be completed
-ipcRenderer.on('nx-download-mod.error', function(sender, error){
-  console.log('nx-download-mod.error',error);
-  notify(error.message,'error','download failed');
+ipcRenderer.on('nx-download-mod.error', function(sender, data){
+  console.log('nx-download-mod.error',data);
+  notify(data.message,'error','download failed');
+  let row     = $('#'+data.input.moduleId);
+  uiStateManager.download_module_error(row);
 });
 
 // version info have been retrieved successfully
