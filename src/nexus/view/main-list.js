@@ -226,9 +226,9 @@ ipcRenderer.on('nx-download-mod.done',function(sender, data){
 });
 
 // the module file download could not be completed
-ipcRenderer.on('nx-download-mod.error', function(sender, data){
-  console.log('nx-download-mod.error',data);
-  alert('failed to download module');
+ipcRenderer.on('nx-download-mod.error', function(sender, error){
+  console.log('nx-download-mod.error',error);
+  notify(error.message,'error','download failed');
 });
 
 // version info have been retrieved successfully
@@ -239,4 +239,14 @@ ipcRenderer.on('nx-fetch-version.done',function(event,module){
   // update UI
   row.find('.sel-version-cat').trigger('change');
   row.removeClass().addClass('loaded');
+});
+
+// version info could not be retrieved
+ipcRenderer.on('nx-fetch-version.error',function(event,module){
+  notify('Failed to retrieve module information', 'error','error');
+  let row = $('#'+module.id);
+
+  // update UI
+  //row.find('.sel-version-cat').trigger('change');
+  row.removeClass().addClass('init danger');
 });

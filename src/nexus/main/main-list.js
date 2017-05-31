@@ -20,8 +20,8 @@ let moduleReference = {};
 function init() {
   try {
     let modRefFilename = path.join(
-      electron.app.getAppPath(),
-      'test/data/nexus/module-ref.json___'
+      config.get('nexus.confFolder'),
+      'module-ref.json'
     );
     console.log("loading module-ref from file : "+modRefFilename);
     moduleReference = JSON.parse(fs.readFileSync(modRefFilename, "utf-8" ));
@@ -74,12 +74,16 @@ ipcMain.on('nx-fetch-version.start', function(event, arg) {
 
   nexusAPI.fetchModuleVersion(arg)
   .then(function(result) {
-    arg.version = {
-      release: extractVersion(result.release),
-      snapshot: extractVersion(result.snapshot)
-    };
-    console.log(arg);
-    event.sender.send('nx-fetch-version.done', arg);
+    if( result.release && result.snapshot) {
+      arg.version = {
+        release: extractVersion(result.release),
+        snapshot: extractVersion(result.snapshot)
+      };
+      console.log(arg);
+      event.sender.send('nx-fetch-version.done', arg);
+    } else {
+      event.sender.send('nx-fetch-version.error', arg);
+    }
   });
 });
 
@@ -112,6 +116,15 @@ ipcMain.on('nx-download-mod.start', function(event, arg) {
   console.log("nx-download-mod.start");
   console.log(arg);
 
+  // first check that the sonfigured download folde exist !
+  let localFolderPath = config.get('nexus.downloadFolder');
+  if( ! fs.existsSync(localFolderPath)) {
+    event.sender.send('nx-download-mod.error',{
+      message : 'the configured download folder could not be found'
+    });
+    return;
+  }
+
   // intialize the version url that is used to get all files available for a given
   // module, version, and version category (e.g. m1, version 1.2 - cat : release)
   let versionListUrl = '';
@@ -128,9 +141,13 @@ ipcMain.on('nx-download-mod.start', function(event, arg) {
     console.log(warfileDesc);
 
     // compute local filepath
-    let downloadFolder = config.get('nexus.downloadFolder.val') || config.get('nexus.downloadFolder.def');
-    let localFilePath = path.join(downloadFolder ,warfileDesc.text);
+    let localFilePath = path.join(localFolderPath ,warfileDesc.text);
     console.log("localFilePath = "+localFilePath);
+
+    // if target file already exist, lets delete it
+    if( fs.existsSync(localFilePath)) {
+      fs.unlinkSync(localFilePath);
+    }
 
     // ok, we have th war file url to download, and the local file path for the
     // destination : let's go !
@@ -169,10 +186,47 @@ ipcMain.on('nx-download-mod.start', function(event, arg) {
         event.sender.send('nx-download-mod.done', {
           moduleId : arg.moduleId
         });
+      })
+      .progress(function(progress) {
+        console.log(progress);
+        download[arg.moduleId] = { state : "progress" };  // update download state
+        event.sender.send('nx-download-mod.progress', {
+          moduleId : arg.moduleId,
+          progress : progress
+        });
+      })
+      .catch(function(error){
+          console.log('nx-download-mod.error');
+          console.log(error);
+          event.sender.send('nx-download-mod.error', {
+            message : error && error.message ? error.message : "failed to download module",
+            error : error
+          });
+        });
+  })
+  .catch(function(error){
+    console.log('nx-download-mod.error');
+    console.log(error);
+    event.sender.send('nx-download-mod.error', {
+      message :  error && error.message ? error.message : "unexpected error",
+      error   : error
+    });
+  });
+  /*
+    return nexusDownloader.download(
+        warfileDesc.resourceURI,
+        localFilePath,
+        downloadContinue(arg.moduleId)
+      )
+      .then(function(result) {
+        download[arg.moduleId] = {state : "done" }; // update download state
+        event.sender.send('nx-download-mod.done', {
+          moduleId : arg.moduleId
+        });
       }, function(error) {
         download[arg.moduleId] = { state : "error" };  // update download state
         event.sender.send('nx-download-mod.error', {
-          moduleId : arg.moduleId,
+          message : "error",
           error : error
         });
       }, function(progress) {
@@ -183,13 +237,15 @@ ipcMain.on('nx-download-mod.start', function(event, arg) {
           progress : progress
         });
       });
-
   })
   .catch(function(error){
     console.log('nx-download-mod.error');
     console.log(error);
-    event.sender.send('nx-download-mod.error',error);
+    event.sender.send('nx-download-mod.error', {
+      message : "error",
+      error : error
+    });
   });
-
+*/
 
 });

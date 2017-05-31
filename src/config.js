@@ -2,6 +2,8 @@
 const electron = require('electron');
 const Conf     = require('conf');
 
+
+
 // Default Config (Read only) /////////////////////////////////////////////////
 //
 const defaultConfig = {
@@ -15,23 +17,22 @@ const getdefaultConfig = function(key) {
 exports.defaultConfig = {
   get : getdefaultConfig
 };
-
-// user Config (read/write) ///////////////////////////////////////////////////
-const userConfig = new Conf({
-  defaults : {
-    nexus : {
-      downloadFolder : null,
-      confFolder     : null
-    }
+let userConfigObject = {
+  'nexus' : {
+    "downloadFolder" : null,
+    "confFolder"     : null
   }
-});
+};
+// user Config (read/write) ///////////////////////////////////////////////////
+const userConfig = new Conf();
 
 exports.userConfig = userConfig;
-
+console.log('conf file : '+userConfig.path);
 // safe Config Reader //////////////////////////////////////////////////////////
 //
 exports.config = {
   get : function(key) {
+    console.log(defaultConfig);
     return userConfig.get(key, getdefaultConfig(key));
   }
 };

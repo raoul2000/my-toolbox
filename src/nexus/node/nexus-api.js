@@ -33,8 +33,10 @@ exports.getWarfileDescriptor = function( modVersionUrl ) {
       console.log('error:', error); // Print the error if one occurred
       console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
       console.log('body:', body); // Print the HTML for the Google homepage.
-      if(error || (response && response.statusCode !== 200)) {
+      if( error ) {
         reject(error);
+      } else if (response && response.statusCode !== 200) {
+        reject({message : "the URL " + modVersionUrl+ " could not be reached"});
       } else {
         let items = JSON.parse(body);
         let foundItem = items.data.find(function(element){

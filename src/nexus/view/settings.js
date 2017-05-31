@@ -42,7 +42,7 @@ $('#nx-input-download-folder').on('blur', function(ev){
   let inputVal = $input.val().trim();
   if( inputVal === '') {
     $input.val('');
-    userConfig.set('nexus.downloadFolder', null);
+    userConfig.delete('nexus.downloadFolder');
   } else {
     console.log(inputVal);
     if ( ! fs.existsSync(inputVal)) {
@@ -52,7 +52,7 @@ $('#nx-input-download-folder').on('blur', function(ev){
           $input.tooltip('hide');
         },2000);
         $input.val('');
-        userConfig.set('nexus.downloadFolder', null);
+        userConfig.delete('nexus.downloadFolder');
     } else {
       userConfig.set('nexus.downloadFolder', inputVal);
     }
@@ -77,16 +77,21 @@ $('#nx-but-choose-conf-folder').on('click',function(ev){
 $('#nx-input-conf-folder').on('blur', function(ev){
   let $input = $(ev.target);
   let inputVal = $input.val().trim();
+  if( inputVal === '') {
+    $input.val('');
+    userConfig.delete('nexus.downloadFolder');
+  } else {
 
-  if ( ! fs.existsSync(inputVal)) {
+    if ( ! fs.existsSync(inputVal)) {
       $input.attr('data-original-title','folder not found');
       $input.tooltip('show');
       setTimeout(function(){
         $input.tooltip('hide');
       },2000);
       $input.val('');
-      userConfig.set('nexus.confFolder', null);
-  } else {
-    userConfig.set('nexus.confFolder', inputVal);
+      userConfig.delete('nexus.confFolder');
+    } else {
+      userConfig.set('nexus.confFolder', inputVal);
+    }
   }
 });

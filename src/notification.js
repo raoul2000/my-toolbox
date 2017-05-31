@@ -1,7 +1,8 @@
 "use strict";
 
-// initialize PNotify theme
+// initialize PNotify theme and settings
 PNotify.prototype.options.styling = "bootstrap3";
+PNotify.prototype.options.width = "450px";
 
 /**
  * Display a notification
