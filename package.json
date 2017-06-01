@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "dev": "electron . --debug",
-    "jsonserver": "json-server --delay 1000 --routes ./test/data/nexus/routes.json ./test/data/nexus/db.json"
+    "jsonserver": "json-server --delay 1000 --static ./test/data/nexus/static --routes ./test/data/nexus/routes.json ./test/data/nexus/db.json"
   },
   "repository": "https://github.com/raoul2000/my-toolbox",
   "keywords": [
