@@ -92,6 +92,8 @@ function createHTMLTable(moduleRef) {
 const uiStateManager = {
   download_module_start : function(row, $target) {
     console.log("starting");
+    row.find('.progress-percent .percent-value').first().text("0%");
+    row.find('.progress-bar').first().css('width', "0%");
     row.find('.download-status').hide();
     row.find('.download-progress').show();
     $target.closest('.but-download-start').first().prop('disabled', true);
@@ -112,8 +114,9 @@ const uiStateManager = {
     row.find('.sel-version-cat').first().prop('disabled',false);
   },
   download_module_progress : function(row, percent) {
+    row.find('.progress-bar').first().css('width', "" + percent + "%");
     row.find('.progress-percent .percent-value').first().text(percent + "%");
-    row.find('.progress-percent .downloaded-filename').text("filename.war");
+    //row.find('.progress-percent .downloaded-filename').text("filename.war");
   },
   download_module_cancel : function(row, $button) {
     row.find('.download-progress').hide();
