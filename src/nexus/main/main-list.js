@@ -62,10 +62,22 @@ ipcMain.on('nx-load-module-ref.start',function(event){
 ipcMain.on('nx-fetch-version.start', function(event, arg) {
   console.log(arg);
 
-  let extractVersion = function(info) {
+  let extractReleaseVersion = function(info) {
     if (info.data && Array.isArray(info.data)) {
       return info.data.filter(function(item) {
-        return item.leaf === false;
+        return item.leaf === false && item.text.toUpperCase().endsWith('-SNAPSHOT') === false;
+      }).map(function(item) {
+        return item.text;
+      });
+    } else {
+      return [];
+    }
+  };
+
+  let extractSnapshotVersion = function(info) {
+    if (info.data && Array.isArray(info.data)) {
+      return info.data.filter(function(item) {
+        return item.leaf === false  && item.text.toUpperCase().endsWith('-SNAPSHOT') === true;
       }).map(function(item) {
         return item.text;
       });
@@ -78,8 +90,8 @@ ipcMain.on('nx-fetch-version.start', function(event, arg) {
   .then(function(result) {
     if( result.release && result.snapshot) {
       arg.version = {
-        release: extractVersion(result.release),
-        snapshot: extractVersion(result.snapshot)
+        release: extractReleaseVersion(result.release),
+        snapshot: extractSnapshotVersion(result.snapshot)
       };
       console.log(arg);
       event.sender.send('nx-fetch-version.done', arg);
@@ -142,6 +154,14 @@ ipcMain.on('nx-download-mod.start', function(event, arg) {
   .then(function(warfileDesc){
     console.log(warfileDesc);
 
+    if( ! warfileDesc ) {
+      event.sender.send('nx-download-mod.error', {
+        message :  "no file found with extension '.WAR'",
+        input   : arg
+      });
+      console.log("no file found with extension '.WAR'");
+      return;
+    }
     // compute local filepath
     let localFilePath = path.join(localFolderPath ,warfileDesc.text);
     console.log("localFilePath = "+localFilePath);

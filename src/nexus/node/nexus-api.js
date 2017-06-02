@@ -40,8 +40,9 @@ exports.getWarfileDescriptor = function( modVersionUrl ) {
       } else {
         let items = JSON.parse(body);
         let foundItem = items.data.find(function(element){
-          return element.leaf === true && element.text.endsWith('.war');
+          return element.leaf === true && element.text.toUpperCase().endsWith('.WAR');
         });
+        console.log("foundItem",foundItem);
         resolve(foundItem);
       }
     });

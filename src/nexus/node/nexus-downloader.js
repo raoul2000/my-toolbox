@@ -6,7 +6,8 @@ var fs = require('fs');
 var Q = require('q');
 
 exports.download = function(url, filepath, canContinue) {
-
+  console.log("downloading url : ",url);
+  
   var deferred = Q.defer();
   // The options argument is optional so you can omit it
   let req = request(url,{timeout: 10000}); // assign to be able to abort request on user demand
