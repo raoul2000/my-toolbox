@@ -8,7 +8,8 @@ const Conf     = require('conf');
 //
 const defaultConfig = {
   'nexus.downloadFolder' : (electron.app || electron.remote.app).getPath('downloads'),
-  'nexus.confFolder'     : (electron.app || electron.remote.app).getPath('userData')
+  'nexus.confFolder'     : (electron.app || electron.remote.app).getPath('userData'),
+  'nexus.requestTimeout' : 5000
 };
 const getdefaultConfig = function(key) {
   return defaultConfig[key];
@@ -20,7 +21,8 @@ exports.defaultConfig = {
 let userConfigObject = {
   'nexus' : {
     "downloadFolder" : null,
-    "confFolder"     : null
+    "confFolder"     : null,
+    "requestTimeout" : 5000
   }
 };
 // user Config (read/write) ///////////////////////////////////////////////////
