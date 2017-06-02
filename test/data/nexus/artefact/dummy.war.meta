@@ -1,0 +1,6 @@
+{
+  "moduleId" : "modId",
+  "symlink"  : "symlink",
+  "version"  : "x.x.x",
+  "installFolder" : "symlink-x.x.x"
+}

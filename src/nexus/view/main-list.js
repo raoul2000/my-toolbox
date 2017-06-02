@@ -20,7 +20,7 @@ function createHTMLModuleRow(id, data) {
     <td nowrap="true">
       <div class="sel-package-widget">
         <select class="sel-version-cat" name="">
-          <option value="release" selected="true">release</option>
+          <option value="release" selected="selected">release</option>
           <option value="snapshot">snapshot</option>
         </select>
         <select class="sel-version-val" name="">
@@ -38,7 +38,6 @@ function createHTMLModuleRow(id, data) {
         <button type="button" disabled class="but-download-cancel btn btn-default btn-xs" title="cancel download">
           <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
         </button>
-      </div>
       </div>
     </td>
     <td>
