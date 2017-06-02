@@ -49,3 +49,9 @@ mocha test
 - [ ] tail -f on remote files
 - [ ] grep ERROR on remote files
 - [ ] etc ...
+
+### Maven repo Front
+- [X] display module reference list
+- [ ] user select release/snapshot version
+- [ ] configuration
+- [ ] download war file to local folder

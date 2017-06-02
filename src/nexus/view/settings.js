@@ -9,7 +9,7 @@ const fs = require('fs');
 function loadSettingsForm() {
 
   $('#nexus-settings *[data-cfg-key]').each(function(el){
-    console.log('config loaded from : '+config.path);
+    
     let $el = $(this);
     let cfgKey = $el.data('cfg-key');
     $el.prop('placeholder', "Default : " + defaultConfig.get(cfgKey));

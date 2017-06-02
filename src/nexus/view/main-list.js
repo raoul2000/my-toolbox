@@ -17,7 +17,7 @@ function createHTMLModuleRow(id, data) {
     </td>
     <td>${data.id}</td>
     <td>${data.name}</td>
-    <td nowrap>
+    <td nowrap="true">
       <div class="sel-package-widget">
         <select class="sel-version-cat" name="">
           <option value="release" selected="true">release</option>
@@ -30,7 +30,7 @@ function createHTMLModuleRow(id, data) {
         <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span> Loading ...
       </div>
     </td>
-    <td>
+    <td nowrap="true">
       <div class="action">
         <button type="button" class="but-download-start btn btn-default btn-xs" title="start download">
           <span class="glyphicon glyphicon-play"  aria-hidden="true"></span>
@@ -152,7 +152,7 @@ $('#module-list').on('click',function(ev){
   let moduleId   = row.prop('id');          // the module Id
   let modVersion = row.data('version');     // module version data (or null)
 
-  console.log(moduleId);
+  console.log("moduleId",moduleId);
   //////////////////////////////////////////////////////////////////////////////
   if( $target.closest('.but-download-cancel').length > 0 ) {
     // usser canceled the current download (in progress)
@@ -169,7 +169,6 @@ $('#module-list').on('click',function(ev){
     // User is asking to load version info for this module
     // if version info has not already been retreieved, fetch it now
     //
-    console.log('chk-module');
     let $checkbox = $target.closest('.chk-module').first();
     if( $checkbox.prop('checked') ) {
       if( ! modVersion ) {
@@ -186,7 +185,6 @@ $('#module-list').on('click',function(ev){
     if( $target.closest('.but-download-start').length > 0 ) {
       // user starts the download of this module and for the selected version number
       // and category ('release' or 'snapshot')
-      console.log('.but-download-start');
 
       // update UI
       uiStateManager.download_module_start(row,$target);
@@ -211,10 +209,8 @@ $('#module-list').on('change',function(ev){
   let $target = $(ev.target);
   let row = $target.closest('tr');
   let moduleId = row.prop('id');
-  console.log(moduleId);
 
   if( $target.closest('.sel-version-cat').length > 0 ) {
-    console.log('.sel-version-cat');
     let $selCat        = $target.closest('.sel-version-cat').first();
     let $selVersion    = row.find('.sel-version-val');
     let selectedOption = $selCat.find('option:selected').prop('value');
@@ -244,6 +240,7 @@ ipcRenderer.send('nx-load-module-ref.start');
 // creates the HTML and add it inside tbody.
 // data is the module-ref object
 ipcRenderer.on('nx-load-module-ref.done',function(sender, data){
+    console.log("nx-load-module-ref.done",data);
     var tableBody = document.getElementById("module-list");
     tableBody.insertAdjacentHTML(
       'beforeend',
@@ -286,7 +283,17 @@ ipcRenderer.on('nx-download-mod.done',function(sender, data){
 // the module file download could not be completed
 ipcRenderer.on('nx-download-mod.error', function(sender, data){
   console.log('nx-download-mod.error',data);
-  notify(data.message,'error','download failed');
+  if( data.error) {
+    switch (data.error.code) {
+      case "ESOCKETTIMEDOUT":
+        notify("Connection timeout : the server did not reply within the configured delay",'error','download failed');
+        break;
+      default:
+        notify(data.message,'error','download failed');
+    }
+  } else {
+    notify(data.message,'error','download failed');
+  }
   let row     = $('#'+data.input.moduleId);
   uiStateManager.download_module_error(row);
 });

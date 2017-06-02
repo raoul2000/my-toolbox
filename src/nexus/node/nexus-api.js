@@ -73,7 +73,7 @@ exports.fetchModuleVersion = function(module) {
       headers : {
         'Accept' : ' application/json'
       },
-      timeout : 3000
+      timeout : 5000
     },
     function(error, response, body) {
       console.log('error:', error); // Print the error if one occurred
@@ -96,7 +96,7 @@ exports.fetchModuleVersion = function(module) {
       headers : {
         'Accept' : ' application/json'
       },
-        timeout : 3000
+        timeout : 5000
     },
      function(error, response, body) {
       console.log('error:', error); // Print the error if one occurred
