@@ -67,3 +67,15 @@ tr.loaded .action {
 .download-error {
   color: red;
 }
+/**
+ * Inline row edition
+ */
+tr .edit,
+tr.editing .value {
+  display:none;
+}
+
+tr .value,
+tr.editing .edit {
+  display:block;
+}

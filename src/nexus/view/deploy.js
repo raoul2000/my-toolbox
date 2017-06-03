@@ -2,15 +2,13 @@
 const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
 
-$('#artefact-list').on('click',function(ev){
-  let $target    = $(ev.target);            // the HTML element clicked
-  let row        = $target.closest('tr');   // the TR wrapper (row)
-  let artefact   = row.data('artefact');
-});
 
-
+/**
+ * Create and returns HTML code for the row representing an artefact
+ * @param  {object} artefact artefact description
+ * @return {string}          HTML markup for the table row
+ */
 function createHTMLRowDeploy(artefact) {
-
   return `
   <tr data-info='${JSON.stringify(artefact)}'>
     <td>
@@ -20,60 +18,63 @@ function createHTMLRowDeploy(artefact) {
       <div class="filename">${artefact.basename}</div>
       <div class="module-name">${artefact.moduleName || ''}</div>
     </td>
+
     <td  nowrap class="module-version">
       <div class="inline-edit-group">
         <div class="value">
-            ${artefact.metadata.version || '<span class="label label-danger">undefined</span>'}
+          ${artefact.metadata.version || '<span class="label label-danger">undefined</span>'}
         </div>
-        <div class="edit" style="display:none">
-          <input type="text" name="version" value="${artefact.metadata.version || ''}" placeholder="" style="width:80px">
-          <button type="button" class="btn btn-default btn-xs btn-inline-edit-ok">
-            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-          </button>
-          <button type="button" class="btn btn-default btn-xs btn-inline-edit-cancel">
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-          </button>
+        <div class="edit">
+          <input type="text" name="version" value="" placeholder="version" style="width:80px">
         </div>
       </div>
     </td>
+
     <td nowrap class="module-symlink">
       <div class="inline-edit-group">
         <div class="value">
-              ${artefact.metadata.symlink || '<span class="label label-danger">undefined</span>'}
+          ${artefact.metadata.symlink || '<span class="label label-danger">undefined</span>'}
         </div>
-        <div class="edit" style="display:none">
-          <input type="text" name="symlink" value="${artefact.metadata.symlink || ''}" placeholder="">
-          <button type="button" class="btn btn-default btn-xs btn-inline-edit-ok">
-            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-          </button>
-          <button type="button" class="btn btn-default btn-xs btn-inline-edit-cancel">
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-          </button>
+        <div class="edit">
+          <input type="text" name="symlink" value="" placeholder="symlink" style="width:80px">
         </div>
       </div>
     </td>
+
     <td nowrap class="module-target-folder">
       <div class="inline-edit-group">
         <div class="value">
           ${artefact.metadata.installFolder || '<span class="label label-danger">undefined</span>'}
         </div>
-        <div class="edit" style="display:none">
-          <input type="text" name="symlink" value="${artefact.metadata.installFolder || ''}" placeholder="" style="width:80px">
-          <button type="button" class="btn btn-default btn-xs btn-inline-edit-ok">
-            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-          </button>
-          <button type="button" class="btn btn-default btn-xs btn-inline-edit-cancel" >
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-          </button>
+        <div class="edit">
+          <input type="text" name="folder" value="" placeholder="folder" style="width:80px">
         </div>
-
       </div>
     </td>
-    <td></td>
+    <td> <!-- action col -->
+      <div class="value">
+        <button type="button" class="btn btn-default btn-xs btn-start-row-edit">
+          <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="edit">
+        <button type="button" class="btn btn-default btn-xs btn-submit-row-edit" >
+          <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="btn btn-default btn-xs btn-cancel-row-edit">
+          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </button>
+      </div>
+    </td>
   </tr>
   `;
 }
 
+/**
+ * Creates and return HTML markup to represent the list of artefacts as a table
+ * @param  {array} artefacts list of artefact objects to represent
+ * @return {string}           HTML table markup
+ */
 function createHTMLTableDeploy(artefacts) {
   let HTMLTableBody = '';
   artefacts.forEach(function(artefact,index) {
@@ -97,6 +98,7 @@ let deployUIStateManager = {
     $('#artefact-info-panel').show();
   }
 };
+
 // user click on the refresh button to reload the artefact list
 $('#artefact-list-refresh').on('click',function(ev){
   deployUIStateManager.init();
@@ -109,41 +111,18 @@ $('#artefact-list').on('click',function(ev){
   let $target    = $(ev.target);            // the HTML element clicked
   let row        = $target.closest('tr');   // the TR wrapper (row)
 
-  if( $target.closest('.value').length > 0 ) {
-    console.log("start inline edit");
-    let inlineEditGroup = $target.closest('.inline-edit-group').first();
-
-    inlineEditGroup.find('.value').hide();
-    /*
-    inlineEditGroup.find('.edit input').one('blur',function(ev){
-      console.log("blur");
-    });
-    */
-    inlineEditGroup.find('.edit').show();
-    inlineEditGroup.find('.edit input').focus();
-  }
-  else if( $target.closest('.btn-inline-edit-ok').length > 0 ) {
-    console.log("inline edit : ok");
-    let inlineEditGroup = $target.closest('.inline-edit-group').first();
-
-    let input = inlineEditGroup.find('input').first();
-    let newVal = input.val().trim();
-    if(newVal.length !== 0) {
-      inlineEditGroup.find('.value').html(input.val());
-    }
-
-    inlineEditGroup.find('.edit').hide();
-    inlineEditGroup.find('.value').show();
-
-  }
-  else if( $target.closest('.btn-inline-edit-cancel').length > 0 ) {
-    console.log("inline edit : cancel");
-    let inlineEditGroup = $target.closest('.inline-edit-group').first();
-
-    inlineEditGroup.find('.edit').hide();
-    inlineEditGroup.find('.value').show();
+  if( $target.closest('.btn-start-row-edit').length > 0 ) {
+    // starting row edition ////////////////////////////////////////////////////
+    row.removeClass().addClass('editing');
+  } else if($target.closest('.btn-submit-row-edit').length > 0 )  {
+    // user submit row value ///////////////////////////////////////////////////
+    row.removeClass('editing');
+  } else if($target.closest('.btn-cancel-row-edit').length > 0 )  {
+    // user cancel row value modif /////////////////////////////////////////////
+    row.removeClass('editing');
   }
 });
+
 
 ipcRenderer.send('nx-load-artefact-list.start');
 console.log("nx-load-artefact-list.start");
