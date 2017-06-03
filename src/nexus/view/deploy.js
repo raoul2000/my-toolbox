@@ -9,8 +9,8 @@ const ipcRenderer = electron.ipcRenderer;
  * @return {string}          HTML markup for the table row
  */
 function createHTMLRowDeploy(artefact) {
-  return `
-  <tr data-info='${JSON.stringify(artefact)}'>
+  // DO NOT insert newline before tr
+  return `<tr>
     <td>
       <input class="chk-module" type="checkbox"  value="1">
     </td>
@@ -66,8 +66,7 @@ function createHTMLRowDeploy(artefact) {
         </button>
       </div>
     </td>
-  </tr>
-  `;
+  </tr>`;
 }
 
 /**
@@ -77,8 +76,36 @@ function createHTMLRowDeploy(artefact) {
  */
 function createHTMLTableDeploy(artefacts) {
   let HTMLTableBody = '';
+  let tableBody = document.getElementById("artefact-list");
+  tableBody.innerHTML = ''; // empty table
+
   artefacts.forEach(function(artefact,index) {
-      HTMLTableBody += createHTMLRowDeploy(artefact);
+    tableBody.insertAdjacentHTML(
+      'beforeend',
+      createHTMLRowDeploy(artefact)
+    );
+    tableBody.lastChild.attributes.id = artefact.basename;
+    tableBody.lastChild.dataset.basename = artefact.basename;
+    tableBody.lastChild.dataset.version = artefact.version;
+    tableBody.lastChild.dataset.symlink = artefact.symlink;
+    tableBody.lastChild.dataset.installFolder = artefact.installFolder;
+    console.log(artefact);
+    console.log(tableBody);
+  });
+}
+
+function createHTMLTableDeploy_orig(artefacts) {
+  let HTMLTableBody = '';
+  let tableBody = document.getElementById("artefact-list");
+  artefacts.forEach(function(artefact,index) {
+    let row = createHTMLRowDeploy(artefact);
+    let trNode = $.parseHTML(row)[0];
+    trNode.dataset.artefact = artefact;
+    trNode.id = artefact.basename;
+
+    console.log(trNode);
+    //    console.log($(row).find('tr').data('info',artefact).html());
+    HTMLTableBody += createHTMLRowDeploy(artefact);
   });
   return HTMLTableBody;
 }
@@ -134,12 +161,14 @@ console.log("nx-load-artefact-list.start");
 ipcRenderer.on('nx-load-artefact-list.done',function(sender,data){
   console.log(data);
   if(data.length > 0 ){
+    createHTMLTableDeploy(data);
+    /*
     var tableBody = document.getElementById("artefact-list");
     tableBody.innerHTML = '';
     tableBody.insertAdjacentHTML(
       'beforeend',
       createHTMLTableDeploy(data)
-    );
+    );*/
     deployUIStateManager.artefact_list_ready();
   } else {
     deployUIStateManager.empty_artefact_list();
