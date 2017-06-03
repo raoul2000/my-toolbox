@@ -230,19 +230,26 @@
         <div class="col-lg-12">
           <h2>Deployement</h2>
           <hr/>
+          <div class="btn-group" role="group" style="margin-bottom:1em;">
+            <button id="artefact-list-refresh" type="button" class="btn btn-default">
+              <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-default">Middle</button>
+            <button type="button" class="btn btn-default">Right</button>
+          </div>
         </div>
-        <div id="artefact-info-panel" class="col-lg-12" style="display:block">
+        <div id="artefact-info-panel" class="col-lg-12" style="display:none">
           <div class="alert alert-warning" role="alert">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             <b>No module Found</b><br/>
             <p>
               Sorry but it seems that the configured folder does not contain any file ready
               to be deployed. You should first <a href="#" class="mtb-link" data-view="nexus-download-mod">Download</a>
-              modules before being able to deploy.
+              modules before being able to deploy or <a href="#" onclick="$('#artefact-list-refresh').click()">Refresh</a> the module list.
             </p>
           </div>
         </div>
-        <div id="artefact-list-panel" class="col-lg-12">
+        <div id="artefact-list-panel" class="col-lg-12" style="display:none">
           <table class="table table-striped table-hover">
             <thead>
               <tr>
@@ -314,8 +321,8 @@
           </table>
 
         </div>
-      </div> <!-- nexus-deploy-mod -->
-    </div>
+      </div>
+    </div> <!-- nexus-deploy-mod -->
 
   </body>
 

@@ -82,7 +82,28 @@ function createHTMLTableDeploy(artefacts) {
   return HTMLTableBody;
 }
 
+// handle visual state of the artefact deploy list view
+let deployUIStateManager = {
+  init : function() {
+    document.getElementById('artefact-info-panel').style.display = 'none';
+    document.getElementById('artefact-list-panel').style.display = 'none';
+  },
+  artefact_list_ready : function() {
+    $('#artefact-info-panel').hide();
+    $('#artefact-list-panel').show();
+  },
+  empty_artefact_list : function() {
+    $('#artefact-list-panel').hide();
+    $('#artefact-info-panel').show();
+  }
+};
+// user click on the refresh button to reload the artefact list
+$('#artefact-list-refresh').on('click',function(ev){
+  deployUIStateManager.init();
+  ipcRenderer.send('nx-load-artefact-list.start');
+});
 
+// click on artefact list table row
 $('#artefact-list').on('click',function(ev){
 
   let $target    = $(ev.target);            // the HTML element clicked
@@ -127,14 +148,23 @@ $('#artefact-list').on('click',function(ev){
 ipcRenderer.send('nx-load-artefact-list.start');
 console.log("nx-load-artefact-list.start");
 
+//////////////////////////////////////////////////////////////////
+// Custom Event handlers
+//
+
 ipcRenderer.on('nx-load-artefact-list.done',function(sender,data){
   console.log(data);
-  var tableBody = document.getElementById("artefact-list");
-  tableBody.insertAdjacentHTML(
-    'beforeend',
-    createHTMLTableDeploy(data)
-  );
-
+  if(data.length > 0 ){
+    var tableBody = document.getElementById("artefact-list");
+    tableBody.innerHTML = '';
+    tableBody.insertAdjacentHTML(
+      'beforeend',
+      createHTMLTableDeploy(data)
+    );
+    deployUIStateManager.artefact_list_ready();
+  } else {
+    deployUIStateManager.empty_artefact_list();
+  }
 });
 
 ipcRenderer.on('nx-load-artefact-list.error',function(sender,data){
