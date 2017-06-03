@@ -2,13 +2,14 @@
 
 const ipcRenderer = require('electron').ipcRenderer;
 
-$('.mtb-link').on('click',function(){
-  console.log(this);
+$('.mtb-link[data-view]').on('click',function(){
+  //console.log(this);
   let $el = $(this);
-  $('ul.nav li').removeClass('active');
-  $el.parent('li').addClass('active');
   let view = $el.data('view');
+  // update menu bar
+  $('ul.nav li').removeClass('active');
   if( view !== '') {
+    $('ul.nav a.mtb-link[data-view="'+view+'"]').parent().addClass('active');
     $('.mtb-view').hide();
     $('#'+view).show();
   }
