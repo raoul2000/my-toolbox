@@ -204,6 +204,20 @@ ipcMain.on('nx-download-mod.start', function(event, arg) {
         downloadContinue(arg.moduleId)
       )
       .then(function(result) {
+        // module have been downloaded : create its metadata file
+        // with default values
+        let metadataFilePath = localFilePath.concat('.meta');
+
+        fs.writeFileSync(
+          metadataFilePath,
+          JSON.stringify({
+            "moduleId" : arg.moduleId,
+            "version"  : arg.version,
+            "symlink"  : arg.moduleId,
+            "installFolder" : arg.moduleId+'-'+arg.version
+          },null,2) // pretty print json
+        );
+
         download[arg.moduleId] = {state : "done" }; // update download state
         event.sender.send('nx-download-mod.done', {
           moduleId      : arg.moduleId,
