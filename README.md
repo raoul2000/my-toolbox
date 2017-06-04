@@ -53,5 +53,5 @@ mocha test
 ### Maven repo Front
 - [X] display module reference list
 - [ ] user select release/snapshot version
-- [ ] configuration
+- [ ] configuration (evaluate nconf as replacement)
 - [ ] download war file to local folder

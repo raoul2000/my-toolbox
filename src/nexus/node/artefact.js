@@ -4,7 +4,13 @@ var fs = require('fs');
 var Q = require('q');
 var path = require('path');
 
-
+/**
+ * Updates or create metadataFilePath with the JSON metadata
+ * 
+ * @param  {string} metadataFilePath the file path
+ * @param  {object} metadata         metadata to save
+ * @return {Promise}
+ */
 exports.saveMetadata = function(metadataFilePath, metadata) {
   console.log("metadataFilePath = "+metadataFilePath);
   console.log("metadata : ",metadata);
@@ -20,6 +26,25 @@ exports.saveMetadata = function(metadataFilePath, metadata) {
   return deferred.promise;
 };
 
+/**
+ * Browse folderPath and returns a list of files.
+ * Select files must have a '.war' extension.
+ * If no metadata is found for a war file, it is created with empty (null) values
+ * otherwise it is loaded and returned in the 'metadata' property.
+ *
+ * artefact Info = {
+ *  'filename' : '/folder/file.war',
+ *  'basename' : 'file.war',
+ *  'metadata' : {
+ *      "moduleId" : string | null,
+ *      "symlink"  : string | null,
+ *      "version"  : string | null,
+ *      "installFolder" : string | null
+ *  }
+ * }
+ * @param  {string} folderPath path to the folder to process
+ * @return {array}            list of artefacts info.
+ */
 exports.buildListFromLocalFolder = function(folderPath) {
   var deferred = Q.defer();
   let result = [], fileList = [];

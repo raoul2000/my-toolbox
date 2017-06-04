@@ -101,26 +101,28 @@ let deployUIStateManager = {
     document.getElementById('artefact-list-panel').style.display = 'none';
   },
   artefact_list_ready : function() {
-    $('#artefact-info-panel').hide();
-    $('#artefact-list-panel').show();
+    document.getElementById('artefact-info-panel').style.display = 'none';
+    document.getElementById('artefact-list-panel').style.display = 'block';
   },
   empty_artefact_list : function() {
-    $('#artefact-list-panel').hide();
-    $('#artefact-info-panel').show();
+    document.getElementById('artefact-info-panel').style.display = 'block';
+    document.getElementById('artefact-list-panel').style.display = 'none';
   }
 };
 
+// Toolbar /////////////////////////////////////////////////////////////////////
 // user click on the refresh button to reload the artefact list
 $('#artefact-list-refresh').on('click',function(ev){
   deployUIStateManager.init();
   ipcRenderer.send('nx-load-artefact-list.start');
 });
 
+// user click on the open download folder button
 $('#artefact-open-folder').on('click',function(ev){
   ipcRenderer.send('nx-open-folder');
 });
 
-
+// main list //////////////////////////////////////////////////////////////////
 // click on artefact list table row
 $('#artefact-list').on('click',function(ev){
 
@@ -136,7 +138,8 @@ $('#artefact-list').on('click',function(ev){
       el.value = currentValue === 'undefined' ? '' : row.data(el.getAttribute('name'));
     });
     row.removeClass().addClass('editing');
-  } else if($target.closest('.btn-submit-row-edit').length > 0 )  {
+  } else
+  if($target.closest('.btn-submit-row-edit').length > 0 )  {
     // user submit row value ///////////////////////////////////////////////////
     let newMeta = {};
     let basename = row.data('basename');
@@ -157,7 +160,8 @@ $('#artefact-list').on('click',function(ev){
       "metadata" : newMeta
     });
     row.removeClass('editing');
-  } else if($target.closest('.btn-cancel-row-edit').length > 0 )  {
+  } else
+  if($target.closest('.btn-cancel-row-edit').length > 0 )  {
     // user cancel row value modif /////////////////////////////////////////////
     row.removeClass('editing');
   }
