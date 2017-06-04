@@ -116,6 +116,11 @@ $('#artefact-list-refresh').on('click',function(ev){
   ipcRenderer.send('nx-load-artefact-list.start');
 });
 
+$('#artefact-open-folder').on('click',function(ev){
+  ipcRenderer.send('nx-open-folder');
+});
+
+
 // click on artefact list table row
 $('#artefact-list').on('click',function(ev){
 

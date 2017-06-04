@@ -7,6 +7,10 @@ const path = require('path');
 const artefact = require('../node/artefact');
 
 
+ipcMain.on('nx-open-folder',function(event){
+  electron.shell.openItem(config.get('nexus.downloadFolder'));
+});
+
 ipcMain.on('nx-load-artefact-list.start',function(event){
   console.log('nx-load-artefact-list.start');
 
