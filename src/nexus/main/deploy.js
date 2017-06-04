@@ -19,3 +19,24 @@ ipcMain.on('nx-load-artefact-list.start',function(event){
     event.sender.send('nx-load-artefact-list.error', error);
   });
 });
+
+
+ipcMain.on('nx-update-artefact-meta.start',function(event, data){
+  console.log('nx-update-artefact-meta.start');
+  // {
+  //  "basename" : basename,
+  //  "metadata" : {...}
+  // }
+  let metadataFilePath = path.join(
+    config.get('nexus.downloadFolder'),
+    data.basename.concat('.meta')
+  );
+  artefact.saveMetadata(metadataFilePath, data.metadata)
+  .then( result => {
+    console.log(result);
+    event.sender.send('nx-update-artefact-meta.done', result);
+  })
+  .catch( error => {
+    event.sender.send('nx-update-artefact-meta.error', error);
+  });
+});

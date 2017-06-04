@@ -47,7 +47,7 @@ function createHTMLRowDeploy(artefact) {
           ${artefact.metadata.installFolder || '<span class="label label-danger">undefined</span>'}
         </div>
         <div class="edit">
-          <input type="text" name="folder" value="" placeholder="folder" style="width:80px">
+          <input type="text" name="installFolder" value="" placeholder="folder" style="width:80px">
         </div>
       </div>
     </td>
@@ -86,28 +86,12 @@ function createHTMLTableDeploy(artefacts) {
     );
     tableBody.lastChild.attributes.id = artefact.basename;
     tableBody.lastChild.dataset.basename = artefact.basename;
-    tableBody.lastChild.dataset.version = artefact.version;
-    tableBody.lastChild.dataset.symlink = artefact.symlink;
-    tableBody.lastChild.dataset.installFolder = artefact.installFolder;
+    tableBody.lastChild.dataset.version = artefact.metadata.version;
+    tableBody.lastChild.dataset.symlink = artefact.metadata.symlink;
+    tableBody.lastChild.dataset.installFolder = artefact.metadata.installFolder;
     console.log(artefact);
-    console.log(tableBody);
+    //console.log(tableBody);
   });
-}
-
-function createHTMLTableDeploy_orig(artefacts) {
-  let HTMLTableBody = '';
-  let tableBody = document.getElementById("artefact-list");
-  artefacts.forEach(function(artefact,index) {
-    let row = createHTMLRowDeploy(artefact);
-    let trNode = $.parseHTML(row)[0];
-    trNode.dataset.artefact = artefact;
-    trNode.id = artefact.basename;
-
-    console.log(trNode);
-    //    console.log($(row).find('tr').data('info',artefact).html());
-    HTMLTableBody += createHTMLRowDeploy(artefact);
-  });
-  return HTMLTableBody;
 }
 
 // handle visual state of the artefact deploy list view
@@ -140,9 +124,33 @@ $('#artefact-list').on('click',function(ev){
 
   if( $target.closest('.btn-start-row-edit').length > 0 ) {
     // starting row edition ////////////////////////////////////////////////////
+
+    // copy tr.data intp input values
+    row.find('input[type="text"]').each(function(index,el){
+      let currentValue = row.data(el.getAttribute('name'));
+      el.value = currentValue === 'undefined' ? '' : row.data(el.getAttribute('name'));
+    });
     row.removeClass().addClass('editing');
   } else if($target.closest('.btn-submit-row-edit').length > 0 )  {
     // user submit row value ///////////////////////////////////////////////////
+    let newMeta = {};
+    let basename = row.data('basename');
+    row.find('input[type="text"]').each(function(index,el){
+      let metaName = el.getAttribute('name');
+      let newValue =  el.value.trim();
+      row.data(
+        metaName,
+        newValue === '' ? 'undefined' : newValue
+      );
+      $(el).closest('td').find('.value').html(
+        newValue === '' ? '<span class="label label-danger">undefined</span>' : newValue
+      );
+      newMeta[metaName] = newValue === '' ? null : newValue;
+    });
+    ipcRenderer.send('nx-update-artefact-meta.start', {
+      "basename" : basename,
+      "metadata" : newMeta
+    });
     row.removeClass('editing');
   } else if($target.closest('.btn-cancel-row-edit').length > 0 )  {
     // user cancel row value modif /////////////////////////////////////////////
@@ -162,13 +170,6 @@ ipcRenderer.on('nx-load-artefact-list.done',function(sender,data){
   console.log(data);
   if(data.length > 0 ){
     createHTMLTableDeploy(data);
-    /*
-    var tableBody = document.getElementById("artefact-list");
-    tableBody.innerHTML = '';
-    tableBody.insertAdjacentHTML(
-      'beforeend',
-      createHTMLTableDeploy(data)
-    );*/
     deployUIStateManager.artefact_list_ready();
   } else {
     deployUIStateManager.empty_artefact_list();
