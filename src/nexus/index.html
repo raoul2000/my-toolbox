@@ -164,7 +164,23 @@
 
               <tr id="m01" class="init" >
                 <td>
-                  <input class="chk-module" type="checkbox"  value="1">
+                  <input class="chk-module" type="checkbox"  value="1" style="display:none">
+                  <!-- Split button -->
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-default chk-module">
+                      <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <span class="caret"></span>
+                      <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li class="dropdown-header">Open links</li>
+                      <li title="open nexus in default browser"><a href="#">Nexus</a></li>
+                      <li title="open documentation in default browser"><a href="#">Documentation</a></li>
+                      <li title="open CHANGES in default browser"><a href="#">Changes</a></li>
+                    </ul>
+                  </div>
                 </td>
                 <td>mod1</td>
                 <td>Long Servlet Name</td>

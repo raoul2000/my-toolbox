@@ -13,7 +13,21 @@ function createHTMLModuleRow(id, data) {
   return `
   <tr id="${id}" class="init" >
     <td>
-      <input class="chk-module" type="checkbox"  value="1">
+      <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-default chk-module" title="download version info">
+          <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="caret"></span>
+          <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu nx-external-link-open">
+          <li class="dropdown-header">Open links</li>
+          <li title="open documentation in default browser"><a href="${data.url.doc}">Documentation</a></li>
+          <li title="open CHANGES in default browser"><a href="${data.url.changes}">Changes</a></li>
+        </ul>
+      </div>
+
     </td>
     <td>${data.id}</td>
     <td>${data.name}</td>
@@ -168,17 +182,11 @@ $('#module-list').on('click',function(ev){
     // User is asking to load version info for this module
     // if version info has not already been retreieved, fetch it now
     //
-    let $checkbox = $target.closest('.chk-module').first();
-    if( $checkbox.prop('checked') ) {
-      if( ! modVersion ) {
-        // get module version data
-        console.log("downloading version data for module "+moduleId);
-        // update UI
-        uiStateManager.loading_version(row);
-
-        ipcRenderer.send('nx-fetch-version.start', row.data('ref'));
-      }
-    }
+    console.log("downloading version data for module "+moduleId);
+    // update UI
+    uiStateManager.loading_version(row);
+    // start version download
+    ipcRenderer.send('nx-fetch-version.start', row.data('ref'));
 
   } else ///////////////////////////////////////////////////////////////////////
     if( $target.closest('.but-download-start').length > 0 ) {
@@ -199,6 +207,13 @@ $('#module-list').on('click',function(ev){
         url      : row.data('ref').url
       };
       ipcRenderer.send('nx-download-mod.start',arg);
+  } else ////////////////////////////////////////////////////////////////////////
+  if( $target.closest('.nx-external-link-open').length >0 ) {
+    // user wants to open URL in external browser
+    ev.preventDefault();
+    ev.stopPropagation();
+
+    ipcRenderer.send('core-open-url',$target.prop('href'));
   }
 });
 
