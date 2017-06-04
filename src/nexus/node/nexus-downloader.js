@@ -5,12 +5,14 @@ var progress = require('request-progress');
 var fs = require('fs');
 var Q = require('q');
 
-exports.download = function(url, filepath, canContinue) {
+exports.download = function(url, filepath, requestTimeout, canContinue) {
   console.log("downloading url : ",url);
-  
+  console.log("filepath : ", filepath);
+  console.log("requestTimeout  (sec): ", requestTimeout);
+
   var deferred = Q.defer();
   // The options argument is optional so you can omit it
-  let req = request(url,{timeout: 10000}); // assign to be able to abort request on user demand
+  let req = request(url,{timeout: requestTimeout * 1000}); // assign to be able to abort request on user demand
 
   progress(req , {
       // throttle: 2000,                    // Throttle the progress event to 2000ms, defaults to 1000ms

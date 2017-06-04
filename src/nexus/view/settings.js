@@ -9,7 +9,7 @@ const fs = require('fs');
 function loadSettingsForm() {
 
   $('#nexus-settings *[data-cfg-key]').each(function(el){
-    
+
     let $el = $(this);
     let cfgKey = $el.data('cfg-key');
     $el.prop('placeholder', "Default : " + defaultConfig.get(cfgKey));
@@ -20,78 +20,105 @@ function loadSettingsForm() {
 }
 loadSettingsForm();
 
-
-// user chooses download folder using the default dialog
-$('#nx-but-choose-folder').on('click',function(ev){
+/**
+ * Display the choose folder dialog box on user demand and
+ * save the selected value to input value control.
+ *
+ * @param  {string} inputElementId the input element id
+ * @param  {string} dlgTitle       folder chooser dialog box title
+ */
+function chooseFolder(inputElementId, dlgTitle) {
   let folder = dialog.showOpenDialog({
-    title : "Download folder",
-    properties: [ 'openDirectory']});
+    "title"      : dlgTitle,
+    "properties" : [ 'openDirectory']});
     console.log(folder);
   if( folder ) {
     let folderName = folder[0].trim();
     if( folderName !== '') {
-      $('#nx-input-download-folder').val(folder[0].trim());
-      $('#nx-input-download-folder').focus();
+      let inputEl = document.getElementById(inputElementId);
+      inputEl.value = folder[0].trim();
+      inputEl.focus();
     }
   }
-});
+}
 
-// validate and save the download folder value
-$('#nx-input-download-folder').on('blur', function(ev){
-  let $input = $(ev.target);
-  let inputVal = $input.val().trim();
+/**
+ * Focus is leaving the input  control : validate it value
+ * or display tool tip on error
+ *
+ * @param  {HTMLElement} input  the input control instance
+ * @param  {string} cfgKey the configuration key
+ * @param  {function} validator function alidator (returns TRUE/FALSE)
+ */
+function onTextInputBlur(input, cfgKey, validator) {
+  let inputVal = input.value.trim();
   if( inputVal === '') {
-    $input.val('');
-    userConfig.delete('nexus.downloadFolder');
+    input.value = '';
+    userConfig.delete(cfgKey);
   } else {
     console.log(inputVal);
-    if ( ! fs.existsSync(inputVal)) {
-        $input.attr('data-original-title','folder not found');
-        $input.tooltip('show');
-        setTimeout(function(){
-          $input.tooltip('hide');
-        },2000);
-        $input.val('');
-        userConfig.delete('nexus.downloadFolder');
-    } else {
-      userConfig.set('nexus.downloadFolder', inputVal);
-    }
-  }
-});
-
-// user chooses config folder using the default dialog
-$('#nx-but-choose-conf-folder').on('click',function(ev){
-  let folder = dialog.showOpenDialog({
-    title : "Configuration folder",
-    properties: [ 'openDirectory']});
-  if( folder ) {
-    let folderName = folder[0].trim();
-    if( folderName !== '') {
-      $('#nx-input-conf-folder').val(folder[0].trim());
-      $('#nx-input-conf-folder').focus();
-    }
-  }
-});
-
-// validate and save the config folder value
-$('#nx-input-conf-folder').on('blur', function(ev){
-  let $input = $(ev.target);
-  let inputVal = $input.val().trim();
-  if( inputVal === '') {
-    $input.val('');
-    userConfig.delete('nexus.confFolder');
-  } else {
-
-    if ( ! fs.existsSync(inputVal)) {
-      $input.attr('data-original-title','folder not found');
+    let validationError = validator(inputVal);
+    if( validationError ) {
+      let $input = $(input);
+      $input.attr('data-original-title',validationError);
       $input.tooltip('show');
       setTimeout(function(){
         $input.tooltip('hide');
       },2000);
       $input.val('');
-      userConfig.delete('nexus.confFolder');
+      userConfig.delete(cfgKey);
     } else {
-      userConfig.set('nexus.confFolder', inputVal);
+      userConfig.set(cfgKey, inputVal);
     }
   }
+}
+////////////////////////////////////////////////////////////////////////////////
+// Validators
+//
+function isNormalInteger(str) {
+    var n = Math.floor(Number(str));
+    return String(n) === str && n > 0;
+}
+function folderExists(val) {
+  return fs.existsSync(val);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// event handlers
+//
+// user chooses download folder using the default dialog
+$('#nx-but-choose-folder').on('click',function(ev){
+  chooseFolder('nx-input-download-folder', 'Download Folder');
+});
+
+// validate and save the download folder value
+$('#nx-input-download-folder').on('blur', function(ev){
+  onTextInputBlur(ev.target, "nexus.downloadFolder",function(val){
+    if( folderExists(val) === false ) {
+      return "this folder doesn't exist";
+    }
+  });
+});
+
+// user chooses config folder using the default dialog
+$('#nx-but-choose-conf-folder').on('click',function(ev){
+  chooseFolder('nx-input-conf-folder', 'Configuration Folder');
+});
+
+// validate and save the config folder value
+$('#nx-input-conf-folder').on('blur', function(ev){
+  onTextInputBlur(ev.target, "nexus.confFolder",function(val){
+    if( folderExists(val) === false ) {
+      return "this folder doesn't exist";
+    }
+  });
+});
+
+$('#nx-request-timeout').on('blur', function(ev){
+  onTextInputBlur(ev.target, "nexus.requestTimeout",function(val){
+    if( isNormalInteger(val) === false ) {
+      return "enter a positive integer value";
+    }
+  });
 });

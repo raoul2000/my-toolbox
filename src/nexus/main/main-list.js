@@ -201,6 +201,7 @@ ipcMain.on('nx-download-mod.start', function(event, arg) {
     return nexusDownloader.download(
         warfileDesc.resourceURI,
         localFilePath,
+        config.get('nexus.requestTimeout'),
         downloadContinue(arg.moduleId)
       )
       .then(function(result) {
