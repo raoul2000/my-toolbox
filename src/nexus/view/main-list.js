@@ -206,7 +206,10 @@ $('#module-list').on('click',function(ev){
         cat      : selCat,  // 'release' or 'snapshot',
         url      : row.data('ref').url
       };
-      ipcRenderer.send('nx-download-mod.start',arg);
+      // before being able to actually download a file, we must handle the case where more than
+      // one file is candidate for download.
+      ipcRenderer.send('nx-find-download.start',arg);
+
   } else ////////////////////////////////////////////////////////////////////////
   if( $target.closest('.nx-external-link-open').length >0 ) {
     // user wants to open URL in external browser
@@ -331,4 +334,24 @@ ipcRenderer.on('nx-fetch-version.error',function(event,module){
   // update UI
   //row.find('.sel-version-cat').trigger('change');
   row.removeClass().addClass('init danger');
+});
+
+// we could get the list of files to download for a specific module/version/category
+ipcRenderer.on('nx-find-download.done', function(event, data){
+  console.log('nx-find-download.done', data);
+
+  if( data.warFileDescriptors &&  data.warFileDescriptors.length === 1 ) {
+    data.download = data.warFileDescriptors[0];
+    ipcRenderer.send('nx-download-mod.start', data );
+  } else {
+    notify("multiple file download not supported","error","error");
+  }
+});
+
+// failed to find candidate files for download
+ipcRenderer.on('nx-find-download.error', function(sender, data){
+  notify(data.message,'error','error');
+  let row = $('#'+data.input.moduleId);
+  uiStateManager.download_module_error(row);
+
 });

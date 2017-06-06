@@ -39,11 +39,18 @@ exports.getWarfileDescriptor = function( modVersionUrl ) {
         reject({message : "the URL " + modVersionUrl+ " could not be reached"});
       } else {
         let items = JSON.parse(body);
-        let foundItem = items.data.find(function(element){
+        /*
+        let result = items.data.find(function(element){
           return element.leaf === true && element.text.toUpperCase().endsWith('.WAR');
         });
-        console.log("foundItem",foundItem);
-        resolve(foundItem);
+        */
+        // there may be more than one war file like for instance for the snapshot
+        // folders (many timestamped snapshots per module/version)
+        let result = items.data.filter(function(element){
+          return element.leaf === true && element.text.toUpperCase().endsWith('.WAR');
+        });
+        console.log("result",result);
+        resolve(result);
       }
     });
 

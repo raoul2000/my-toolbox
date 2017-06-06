@@ -124,11 +124,24 @@ ipcMain.on('nx-download-mod.cancel', function(event, arg) {
 //    snapshot : "url",
 //    change : "url",
 //    doc : "url",
-//  }
+//  },
+//  download : {
+//      "resourceURI": "http://hostname:8080/nexus/service/local/repositories/releases/content/com/company/webapp/m1/2.3.19/",
+//      "relativePath": "/com/company/webapp/m1/2.3.19/",
+//      "text": "2.3.19",
+//      "leaf": false,
+//      "lastModified": "2013-10-15 10:27:00.0 UTC",
+//      "sizeOnDisk": -1
+//    }
 // }
 ipcMain.on('nx-download-mod.start', function(event, arg) {
   console.log("nx-download-mod.start");
   console.log(arg);
+
+  let downloadUrl = arg.download.resourceURI;
+  let downloadFilename = arg.download.text;
+
+  console.log("download url", downloadUrl);
 
   // first check that the sonfigured download folde exist !
   let localFolderPath = config.get('nexus.downloadFolder');
@@ -138,6 +151,105 @@ ipcMain.on('nx-download-mod.start', function(event, arg) {
     });
     return;
   }
+
+  // compute local filepath
+  let localFilePath = path.join(localFolderPath , downloadFilename);
+  console.log("localFilePath = "+localFilePath);
+
+  // if target file already exist, delete it
+  if( fs.existsSync(localFilePath)) {
+    fs.unlinkSync(localFilePath);
+  }
+
+  // ok, we have th war file url to download, and the local file path for the
+  // destination : let's go !
+
+  // update the general download state object
+  download[arg.moduleId] = {
+    state : "start"
+  };
+
+  // this callback function is passed to the downloader and called periodically to check
+  // if download can continue or if the user request its cancelation
+  var downloadContinue = function(modId) {
+    return function() {
+      console.log("conContinue : modId = "+modId);
+      console.log(download);
+      if( download.hasOwnProperty(modId) && download[modId].state === 'cancel') {
+        console.log('FALSE');
+        return false;
+      } else {
+        console.log('TRUE');
+        return true;
+      }
+    };
+  };
+
+  nexusDownloader.download(
+    downloadUrl,
+    localFilePath,
+    config.get('nexus.requestTimeout'),
+    downloadContinue(arg.moduleId)
+  )
+  .then(function(result) {
+    // module have been downloaded : create its metadata file
+    // with default values
+    let metadataFilePath = localFilePath.concat('.meta');
+
+    fs.writeFileSync(
+      metadataFilePath,
+      JSON.stringify({
+        "moduleId" : arg.moduleId,
+        "version"  : arg.version,
+        "symlink"  : arg.moduleId,
+        "installFolder" : arg.moduleId+'-'+arg.version
+      },null,2) // pretty print json
+    );
+
+    download[arg.moduleId] = {state : "done" }; // update download state
+    event.sender.send('nx-download-mod.done', {
+      "moduleId"      : arg.moduleId,
+      "url"           : downloadUrl,
+      "localFilePath" : localFilePath
+    });
+  })
+  .progress(function(progress) {
+    console.log(progress);
+    download[arg.moduleId] = { state : "progress" };  // update download state
+    event.sender.send('nx-download-mod.progress', {
+      "moduleId"      : arg.moduleId,
+      "progress"      : progress,
+      "url"           : downloadUrl,
+      "localFilePath" : localFilePath
+    });
+  })
+  .catch(function(error){
+    console.log('nx-download-mod.error');
+    console.log(error);
+    event.sender.send('nx-download-mod.error', {
+      "message" : error && error.message ? error.message : "failed to download module",
+      "error"   : error,
+      "input"   : arg
+    });
+  });
+});
+
+// finds what is the name of the file to download for a specific module, version
+// and category.
+//
+// arg = {
+//  moduleId : "id",
+//  version : 1.2.0, // the selected version
+//  cat : "release", // version category
+//  url : {
+//    release : "url",
+//    snapshot : "url",
+//    change : "url",
+//    doc : "url",
+//  }
+// }
+ipcMain.on('nx-find-download.start', function(event , arg){
+  console.log('nx-find-download.start');
 
   // intialize the version url that is used to get all files available for a given
   // module, version, and version category (e.g. m1, version 1.2 - cat : release)
@@ -149,110 +261,22 @@ ipcMain.on('nx-download-mod.start', function(event, arg) {
   }
   console.log("versionListUrl = "+versionListUrl);
 
-  // get the war file url for this version
   nexusAPI.getWarfileDescriptor(versionListUrl)
   .then(function(warfileDesc){
     console.log(warfileDesc);
-
-    if( ! warfileDesc ) {
-      event.sender.send('nx-download-mod.error', {
-        message :  "no file found with extension '.WAR'",
-        input   : arg
-      });
-      console.log("no file found with extension '.WAR'");
-      return;
-    }
-    // compute local filepath
-    let localFilePath = path.join(localFolderPath ,warfileDesc.text);
-    console.log("localFilePath = "+localFilePath);
-
-    // if target file already exist, lets delete it
-    if( fs.existsSync(localFilePath)) {
-      fs.unlinkSync(localFilePath);
-    }
-
-    // ok, we have th war file url to download, and the local file path for the
-    // destination : let's go !
-
-    // update the general download state object
-    download[arg.moduleId] = {
-      state : "start",
-    };
-
-    // this function is passed to the downloader and called periodically to check
-    // if download can continue or the user request its cancelation
-    var downloadContinue = function(modId) {
-      return function() {
-        console.log("conContinue : modId = "+modId);
-        console.log(download);
-        if( download.hasOwnProperty(modId) && download[modId].state === 'cancel') {
-          console.log('FALSE');
-          return false;
-        } else {
-          console.log('TRUE');
-          return true;
-        }
-      };
-    };
-
-    let urlTest = 'https://github.com/raoul2000/my-toolbox/archive/master.zip';
-    //let urlTest = 'https://download.docker.com/win/stable/InstallDocker.msi';
-
-    return nexusDownloader.download(
-        warfileDesc.resourceURI,
-        localFilePath,
-        config.get('nexus.requestTimeout'),
-        downloadContinue(arg.moduleId)
-      )
-      .then(function(result) {
-        // module have been downloaded : create its metadata file
-        // with default values
-        let metadataFilePath = localFilePath.concat('.meta');
-
-        fs.writeFileSync(
-          metadataFilePath,
-          JSON.stringify({
-            "moduleId" : arg.moduleId,
-            "version"  : arg.version,
-            "symlink"  : arg.moduleId,
-            "installFolder" : arg.moduleId+'-'+arg.version
-          },null,2) // pretty print json
-        );
-
-        download[arg.moduleId] = {state : "done" }; // update download state
-        event.sender.send('nx-download-mod.done', {
-          moduleId      : arg.moduleId,
-          url           : warfileDesc.resourceURI,
-          localFilePath : localFilePath
-        });
-      })
-      .progress(function(progress) {
-        console.log(progress);
-        download[arg.moduleId] = { state : "progress" };  // update download state
-        event.sender.send('nx-download-mod.progress', {
-          moduleId      : arg.moduleId,
-          progress      : progress,
-          url           : warfileDesc.resourceURI,
-          localFilePath : localFilePath
-        });
-      })
-      .catch(function(error){
-          console.log('nx-download-mod.error');
-          console.log(error);
-          event.sender.send('nx-download-mod.error', {
-            message : error && error.message ? error.message : "failed to download module",
-            error   : error,
-            input   : arg
-          });
-        });
+    
+    arg.warFileDescriptors = warfileDesc; // array of file descriptors
+    event.sender.send('nx-find-download.done', arg);
+    return true;
   })
   .catch(function(error){
-    console.log('nx-download-mod.error');
+    console.log('nx-find-download.error');
     console.log(error);
-    event.sender.send('nx-download-mod.error', {
+    event.sender.send('nx-find-download.error', {
       message :  error && error.message ? error.message : "unexpected error",
       error   : error,
       input   : arg
     });
   });
+
 });

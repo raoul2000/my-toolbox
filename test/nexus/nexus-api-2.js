@@ -15,8 +15,8 @@ describe('nexus API (2)',function(done){
     return nexusAPI.getWarfileDescriptor("http://localhost:3000/warfiledesc")
     .then(function(result){
 			console.log(JSON.stringify(result));
-			assert.equal(result.resourceURI, "http://hostname:8080/nexus/service/local/repositories/releases/content/com/company/webapp/m1/2.3.19/file.war");
-			assert.equal(result.text, "file.war");
+			assert.equal(result[0].resourceURI, "http://localhost:3000/download/file.war");
+			assert.equal(result[0].text, "file.war");
     })
     .done(function(){
       done();
@@ -28,7 +28,8 @@ describe('nexus API (2)',function(done){
     return nexusAPI.getWarfileDescriptor("http://localhost:3000/m1Release")
     .then(function(result){
 			console.log(result);
-			assert.isUndefined(result);
+			assert.isArray(result);
+			assert.equal(result.length,0);
     })
     .done(function(){
       done();
