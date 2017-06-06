@@ -103,7 +103,7 @@
           "sizeOnDisk": -1
         },
         {
-          "resourceURI": "https://github.com/raoul2000/my-toolbox/archive/master.zip",
+          "resourceURI": "http://localhost:3000/download/file.war",
           "relativePath": "/com/company/webapp/m1/2.3.19/file.war",
           "text": "file.war",
           "leaf": true,

@@ -5,8 +5,8 @@
     "url" : {
       "release" : "http://localhost:3000/m1Release",
       "snapshot": "http://localhost:3000/m1Snapshot",
-      "changes" : "http://hostname/m1/changes",
-      "doc" : "http://hostname/m1/doc"
+      "changes" : "http://localhost:3000/changes-m1.html",
+      "doc" : "http://localhost:3000/doc-m1.html"
     }
   },
   "m2" : {
@@ -15,8 +15,8 @@
     "url" : {
       "release" : "http://localhost:3000/m2Release",
       "snapshot": "http://localhost:3000/m2Snapshot",
-      "changes" : "http://hostname/m2/changes",
-      "doc" : "http://hostname/m2/doc"
+      "changes" : "http://localhost:3000/changes-m2.html",
+      "doc" : "http://localhost:3000/doc-m2.html"
     }
   }
 }
