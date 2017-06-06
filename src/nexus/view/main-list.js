@@ -239,6 +239,7 @@ $('#module-list').on('change',function(ev){
   }
 });
 
+
 $('#btn-reload-module-ref').on('click', function(){
   $('#module-list-panel, #init-error-panel').hide();
   $('#module-list').empty();
