@@ -111,5 +111,34 @@
           "sizeOnDisk": 33456
         }
       ]
+  },
+  "warfiledescMulti": {
+    "data" :
+      [
+        {
+          "resourceURI": "http://hostname:8080/nexus/service/local/repositories/releases/content/com/company/webapp/m1/2.3.19/",
+          "relativePath": "/com/company/webapp/m1/2.3.19/",
+          "text": "s2 2.3.19_sn",
+          "leaf": false,
+          "lastModified": "2013-10-15 10:27:00.0 UTC",
+          "sizeOnDisk": -1
+        },
+        {
+          "resourceURI": "http://hostname:8080/nexus/service/local/repositories/releases/content/com/company/webapp/m1/2.3.19/file.txt",
+          "relativePath": "/com/company/webapp/m1/2.3.19/file.txt",
+          "text": "file-1.war",
+          "leaf": true,
+          "lastModified": "2013-10-15 10:27:00.0 UTC",
+          "sizeOnDisk": -1
+        },
+        {
+          "resourceURI": "http://localhost:3000/download/file.war",
+          "relativePath": "/com/company/webapp/m1/2.3.19/file.war",
+          "text": "file-2.war",
+          "leaf": true,
+          "lastModified": "2013-10-15 10:27:00.0 UTC",
+          "sizeOnDisk": 33456
+        }
+      ]
   }
 }
