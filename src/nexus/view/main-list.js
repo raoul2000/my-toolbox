@@ -12,9 +12,9 @@ const ipcRenderer = electron.ipcRenderer;
 function createHTMLModuleRow(id, data) {
   return `
   <tr id="${id}" class="init" >
-    <td>
+    <td width="90px">
       <div class="btn-group">
-        <button type="button" class="btn btn-sm btn-default chk-module" title="download version info">
+        <button type="button" class="btn btn-sm btn-default chk-module" data-toggle="tooltip" title="download version info">
           <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
         </button>
         <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -43,6 +43,9 @@ function createHTMLModuleRow(id, data) {
       <div class="status">
         <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span> Loading ...
       </div>
+    </td>
+    <td>
+
     </td>
     <td nowrap="true">
       <div class="action">
@@ -228,6 +231,8 @@ $('#module-list').on('change',function(ev){
   let moduleId = row.prop('id');
 
   if( $target.closest('.sel-version-cat').length > 0 ) {
+    // user select the version category (release/snapshot) : update the
+    // version number select box
     let $selCat        = $target.closest('.sel-version-cat').first();
     let $selVersion    = row.find('.sel-version-val');
     let selectedOption = $selCat.find('option:selected').prop('value');
@@ -239,6 +244,10 @@ $('#module-list').on('change',function(ev){
        .attr("value",optValue)
        .text(optValue));
     });
+    $selVersion.trigger('change');
+  }
+  else if( $target.closest('.sel-version-val').length > 0 ) {
+    console.log('sel-version-val changes');
   }
 });
 

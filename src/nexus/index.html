@@ -67,7 +67,7 @@
                 <div class="input-group">
                   <input id="nx-input-download-folder"
                     data-cfg-key="nexus.downloadFolder"
-                     data-toggle="tooltip" title=""
+                     data-toggle="tooltip-validation" title=""
                     name="nx-input-download-folder" type="text" class="form-control" placeholder="">
                   <span class="input-group-btn">
                     <button id="nx-but-choose-folder" class="btn btn-default" type="button">
@@ -87,7 +87,7 @@
                 <div class="input-group">
                   <input id="nx-input-conf-folder"
                     data-cfg-key="nexus.confFolder"
-                    data-toggle="tooltip" title=""
+                    data-toggle="tooltip-validation" title=""
                     name="nx-conf-folder" type="text" class="form-control" placeholder="">
                   <span class="input-group-btn">
                     <button id="nx-but-choose-conf-folder" class="btn btn-default" type="button">
@@ -107,7 +107,7 @@
                 <div class="input-group">
                   <input id="nx-request-timeout"
                     data-cfg-key="nexus.requestTimeout"
-                    data-toggle="tooltip" title=""
+                    data-toggle="tooltip-validation" title=""
                     name="nx-request-timeout" type="text" class="form-control" placeholder="">
                 </div>
                 <span id="helpBlock" class="help-block">
@@ -134,7 +134,8 @@
           <h2>Module Download <small>Nexus</small></h2>
           <hr/>
           <div class="btn-group" role="group" style="margin-bottom:1em;">
-            <button id="btn-reload-module-ref" type="button" class="btn btn-default">
+            <button id="btn-reload-module-ref" type="button" class="btn btn-default"
+              title="Reload module reference">
               <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
             </button>
           </div> <!-- toolbar end -->
@@ -159,6 +160,7 @@
                 <th>id</th>
                 <th>Name</th>
                 <th>version</th>
+                <th>file</th>
                 <th></th>
                 <th></th>
               </tr>
@@ -201,6 +203,18 @@
                   </div>
                   <div class="status">
                     <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span> Loading ...
+                  </div>
+                </td>
+                <td>
+                  <div class="download-filename" style="display:none">
+                    no file selected
+                  </div>
+                  <div class="download-filename-select">
+                    <select class="sel-downnload-file" name="">
+                      <option value="file1.war">file1.war</option>
+                      <option value="file2.war">file2.war</option>
+                      <option value="file3.war">file3.war</option>
+                    </select>
                   </div>
                 </td>
                 <td>
