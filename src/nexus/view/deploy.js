@@ -132,10 +132,15 @@ $('#artefact-list').on('click',function(ev){
   if( $target.closest('.btn-start-row-edit').length > 0 ) {
     // starting row edition ////////////////////////////////////////////////////
 
-    // copy tr.data intp input values
+    // copy tr.data into input values
     row.find('input[type="text"]').each(function(index,el){
       let currentValue = row.data(el.getAttribute('name'));
       el.value = currentValue === 'undefined' ? '' : row.data(el.getAttribute('name'));
+      /*
+      // try to set focus on the first input text
+      if(index === 0) {
+        el.focus();
+      }*/
     });
     row.removeClass().addClass('editing');
   } else
