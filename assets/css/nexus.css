@@ -32,7 +32,8 @@ tr.init .status,
 tr.loaded .status,
 tr.loaded .download-progress,
 tr.init .action,
-tr.init .download-progress {
+tr.init .download-progress,
+.progress-find-download-file {
   display:none;
 }
 tr.loading-version .status {
@@ -78,4 +79,8 @@ tr.editing .value {
 tr .value,
 tr.editing .edit {
   display:block;
+}
+.single-value,
+.multi-value {
+  display:none;
 }

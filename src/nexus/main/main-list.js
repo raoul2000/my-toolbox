@@ -264,7 +264,7 @@ ipcMain.on('nx-find-download.start', function(event , arg){
   nexusAPI.getWarfileDescriptor(versionListUrl)
   .then(function(warfileDesc){
     console.log(warfileDesc);
-    
+
     arg.warFileDescriptors = warfileDesc; // array of file descriptors
     event.sender.send('nx-find-download.done', arg);
     return true;
