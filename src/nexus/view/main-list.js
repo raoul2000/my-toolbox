@@ -263,7 +263,19 @@ $('#module-list').on('change',function(ev){
        .attr("value",optValue)
        .text(optValue));
     });
-    $selVersion.trigger('change');
+    // add a the initially selected option in order to force user to select a version
+    // and avoid chaing update : category -> version -> filename
+    $selVersion.append($("<option></option>")
+     .prop("selected",true)
+     .attr('value','PROMPT')
+     .text("version ..."));
+
+    // clean and hide the filename widget
+    row.find('.download-filename .sel-filename-val').hide();
+    row.find('.download-filename .single-value')
+     .data('fileDescriptor',null)
+     .hide();
+    row.find('.action').hide();
   }
   else /////////////////////////////////////////////////////////////////////////
   if( $target.closest('.sel-version-val').length > 0 ) {
@@ -276,12 +288,18 @@ $('#module-list').on('change',function(ev){
     // Clean-up current file column info ...
     row.find('.sel-filename-val').children('option').remove();
 
+    // clear the filename widget
     row.find('.download-filename .sel-filename-val').hide();
     row.find('.download-filename .single-value')
       .data('fileDescriptor',null)
       .hide();
+
+    // the PROMPT is removed from version num list after the first user selection
+    row.find('.sel-version-val > option[value="PROMPT"]').remove();
+
+    // disable the select boxes during operation
     row.find('.sel-version-cat, .sel-version-val').prop('disabled', true);
-    // .. and start to refresh it
+    row.find('.action').hide();
     row.find('.progress-find-download-file').show();
     ipcRenderer.send('nx-find-download.start',{
       moduleId : moduleId,
@@ -437,6 +455,7 @@ ipcRenderer.on('nx-find-download.done', function(event, data){
     });
     row.find('.download-filename .sel-filename-val').show();
   }
+  row.find('.action').show();
 });
 
 // failed to find candidate files for download
@@ -447,5 +466,12 @@ ipcRenderer.on('nx-find-download.error', function(sender, data){
   let row = $('#'+data.input.moduleId);
   row.find('.sel-version-cat, .sel-version-val').prop('disabled', false);
   row.find('.progress-find-download-file').hide();
-  uiStateManager.download_module_error(row);
+
+  // clean and hide the filename widget
+  row.find('.download-filename .sel-filename-val').hide();
+  row.find('.download-filename .single-value')
+   .data('fileDescriptor',null)
+   .hide();
+
+
 });
