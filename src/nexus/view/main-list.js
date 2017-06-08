@@ -118,6 +118,9 @@ function createHTMLTable(moduleRef) {
  * User Interface State Manager
  */
 const uiStateManager = {
+  find_filename_done : function(row) {
+
+  },
   download_module_start : function(row, $target) {
     console.log("state : download_module_start");
     row.find('.progress-percent .percent-value').first().text("0%");
@@ -216,16 +219,8 @@ $('#module-list').on('click',function(ev){
       // update UI
       uiStateManager.download_module_start(row,$target);
 
-      // read user input : version number and category
-      let selVersion = row.find('.sel-version-val > option:selected').prop('value');
-      let selCat     = row.find('.sel-version-cat > option:selected').prop('value');
-
-      let arg = {
-        moduleId : moduleId,
-        version  : selVersion,
-        cat      : selCat,  // 'release' or 'snapshot',
-        url      : row.data('ref').url
-      };
+      // the download candidate can be a signle file or the current selection of
+      // a list of files.
       let selFile = row.find('.sel-filename-val > option:selected').data('fileDescriptor');
       console.log(selFile);
       if( ! selFile ) {
@@ -233,10 +228,8 @@ $('#module-list').on('click',function(ev){
       }
       console.log("selFile", selFile);
 
-      // before being able to actually download a file, we must handle the case where more than
-      // one file is candidate for download.
+      // Let's download now !
       ipcRenderer.send('nx-download-mod.start', selFile );
-      //ipcRenderer.send('nx-find-download.start',arg);
 
   } else ////////////////////////////////////////////////////////////////////////
   if( $target.closest('.nx-external-link-open').length >0 ) {
@@ -287,6 +280,7 @@ $('#module-list').on('change',function(ev){
     row.find('.download-filename .single-value')
       .data('fileDescriptor',null)
       .hide();
+    row.find('.sel-version-cat, .sel-version-val').prop('disabled', true);
     // .. and start to refresh it
     row.find('.progress-find-download-file').show();
     ipcRenderer.send('nx-find-download.start',{
@@ -402,6 +396,7 @@ ipcRenderer.on('nx-find-download.done', function(event, data){
   var moduleId = data.moduleId;
   let row = $('#'+moduleId);
 
+  row.find('.sel-version-cat, .sel-version-val').prop('disabled', false);
   row.find('.progress-find-download-file').hide();
   row.find('.download-filename .sel-filename-val').hide();
 
@@ -440,16 +435,17 @@ ipcRenderer.on('nx-find-download.done', function(event, data){
          "download" : optValue
        }));
     });
-
     row.find('.download-filename .sel-filename-val').show();
-    //notify("multiple file download not supported","error","error");
   }
 });
 
 // failed to find candidate files for download
 ipcRenderer.on('nx-find-download.error', function(sender, data){
+  console.log('nx-find-download.error',data);
   notify(data.message,'error','error');
+
   let row = $('#'+data.input.moduleId);
+  row.find('.sel-version-cat, .sel-version-val').prop('disabled', false);
   row.find('.progress-find-download-file').hide();
   uiStateManager.download_module_error(row);
 });
