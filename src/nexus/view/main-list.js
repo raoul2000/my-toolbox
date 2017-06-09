@@ -418,44 +418,54 @@ ipcRenderer.on('nx-find-download.done', function(event, data){
   row.find('.progress-find-download-file').hide();
   row.find('.download-filename .sel-filename-val').hide();
 
-  if( data.warFileDescriptors &&  data.warFileDescriptors.length === 1 ) {
-    // we have just ONE candidate for download
-    let fileDescriptor = data.warFileDescriptors[0];
-
-    // populate the content of div with the filename and its data object
-    // with download info
+  if( data.warFileDescriptors.length === 0 ) {
+    // No file available for download
     row.find('.download-filename .single-value')
-      .html(fileDescriptor.text)
-      .data('fileDescriptor', {
-        "moduleId" : data.moduleId,
-        "version"  : data.version,
-        "cat"      : data.cat,
-        "download" : fileDescriptor  // data.download.resourceURI point to the file
-      })
+      .html("<code>no file</code>")
       .show();
 
+    row.find('.action').hide();
   } else {
-    // we have more than one candidate file for download : display a select list
-    // and let the user choose
 
-    let $selfilename  = row.find('.sel-filename-val');
+    if( data.warFileDescriptors &&  data.warFileDescriptors.length === 1 ) {
+      // we have just ONE candidate for download
+      let fileDescriptor = data.warFileDescriptors[0];
 
-    // populate candidate filename select list (options have been removed on
-    // sel version change)
-    data.warFileDescriptors.forEach(function(optValue){
-      $selfilename.append($("<option></option>")
-       .attr("value",optValue.text)
-       .text(optValue.text)
-       .data('fileDescriptor',{
-         "moduleId" : data.moduleId,
-         "version"  : data.version,
-         "cat"      : data.cat,
-         "download" : optValue
-       }));
-    });
-    row.find('.download-filename .sel-filename-val').show();
+      // populate the content of div with the filename and its data object
+      // with download info
+      row.find('.download-filename .single-value')
+        .html(fileDescriptor.text)
+        .data('fileDescriptor', {
+          "moduleId" : data.moduleId,
+          "version"  : data.version,
+          "cat"      : data.cat,
+          "download" : fileDescriptor  // data.download.resourceURI point to the file
+        })
+        .show();
+
+    } else  {
+      // we have more than one candidate file for download : display a select list
+      // and let the user choose
+
+      let $selfilename  = row.find('.sel-filename-val');
+
+      // populate candidate filename select list (options have been removed on
+      // sel version change)
+      data.warFileDescriptors.forEach(function(optValue){
+        $selfilename.append($("<option></option>")
+         .attr("value",optValue.text)
+         .text(optValue.text)
+         .data('fileDescriptor',{
+           "moduleId" : data.moduleId,
+           "version"  : data.version,
+           "cat"      : data.cat,
+           "download" : optValue
+         }));
+      });
+      row.find('.download-filename .sel-filename-val').show();
+    }
+    row.find('.action').show();
   }
-  row.find('.action').show();
 });
 
 // failed to find candidate files for download
