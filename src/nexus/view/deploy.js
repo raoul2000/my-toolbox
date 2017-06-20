@@ -25,7 +25,7 @@ function createHTMLRowDeploy(artefact) {
           ${artefact.metadata.version || '<span class="label label-danger">undefined</span>'}
         </div>
         <div class="edit">
-          <input type="text" name="version" value="" placeholder="version" style="width:80px">
+          <input type="text" name="version" value="" placeholder="version" style="width:110px">
         </div>
       </div>
     </td>
@@ -47,7 +47,7 @@ function createHTMLRowDeploy(artefact) {
           ${artefact.metadata.installFolder || '<span class="label label-danger">undefined</span>'}
         </div>
         <div class="edit">
-          <input type="text" name="installFolder" value="" placeholder="folder" style="width:80px">
+          <input type="text" name="installFolder" value="" placeholder="folder" style="width:160px">
         </div>
       </div>
     </td>
