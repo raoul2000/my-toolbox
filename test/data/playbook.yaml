@@ -1,0 +1,46 @@
+- hosts: hostname
+  tasks:
+    - name: creating versioned folder /remote/install/path1/checkin-2.4.1
+      file:
+        path: /remote/install/path1/checkin-2.4.1
+        state: directory
+    - name: copy file to target machine
+      copy:
+        src: emCheckin-2.4.1.war
+        dest: /remote/install/path1/checkin-2.4.1
+    - name: uncompress war file
+      shell: jar -xvf "emCheckin-2.4.1.war"
+      args:
+        chdir: /remote/install/path1/checkin-2.4.1
+        executable: /bin/bash
+    - name: update symbolic link
+      file:
+        src: /remote/install/path1/checkin-2.4.1
+        dest: /remote/install/path1/checkin
+        state: link
+    - name: delete uploaded file
+      file:
+        path: /remote/install/path1/checkin-2.4.1/emCheckin-2.4.1.war
+        state: absent
+    - name: creating versioned folder /remote/install/path2/checkin-3.0.0
+      file:
+        path: /remote/install/path2/checkin-3.0.0
+        state: directory
+    - name: copy file to target machine
+      copy:
+        src: emCheckin-3.0.0.war
+        dest: /remote/install/path2/checkin-3.0.0
+    - name: uncompress war file
+      shell: jar -xvf "emCheckin-3.0.0.war"
+      args:
+        chdir: /remote/install/path2/checkin-3.0.0
+        executable: /bin/bash
+    - name: update symbolic link
+      file:
+        src: /remote/install/path2/checkin-3.0.0
+        dest: /remote/install/path2/checkin
+        state: link
+    - name: delete uploaded file
+      file:
+        path: /remote/install/path2/checkin-3.0.0/emCheckin-3.0.0.war
+        state: absent

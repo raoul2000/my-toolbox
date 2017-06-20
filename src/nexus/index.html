@@ -395,8 +395,8 @@
           </div>
           <div class="modal-body">
             <div class="alert alert-warning" role="alert">
-              Please note that no file is going to be copied to any remote host : this tools is here to help you quickly create an <b>Ansible Playbook</b> that
-              you will have run in order to actually perform the deployment.
+              No file is going to be copied to remote host : this tools is here to help you quickly create an <b>Ansible Playbook</b> that
+              you will have run manually in order to actually perform the deployment.
             </div>
             <hr/>
 
@@ -427,6 +427,18 @@
                 </div>
               </div> <!-- input ansible hostname -->
             </form>
+            <div id="ansible-playbook-status">
+              <div class="alert alert-success" role="alert">
+                The playbook and all files have been copied to <code>/some/folder/mane</code>
+              </div>
+              <div class="alert alert-danger" role="alert">
+                <h2>Oups : something went wrong</h2>
+                <p class="error-message"></p>
+                <code>
+
+                </code>
+              </div>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
