@@ -43,7 +43,7 @@ exports.deployStandard = function(options, notify) {
       notify(msg);
     }
   };
-  
+
   let cmdResultHandler = function(result) {
     if( result.code !== 0) {
       throw new Error(result);
@@ -51,7 +51,8 @@ exports.deployStandard = function(options, notify) {
       console.log("stdout", result.stdout);
     }
   };
-
+  // start the Promise chain
+  sendNotification(`connecting to ${options.ssh.hostname}`);
   return ssh
   .connect(options.ssh)
   .then(() => {

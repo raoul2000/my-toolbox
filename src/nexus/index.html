@@ -283,7 +283,7 @@
                 </button>
                 <ul class="dropdown-menu">
                   <li><a id="btn-deploy-ansible" href="#">Ansible</a></li>
-                  <li><a id="btn-deploy-methode-2" href="#">Methode 2</a></li>
+                  <li><a id="btn-deploy-ssh" href="#">Direct</a></li>
                 </ul>
               </div>
             </div>
@@ -443,6 +443,88 @@
     </div><!-- /.modal Ansible-->
 
 
+    <!-- modal : deploy SSH -->
+    <div id="modal-deploy-ssh" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Direct Deployment</h4>
+          </div>
+          <div class="modal-body">
+
+            <form id="ssh-form-playbook" name="ssh-form-playbook" class="form-horizontal">
+
+              <div class="form-group  invalid-value">
+                <label for="ssh-hostname" class="col-sm-3 control-label">Host</label>
+                <div class="col-sm-8">
+                  <input id="ssh-hostname"
+                    data-toggle="tooltip-validation" title=""
+                    name="ssh-hostname" type="text" class="form-control" placeholder="">
+                </div>
+              </div> <!-- input ssh hostname -->
+
+              <div class="form-group  invalid-value">
+                <label for="ssh-port" class="col-sm-3 control-label">Port</label>
+                <div class="col-sm-2">
+                  <input id="ssh-port"
+                    data-toggle="tooltip-validation" title=""
+                    name="ssh-port" type="text" class="form-control" placeholder="">
+                </div>
+              </div> <!-- input ssh port -->
+
+              <div class="form-group  invalid-value">
+                <label for="ssh-username" class="col-sm-3 control-label">Username</label>
+                <div class="col-sm-6">
+                  <input id="ssh-username"
+                    data-toggle="tooltip-validation" title=""
+                    name="ssh-username" type="text" class="form-control" placeholder="">
+                </div>
+              </div> <!-- input ssh username -->
+
+              <div class="form-group  invalid-value">
+                <label for="ssh-password" class="col-sm-3 control-label">Password</label>
+                <div class="col-sm-6">
+                  <input id="ssh-password"
+                    data-toggle="tooltip-validation" title=""
+                    name="ssh-password" type="password" class="form-control" placeholder="">
+                </div>
+              </div> <!-- input ssh password -->
+
+              <div class="form-group  invalid-value">
+                <label for="ssh-target-path" class="col-sm-3 control-label">Target Folder</label>
+                <div class="col-sm-8">
+                  <input id="ssh-target-path"
+                    data-toggle="tooltip-validation" title=""
+                    name="ssh-target-path" type="text" class="form-control" placeholder="">
+                </div>
+              </div> <!-- input ssh target-path -->
+
+            </form>
+            <div id="deploy-ssh-status">
+              <div class="status">
+                <div class="">Deploying to 127.0.0.1 </div>
+                <div class=""> uploading file to /folder/remote/file.txt <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span></div>
+              </div>
+
+              <div class="alert alert-success" role="alert">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </div>
+              <div class="alert alert-danger" role="alert">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button id="btn-start-ssh-deploy" type="button" class="btn btn-danger" disabled="true">
+              Deploy
+            </button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal ssh deploy-->
+
+
   </body>
 
   <script type="text/javascript">
@@ -462,6 +544,7 @@
     require('./view/settings.js');
     require('./view/deploy.js');
     require('./view/deploy-ansible.js');
+    require('./view/deploy-ssh.js');
   </script>
 
 </html>

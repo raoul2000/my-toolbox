@@ -50,50 +50,65 @@ $('#playbook-hostname, #deployment-id').on('keyup', function(ev){
   });
 });
 
-function hidePlaybookStatus() {
-  document.querySelectorAll('#modal-deploy-ansible #ansible-playbook-status .alert')
+
+
+function hideSSHDeployStatus() {
+  document.querySelectorAll('#modal-deploy-ssh #deploy-ssh-status .alert')
     .forEach( el => el.style.display = 'none');
 }
 
-document.getElementById('btn-deploy-ansible').addEventListener('click',function(ev){
+function showDeployStatus(){
+  $('#deploy-ssh-status').slideDown(100);
+  $('#ssh-form-playbook').slideUp(100);
+}
+
+function hideDeployStatus(){
+  $('#deploy-ssh-status').slideUp(100);
+  $('#ssh-form-playbook').slideDown(100);
+}
+
+
+document.getElementById('btn-deploy-ssh').addEventListener('click',function(ev){
   ev.preventDefault();
-  //console.log(ev);
+  console.log(ev);
+
   let selectedFiles = getSelectedFiles();
   console.log(selectedFiles);
   if( selectedFiles.length === 0) {
-      alert('Select one or more files to deploy');
+    notify('Select one or more files to deploy', 'warning', 'title');
   } else {
-    hidePlaybookStatus();
-    $('#modal-deploy-ansible').modal('show');
+    //hideSSHDeployStatus();
+    hideDeployStatus();
+    $('#modal-deploy-ssh').modal('show');
   }
 });
 
 
-document.getElementById('btn-create-playbook').addEventListener('click', function(ev){
-  hidePlaybookStatus();
+document.getElementById('btn-start-ssh-deploy').disabled = false;
+document.getElementById('btn-start-ssh-deploy').addEventListener('click', function(ev){
+  showDeployStatus();
   // retrieve form values
-  let form     = document.forms['ansible-form-playbook'];
+  //
+  /*
+  let form     = document.forms['ssh-form-playbook'];
   let hostname = form.elements['playbook-hostname'].value;
   let deployId = form.elements['deployment-id'].value;
-
+  */
   // validate form
   // TODO
 
-  ipcRenderer.send('nx-create-playbook.start',{
-    'files'    : getSelectedFiles(),
-    'hostname' : hostname,
-    'deployId' : deployId,
-    'remoteInstallBasePath' : '/remote/base/path'
+
+  ipcRenderer.send('nx-ssh-deploy.start',{
   });
 });
 
-ipcRenderer.on('nx-create-playbook.done',function(sender,data){
+ipcRenderer.on('nx-ssh-deploy.done',function(sender,data){
   let elSuccess = document.querySelector('#modal-deploy-ansible #ansible-playbook-status .alert-success');
   elSuccess.innerHTML = 'The playbook file has been created in <code>'+data+'</code>';
   elSuccess.style.display = 'block';
   console.log(data);
 });
-ipcRenderer.on('nx-create-playbook.error',function(sender,err){
+ipcRenderer.on('nx-ssh-deploy.error',function(sender,err){
   let elDanger = document.querySelector('#modal-deploy-ansible #ansible-playbook-status .alert-danger');
   elDanger.innerHTML = `<h2>Oups : something went wrong</h2>
   <pre>${JSON.stringify(err)}</pre>
