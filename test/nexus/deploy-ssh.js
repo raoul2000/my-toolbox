@@ -39,4 +39,31 @@ describe('deploy SSH', function(done) {
       });
   });
 
+  it('raise error if localfile path does not exists ', function(done) {
+    var srcFilepath = path.join(__dirname, "/../data/nexus/__dummy.war");
+    let destFilepath = "/root/target-1.3/dummy.war";
+    let symlinkPath = "/root/target";
+    deploySSH.deployStandard({
+        ssh: {
+          'host': '127.0.0.1',
+          'port': 2222,
+          'username': 'root',
+          'password': 'root'
+        },
+        'srcFilepath': srcFilepath,
+        'destFilepath': destFilepath,
+        'symlinkPath': symlinkPath
+      },console.log)
+      .then((result) => {
+        console.log("then",result);
+        done(new Error("should fail"));
+      })
+      .catch(err => {
+        console.error("catch",err);
+        console.log("err",JSON.stringify(err));
+        console.log("err.message",err.message);
+        done();
+      });
+  });
+
 });

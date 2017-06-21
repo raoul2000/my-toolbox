@@ -22,7 +22,10 @@ const NodeSSH = require('node-ssh');
  * @param  {[type]} options [description]
  * @return {[type]}         [description]
  */
-exports.deployStandard = function(options) {
+exports.deployStandard = function(options, notify) {
+  if(notify && typeof notify !== 'function') {
+    return Promise.reject(new Error("argument notify must be a function"));
+  }
   let ssh = new NodeSSH();
 
   let remoteFiletitle = path.basename(options.destFilepath);
@@ -32,10 +35,18 @@ exports.deployStandard = function(options) {
   let cmdUncompress = `cd "${remoteInstallFolderpath}" && unzip -qo "${remoteFiletitle}"`;
   let cmdUpdateSymlink = `ln -sfn "${remoteInstallFolderpath}" "${options.symlinkPath}"`;
   let cmdDeleteUploadedFile = `rm "${options.destFilepath}"`;
+  let progressMessage = '';
 
+  let sendNotification = function(msg) {
+    console.log(msg);
+    if( notify ) {
+      notify(msg);
+    }
+  };
+  
   let cmdResultHandler = function(result) {
     if( result.code !== 0) {
-      throw result;
+      throw new Error(result);
     } else {
       console.log("stdout", result.stdout);
     }
@@ -44,25 +55,25 @@ exports.deployStandard = function(options) {
   return ssh
   .connect(options.ssh)
   .then(() => {
-    console.log(`copy file from ${options.srcFilepath} to remote ${options.destFilepath}` );
+    sendNotification(`copy file from ${options.srcFilepath} to remote ${options.destFilepath}`);
     return ssh.putFile(options.srcFilepath, options.destFilepath);
   })
   .then(() => {
-    console.log(`uncompress archive : ${cmdUncompress}`);
+    sendNotification(`uncompress archive : ${cmdUncompress}`);
     return ssh.execCommand(cmdUncompress,[],{stream: 'stdout'}).then( cmdResultHandler );
   })
   .then(() => {
-    console.log(`update symlink : ${cmdUpdateSymlink}`);
+    sendNotification(`update symlink : ${cmdUpdateSymlink}`);
     return ssh.execCommand(cmdUpdateSymlink,[],{stream: 'stdout'}).then( cmdResultHandler );
   })
   .then(() => {
-    console.log(`delete uploaded file : ${cmdDeleteUploadedFile}`);
+    sendNotification(`delete uploaded file : ${cmdDeleteUploadedFile}`);
     return ssh.execCommand(cmdDeleteUploadedFile,[],{stream: 'stdout'}).then( cmdResultHandler );
   })
   .then(() => ssh.dispose())
   .catch(err => {
-    console.error(err);
+    console.error('deployStandard',err);
     ssh.dispose();
+    throw new Error(err);
   });
-
 };
