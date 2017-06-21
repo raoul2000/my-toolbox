@@ -1,0 +1,9 @@
+{
+  "sshConnect" : {
+    "host": "127.0.0.1",
+    "username": "root",
+    "password" : "root",
+    "port" : 2222
+  },
+  "homeDir" : "/mnt/c/dev/ws/lab/my-toolbox"
+}
