@@ -5,7 +5,7 @@ const defaultConfig = require('../../config').defaultConfig;
 const fs = require('fs');
 
 
-// initialize setting forms with configured values
+// initialize setting forms with configured values and placeholder
 function loadSettingsForm() {
 
   $('#nexus-settings *[data-cfg-key]').each(function(el){
