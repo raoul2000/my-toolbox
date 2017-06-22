@@ -9,7 +9,8 @@ const Conf     = require('conf');
 const defaultConfig = {
   'nexus.downloadFolder' : (electron.app || electron.remote.app).getPath('downloads'),
   'nexus.confFolder'     : (electron.app || electron.remote.app).getPath('userData'),
-  'nexus.requestTimeout' : 30 // in seconds
+  'nexus.requestTimeout' : 30, // in seconds
+  'ansible.remoteInstallBasePath' : '/remote/base/path'
 };
 const getdefaultConfig = function(key) {
   return defaultConfig[key];
@@ -23,6 +24,9 @@ let userConfigObject = {
     "downloadFolder" : null,
     "confFolder"     : null,
     "requestTimeout" : 30  // in seconds
+  },
+  'ansible' : {
+    'remoteInstallBasePath' : '/remote/base/path'
   }
 };
 // user Config (read/write) ///////////////////////////////////////////////////

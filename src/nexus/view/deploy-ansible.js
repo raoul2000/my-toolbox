@@ -1,4 +1,5 @@
 "use strict";
+const config = require('../../config').config;
 const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
 
@@ -83,7 +84,7 @@ document.getElementById('btn-create-playbook').addEventListener('click', functio
     'files'    : getSelectedFiles(),
     'hostname' : hostname,
     'deployId' : deployId,
-    'remoteInstallBasePath' : '/remote/base/path'
+    'remoteInstallBasePath' : config.get('ansible.remoteInstallBasePath') // TODO : user shoud be able to modify it
   });
 });
 
