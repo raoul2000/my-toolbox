@@ -37,7 +37,7 @@ document.getElementById('btn-deploy-ssh').addEventListener('click',function(ev){
 $('#deploy-ssh-form').on('submit', function (e) {
   e.preventDefault();
   e.stopPropagation();
-  showDeployStatus();
+  //showDeployStatus();
 
   // retrieve form values
   //
@@ -49,16 +49,19 @@ $('#deploy-ssh-form').on('submit', function (e) {
   let password = form.elements['ssh-password'].value;
   let targetPath = form.elements['ssh-target-path'].value;
 
-  ipcRenderer.send('nx-ssh-deploy.start', {
-    'ssh' : {
-      'host' : hostname,
-      'port' : port,
-      'username' : username,
-      'password' : password
-    },
-    'targetPath' : targetPath,
-    'files' : getSelectedFiles()
-  });
+  $('#modal-deploy-ssh').one('hidden.bs.modal', function (e) {
+    ipcRenderer.send('nx-ssh-deploy.start', {
+      'ssh' : {
+        'host' : hostname,
+        'port' : port,
+        'username' : username,
+        'password' : password
+      },
+      'targetPath' : targetPath,
+      'files' : getSelectedFiles()
+    });
+  })
+  .modal('hide');
 });
 
 // Event handlers //////////////////////////////////////////////////////////////
@@ -66,17 +69,47 @@ $('#deploy-ssh-form').on('submit', function (e) {
 ipcRenderer.on('nx-ssh-deploy.progress',function(sender,data){
 });
 
+// one file could be deployed
+// data : {
+//     basename: 'emCheckin-2.4.1.war',
+//    installFolder: 'checkin-2.4.1',
+//    symlink: 'checkin',
+//    version: '2.4.1'
+// }
 ipcRenderer.on('nx-ssh-deploy.done',function(sender,data){
-  let elSuccess = document.querySelector('#modal-deploy-ansible #ansible-playbook-status .alert-success');
-  elSuccess.innerHTML = 'The playbook file has been created in <code>'+data+'</code>';
-  elSuccess.style.display = 'block';
+  let trEl = document.querySelector(`tr[data-basename="${data.basename}"]`);
+  trEl.lastElementChild.innerHTML = "done";
   console.log(data);
 });
-ipcRenderer.on('nx-ssh-deploy.error',function(sender,err){
-  let elDanger = document.querySelector('#modal-deploy-ansible #ansible-playbook-status .alert-danger');
-  elDanger.innerHTML = `<h2>Oups : something went wrong</h2>
-  <pre>${JSON.stringify(err)}</pre>
-  `;
-  elDanger.style.display = 'block';
-  console.error(err);
+
+// SSH deploy progress event
+// data = {
+//  "file" : {
+//     basename: 'emCheckin-2.4.1.war',
+//    installFolder: 'checkin-2.4.1',
+//    symlink: 'checkin',
+//    version: '2.4.1'
+//  },
+//  "progressMessage" : "message here"
+// }
+ipcRenderer.on('nx-ssh-deploy.progress',function(sender,data){
+  let trEl = document.querySelector(`tr[data-basename="${data.file.basename}"]`);
+  trEl.lastElementChild.innerHTML = data.progressMessage;
+  console.log(data);
+});
+
+// Error during SSH deployment for a file
+// data = {
+//  "file" : {
+//     basename: 'emCheckin-2.4.1.war',
+//    installFolder: 'checkin-2.4.1',
+//    symlink: 'checkin',
+//    version: '2.4.1'
+//  },
+//  "error" : object
+// }
+ipcRenderer.on('nx-ssh-deploy.error',function(sender,data){
+  let trEl = document.querySelector(`tr[data-basename="${data.file.basename}"]`);
+  trEl.lastElementChild.innerHTML = "ERROR";
+  console.log(data);
 });

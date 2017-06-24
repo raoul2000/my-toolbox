@@ -66,6 +66,7 @@ function createHTMLRowDeploy(artefact) {
         </button>
       </div>
     </td>
+    <td></td>
   </tr>`;
 }
 
