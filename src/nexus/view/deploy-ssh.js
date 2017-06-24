@@ -36,7 +36,7 @@ function onTextInputKeyup(input, validator) {
 }
 
 
-$('#playbook-hostname, #deployment-id').on('keyup', function(ev){
+$('#__playbook-hostname, #__deployment-id').on('keyup', function(ev){
   onTextInputKeyup(ev.target,function(val){
     if( val.length === 0 ) {
       return "Please enter a value";

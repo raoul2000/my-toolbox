@@ -453,23 +453,24 @@
           </div>
           <div class="modal-body">
 
-            <form id="ssh-form-playbook" name="ssh-form-playbook" class="form-horizontal">
+            <form id="ssh-form-playbook" name="ssh-form-playbook" class="form-horizontal" data-toggle="validator">
 
               <div class="form-group  invalid-value">
                 <label for="ssh-hostname" class="col-sm-3 control-label">Host</label>
                 <div class="col-sm-8">
                   <input id="ssh-hostname"
-                    data-toggle="tooltip-validation" title=""
-                    name="ssh-hostname" type="text" class="form-control" placeholder="">
+                    required title=""
+                    name="ssh-hostname" type="text" class="form-control" placeholder="hostname or IP address">
+                    <div class="help-block with-errors"></div>
                 </div>
               </div> <!-- input ssh hostname -->
 
               <div class="form-group  invalid-value">
-                <label for="ssh-port" class="col-sm-3 control-label">Port</label>
+                <label for="ssh-port" class="col-sm-3 control-label">SSH Port</label>
                 <div class="col-sm-2">
                   <input id="ssh-port"
-                    data-toggle="tooltip-validation" title=""
-                    name="ssh-port" type="text" class="form-control" placeholder="">
+                     title=""
+                    name="ssh-port" type="number" class="form-control" placeholder="default : 22">
                 </div>
               </div> <!-- input ssh port -->
 
@@ -477,7 +478,8 @@
                 <label for="ssh-username" class="col-sm-3 control-label">Username</label>
                 <div class="col-sm-6">
                   <input id="ssh-username"
-                    data-toggle="tooltip-validation" title=""
+                  required
+                     title=""
                     name="ssh-username" type="text" class="form-control" placeholder="">
                 </div>
               </div> <!-- input ssh username -->
@@ -486,7 +488,7 @@
                 <label for="ssh-password" class="col-sm-3 control-label">Password</label>
                 <div class="col-sm-6">
                   <input id="ssh-password"
-                    data-toggle="tooltip-validation" title=""
+                    required title=""
                     name="ssh-password" type="password" class="form-control" placeholder="">
                 </div>
               </div> <!-- input ssh password -->
@@ -495,11 +497,17 @@
                 <label for="ssh-target-path" class="col-sm-3 control-label">Target Folder</label>
                 <div class="col-sm-8">
                   <input id="ssh-target-path"
-                    data-toggle="tooltip-validation" title=""
+                  required
+                     title=""
                     name="ssh-target-path" type="text" class="form-control" placeholder="">
                 </div>
               </div> <!-- input ssh target-path -->
-
+              <div class="form-group">
+                <label for="ssh-target-path" class="col-sm-3 control-label"></label>
+                <button id="btn-start-ssh-deploy" type="submit" class="btn btn-danger" disabled="true">
+                  Deploy
+                </button>
+              </div>
             </form>
             <div id="deploy-ssh-status">
               <div class="status">
@@ -516,9 +524,6 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button id="btn-start-ssh-deploy" type="button" class="btn btn-danger" disabled="true">
-              Deploy
-            </button>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -532,6 +537,7 @@
   </script>
 
   <script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="../../node_modules/bootstrap-validator/dist/validator.min.js" type="text/javascript"></script>
   <script src="../../node_modules/pnotify/dist/pnotify.js"            type="text/javascript"></script>
   <script src="../../node_modules/pnotify/dist/pnotify.buttons.js"    type="text/javascript"></script>
 
