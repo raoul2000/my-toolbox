@@ -20,12 +20,7 @@ describe('deploy SSH', function(done) {
     let destFilepath = "/root/target-1.3/dummy.war";
     let symlinkPath = "/root/target";
     deploySSH.deployStandard({
-        ssh: {
-          'host': '127.0.0.1',
-          'port': 2222,
-          'username': 'root',
-          'password': 'root'
-        },
+        ssh:config.sshConnect,
         'srcFilepath': srcFilepath,
         'destFilepath': destFilepath,
         'symlinkPath': symlinkPath
@@ -44,12 +39,7 @@ describe('deploy SSH', function(done) {
     let destFilepath = "/root/target-1.3/dummy.war";
     let symlinkPath = "/root/target";
     deploySSH.deployStandard({
-        ssh: {
-          'host': '127.0.0.1',
-          'port': 2222,
-          'username': 'root',
-          'password': 'root'
-        },
+        ssh: config.sshConnect,
         'srcFilepath': srcFilepath,
         'destFilepath': destFilepath,
         'symlinkPath': symlinkPath

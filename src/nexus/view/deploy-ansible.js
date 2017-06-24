@@ -62,7 +62,7 @@ document.getElementById('btn-deploy-ansible').addEventListener('click',function(
   let selectedFiles = getSelectedFiles();
   console.log(selectedFiles);
   if( selectedFiles.length === 0) {
-      alert('Select one or more files to deploy');
+    notify('Select at least one file to deploy', 'warning', 'No file selected');
   } else {
     hidePlaybookStatus();
     $('#modal-deploy-ansible').modal('show');

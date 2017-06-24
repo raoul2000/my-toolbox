@@ -26,13 +26,14 @@ document.getElementById('btn-deploy-ssh').addEventListener('click',function(ev){
   let selectedFiles = getSelectedFiles();
   console.log(selectedFiles);
   if( selectedFiles.length === 0) {
-    notify('Select one or more files to deploy', 'warning', 'title');
+    notify('Select at least one file to deploy', 'warning', 'No file selected');
   } else {
     hideDeployStatus();
     $('#modal-deploy-ssh').modal('show');
   }
 });
 
+// user submit a valide SHH deploy form : start deploy
 $('#deploy-ssh-form').on('submit', function (e) {
   e.preventDefault();
   e.stopPropagation();
@@ -48,18 +49,22 @@ $('#deploy-ssh-form').on('submit', function (e) {
   let password = form.elements['ssh-password'].value;
   let targetPath = form.elements['ssh-target-path'].value;
 
-  let arg = {
+  ipcRenderer.send('nx-ssh-deploy.start', {
     'ssh' : {
       'host' : hostname,
       'port' : port,
       'username' : username,
       'password' : password
     },
+    'targetPath' : targetPath,
     'files' : getSelectedFiles()
-  };
-  ipcRenderer.send('nx-ssh-deploy.start',arg);
+  });
 });
 
+// Event handlers //////////////////////////////////////////////////////////////
+
+ipcRenderer.on('nx-ssh-deploy.progress',function(sender,data){
+});
 
 ipcRenderer.on('nx-ssh-deploy.done',function(sender,data){
   let elSuccess = document.querySelector('#modal-deploy-ansible #ansible-playbook-status .alert-success');

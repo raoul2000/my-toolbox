@@ -2,10 +2,8 @@
 const electron = require('electron');
 const ipcMain = electron.ipcMain;
 const config = require('../../config').config;
-const fs = require('fs-extra');
 const path = require('path');
 const ssh = require('../node/deploy-ssh');
-
 
 // starting SSH deploy
 /* {
@@ -15,6 +13,7 @@ const ssh = require('../node/deploy-ssh');
       'username' : username,
       'password' : password
     },
+    'targetPath' : targetPath,
   'files': [{
     basename: 'emCheckin-2.4.1.war',
     installFolder: 'checkin-2.4.1',
@@ -25,13 +24,20 @@ const ssh = require('../node/deploy-ssh');
   */
 ipcMain.on('nx-ssh-deploy.start', function(event, arg) {
   console.log('nx-ssh-deploy.start', arg);
-  return;
   let fileFolderPath = config.get('nexus.downloadFolder');
 
-  // create Deployment folder from the configured download folder + deployment ID
-  let deploymentFolderPath = path.join(fileFolderPath, arg.deployId);
-  let playbookFilePath     = path.join(deploymentFolderPath, 'playbook.yaml');
-  console.log("deploymentFolderPath", deploymentFolderPath);
+  let tasks = arg.files.map( file => {
 
-  //create the playbook object
+    var srcFilepath = path.posix.join(fileFolderPath,file.basename);
+    let destFilepath = path.posix.join(arg.targetPath, file.installFolder, file.basename);
+    let symlinkPath = path.posix.join(arg.targetPath, file.symlink);
+
+    return ssh.deployStandard({
+      'ssh': arg.ssh ,
+      'srcFilepath': srcFilepath,
+      'destFilepath': destFilepath,
+      'symlinkPath': symlinkPath
+    });
+  });
+  return Promise.all(tasks);
 });
