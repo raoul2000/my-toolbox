@@ -453,78 +453,83 @@
           </div>
           <div class="modal-body">
 
-            <form id="ssh-form-playbook" name="ssh-form-playbook" class="form-horizontal" data-toggle="validator">
+            <form id="deploy-ssh-form" name="deploy-ssh-form" class="form-horizontal"
+              data-toggle="validator" data-disable="true">
 
-              <div class="form-group  invalid-value">
+              <div class="form-group">
                 <label for="ssh-hostname" class="col-sm-3 control-label">Host</label>
                 <div class="col-sm-8">
                   <input id="ssh-hostname"
-                    required title=""
+                    required title="target server hostname or IP address"
                     name="ssh-hostname" type="text" class="form-control" placeholder="hostname or IP address">
-                    <div class="help-block with-errors"></div>
                 </div>
               </div> <!-- input ssh hostname -->
 
-              <div class="form-group  invalid-value">
+              <div class="form-group">
                 <label for="ssh-port" class="col-sm-3 control-label">SSH Port</label>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <input id="ssh-port"
-                     title=""
+                     title="SSH Port"
                     name="ssh-port" type="number" class="form-control" placeholder="default : 22">
                 </div>
               </div> <!-- input ssh port -->
 
-              <div class="form-group  invalid-value">
+              <div class="form-group">
                 <label for="ssh-username" class="col-sm-3 control-label">Username</label>
                 <div class="col-sm-6">
                   <input id="ssh-username"
                   required
-                     title=""
+                     title="SSH login name"
                     name="ssh-username" type="text" class="form-control" placeholder="">
                 </div>
               </div> <!-- input ssh username -->
 
-              <div class="form-group  invalid-value">
+              <div class="form-group">
                 <label for="ssh-password" class="col-sm-3 control-label">Password</label>
                 <div class="col-sm-6">
                   <input id="ssh-password"
-                    required title=""
+                    required title="SSH login password"
                     name="ssh-password" type="password" class="form-control" placeholder="">
                 </div>
               </div> <!-- input ssh password -->
 
-              <div class="form-group  invalid-value">
+              <div class="form-group">
                 <label for="ssh-target-path" class="col-sm-3 control-label">Target Folder</label>
                 <div class="col-sm-8">
                   <input id="ssh-target-path"
-                  required
-                     title=""
+                     required
+                     title="Remote install folder root path"
                     name="ssh-target-path" type="text" class="form-control" placeholder="">
                 </div>
               </div> <!-- input ssh target-path -->
+
               <div class="form-group">
-                <label for="ssh-target-path" class="col-sm-3 control-label"></label>
-                <button id="btn-start-ssh-deploy" type="submit" class="btn btn-danger" disabled="true">
-                  Deploy
-                </button>
-              </div>
-            </form>
-            <div id="deploy-ssh-status">
-              <div class="status">
-                <div class="">Deploying to 127.0.0.1 </div>
-                <div class=""> uploading file to /folder/remote/file.txt <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span></div>
+                <div class="col-sm-3">&nbsp;</div>
+                <div class="col-sm-8">
+                  <button id="btn-start-ssh-deploy" type="submit" class="btn btn-primary">
+                    Deploy
+                  </button>
+                </div>
               </div>
 
-              <div class="alert alert-success" role="alert">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </div>
-              <div class="alert alert-danger" role="alert">
+            </form>
+
+              <div id="deploy-ssh-status">
+                <div class="status">
+                  <div class="">Deploying to 127.0.0.1 </div>
+                  <div class=""> uploading file to /folder/remote/file.txt <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span></div>
+                </div>
+
+                <div class="alert alert-success" role="alert">
+                </div>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                <div class="alert alert-danger" role="alert">
+                </div>
               </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal ssh deploy-->

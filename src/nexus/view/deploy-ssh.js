@@ -2,55 +2,6 @@
 const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
 
-/**
- * Focus is leaving the input  control : validate it value
- * or display tool tip on error
- *
- * @param  {HTMLElement} input  the input control instance
- * @param  {function} validator function alidator (returns TRUE/FALSE)
- */
-function onTextInputBlur(input, validator) {
-  let inputVal = input.value.trim();
-  let validationError = validator(inputVal);
-  let $input = $(input);
-  if( validationError ) {
-    $input.attr('data-original-title',validationError);
-    $input.tooltip('show');
-    setTimeout(function(){
-      $input.tooltip('hide');
-    },2000);
-  }
-}
-
-function onTextInputKeyup(input, validator) {
-  let inputVal = input.value.trim();
-  let validationError = validator(inputVal);
-  let $input = $(input);
-  if( validationError ) {
-    $input.closest('.form-group').first().addClass('has-error  invalid-value');
-  } else {
-    $input.closest('.form-group').first().removeClass('has-error  invalid-value');
-  }
-  // update the create playbook buttons
-  $('#btn-create-playbook').attr('disabled', $('#ansible-form-playbook .invalid-value').length !== 0);
-}
-
-
-$('#__playbook-hostname, #__deployment-id').on('keyup', function(ev){
-  onTextInputKeyup(ev.target,function(val){
-    if( val.length === 0 ) {
-      return "Please enter a value";
-    }
-  });
-}).on('blur', function(ev){
-  onTextInputBlur(ev.target,function(val){
-    if( val.length === 0 ) {
-      return "Please enter a value";
-    }
-  });
-});
-
-
 
 function hideSSHDeployStatus() {
   document.querySelectorAll('#modal-deploy-ssh #deploy-ssh-status .alert')
@@ -59,12 +10,12 @@ function hideSSHDeployStatus() {
 
 function showDeployStatus(){
   $('#deploy-ssh-status').slideDown(100);
-  $('#ssh-form-playbook').slideUp(100);
+  $('#deploy-ssh-form').slideUp(100);
 }
 
 function hideDeployStatus(){
   $('#deploy-ssh-status').slideUp(100);
-  $('#ssh-form-playbook').slideDown(100);
+  $('#deploy-ssh-form').slideDown(100);
 }
 
 
@@ -77,30 +28,38 @@ document.getElementById('btn-deploy-ssh').addEventListener('click',function(ev){
   if( selectedFiles.length === 0) {
     notify('Select one or more files to deploy', 'warning', 'title');
   } else {
-    //hideSSHDeployStatus();
     hideDeployStatus();
     $('#modal-deploy-ssh').modal('show');
   }
 });
 
-
-document.getElementById('btn-start-ssh-deploy').disabled = false;
-document.getElementById('btn-start-ssh-deploy').addEventListener('click', function(ev){
+$('#deploy-ssh-form').on('submit', function (e) {
+  e.preventDefault();
+  e.stopPropagation();
   showDeployStatus();
+
   // retrieve form values
   //
-  /*
-  let form     = document.forms['ssh-form-playbook'];
-  let hostname = form.elements['playbook-hostname'].value;
-  let deployId = form.elements['deployment-id'].value;
-  */
-  // validate form
-  // TODO
+  let form     = document.forms['deploy-ssh-form'];
+  let hostname = form.elements['ssh-hostname'].value;
+  let port = form.elements['ssh-port'].value;
+  port = port.length === 0 ? 22 : port;
+  let username = form.elements['ssh-username'].value;
+  let password = form.elements['ssh-password'].value;
+  let targetPath = form.elements['ssh-target-path'].value;
 
-
-  ipcRenderer.send('nx-ssh-deploy.start',{
-  });
+  let arg = {
+    'ssh' : {
+      'host' : hostname,
+      'port' : port,
+      'username' : username,
+      'password' : password
+    },
+    'files' : getSelectedFiles()
+  };
+  ipcRenderer.send('nx-ssh-deploy.start',arg);
 });
+
 
 ipcRenderer.on('nx-ssh-deploy.done',function(sender,data){
   let elSuccess = document.querySelector('#modal-deploy-ansible #ansible-playbook-status .alert-success');
