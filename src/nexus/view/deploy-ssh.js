@@ -28,8 +28,18 @@ document.getElementById('btn-deploy-ssh').addEventListener('click',function(ev){
   if( selectedFiles.length === 0) {
     notify('Select at least one file to deploy', 'warning', 'No file selected');
   } else {
-    hideDeployStatus();
-    $('#modal-deploy-ssh').modal('show');
+    // let's validate that each file as required info
+    let invalidFile = selectedFiles.find( (file) => {
+      return Object.keys(file).find( key => {
+        return file[key].length === 0 || file[key] === 'null';
+      });
+    });
+    if( invalidFile) {
+      notify("One or more selected files have undefined information","error","Invalid File(s) Info");
+    } else {
+      hideDeployStatus();
+      $('#modal-deploy-ssh').modal('show');
+    }
   }
 });
 
