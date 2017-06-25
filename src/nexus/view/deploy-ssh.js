@@ -2,12 +2,6 @@
 const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
 
-
-function hideSSHDeployStatus() {
-  document.querySelectorAll('#modal-deploy-ssh #deploy-ssh-status .alert')
-    .forEach( el => el.style.display = 'none');
-}
-
 function showDeployStatus(){
   $('#deploy-ssh-status').slideDown(100);
   $('#deploy-ssh-form').slideUp(100);
@@ -18,11 +12,12 @@ function hideDeployStatus(){
   $('#deploy-ssh-form').slideDown(100);
 }
 
-
+// user select the SSH deploy menu item
 document.getElementById('btn-deploy-ssh').addEventListener('click',function(ev){
   ev.preventDefault();
   console.log(ev);
 
+  // check selected files are ok
   let selectedFiles = getSelectedFiles();
   console.log(selectedFiles);
   if( selectedFiles.length === 0) {
@@ -75,9 +70,6 @@ $('#deploy-ssh-form').on('submit', function (e) {
 });
 
 // Event handlers //////////////////////////////////////////////////////////////
-
-ipcRenderer.on('nx-ssh-deploy.progress',function(sender,data){
-});
 
 // one file could be deployed
 // data : {

@@ -135,12 +135,14 @@ $('#artefact-list').on('click',function(ev){
   if( $target.closest('.btn-start-row-edit').length > 0 ) {
     // starting row edition ////////////////////////////////////////////////////
 
-    // copy tr.data into input values
+    // copy tr.data-???? into corresponding input values
+    // convention : data attribute name == input.name
     row.find('input[type="text"]').each(function(index,el){
       let currentValue = elRow.dataset[el.getAttribute('name')];
       el.value = currentValue === 'undefined' ? '' : currentValue;
-      /*
+
       // try to set focus on the first input text
+      /*
       if(index === 0) {
         el.focus();
       }*/
@@ -149,8 +151,8 @@ $('#artefact-list').on('click',function(ev){
   } else
   if($target.closest('.btn-submit-row-edit').length > 0 )  {
     // user submit row value ///////////////////////////////////////////////////
-    let newMeta = {};
-    let basename = elRow.dataset['basename'];
+    let newMeta = {}; // stores new entered values : used to update the meta file
+    let basename = elRow.dataset['basename']; // this on is never edited
     row.find('input[type="text"]').each(function(index,el){
       let metaName = el.getAttribute('name');
       let newValue =  el.value.trim();
@@ -162,6 +164,7 @@ $('#artefact-list').on('click',function(ev){
       );
       newMeta[metaName] = newValue === '' ? null : newValue;
     });
+    // updates the meta file
     ipcRenderer.send('nx-update-artefact-meta.start', {
       "basename" : basename,
       "metadata" : newMeta
