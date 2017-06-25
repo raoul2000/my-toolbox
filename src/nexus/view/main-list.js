@@ -258,23 +258,36 @@ $('#module-list').on('change',function(ev){
 
     // clean and then populate version select list
     $selVersion.children('option').remove();
-    row.data('version')[selectedOption].forEach(function(optValue){
+    let versionOptions = row.data('version')[selectedOption];
+    if(versionOptions.length > 0 ) {
+      row.data('version')[selectedOption].forEach(function(optValue){
+        $selVersion.append($("<option></option>")
+        .attr("value",optValue)
+        .text(optValue));
+      });
+      // add a the initially selected option in order to force user to select a version
+      // and avoid chaing update : category -> version -> filename
       $selVersion.append($("<option></option>")
-       .attr("value",optValue)
-       .text(optValue));
-    });
-    // add a the initially selected option in order to force user to select a version
-    // and avoid chaing update : category -> version -> filename
-    $selVersion.append($("<option></option>")
-     .prop("selected",true)
-     .attr('value','PROMPT')
-     .text("version ..."));
+      .prop("selected",true)
+      .attr('value','PROMPT')
+      .text("version ..."));
+      $selVersion.show();
 
-    // clean and hide the filename widget
-    row.find('.download-filename .sel-filename-val').hide();
-    row.find('.download-filename .single-value')
-     .data('fileDescriptor',null)
-     .hide();
+      // clean and hide the filename widget : it will be populated when user
+      // selects a version
+      row.find('.download-filename .sel-filename-val').hide();
+      row.find('.download-filename .single-value')
+       .data('fileDescriptor',null)
+       .hide();
+    } else {
+      // there is NO version for the selected Category
+      $selVersion.hide();
+      // there is no file available for download
+      row.find('.download-filename .sel-filename-val').hide();
+      row.find('.download-filename .single-value')
+        .html("<code>no file found</code>")
+        .show();
+    }
     row.find('.action').hide();
   }
   else /////////////////////////////////////////////////////////////////////////
@@ -294,7 +307,7 @@ $('#module-list').on('change',function(ev){
       .data('fileDescriptor',null)
       .hide();
 
-    // the PROMPT is removed from version num list after the first user selection
+    // the PROMPT is removed from version list after the first user selection
     row.find('.sel-version-val > option[value="PROMPT"]').remove();
 
     // disable the select boxes during operation
