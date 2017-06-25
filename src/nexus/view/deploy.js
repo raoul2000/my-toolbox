@@ -10,7 +10,7 @@ const ipcRenderer = electron.ipcRenderer;
  */
 function createHTMLRowDeploy(artefact) {
   // DO NOT insert newline before tr
-  return `<tr>
+  return `<tr id="${artefact.basename}">
     <td>
       <input class="chk-module" type="checkbox"  value="1">
     </td>
@@ -130,13 +130,15 @@ $('#artefact-list').on('click',function(ev){
   let $target    = $(ev.target);            // the HTML element clicked
   let row        = $target.closest('tr');   // the TR wrapper (row)
 
+  let elRow = document.getElementById(row.attr('id'));
+
   if( $target.closest('.btn-start-row-edit').length > 0 ) {
     // starting row edition ////////////////////////////////////////////////////
 
     // copy tr.data into input values
     row.find('input[type="text"]').each(function(index,el){
-      let currentValue = row.data(el.getAttribute('name'));
-      el.value = currentValue === 'undefined' ? '' : row.data(el.getAttribute('name'));
+      let currentValue = elRow.dataset[el.getAttribute('name')];
+      el.value = currentValue === 'undefined' ? '' : currentValue;
       /*
       // try to set focus on the first input text
       if(index === 0) {
@@ -148,14 +150,13 @@ $('#artefact-list').on('click',function(ev){
   if($target.closest('.btn-submit-row-edit').length > 0 )  {
     // user submit row value ///////////////////////////////////////////////////
     let newMeta = {};
-    let basename = row.data('basename');
+    let basename = elRow.dataset['basename'];
     row.find('input[type="text"]').each(function(index,el){
       let metaName = el.getAttribute('name');
       let newValue =  el.value.trim();
-      row.data(
-        metaName,
-        newValue === '' ? 'undefined' : newValue
-      );
+
+      elRow.dataset[metaName] = newValue === '' ? 'undefined' : newValue;
+
       $(el).closest('td').find('.value').html(
         newValue === '' ? '<span class="label label-danger">undefined</span>' : newValue
       );
@@ -172,7 +173,6 @@ $('#artefact-list').on('click',function(ev){
     row.removeClass('editing');
   }
 });
-
 
 ipcRenderer.send('nx-load-artefact-list.start');
 console.log("nx-load-artefact-list.start");
