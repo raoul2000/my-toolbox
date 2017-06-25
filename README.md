@@ -32,14 +32,30 @@ Make sure **mocha** is installed globally.
 mocha test
 ```
 
+## To build EXE
+
+Make sure you have [electron-pakager](https://github.com/electron-userland/electron-packager) installed globally :
+```bash
+npm install electron-packager -g
+```
+
+Then build the EXE for Windows x64 platform :
+
+```bash
+npm run buildEXE
+```
+
+The build is done in folder `my-toolbox-win32-x64`.
+
+
 ## TODO
 ### Diff
-- [ ] compare remote folders
-- [ ] display diff for remote files
-- [ ] diff files application configuration
+- [X] compare remote folders
+- [X] display diff for remote files
+- [X] diff files application configuration
 - [ ] copy remote file to local
 - [ ] copy remote file from source to target
-- [ ] modify and save remote file
+- [X] modify and save remote file
 
 ### Get Server State
 - [ ] scan server component (version, other info ...)
@@ -52,6 +68,11 @@ mocha test
 
 ### Maven repo Front
 - [X] display module reference list
-- [ ] user select release/snapshot version
+- [X] user select release/snapshot version
 - [ ] configuration (evaluate nconf as replacement)
-- [ ] download war file to local folder
+- [X] download war file to local folder
+
+### Deploy to server
+- [X] Ansible
+- [X] SSH (Direct)
+- [ ] implement alternate deploy strategy

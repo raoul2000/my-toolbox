@@ -1,11 +1,12 @@
 {
   "name": "my-toolbox",
   "version": "0.0.1",
-  "description": "A minimal Electron application",
+  "description": "My Toolbox",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "dev": "electron . --debug",
+    "buildEXE" : "electron-packager . my-toolbox --platform=win32 --arch=x64",
     "jsonserver": "json-server --delay 1000 --static ./test/data/nexus/static --routes ./test/data/nexus/routes.json ./test/data/nexus/db.json"
   },
   "repository": "https://github.com/raoul2000/my-toolbox",
