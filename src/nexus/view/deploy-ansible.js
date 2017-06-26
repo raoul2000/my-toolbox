@@ -58,12 +58,8 @@ function hidePlaybookStatus() {
 
 document.getElementById('btn-deploy-ansible').addEventListener('click',function(ev){
   ev.preventDefault();
-  //console.log(ev);
-  let selectedFiles = getSelectedFiles();
-  console.log(selectedFiles);
-  if( selectedFiles.length === 0) {
-    notify('Select at least one file to deploy', 'warning', 'No file selected');
-  } else {
+
+  if(validateDeploy()) {
     hidePlaybookStatus();
     $('#modal-deploy-ansible').modal('show');
   }

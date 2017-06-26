@@ -138,16 +138,12 @@ $('#artefact-list').on('click',function(ev){
     // copy tr.data-???? into corresponding input values
     // convention : data attribute name == input.name
     row.find('input[type="text"]').each(function(index,el){
-      let currentValue = elRow.dataset[el.getAttribute('name')];
-      el.value = currentValue === 'undefined' ? '' : currentValue;
-
-      // try to set focus on the first input text
-      /*
-      if(index === 0) {
-        el.focus();
-      }*/
+      el.value = elRow.dataset[el.getAttribute('name')];
     });
+    // displays row form input fields
     row.removeClass().addClass('editing');
+    // selects the first input control in the row
+    elRow.querySelector('input[type="text"]').select();
   } else
   if($target.closest('.btn-submit-row-edit').length > 0 )  {
     // user submit row value ///////////////////////////////////////////////////
@@ -157,12 +153,12 @@ $('#artefact-list').on('click',function(ev){
       let metaName = el.getAttribute('name');
       let newValue =  el.value.trim();
 
-      elRow.dataset[metaName] = newValue === '' ? 'undefined' : newValue;
+      elRow.dataset[metaName] = newValue;
 
       $(el).closest('td').find('.value').html(
         newValue === '' ? '<span class="label label-danger">undefined</span>' : newValue
       );
-      newMeta[metaName] = newValue === '' ? null : newValue;
+      newMeta[metaName] = newValue;
     });
     // updates the meta file
     ipcRenderer.send('nx-update-artefact-meta.start', {
