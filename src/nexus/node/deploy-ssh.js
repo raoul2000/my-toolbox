@@ -32,6 +32,7 @@ exports.deployStandard = function(options, notify) {
   let remoteInstallFolderpath = path.dirname(options.destFilepath);
 
   //let cmdUncompress = `cd ${remoteInstallFolderpath} && jar -xvf "${remoteFiletitle}"`;
+  let cmdCheckInstallFolderExist = `test -d "${remoteInstallFolderpath}"`;
   let cmdUncompress = `cd "${remoteInstallFolderpath}" && unzip -qo "${remoteFiletitle}"`;
   let cmdUpdateSymlink = `ln -sfn "${remoteInstallFolderpath}" "${options.symlinkPath}"`;
   let cmdDeleteUploadedFile = `rm "${options.destFilepath}"`;
@@ -52,9 +53,13 @@ exports.deployStandard = function(options, notify) {
     }
   };
   // start the Promise chain
-  sendNotification(`connecting to ${options.ssh.hostname}`);
+  sendNotification(`connecting to ${options.ssh.host}`);
   return ssh
   .connect(options.ssh)
+  .then(() => {
+    sendNotification(`test install folder exists : ${remoteInstallFolderpath}`);
+    return ssh.execCommand(cmdCheckInstallFolderExist,[],{stream: 'stdout'}).then( cmdResultHandler );
+  })
   .then(() => {
     sendNotification(`copy file from ${options.srcFilepath} to remote ${options.destFilepath}`);
     return ssh.putFile(options.srcFilepath, options.destFilepath);
