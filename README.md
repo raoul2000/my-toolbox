@@ -52,10 +52,10 @@ Make sure **node-debug** is installed globally.
 npm run dev
 node-debug
 ```
-To run a test SSH server using Docker :
+To run a test SSH server using Docker go to the `test/data` folder, ad from there start a Docker container for SSH server.
 
 ```bash
-docker run --rm --publish=2222:22 sickp/alpine-sshd:7.5
+docker run --rm -v %cd%:/mnt --publish=2222:22 sickp/alpine-sshd:7.5
 ```
 Then connect to `127.0.0.1 root/root`.
 
