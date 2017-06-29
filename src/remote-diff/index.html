@@ -55,30 +55,35 @@
     </div> <!-- END : rdiff-settings -->
 
     <div id="rdiff-init" class="container mtb-view">
+
       <div class="row">
-        <div class="col-lg-6">
-          <h4>Left</h4>
-          <hr/>
 
-          <form id="rdiff-ssh-left-form" name="rdiff-ssh-left-form" class="form-horizontal well"
-            data-toggle="validator" data-disable="true">
+        <form id="rdiff-ssh-left-form" name="rdiff-ssh-left-form" class="form-horizontal"
+          data-toggle="validator" data-disable="true">
 
+          <div class="col-lg-6">
+            <h4><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span> Left</h4>
+            <hr/>
             <div class="form-group">
               <label for="left-ssh-hostname" class="col-sm-3 control-label">Host:</label>
               <div class="col-xs-5">
-
                 <input id="left-ssh-hostname"
                   value=""
                   required
                   name="left-ssh-hostname" type="text" class="form-control" placeholder="hostname or IP address">
               </div>
+            </div> <!-- input ssh hostname-->
+
+            <div class="form-group">
+              <label for="left-ssh-port" class="col-sm-3 control-label">Host:</label>
               <div class="col-xs-3">
                 <input id="left-ssh-port"
                 value=""
+                required
                 title="SSH Port"
                 name="left-ssh-port" type="number" class="form-control" placeholder="port">
               </div>
-            </div> <!-- input ssh hostname + port-->
+            </div> <!-- input ssh port-->
 
             <div class="form-group">
               <label for="left-ssh-username" class="col-sm-3 control-label">Login:</label>
@@ -88,9 +93,14 @@
                   required
                   name="left-ssh-username" type="text" class="form-control" placeholder="username">
               </div>
+            </div> <!-- input ssh username -->
+
+            <div class="form-group">
+              <label for="left-ssh-password" class="col-sm-3 control-label">Password:</label>
               <div class="col-xs-4">
                 <input id="left-ssh-password"
                 value=""
+                required
                 name="left-ssh-password" type="password" class="form-control" placeholder="password">
               </div>
             </div> <!-- input ssh username + password-->
@@ -102,37 +112,54 @@
                 <input id="left-ssh-target-path"
                   value="/test"
                    required
-                   title="Remote install folder root path"
                   name="left-ssh-target-path" type="text" class="form-control" placeholder="">
               </div>
             </div> <!-- input ssh target-path -->
-          </form>
 
-        </div>
+            <div class="form-group well" >
+              <label  class="col-sm-3 control-label">Compare ...</label>
+              <div class="col-sm-8">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox"> with the same folder on the right
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox"> 2 folders on the right
+                  </label>
+                </div>
+              </div>
+            </div>
 
-        <div class="col-lg-6">
-          <h4>Right</h4>
-          <hr/>
+          </div> <!-- /end col-lg -->
+          <!--
+            ////////////////////////////////////////////////////////////////////////////////////////////
+          -->
 
-          <form id="rdiff-ssh-right-form" name="rdiff-ssh-right-form" class="form-horizontal well"
-            data-toggle="validator" data-disable="true">
-
+          <div class="col-lg-6">
+            <h4><span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span> Right</h4>
+            <hr/>
             <div class="form-group">
-              <label for="right-ssh-hostname" class="col-sm-3 control-label">Host:</label>
+              <label for="right-ssh-hostname" class="col-xs-3 control-label">Host:</label>
               <div class="col-xs-5">
-
                 <input id="right-ssh-hostname"
                   value=""
                   required
                   name="right-ssh-hostname" type="text" class="form-control" placeholder="hostname or IP address">
               </div>
+            </div> <!-- input ssh hostname-->
+
+            <div class="form-group">
+              <label for="right-ssh-port" class="col-sm-3 control-label">Host:</label>
               <div class="col-xs-3">
                 <input id="right-ssh-port"
                 value=""
                 title="SSH Port"
+                required
                 name="right-ssh-port" type="number" class="form-control" placeholder="port">
               </div>
-            </div> <!-- input ssh hostname + port-->
+            </div> <!-- input ssh port-->
 
             <div class="form-group">
               <label for="right-ssh-username" class="col-sm-3 control-label">Login:</label>
@@ -141,11 +168,15 @@
                   value=""
                   required
                   name="right-ssh-username" type="text" class="form-control" placeholder="username">
-                  <div class="help-block with-errors"></div>
               </div>
+            </div> <!-- input ssh username -->
+
+            <div class="form-group">
+              <label for="right-ssh-password" class="col-sm-3 control-label">Login:</label>
               <div class="col-xs-4">
                 <input id="right-ssh-password"
                 value=""
+                required
                 name="right-ssh-password" type="password" class="form-control" placeholder="password">
               </div>
             </div> <!-- input ssh username + password-->
@@ -157,13 +188,18 @@
                 <input id="right-ssh-target-path"
                   value="/test"
                    required
-                   title="Remote install folder root path"
                   name="right-ssh-target-path" type="text" class="form-control" placeholder="">
               </div>
             </div> <!-- input ssh target-path -->
-          </form>
 
-        </div>
+            <div class="form-group">
+              <div class="col-sm-offset-3 col-sm-8">
+                <button type="submit" class="btn btn-primary">Compare</button>
+              </div>
+            </div> <!-- submit button -->
+          </div> <!-- /end col-lg -->
+
+      </form>
 
       </div>
     </div><!-- / end rdiff-init -->
