@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Remote Diff</title>
+
+    <!-- bootstrap -->
+    <link href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- PNotify plugin -->
+    <link href="../../node_modules/pnotify/dist/pnotify.css"         rel="stylesheet">
+    <link href="../../node_modules/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+
+    <!-- custom styles -->
+    <link href="../../assets/css/nexus.css"                          rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">My Toolbox</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li>
+              <a href="#" class="mtb-link" data-view="rdiff-settings">Settings</a>
+            </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+
+    <div id="rdiff-settings" style="display:none" class="container mtb-view" >
+      <div class="row">
+        <div class="col-lg-12">
+          <h2>Settings <small>application parameters</small></h2>
+          <hr/>
+        </div>
+        <div class="col-lg-12">
+        <p><em>work in progress ...</em></p>
+
+        </div>
+      </div>
+    </div> <!-- END : rdiff-settings -->
+
+    <div id="rdiff-init" class="container mtb-view">
+      <div class="row">
+        <div class="col-lg-6">
+          <h4>Left</h4>
+          <hr/>
+
+          <form id="rdiff-ssh-left-form" name="rdiff-ssh-left-form" class="form-horizontal well"
+            data-toggle="validator" data-disable="true">
+
+            <div class="form-group">
+              <label for="left-ssh-hostname" class="col-sm-3 control-label">Host:</label>
+              <div class="col-xs-5">
+
+                <input id="left-ssh-hostname"
+                  value=""
+                  required
+                  name="left-ssh-hostname" type="text" class="form-control" placeholder="hostname or IP address">
+              </div>
+              <div class="col-xs-3">
+                <input id="left-ssh-port"
+                value=""
+                title="SSH Port"
+                name="left-ssh-port" type="number" class="form-control" placeholder="port">
+              </div>
+            </div> <!-- input ssh hostname + port-->
+
+            <div class="form-group">
+              <label for="left-ssh-username" class="col-sm-3 control-label">Login:</label>
+              <div class="col-xs-4">
+                <input id="left-ssh-username"
+                  value=""
+                  required
+                  name="left-ssh-username" type="text" class="form-control" placeholder="username">
+              </div>
+              <div class="col-xs-4">
+                <input id="left-ssh-password"
+                value=""
+                name="left-ssh-password" type="password" class="form-control" placeholder="password">
+              </div>
+            </div> <!-- input ssh username + password-->
+
+
+            <div class="form-group">
+              <label for="left-ssh-target-path" class="col-sm-3 control-label">Path:</label>
+              <div class="col-sm-8">
+                <input id="left-ssh-target-path"
+                  value="/test"
+                   required
+                   title="Remote install folder root path"
+                  name="left-ssh-target-path" type="text" class="form-control" placeholder="">
+              </div>
+            </div> <!-- input ssh target-path -->
+          </form>
+
+        </div>
+
+        <div class="col-lg-6">
+          <h4>Right</h4>
+          <hr/>
+
+          <form id="rdiff-ssh-right-form" name="rdiff-ssh-right-form" class="form-horizontal well"
+            data-toggle="validator" data-disable="true">
+
+            <div class="form-group">
+              <label for="right-ssh-hostname" class="col-sm-3 control-label">Host:</label>
+              <div class="col-xs-5">
+
+                <input id="right-ssh-hostname"
+                  value=""
+                  required
+                  name="right-ssh-hostname" type="text" class="form-control" placeholder="hostname or IP address">
+              </div>
+              <div class="col-xs-3">
+                <input id="right-ssh-port"
+                value=""
+                title="SSH Port"
+                name="right-ssh-port" type="number" class="form-control" placeholder="port">
+              </div>
+            </div> <!-- input ssh hostname + port-->
+
+            <div class="form-group">
+              <label for="right-ssh-username" class="col-sm-3 control-label">Login:</label>
+              <div class="col-xs-4">
+                <input id="right-ssh-username"
+                  value=""
+                  required
+                  name="right-ssh-username" type="text" class="form-control" placeholder="username">
+                  <div class="help-block with-errors"></div>
+              </div>
+              <div class="col-xs-4">
+                <input id="right-ssh-password"
+                value=""
+                name="right-ssh-password" type="password" class="form-control" placeholder="password">
+              </div>
+            </div> <!-- input ssh username + password-->
+
+
+            <div class="form-group">
+              <label for="right-ssh-target-path" class="col-sm-3 control-label">Path:</label>
+              <div class="col-sm-8">
+                <input id="right-ssh-target-path"
+                  value="/test"
+                   required
+                   title="Remote install folder root path"
+                  name="right-ssh-target-path" type="text" class="form-control" placeholder="">
+              </div>
+            </div> <!-- input ssh target-path -->
+          </form>
+
+        </div>
+
+      </div>
+    </div><!-- / end rdiff-init -->
+
+
+  </body>
+
+  <script type="text/javascript">
+    window.$ = window.jQuery = require('../../node_modules/jquery/dist/jquery.min.js');
+  </script>
+
+  <script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="../../node_modules/bootstrap-validator/dist/validator.min.js" type="text/javascript"></script>
+  <script src="../../node_modules/pnotify/dist/pnotify.js"            type="text/javascript"></script>
+  <script src="../../node_modules/pnotify/dist/pnotify.buttons.js"    type="text/javascript"></script>
+
+  <script src="app.js"></script>
+  <script src="../notification.js"></script>
+  <script src="../router.js"></script>
+
+  <script type="text/javascript">
+    require('./view/main-list.js');
+    require('./view/settings.js');
+    require('./view/deploy.js');
+    require('./view/deploy-ansible.js');
+    require('./view/rdiff-ssh-left.js');
+  </script>
+
+</html>
