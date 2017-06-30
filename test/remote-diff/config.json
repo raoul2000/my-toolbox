@@ -1,0 +1,15 @@
+{
+  "ssh_source" : {
+    "host": "127.0.0.1",
+    "port" : 2222,
+    "username": "root",
+    "password" : "root"
+  },
+  "ssh_target" : {
+    "host": "127.0.0.1",
+    "port" : 2222,
+    "username": "root",
+    "password" : "root"
+  },
+  "homeDir" : "/mnt/c/dev/ws/lab/my-toolbox"
+}

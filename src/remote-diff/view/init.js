@@ -1,6 +1,7 @@
 "use strict";
 const ipcRenderer = require('electron').ipcRenderer;
 
+
 // the modal dialog object
 let progressModal = {
 
@@ -21,7 +22,7 @@ let progressModal = {
    * Add HTML content (append) to the progress info box
    */
   addProgressMessage : function(msg) {
-    this.elAlertInfo.insertAdjacentHTML('afterbegin',`<div>${msg}</div>`)
+    this.elAlertInfo.insertAdjacentHTML('afterbegin',`<div>${msg}</div>`);
   },
   /**
    * Display the error panel (danger) with an HTML content
@@ -94,6 +95,12 @@ ipcRenderer.on('remoteCompare.progress',function(event,progress){
 ipcRenderer.on('remoteCompare.error',function(event,err){
   console.log(event);
   console.error(err);
-
   progressModal.showError(`<div>failed to read remote files</div>`);
+});
+
+// remote compare successfully done
+ipcRenderer.on('remoteCompare.done',function(event,data){
+  setTimeout(function() {
+    $('#rdiff-status-modal').modal('hide');
+  },800);
 });
