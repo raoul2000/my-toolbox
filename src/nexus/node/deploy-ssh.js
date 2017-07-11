@@ -32,7 +32,8 @@ exports.deployStandard = function(options, notify) {
   let remoteInstallFolderpath = path.dirname(options.destFilepath);
 
   //let cmdUncompress = `cd ${remoteInstallFolderpath} && jar -xvf "${remoteFiletitle}"`;
-  let cmdCheckInstallFolderExist = `test -d "${remoteInstallFolderpath}"`;
+  let cmdCheckInstallFolderNotExist = `test ! -d "${remoteInstallFolderpath}"`;
+  let cmdCreateInstallFolder = `mkdir "${remoteInstallFolderpath}"`;
   let cmdUncompress = `cd "${remoteInstallFolderpath}" && unzip -qo "${remoteFiletitle}"`;
   let cmdUpdateSymlink = `ln -sfn "${remoteInstallFolderpath}" "${options.symlinkPath}"`;
   let cmdDeleteUploadedFile = `rm "${options.destFilepath}"`;
@@ -57,12 +58,20 @@ exports.deployStandard = function(options, notify) {
   return ssh
   .connect(options.ssh)
   .then(() => {
-    sendNotification(`test install folder exists : ${remoteInstallFolderpath}`);
-    return ssh.execCommand(cmdCheckInstallFolderExist,[],{stream: 'stdout'}).then( cmdResultHandler );
+    sendNotification(`test install folder doesn't exists : ${remoteInstallFolderpath}`);
+    return ssh.execCommand(cmdCheckInstallFolderNotExist,[],{stream: 'stdout'}).then( cmdResultHandler );
+  })
+  .then(() => {
+    sendNotification(`create install folder : ${remoteInstallFolderpath}`);
+    return ssh.execCommand(cmdCreateInstallFolder,[],{stream: 'stdout'}).then( cmdResultHandler );
   })
   .then(() => {
     sendNotification(`copy file from ${options.srcFilepath} to remote ${options.destFilepath}`);
-    return ssh.putFile(options.srcFilepath, options.destFilepath);
+    return ssh.putFile(options.srcFilepath, options.destFilepath,null,{
+      'step' : function(i) {
+        console.log('total : '+i);
+      }
+    });
   })
   .then(() => {
     sendNotification(`uncompress archive : ${cmdUncompress}`);
