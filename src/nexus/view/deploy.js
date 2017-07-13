@@ -123,6 +123,19 @@ $('#artefact-open-folder').on('click',function(ev){
   ipcRenderer.send('nx-open-folder');
 });
 
+// user click on the delete button
+$('#nx-btn-delete-selected').on('click',function(ev){
+  let selectedFiles = getSelectedFiles();
+  if( selectedFiles.length === 0) {
+    notify('Please select one or more file to delete', 'warning', 'No selection');
+  } else {
+    if(confirm('Are you sure you want to delete '+selectedFiles.length+' file(s)')) {
+      ipcRenderer.send('nx-delete-files.start',selectedFiles);
+    }
+  }
+});
+
+
 // main list //////////////////////////////////////////////////////////////////
 // click on artefact list table row
 $('#artefact-list').on('click',function(ev){
@@ -193,4 +206,9 @@ ipcRenderer.on('nx-load-artefact-list.done',function(sender,data){
 ipcRenderer.on('nx-load-artefact-list.error',function(sender,data){
   console.log(data);
   notify('failed to read download folder','error','error');
+});
+
+ipcRenderer.on('nx-delete-files.done',function(sender,data){
+  deployUIStateManager.init();
+  ipcRenderer.send('nx-load-artefact-list.start');
 });
