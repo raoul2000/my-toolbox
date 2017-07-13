@@ -28,7 +28,7 @@
 
 ### Deploy to server
 - [X] Ansible
-- [X] SSH (Direct)
+- [X] SSH (Direct) - add progress for upload
 - [ ] implement alternate deploy strategy
 
 ## To Use
