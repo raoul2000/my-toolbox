@@ -6,6 +6,7 @@ const path = require('path');
 const ssh = require('../node/deploy-ssh');
 
 function sequentialSSHDeploy(arg, event) {
+  console.log("sequentialSSHDeploy");
   let fileFolderPath = config.get('nexus.downloadFolder');
 
   let deploy = function(files) {
@@ -21,9 +22,13 @@ function sequentialSSHDeploy(arg, event) {
           'srcFilepath'  : srcFilepath,
           'destFilepath' : destFilepath,
           'symlinkPath'  : symlinkPath
-        }, function(progressMessage){
+        }, function(progressMessage, info){
           console.log(progressMessage);
-          event.sender.send('nx-ssh-deploy.progress', {"file" : file, "progressMessage" : progressMessage});
+          event.sender.send('nx-ssh-deploy.progress', {
+            "file" : file,
+            "progressMessage" : progressMessage,
+            "info" : info
+          });
         })
         .then( x => {
           console.log('nx-ssh-deploy.done', file);
@@ -41,6 +46,7 @@ function sequentialSSHDeploy(arg, event) {
 }
 
 function parallelSSHDeploy(arg, event) {
+  console.log("parallelSSHDeploy");
   let fileFolderPath = config.get('nexus.downloadFolder');
 
   let tasks = arg.files.map( file => {
@@ -54,9 +60,12 @@ function parallelSSHDeploy(arg, event) {
       'srcFilepath'  : srcFilepath,
       'destFilepath' : destFilepath,
       'symlinkPath'  : symlinkPath
-    }, function(progressMessage){
-      console.log(progressMessage);
-      event.sender.send('nx-ssh-deploy.progress', {"file" : file, "progressMessage" : progressMessage});
+    }, function(progressMessage, info){
+      event.sender.send('nx-ssh-deploy.progress', {
+        "file" : file,
+        "progressMessage" : progressMessage,
+        "info" : info
+      });
     })
     .then( x => {
       console.log('nx-ssh-deploy.done', file);

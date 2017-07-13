@@ -69,13 +69,23 @@ ipcRenderer.on('nx-ssh-deploy.done',function(sender,data){
 //  "progressMessage" : "message here"
 // }
 ipcRenderer.on('nx-ssh-deploy.progress',function(sender,data){
+  console.log('nx-ssh-deploy.progress',data);
+  
   let trEl = document.querySelector(`tr[data-basename="${data.file.basename}"]`);
   trEl.lastElementChild.innerHTML = data.progressMessage;
   console.log(data);
+  if( data.info && data.info.operation === "upload") {
+
+    trEl.lastElementChild.innerHTML = `<div class="progress" style="min-width:100px">
+                          <div id="m01-progress" class="progress-bar" role="progressbar" style="width:${data.info.progress}%"
+                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                          </div>
+                        </div>`;
+  }
 });
 
 // Error during SSH deployment for a file
-// 
+//
 // data = {
 //  "file" : {
 //     basename: 'emCheckin-2.4.1.war',

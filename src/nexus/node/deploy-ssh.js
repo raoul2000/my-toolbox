@@ -39,10 +39,10 @@ exports.deployStandard = function(options, notify) {
   let cmdDeleteUploadedFile = `rm "${options.destFilepath}"`;
   let progressMessage = '';
 
-  let sendNotification = function(msg) {
-    console.log(msg);
+  let sendNotification = function(msg,info) {
+    console.log(msg,info);
     if( notify ) {
-      notify(msg);
+      notify(msg, info);
     }
   };
 
@@ -69,7 +69,15 @@ exports.deployStandard = function(options, notify) {
     sendNotification(`upload local file from ${options.srcFilepath} to remote ${options.destFilepath}`);
     return ssh.putFile(options.srcFilepath, options.destFilepath,null,{
       'step' : function(total_transferred, chunk, total) {
-        console.log('total_transferred : '+total_transferred);
+        //console.log('total_transferred : '+total_transferred);
+        //console.log('chunk : '+chunk);
+        //console.log('total : '+total);
+        let percent = Math.floor((total_transferred / total) * 100);
+        console.log(percent);
+        sendNotification(`upload local file from ${options.srcFilepath} to remote ${options.destFilepath}`,{
+          "operation" : "upload",
+          "percent" : percent
+        });
       }
     });
   })
