@@ -73,8 +73,12 @@ $('#deploy-ssh-form').on('submit', function (e) {
 //    version: '2.4.1'
 // }
 ipcRenderer.on('nx-ssh-deploy.done',function(sender,data){
-  let trEl = document.querySelector(`tr[data-basename="${data.basename}"]`);
-  trEl.lastElementChild.innerHTML = "done";
+
+  let row = $(`tr[data-basename="${data.basename}"]`);
+  row.find('.ssh-deploy-progress').hide();
+  row.find('.ssh-deploy-success').show();
+  row.find('.ssh-deploy-error').hide();
+  row.find('.ssh-deploy-status').show();
   console.log(data);
 });
 
@@ -92,16 +96,15 @@ ipcRenderer.on('nx-ssh-deploy.done',function(sender,data){
 ipcRenderer.on('nx-ssh-deploy.progress',function(sender,data){
   console.log('nx-ssh-deploy.progress',data);
 
-  let trEl = document.querySelector(`tr[data-basename="${data.file.basename}"]`);
-  trEl.lastElementChild.innerHTML = data.progressMessage;
+  let row = $(`tr[data-basename="${data.file.basename}"]`);
+  row.find('.ssh-deploy-progress').show();
+  row.find('.ssh-deploy-status').hide();
+
+  //trEl.lastElementChild.innerHTML = data.progressMessage;
   console.log(data);
   if( data.info && data.info.operation === "upload") {
-
-    trEl.lastElementChild.innerHTML = `<div class="progress" style="min-width:100px">
-                          <div id="m01-progress" class="progress-bar" role="progressbar" style="width:${data.info.progress}%"
-                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                          </div>
-                        </div>`;
+    row.find('.progress-bar').first().css('width', "" + data.info.percent + "%");
+    row.find('.progress-percent .percent-value').first().text(data.info.percent + "%");
   }
 });
 
@@ -117,7 +120,10 @@ ipcRenderer.on('nx-ssh-deploy.progress',function(sender,data){
 //  "error" : object
 // }
 ipcRenderer.on('nx-ssh-deploy.error',function(sender,data){
-  let trEl = document.querySelector(`tr[data-basename="${data.file.basename}"]`);
-  trEl.lastElementChild.innerHTML = "ERROR";
+  let row = $(`tr[data-basename="${data.file.basename}"]`);
+  row.find('.ssh-deploy-progress').hide();
+  row.find('.ssh-deploy-status').show();
+  row.find('.ssh-deploy-success').hide();
+  row.find('.ssh-deploy-error').show();  
   console.log(data);
 });

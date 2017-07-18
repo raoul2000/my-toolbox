@@ -66,7 +66,28 @@ function createHTMLRowDeploy(artefact) {
         </button>
       </div>
     </td>
-    <td></td>
+    <td>
+      <div class="ssh-deploy-progress" style="display:none">
+        <div class="progress-percent">
+          <span class="percent-value">0%</span>
+        </div>
+
+        <div class="progress" style="min-width:100px">
+          <div class="progress-bar" role="progressbar"
+            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+          </div>
+        </div>
+      </div>
+
+      <div class="ssh-deploy-status" style="display:none">
+        <div class="ssh-deploy-success">
+          <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+        </div>
+        <div class="ssh-deploy-error">
+          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </div>
+      </div>
+    </td>
   </tr>`;
 }
 

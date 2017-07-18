@@ -62,10 +62,12 @@ tr.loaded .action {
 .help-block {
   font-size: 0.8em;
 }
-.download-success {
+.download-success,
+.ssh-deploy-success {
   color: green;
 }
-.download-error {
+.download-error,
+.ssh-deploy-error {
   color: red;
 }
 /**
