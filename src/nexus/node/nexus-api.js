@@ -47,7 +47,8 @@ exports.getWarfileDescriptor = function( modVersionUrl ) {
         // there may be more than one war file like for instance for the snapshot
         // folders (many timestamped snapshots per module/version)
         let result = items.data.filter(function(element){
-          return element.leaf === true && element.text.toUpperCase().endsWith('.WAR');
+          return element.leaf === true && (
+            element.text.toUpperCase().endsWith('.WAR') || element.text.toUpperCase().endsWith('.TAR.GZ'));
         });
         console.log("result",result);
         resolve(result);

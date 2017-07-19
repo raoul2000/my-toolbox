@@ -6,7 +6,7 @@ var path = require('path');
 
 /**
  * Updates or create metadataFilePath with the JSON metadata
- * 
+ *
  * @param  {string} metadataFilePath the file path
  * @param  {object} metadata         metadata to save
  * @return {Promise}
@@ -58,7 +58,13 @@ exports.buildListFromLocalFolder = function(folderPath) {
         let filePath = path.join(folderPath, file );
         let ext = path.extname(file);
         let stat = fs.statSync(filePath);
-        if ( stat.isFile() && stat.size > 0 && (ext === ".war" || ext === ".meta")) {
+
+
+        if ( stat.isFile() && stat.size > 0 && (
+          file.toUpperCase().endsWith('.WAR') ||
+          file.toUpperCase().endsWith('.TAR.GZ') ||
+          file.toUpperCase().endsWith('.META')
+        )) {
           fileList.push(filePath);
         }
       });
@@ -72,8 +78,10 @@ exports.buildListFromLocalFolder = function(folderPath) {
 
       for (var i = 0; i < fileList.length; i++) {
         let fname = fileList[i];
-        if(path.extname(fname) === '.war') {
-          // for each '.war' file, check its corresponding metadata file
+        if( fname.toUpperCase().endsWith('.WAR') ||
+            fname.toUpperCase().endsWith('.TAR.GZ')
+          ) {
+          // for each '.war' or '.tar.gz' file, check its corresponding metadata file
           let fnameMeta = fname.concat('.meta');
           let finfo =  {
             "filename" : fname,
