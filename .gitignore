@@ -38,3 +38,5 @@ jspm_packages
 
 # Electron exeBuild
 my-toolbox**
+
+test/nexus/config-stage.json

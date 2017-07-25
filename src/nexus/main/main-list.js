@@ -143,7 +143,7 @@ ipcMain.on('nx-download-mod.start', function(event, arg) {
 
   console.log("download url", downloadUrl);
 
-  // first check that the sonfigured download folde exist !
+  // first check that the configured download folder exist !
   let localFolderPath = config.get('nexus.downloadFolder');
   if( ! fs.existsSync(localFolderPath)) {
     event.sender.send('nx-download-mod.error',{
