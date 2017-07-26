@@ -111,6 +111,8 @@ function createHTMLTableDeploy(artefacts) {
     tableBody.lastChild.dataset.version = artefact.metadata.version;
     tableBody.lastChild.dataset.symlink = artefact.metadata.symlink;
     tableBody.lastChild.dataset.installFolder = artefact.metadata.installFolder;
+    tableBody.lastChild.dataset.moduleId = artefact.metadata.moduleId;
+
     console.log(artefact);
     //console.log(tableBody);
   });
@@ -184,6 +186,8 @@ $('#artefact-list').on('click',function(ev){
     let newMeta = {}; // stores new entered values : used to update the meta file
     let basename = elRow.dataset['basename']; // this on is never edited
     row.find('input[type="text"]').each(function(index,el){
+
+      // input name attribute value must match metadata property name
       let metaName = el.getAttribute('name');
       let newValue =  el.value.trim();
 

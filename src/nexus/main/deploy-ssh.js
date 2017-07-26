@@ -4,6 +4,7 @@ const ipcMain = electron.ipcMain;
 const config = require('../../config').config;
 const path = require('path');
 const ssh = require('../node/deploy-ssh');
+const deployByScript = require('../node/deploy-ssh-script');
 
 function sequentialSSHDeploy(arg, event) {
   console.log("sequentialSSHDeploy");
@@ -55,18 +56,52 @@ function parallelSSHDeploy(arg, event) {
     let destFilepath = path.posix.join(arg.targetPath, file.installFolder, file.basename);
     let symlinkPath = path.posix.join(arg.targetPath, file.symlink);
 
-    return ssh.deployStandard({
-      'ssh': arg.ssh ,
-      'srcFilepath'  : srcFilepath,
-      'destFilepath' : destFilepath,
-      'symlinkPath'  : symlinkPath
-    }, function(progressMessage, info){
+    let deployFunction = file.moduleId === 'swing' ? ssh.deployType1 : ssh.deployStandard;
+    // the progress callback function
+    let fnProgress = function(progressMessage, info){
       event.sender.send('nx-ssh-deploy.progress', {
         "file" : file,
         "progressMessage" : progressMessage,
         "info" : info
       });
-    })
+    };
+
+    if( file.moduleId === 'swing' ) {
+
+      /*
+      *    'script' : {
+      *      'srcFilepath' : "c:\folder\install.bash",
+      *      "destFilepath" : "/remote/folder/install.bash",
+      *      'arg' : [
+      *        "arg1" , "arg2", "arg3"
+      *      ]
+      *    }
+       */
+
+      deployFunction = deployByScript.run({
+        'ssh': arg.ssh ,
+        'srcFilepath'  : srcFilepath,
+        'destFilepath' : destFilepath,
+        'symlinkPath'  : symlinkPath,
+        "script" : {
+          "srcFilepath" : path.join(config.get('nexus.confFolder'), 'deploy-1.bash'),
+          "destFilepath" : path.posix.join(arg.targetPath, file.installFolder, 'deploy-1.bash'),
+          "arg" : [
+            arg.targetPath, file.installFolder, file.basename, file.symlink
+          ]
+        }
+      }, fnProgress);
+    } else {
+      deployFunction = ssh.deployStandard({
+        'ssh': arg.ssh ,
+        'srcFilepath'  : srcFilepath,
+        'destFilepath' : destFilepath,
+        'symlinkPath'  : symlinkPath
+
+      }, fnProgress);
+    }
+
+    return deployFunction
     .then( x => {
       console.log('nx-ssh-deploy.done', file);
       event.sender.send('nx-ssh-deploy.done', file);
@@ -91,7 +126,8 @@ function parallelSSHDeploy(arg, event) {
     basename: 'emCheckin-2.4.1.war',
     installFolder: 'checkin-2.4.1',
     symlink: 'checkin',
-    version: '2.4.1'
+    version: '2.4.1',
+    moduleId: 'checkin'
   }...]
   }
   */
