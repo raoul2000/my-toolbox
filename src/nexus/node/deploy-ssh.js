@@ -79,7 +79,10 @@ exports.deployType1 = function(options, notify) {
   let ssh = new NodeSSH();
 
   let remoteFiletitle = path.basename(options.destFilepath);
-  let remoteInstallFolderpath = path.dirname(options.destFilepath);
+  let remoteInstallFolderpath = path.dirname(options.destFilepath); //  /remote/folder/mod-1.3.3
+
+  let symLinkRelativeName = path.basename(options.symlinkPath); //  mod
+  let symlinkTargetRelative = path.basename(remoteInstallFolderpath); // mod-1.3.3
 
   //let cmdUncompress = `cd ${remoteInstallFolderpath} && jar -xvf "${remoteFiletitle}"`;
   let cmdCheckInstallFolderNotExist = `test ! -d "${remoteInstallFolderpath}"`;
@@ -89,7 +92,8 @@ exports.deployType1 = function(options, notify) {
   let cmdCopySrc = `cd "${remoteInstallFolderpath}" && cp -rva ./swing-tomcat-*-standalone/swing/* .`;
   let cmdBackupLib = `cd "${remoteInstallFolderpath}" && mv "../lib/swing/embaselib" "../lib/swing/embaselib.$(date +%Y%m%d-%H%M%S)"	`;
   let cmdUpdateLib = `cd "${remoteInstallFolderpath}" && cp  -rva "./embaselib" "../lib/swing"`;
-  let cmdUpdateSymlink = `ln -sfn "${remoteInstallFolderpath}" "${options.symlinkPath}"`;
+  //let cmdUpdateSymlink = `ln -sfn "${remoteInstallFolderpath}" "${options.symlinkPath}"`;
+  let cmdUpdateSymlink = `cd "${remoteInstallFolderpath}/.." && ln -sfn "${symlinkTargetRelative}" "${symLinkRelativeName}"`;
   let cmdDeleteUploadedFile = `rm "${options.destFilepath}"`;
   let progressMessage = '';
 
@@ -211,11 +215,16 @@ exports.deployStandard = function(options, notify) {
   let remoteFiletitle = path.basename(options.destFilepath);
   let remoteInstallFolderpath = path.dirname(options.destFilepath);
 
+  let symLinkRelativeName = path.basename(options.symlinkPath); //  mod
+  let symlinkTargetRelative = path.basename(remoteInstallFolderpath); // mod-1.3.3
+
   //let cmdUncompress = `cd ${remoteInstallFolderpath} && jar -xvf "${remoteFiletitle}"`;
   let cmdCheckInstallFolderNotExist = `test ! -d "${remoteInstallFolderpath}"`;
   let cmdCreateInstallFolder = `mkdir "${remoteInstallFolderpath}"`;
   let cmdUncompress = `cd "${remoteInstallFolderpath}" && unzip -qo "${remoteFiletitle}"`;
-  let cmdUpdateSymlink = `ln -sfn "${remoteInstallFolderpath}" "${options.symlinkPath}"`;
+  //let cmdUpdateSymlink = `ln -sfn "${remoteInstallFolderpath}" "${options.symlinkPath}"`;
+  let cmdUpdateSymlink = `cd "${remoteInstallFolderpath}/.." && ln -sfn "${symlinkTargetRelative}" "${symLinkRelativeName}"`;
+
   let cmdDeleteUploadedFile = `rm "${options.destFilepath}"`;
   let progressMessage = '';
 
