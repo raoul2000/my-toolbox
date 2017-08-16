@@ -1,0 +1,4 @@
+[
+  { "name": "yahoo" , "url" : "http://www.yahoo.fr"},
+  { "name": "MDN" , "url" : "https://developer.mozilla.org"}
+]
