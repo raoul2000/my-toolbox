@@ -11,12 +11,59 @@
     <link href="assets/css/style.css" rel="stylesheet">
   </head>
   <body>
-    <div id="main-container" class="container" data-view="form">
-      <a href="src/diff/index.html">Remote Folder DIFF</a>
-      <a href="src/remote-diff/index.html">Remote Folder DIFF (v2)</a>
-      <a href="src/template/index.html">Template</a>
-      <a href="src/nexus/index.html">Nexus</a>
-      <a href="src/monitor-url/index.html">Monitor URL</a>
+    <div id="main-container" class="container" data-view="form" style="padding-top:70px;">
+
+
+      <div class="row">
+        <div class="col-xs-12">
+          <h1><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> My-Toolbox</h1>
+          <hr/>
+          <div class="alert alert-warning" role="alert">
+            <strong>Warning ! </strong> this is a work in progress so it may not work as expected ... or even not work at all ! So use it at your own risk.
+          </div>
+          <div class="list-group">
+            <a href="src/diff/index.html" class="list-group-item">
+              <h4 class="list-group-item-heading">Compare Remote Folders</h4>
+              <p class="list-group-item-text">
+                Compare 2 remote folder using SSH connection.
+              </p>
+            </a>
+
+            <a href="src/remote-diff/index.html" class="list-group-item">
+              <h4 class="list-group-item-heading">Compare Remote Folders <small>reloaded</small></h4>
+              <p class="list-group-item-text">
+                Compare 2 remote folder using SSH connection (refacto)
+              </p>
+            </a>
+
+            <a href="src/template/index.html" class="list-group-item">
+              <h4 class="list-group-item-heading">Template</h4>
+              <p class="list-group-item-text">
+                Template for the next great feature
+              </p>
+            </a>
+
+            <a href="src/nexus/index.html" class="list-group-item">
+              <h4 class="list-group-item-heading">Nexus</h4>
+              <p class="list-group-item-text">
+                Download webapp from Maven Repo and deploy to remote server.
+              </p>
+            </a>
+
+            <a href="src/monitor-url/index.html" class="list-group-item">
+              <h4 class="list-group-item-heading">Servlet Monitor</h4>
+              <p class="list-group-item-text">
+                Ping and get version of servlets
+              </p>
+            </a>
+
+          </div>
+
+
+        </div>
+      </div>
+
+
     </div>
   </body>
 

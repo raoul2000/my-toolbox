@@ -36,19 +36,22 @@ var app = new Vue({
       if( result.action === this.action) {
         this.actionCompletedCount++;
 
+        if( result.action === "version-all" && result.success === true) {
+          var itemToUpdate = this.urlList.url.find( function(item){
+            if(item.id === result.value.id) {
+              item.version = result.value.version;
+              return true;
+            }
+            return false;
+          });
+        }
+
         if( this.actionCompletedCount === this.urlList.url.length ) {
           this.action = null;
           this.actionCompletedCount = 0;
           this.disableAction = false;
-          
-          if( result.action === "version-all" && result.success === true) {
-            var itemToUpdate = this.urlList.url.find( function(item){
-              return item.id === result.value.id;
-            });
-            if( itemToUpdate) {
-              itemToUpdate.version = result.value.version;
-            }
-          }
+          console.log(JSON.stringify(this.urlList));
+
         }
       } else {
         console.error("inconsistent action ACK received : current action is = "+this.action);
