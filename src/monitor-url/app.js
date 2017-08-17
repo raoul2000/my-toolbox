@@ -9,32 +9,49 @@ var app = new Vue({
     disableAction : false,
     actionCompletedCount : 0,
     action : null,
+    /**
+     * url : [
+     *    { "id" : "id2", "name": "MDN" , "url" : "https://developer.mozilla.org" ["type" : "typeValue"]}
+     * ]
+     * @type {Object}
+     */
     urlList : {
       'name' : 'URL set 1',
       'url'  : []
     }
   },
   methods : {
-    testAllUrl : function() {
+    pingAllURL : function() {
       this.disableAction = true;
       this.actionCompletedCount = 0;
-      this.action = "test-all";
+      this.action = "ping-all";
     },
-    versionAllUrl : function() {
+    versionAllURL : function() {
       this.disableAction = true;
       this.actionCompletedCount = 0;
       this.action = "version-all";
     },
-    actionCompleted : function(success) {
-      console.log("actionCompleted : ",success);
-      if( this.action ) {
+    actionCompleted : function(result) {
+      console.log("actionCompleted : ",result);
+      if( result.action === this.action) {
         this.actionCompletedCount++;
 
         if( this.actionCompletedCount === this.urlList.url.length ) {
           this.action = null;
           this.actionCompletedCount = 0;
           this.disableAction = false;
+          
+          if( result.action === "version-all" && result.success === true) {
+            var itemToUpdate = this.urlList.url.find( function(item){
+              return item.id === result.value.id;
+            });
+            if( itemToUpdate) {
+              itemToUpdate.version = result.value.version;
+            }
+          }
         }
+      } else {
+        console.error("inconsistent action ACK received : current action is = "+this.action);
       }
     },
     loadUrlList : function(){

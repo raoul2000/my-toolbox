@@ -1,7 +1,8 @@
 module.exports = `
   <tr>
     <td>
-      <b>{{item.name}}</b>
+      <b>{{item.name}}</b><br/>
+      <small class="text-muted">{{item.id}}</small>
     </td>
     <td>
       <a
@@ -22,7 +23,7 @@ module.exports = `
       <button
         class="btn btn-sm btn-primary"
         type="button"
-        v-on:click="testUrl"
+        v-on:click="pingURL"
         v-bind:disabled="disabledTest"
       >
         test

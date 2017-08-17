@@ -1,4 +1,4 @@
 [
-  { "name": "yahoo" , "url" : "http://www.yahoo.fr"},
-  { "name": "MDN" , "url" : "https://developer.mozilla.org"}
+  { "id" : "id1", "name": "yahoo" , "url" : "http://www.yahoo.fr"},
+  { "id" : "id2", "name": "MDN" , "url" : "https://developer.mozilla.org"}
 ]

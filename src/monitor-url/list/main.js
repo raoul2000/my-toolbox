@@ -1,3 +1,5 @@
+'use strict';
+
 var remote = require('electron').remote;
 /**
  * from https://github.com/sindresorhus/semver-regex
@@ -17,8 +19,15 @@ function standardVersionExtractor(baseUrl, self) {
           var dom =  ( new DOMParser() ).parseFromString(xmlStr, "text/xml");
           var result = dom.evaluate('/info/version',dom,null,XPathResult.STRING_TYPE,null);
           if(result && result.stringValue) {
-            self.version = result.stringValue
-            self.$emit('action-completed', response.ok);
+            self.version = result.stringValue;
+            self.$emit('action-completed', {
+							"action"  : "version-all",
+							"success" : true,
+							"value"   : {
+								"id"      :  self.item.id,
+								"version" : result.stringValue
+							}
+						});
           }
           self.disabledTest = false;
         });
@@ -29,7 +38,10 @@ function standardVersionExtractor(baseUrl, self) {
     .catch(function(error) {
       self.success = false;
       self.disabledTest = false;
-      self.$emit('action-completed', false);
+      self.$emit('action-completed',  {
+				"action" : "version-all",
+				"success" : false
+			});
     });
 }
 
@@ -42,7 +54,14 @@ function mrasVersionExtractor(baseUrl, self) {
         response.json().then(function (info) {
           self.version = info.version;
           self.disabledTest = false;
-          self.$emit('action-completed', response.ok);
+          self.$emit('action-completed',  {
+						"action"  : "version-all",
+						"success" : true,
+						"value"   : {
+							"id"      :  self.item.id,
+							"version" : info.version
+						}
+					});
         });
       } else {
         throw new Error('Network response was not ok.');
@@ -51,7 +70,10 @@ function mrasVersionExtractor(baseUrl, self) {
     .catch(function(error) {
       self.success = false;
       self.disabledTest = false;
-      self.$emit('action-completed', false);
+      self.$emit('action-completed',  {
+				"action" : "version-all",
+				"success" : false
+			});
     });
 }
 
@@ -66,9 +88,18 @@ function previewVersionExtractor(baseUrl, self) {
           var semver = semverRegex().exec(htmlStr);
           if(semver) {
             self.version = semver[0];
-          }
-          self.$emit('action-completed', response.ok);
-          self.disabledTest = false;
+						self.$emit('action-completed',  {
+							"action"  : "version-all",
+							"success" : true,
+							"value"   : {
+								"id"      : self.item.id,
+								"version" : self.version
+							}
+						});
+						self.disabledTest = false;
+          } else {
+						throw new Error("failed to extract version");
+					}
         });
       } else {
         throw new Error('Network response was not ok.');
@@ -77,22 +108,29 @@ function previewVersionExtractor(baseUrl, self) {
     .catch(function(error) {
       self.success = false;
       self.disabledTest = false;
-      self.$emit('action-completed', false);
+      self.$emit('action-completed',  {
+				"action"  : "version-all",
+				"success" : false
+			});
     });
 }
 
+/**
+ * The Main vuesjs component
+ * @type {Object}
+ */
 module.exports = {
-  template: require('./main.html'),
-  props: ['item', 'action'],
-  data : function() {
+  template : require('./main.html'),
+  props    : ['item', 'action'],
+  data     : function() {
     return {
-      success : null,
+      success      : null,
       disabledTest : false,
-      version : '??'
+      version      : '??'
     };
   },
   methods : {
-    testUrl : function(){
+    pingURL : function(){
       console.log("testing url ",this.item.url);
       var self = this;
       this.success = null;
@@ -101,12 +139,18 @@ module.exports = {
       .then(response => {
         self.success = response.ok;
         self.disabledTest = false;
-        self.$emit('action-completed', response.ok);
+        self.$emit('action-completed', {
+					"action" : "ping-all",
+					"success" : true
+				});
       })
       .catch(function(error) {
         self.success = false;
         self.disabledTest = false;
-        self.$emit('action-completed', false);
+        self.$emit('action-completed', {
+					"action" : "ping-all",
+					"success" : false
+				});
       });
     },
     openUrlExternal : function(url) {
@@ -131,8 +175,8 @@ module.exports = {
   },
   watch: {
     action: function (newAction) {
-      if(newAction === 'test-all') {
-        this.testUrl();
+      if(newAction === 'ping-all') {
+        this.pingURL();
       } else if( newAction === 'version-all') {
         this.getVersion();
       }
