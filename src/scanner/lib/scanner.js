@@ -4,9 +4,36 @@ var getEntities = require('./entities').getEntities;
 var extractTomcatIds = require('./tc-identifier').extractTomcatIds;
 var extractInstallDir = require('./tc-install-dir').extractInstallDir;
 var waterfall = require("promise-waterfall");
+var extractTomcatProperties = require('./tc-scan/properties').extractTomcatProperties;
+var tcContext = require('./tc-scan/context');
+var descriptor = require('./tc-scan/descriptor');
 const NodeSSH = require('node-ssh');
 
-
+/**
+ * Returns :
+ * {
+ *  entities : {
+ *    ENT1_NAME : ENT1_VALUE,
+ *    ENT2_NAME : ENT2_VALUE,
+ *    ...
+ *  },
+ *  tomcat : [
+ *    {
+ *      id : "TCID1",
+ *      installDir : "...." ,
+ *      prop : [
+ *        {  name : "Server version", value : "1"},
+ *        {  name : "Server version", value : "1"},
+ *         ...
+ *      ]
+ *    },
+ *    { id : "TCID2", installDir : "...."},
+ *    ...
+ *  ]
+ * }
+ * @param  {[type]} sshOptions [description]
+ * @return {[type]}            [description]
+ */
 function scan(sshOptions) {
   var scanResult = {
     "entities" : null,
@@ -33,6 +60,41 @@ function scan(sshOptions) {
         };
       })
     );
+  })
+  .then(  result => {
+    console.log(result);
+    return waterfall(scanResult.tomcat.map( tc => {
+      return function() {
+        return extractTomcatProperties(ssh, tc.installDir)
+        .then( props => tc.prop = props);
+      };
+    }));
+  })
+  .then( result => {
+    return waterfall(scanResult.tomcat.map( tc => {
+      return function() {
+        return  tcContext.getContextsFromTomcatDir(ssh, tc.installDir, scanResult.entities)
+        .then( conf => {
+          tc.conf = conf;
+          console.log("AA", conf);
+          var promises = [];
+          conf.map(confItem => {
+            confItem.context.map( context => {
+              promises.push(function(){
+                var descriptorPath = `${context.docBase}/WEB-INF/web.xml`;
+                console.log(descriptorPath);
+
+                return descriptor.getAllServlet(ssh, descriptorPath, scanResult.entities)
+                .then(result => {
+                  context.servlet = result;
+                });
+            });
+          });
+        });
+        return waterfall(promises);
+        });
+      };
+    }));
   })
   .then( result => {
     ssh.dispose();

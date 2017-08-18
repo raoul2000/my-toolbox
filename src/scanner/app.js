@@ -7,6 +7,7 @@ var tcConfig = require('./lib/tc-scan/config');
 var tcContext = require('./lib/tc-scan/context');
 var getEntities = require('./lib/entities').getEntities;
 var descriptor = require('./lib/tc-scan/descriptor');
+var waterfall = require("promise-waterfall");
 const NodeSSH = require('node-ssh');
 
 //Vue.component('url-list', require('./list/main'));
@@ -29,39 +30,63 @@ var app = new Vue({
       readyTimeout : 5000
     },
     connectionOk : true,
-    action : null
+    action : null,
+    logEntries : [],
+    scan : {
+      "entity" : [],
+      "tomcat" : []
+    }
   },
   computed : {
     canStartScan : function(){
-      return this.connectionOk === true && this.action === null && this.ssh.host.length > 0 && this.ssh.username.length > 0;
+      return this.connectionOk === true
+        && this.action === null
+        && this.ssh.host.length > 0
+        && this.ssh.username.length > 0;
     },
     canTestConnection : function(){
-      return this.action === null && this.ssh.host.length > 0 && this.ssh.username.length > 0;
+      return this.action === null
+        && this.ssh.host.length > 0
+        && this.ssh.username.length > 0;
     }
   },
   methods : {
     test1 : function() {
+      var self = this;
+      var xmlEntities = {};
+
       let ssh = new NodeSSH();
       return ssh.connect(this.ssh)
-      .then( () => getEntities(ssh))
-      .then( (entities) => descriptor.getAllServlet(ssh, "/methode/meth01/methode-servlets/adorder/WEB-INF/web.xml", entities))
+      .then( () => {
+        self.logEntries.push({ text : "connected"});
+        return getEntities(ssh)})
+      .then( (entities) => {
+        xmlEntities = entities;
+        var entityArray = Object.keys(entities).map( prop => {
+          return {name : prop, "value" : entities[prop]};
+        });
+
+        console.log(entities);
+        self.logEntries.push({ text : "entities extracted : "+entityArray.length});
+        return descriptor.getAllServlet(ssh, "/methode/meth01/methode-servlets/adorder/WEB-INF/web.xml", entities);
+      })
       .then( result => console.log(result))
-      //.then( (entities) => tcContext.getContextsFromTomcatDir(ssh, "/methode/meth01/tomcat-inout", entities))
-      //.then( result => console.log(result))
-
-
-      //.then( (entities) => tcConfig.getDOM(ssh, "/methode/meth01/tomcat-inout", entities))
-      //.then( result => console.log(result))
-      //.then( () => extractTomcatProperties(ssh, "/methode/meth01/tomcat-inout"))
-      //.then( result => console.log(result))
       .catch(err => {
         console.error(err);
       });
     },
     startScan : function(){
+      var self = this;
       scan(this.ssh)
-      .then(  result => {
+      .then( result => {
         console.log(result);
+        fs.writeFile(__dirname+'/data.json', JSON.stringify(result, null, 2) , 'utf-8', (err) => {
+          if(err) console.error(err);
+        });
+        self.scan.entity = Object.keys(result.entities).map( prop => {
+          return {name : prop, "value" : result.entities[prop]};
+        });
+        self.scan.tomcat = result.tomcat;
       })
       .catch( err => {
         console.error(err);

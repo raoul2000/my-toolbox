@@ -72,6 +72,34 @@
                   &nbsp;Test Connection
               </button>
             </form>
+            <div class="">
+              <div v-for="tomcat in scan.tomcat">
+                <h2>{{ tomcat.id }} <small>{{ tomcat.installDir}}</small></h2>
+                <hr/>
+                <ul>
+                  <li v-for="prop in tomcat.prop">
+                    {{ prop.name }} : {{ prop.value}}
+                  </li>
+                </ul>
+                <div v-for="conf in tomcat.conf">
+                  <small>{{ conf.filePath }}</small>
+                  <div v-for="context in conf.context">
+                    <ul>
+                      <li>path : {{ context.path }}</li>
+                      <li>docBase : {{ context.docBase }}
+                        <div v-for="servlet in context.servlet">
+                          <ul>
+                            <li>name : <b>{{ servlet.name}}</b></li>
+                            <li>class : <code>{{ servlet.class}}</code></li>
+                          </ul>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
