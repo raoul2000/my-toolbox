@@ -1,10 +1,13 @@
 var remote = require('electron').remote;
 var fs = require('fs');
 var checkSSHConnection = require('./lib/check-connection').checkConnection;
+var scan = require('./lib/scanner').scan;
+var extractTomcatProperties = require('./lib/tc-scan/properties').extractTomcatProperties;
+var tcConfig = require('./lib/tc-scan/config');
+var tcContext = require('./lib/tc-scan/context');
 var getEntities = require('./lib/entities').getEntities;
-var extractTomcatIds = require('./lib/tc-identifier').extractTomcatIds;
-var extractInstallDir = require('./lib/tc-install-dir').extractInstallDir;
-var allSettledInSequence = require('./lib/promise').allSettledInSequence;
+var descriptor = require('./lib/tc-scan/descriptor');
+const NodeSSH = require('node-ssh');
 
 //Vue.component('url-list', require('./list/main'));
 
@@ -19,15 +22,14 @@ var app = new Vue({
   el: '#app',
   data: {
     ssh : {
-      host : '',
-      port : 22,
-      username : '',
-      password : '',
+      host         : '10.25.7.131',
+      port         : 22,
+      username     : 'meth01',
+      password     : 'meth01',
       readyTimeout : 5000
     },
     connectionOk : true,
-    action : null,
-    entities : {}
+    action : null
   },
   computed : {
     canStartScan : function(){
@@ -38,26 +40,31 @@ var app = new Vue({
     }
   },
   methods : {
+    test1 : function() {
+      let ssh = new NodeSSH();
+      return ssh.connect(this.ssh)
+      .then( () => getEntities(ssh))
+      .then( (entities) => descriptor.getAllServlet(ssh, "/methode/meth01/methode-servlets/adorder/WEB-INF/web.xml", entities))
+      .then( result => console.log(result))
+      //.then( (entities) => tcContext.getContextsFromTomcatDir(ssh, "/methode/meth01/tomcat-inout", entities))
+      //.then( result => console.log(result))
+
+
+      //.then( (entities) => tcConfig.getDOM(ssh, "/methode/meth01/tomcat-inout", entities))
+      //.then( result => console.log(result))
+      //.then( () => extractTomcatProperties(ssh, "/methode/meth01/tomcat-inout"))
+      //.then( result => console.log(result))
+      .catch(err => {
+        console.error(err);
+      });
+    },
     startScan : function(){
-      var self = this;
-      getEntities(this.ssh)
-      .then( result => {
+      scan(this.ssh)
+      .then(  result => {
         console.log(result);
-        var tcIds = extractTomcatIds(result);
-        console.log(tcIds);
-
-        var promises = tcIds.filter(function(item){
-          // only keep a reduced set of tomcat ids for tests purposes
-          return item === "inout" || item === "core" ;
-          //return true;
-        }).map( tcId =>  extractInstallDir(self.ssh, tcId) );
-
-        // TODO : implement promises in sequence
-        //return allSettledInSequence(promises);
-        return Promise.all(promises.map(reflect)).then( results => results );
       })
-      .then( tcInstallDirs => {
-        console.log("tcInstallDirs = ",tcInstallDirs);
+      .catch( err => {
+        console.error(err);
       });
     },
     testConnection : function() {

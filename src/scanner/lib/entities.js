@@ -35,20 +35,11 @@ function eomvarParser (data, obj ){
 	return eomvarEntities;
 }
 
-exports.getEntities = function(options) {
+exports.getEntities = function(ssh) {
   let cmd = "cat ./cfg/eomvar.dtd  ./cfg/hosts.dtd  ./cfg/emivar.dtd | grep '<!ENTITY '";
-  let ssh = new NodeSSH();
-  return ssh.connect(options)
-  .then( () => {
-    return ssh.execCommand(cmd,{  stream: 'stdout' });
-  })
+
+  return ssh.execCommand(cmd,{  stream: 'stdout' })
   .then( result => {
-    ssh.dispose();
     return eomvarParser(result.stdout);
-  })
-  .catch(err => {
-    console.error(err);
-    ssh.dispose();
-    throw new Error(err);
   });
 };

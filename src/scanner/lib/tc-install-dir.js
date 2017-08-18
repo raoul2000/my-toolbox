@@ -1,7 +1,5 @@
 "use strict";
 
-const NodeSSH = require('node-ssh');
-
 /**
  * Finds the Tomcat install folder name for a specific tomcat ID.
  * The path value returned is relative to the SSH user home directoy.
@@ -10,27 +8,19 @@ const NodeSSH = require('node-ssh');
  * @param  {[type]} tomcatId [description]
  * @return {[type]}          [description]
  */
-function extractInstallDir(options, tomcatId, path) {
+function extractInstallDir(ssh, tomcatId, path) {
 
   var pattern = "*tomcat-"+tomcatId.toLowerCase();
 
   let cmd = (path !== undefined ?  'cd '+path+' ; ' : '') + 'ls -1d $PWD/'+pattern;
-  let ssh = new NodeSSH();
 
-  return ssh.connect(options)
-  .then( () => {
-    return ssh.execCommand(cmd,{  stream: 'stdout' });
-  })
+  return ssh.execCommand(cmd,{  stream: 'stdout' })
   .then( result => {
-    ssh.dispose();
     console.log(result);
-    return result.stdout.replace(/\n$/, '');
-  })
-  .catch(err => {
-    console.error(err);
-    ssh.dispose();
-    throw new Error(err);
+    return {
+      "id" : tomcatId,
+      "installDir" : result.stdout.replace(/\n$/, '')
+    };
   });
-
 }
 exports.extractInstallDir = extractInstallDir;

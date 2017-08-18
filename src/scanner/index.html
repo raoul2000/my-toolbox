@@ -57,6 +57,10 @@
               <button
                 v-bind:disabled="!canStartScan"
                 v-on:click="startScan" type="button" class="btn btn-primary">Start</button>
+
+              <button
+                v-bind:disabled="!canStartScan"
+                v-on:click="test1" type="button" class="btn btn-primary">Test1</button>
               <button
                 v-bind:disabled="!canTestConnection"
                 v-on:click="testConnection" type="button" class="btn btn-primary">
