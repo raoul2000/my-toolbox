@@ -61,6 +61,13 @@
               <button
                 v-bind:disabled="!canStartScan"
                 v-on:click="test1" type="button" class="btn btn-primary">Test1</button>
+
+              <button
+                v-on:click="loadFromFile" type="button" class="btn btn-primary">Load From File (test)</button>
+
+              <button
+                v-on:click="identifyServlet" type="button" class="btn btn-primary">Identify servlers</button>
+
               <button
                 v-bind:disabled="!canTestConnection"
                 v-on:click="testConnection" type="button" class="btn btn-primary">
@@ -86,12 +93,16 @@
                   <small>{{ conf.filePath }}</small>
                   <div v-for="context in conf.context">
                     <ul>
-                      <li>path : {{ context.path }}</li>
+                      <li>path : <b>{{ context.path }}</b></li>
                       <li>docBase : {{ context.docBase }}
                         <div v-for="servlet in context.servlet">
                           <ul>
                             <li>name : <b>{{ servlet.name}}</b></li>
+                            <li v-if="servlet.ref">
+                              <b>{{ servlet.ref.name}}</b>
+                            </li>
                             <li>class : <code>{{ servlet.class}}</code></li>
+                            <li>url patterns : {{ servlet.urlPattern.join(',')}}<br/>&nbsp;</li>
                           </ul>
                         </div>
                       </li>

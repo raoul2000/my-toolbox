@@ -7,6 +7,7 @@ var extractTomcatProperties = require('./lib/tc-scan/properties').extractTomcatP
 var tcConfig = require('./lib/tc-scan/config');
 var getEntities = require('./lib/entities').getEntities;
 var descriptor = require('./lib/tc-scan/descriptor');
+var matcher = require('./lib/servlet-matcher');
 var waterfall = require("promise-waterfall");
 const NodeSSH = require('node-ssh');
 
@@ -52,10 +53,48 @@ var app = new Vue({
     }
   },
   methods : {
+    identifyServlet : function() {
+      var ref = {
+        "servlet1" : {
+          "id" : "servlet1",
+          "name" : "Servlet 1",
+          "url" : {
+            "release" : "http://s1/release",
+            "snapshot": "http://s1/release",
+            "changes" : "http://s1/changes",
+            "doc"     : "http://s1/doc"
+          },
+          "class" : ['dummyCheckin', 'checkin.CheckinServlet']
+        },
+        "servlet2" : {
+          "id" : "servlet2",
+          "name" : "Servlet 2",
+          "url" : {
+            "release" : "http://s2/release",
+            "snapshot": "http://s2/release",
+            "changes" : "http://s2/changes",
+            "doc"     : "http://s2/doc"
+          },
+          "class" : ['AdminServlet', 'ddd']
+        }
+      };
+      matcher.identifyServlets(this.scan, ref);
+      //var servletIndex = matcher.createIndex(this.scan, ref);
+      //console.log(servletIndex);
+    },
     openTomcatManager  : function(tomcat) {
       var managerURL =  `http://${this.ssh.host}:${tomcat.conf.connector.port}/manager/html`;
       console.info("opening Tomcat Manager : "+managerURL);
       electron.shell.openItem(managerURL);
+    },
+    loadFromFile : function(){
+      var self = this;
+      fs.readFile(__dirname+'/data.json', 'utf-8', (err,data) => {
+        if(err) {
+          throw err;
+        }
+        self.scan = JSON.parse(data);
+      });
     },
     test1 : function() {
       var self = this;

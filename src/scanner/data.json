@@ -279,7 +279,8 @@
                     "urlPattern": [
                       "/servlet/checkin/*"
                     ],
-                    "class": "checkin.CheckinServlet"
+                    "class": "checkin.CheckinServlet",
+                    "ref" : null
                   }
                 ]
               }
