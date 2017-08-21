@@ -1,7 +1,8 @@
 "use strict";
 
 var xmlParser = require('./helper/xml-parser'),
-    waterfall = require("promise-waterfall");
+    waterfall = require("promise-waterfall"),
+    config = require('./config');
 
 /**
  * Extract context informations from a tomcat server configuration XML string passed as argument.
@@ -105,6 +106,7 @@ function getContextsFromFolder(ssh, folderPath, xmlEntities) {
 }
 
 exports.getContextsFromFolder = getContextsFromFolder;
+
 /**
  * Returns :
  * [
@@ -121,6 +123,37 @@ exports.getContextsFromFolder = getContextsFromFolder;
  * @return {Promise}                  [description]
  */
 function getContextsFromTomcatDir(ssh, tomcatInstallDir, xmlEntities) {
+  var tcConf = {};
+  var contextList = [];
+
+  config.parseRemoteFile(ssh, tomcatInstallDir + '/conf/server.xml', xmlEntities)
+  .then( domConfig => {
+
+    ////////////////////////////////////////////////////////////////////////////
+    // from the Tomcat server.xml file retrieve :
+    // - port
+    // - contexts
+
+    tcConf.connector = {
+      "protocol" : "HTTP/1.1",
+      "port" : config.getPortNumberByProtocol(domConfig, "HTTP/1.1")
+    };
+    return getContextsFromDOM(domConfig)  // get conetxts from server.xml
+    .then( result => {
+      if( result && result.length !== 0) {
+        contextList.push(result);
+      } // else : no context found in server.xml
+      return true;
+    });
+  })
+  .then( () =>  getContextsFromFolder(ssh, tomcatInstallDir +  '/conf/Catalina/localhost', xmlEntities))
+  .then(function(result){
+    //console.log( "getContextsFromTomcatDir", result);
+    return contextList.concat(result);
+  });
+}
+
+function getContextsFromTomcatDir_orig(ssh, tomcatInstallDir, xmlEntities) {
   var contextList = [];
 
   return getContextsFromFile(ssh, tomcatInstallDir + '/conf/server.xml', xmlEntities)
@@ -135,6 +168,5 @@ function getContextsFromTomcatDir(ssh, tomcatInstallDir, xmlEntities) {
     //console.log( "getContextsFromTomcatDir", result);
     return contextList.concat(result);
   });
-
 }
 exports.getContextsFromTomcatDir = getContextsFromTomcatDir;

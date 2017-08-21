@@ -5,7 +5,7 @@ var extractTomcatIds = require('./tc-identifier').extractTomcatIds;
 var extractInstallDir = require('./tc-install-dir').extractInstallDir;
 var waterfall = require("promise-waterfall");
 var extractTomcatProperties = require('./tc-scan/properties').extractTomcatProperties;
-var tcContext = require('./tc-scan/context');
+var tcConfig = require('./tc-scan/config');
 var descriptor = require('./tc-scan/descriptor');
 const NodeSSH = require('node-ssh');
 
@@ -39,10 +39,16 @@ function scan(sshOptions) {
     "entities" : null,
     "tomcat" : []
   };
+
   let ssh = new NodeSSH();
+
   return ssh.connect(sshOptions)
   .then( () => getEntities(ssh) )
   .then( entities => {
+
+    ///////////////////////////////////////////////////////////////////////////
+    // get tomcat ids and install Dirs
+
     console.log(entities);
     scanResult.entities = entities;
     return waterfall(
@@ -62,6 +68,9 @@ function scan(sshOptions) {
     );
   })
   .then(  result => {
+    ///////////////////////////////////////////////////////////////////////////
+    // Get Tomcat properties
+
     console.log(result);
     return waterfall(scanResult.tomcat.map( tc => {
       return function() {
@@ -71,14 +80,18 @@ function scan(sshOptions) {
     }));
   })
   .then( result => {
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Get Tomcat Conf
+
     return waterfall(scanResult.tomcat.map( tc => {
       return function() {
-        return  tcContext.getContextsFromTomcatDir(ssh, tc.installDir, scanResult.entities)
+        return  tcConfig.getConfig(ssh, tc.installDir, scanResult.entities)
         .then( conf => {
-          tc.conf = conf;
           console.log("AA", conf);
+          tc.conf = conf;
           var promises = [];
-          conf.map(confItem => {
+          conf.contextList.map(confItem => {
             confItem.context.map( context => {
               promises.push(function(){
                 var descriptorPath = `${context.docBase}/WEB-INF/web.xml`;
@@ -91,7 +104,11 @@ function scan(sshOptions) {
             });
           });
         });
-        return waterfall(promises);
+        if( promises.length > 0) {
+          return waterfall(promises);
+        } else {
+          return Promise.resolve(true);
+        }
         });
       };
     }));

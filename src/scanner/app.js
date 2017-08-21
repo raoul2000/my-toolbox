@@ -1,10 +1,10 @@
 var remote = require('electron').remote;
+var electron = require('electron');
 var fs = require('fs');
 var checkSSHConnection = require('./lib/check-connection').checkConnection;
 var scan = require('./lib/scanner').scan;
 var extractTomcatProperties = require('./lib/tc-scan/properties').extractTomcatProperties;
 var tcConfig = require('./lib/tc-scan/config');
-var tcContext = require('./lib/tc-scan/context');
 var getEntities = require('./lib/entities').getEntities;
 var descriptor = require('./lib/tc-scan/descriptor');
 var waterfall = require("promise-waterfall");
@@ -18,12 +18,13 @@ function reflect(item){
       function(e){ return {error :e,  status: "FAIL"}}
     );
 }
+var entitiesAsObject = {};
 
 var app = new Vue({
   el: '#app',
   data: {
     ssh : {
-      host         : '10.25.7.131',
+      host         : '172.24.150.2',
       port         : 22,
       username     : 'meth01',
       password     : 'meth01',
@@ -51,6 +52,11 @@ var app = new Vue({
     }
   },
   methods : {
+    openTomcatManager  : function(tomcat) {
+      var managerURL =  `http://${this.ssh.host}:${tomcat.conf.connector.port}/manager/html`;
+      console.info("opening Tomcat Manager : "+managerURL);
+      electron.shell.openItem(managerURL);
+    },
     test1 : function() {
       var self = this;
       var xmlEntities = {};
@@ -66,9 +72,11 @@ var app = new Vue({
           return {name : prop, "value" : entities[prop]};
         });
 
-        console.log(entities);
+        return tcConfig.getConfig(ssh,"/methode/meth01/tomcat-core",entities);
+/*        console.log(entities);
         self.logEntries.push({ text : "entities extracted : "+entityArray.length});
         return descriptor.getAllServlet(ssh, "/methode/meth01/methode-servlets/adorder/WEB-INF/web.xml", entities);
+*/
       })
       .then( result => console.log(result))
       .catch(err => {
@@ -83,10 +91,12 @@ var app = new Vue({
         fs.writeFile(__dirname+'/data.json', JSON.stringify(result, null, 2) , 'utf-8', (err) => {
           if(err) console.error(err);
         });
+        entitiesAsObject = result.entities;
         self.scan.entity = Object.keys(result.entities).map( prop => {
           return {name : prop, "value" : result.entities[prop]};
         });
         self.scan.tomcat = result.tomcat;
+        return Promise.resolve(true);
       })
       .catch( err => {
         console.error(err);

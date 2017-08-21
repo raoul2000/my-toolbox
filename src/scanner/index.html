@@ -76,12 +76,13 @@
               <div v-for="tomcat in scan.tomcat">
                 <h2>{{ tomcat.id }} <small>{{ tomcat.installDir}}</small></h2>
                 <hr/>
+                <p><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> port : {{tomcat.conf.connector.port}} <a href="#" v-on:click.stop.prevent="openTomcatManager(tomcat)">Manager</a></p>
                 <ul>
                   <li v-for="prop in tomcat.prop">
                     {{ prop.name }} : {{ prop.value}}
                   </li>
                 </ul>
-                <div v-for="conf in tomcat.conf">
+                <div v-for="conf in tomcat.conf.contextList">
                   <small>{{ conf.filePath }}</small>
                   <div v-for="context in conf.context">
                     <ul>
