@@ -79,7 +79,26 @@
                   &nbsp;Test Connection
               </button>
             </form>
-            <div class="">
+            <div class="summary-view">
+              suppary view
+              <div v-for="tomcat in scan.tomcat">
+                <h3>{{ tomcat.id }}</h3>
+                <hr/>
+                <ul>
+                  <template v-for="conf in tomcat.conf.contextList">
+                    <template v-for="context in conf.context">
+                          <template v-for="servlet in context.servlet">
+                              <li v-if="servlet.ref">
+                                <b>{{ servlet.ref.name}}</b>
+                                http://{{ssh.host}}:{{tomcat.conf.connector.port}}{{context.path}}
+                              </li>
+                          </template>
+                    </template>
+                  </template>
+                </ul>
+              </div>
+            </div>
+            <div class="detail-view">
               <div v-for="tomcat in scan.tomcat">
                 <h2>{{ tomcat.id }} <small>{{ tomcat.installDir}}</small></h2>
                 <hr/>

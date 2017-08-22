@@ -11,6 +11,13 @@ var matcher = require('./lib/servlet-matcher');
 var waterfall = require("promise-waterfall");
 const NodeSSH = require('node-ssh');
 
+//const store = require('../common/config');
+
+//store.set("obj1", { foo : {bar : "1"}});
+//console.log(store.get('obj1.foo.bar'));
+//store.set('obj1.foo.bar',"another value");
+
+
 //Vue.component('url-list', require('./list/main'));
 
 function reflect(item){
@@ -19,7 +26,38 @@ function reflect(item){
       function(e){ return {error :e,  status: "FAIL"}}
     );
 }
+
+/**
+ * HAsh object where key are XML entity names and the value is the entity value. This is used
+ * at runtime to parse XML when scanning a server
+ * @type {Object}
+ */
 var entitiesAsObject = {};
+
+var servletRef = {
+  "servlet1" : {
+    "id" : "servlet1",
+    "name" : "Servlet 1",
+    "url" : {
+      "release" : "http://s1/release",
+      "snapshot": "http://s1/release",
+      "changes" : "http://s1/changes",
+      "doc"     : "http://s1/doc"
+    },
+    "class" : ['dummyCheckin', 'checkin.CheckinServlet']
+  },
+  "servlet2" : {
+    "id" : "servlet2",
+    "name" : "Servlet 2",
+    "url" : {
+      "release" : "http://s2/release",
+      "snapshot": "http://s2/release",
+      "changes" : "http://s2/changes",
+      "doc"     : "http://s2/doc"
+    },
+    "class" : ['AdminServlet', 'ddd']
+  }
+};
 
 var app = new Vue({
   el: '#app',
@@ -54,33 +92,7 @@ var app = new Vue({
   },
   methods : {
     identifyServlet : function() {
-      var ref = {
-        "servlet1" : {
-          "id" : "servlet1",
-          "name" : "Servlet 1",
-          "url" : {
-            "release" : "http://s1/release",
-            "snapshot": "http://s1/release",
-            "changes" : "http://s1/changes",
-            "doc"     : "http://s1/doc"
-          },
-          "class" : ['dummyCheckin', 'checkin.CheckinServlet']
-        },
-        "servlet2" : {
-          "id" : "servlet2",
-          "name" : "Servlet 2",
-          "url" : {
-            "release" : "http://s2/release",
-            "snapshot": "http://s2/release",
-            "changes" : "http://s2/changes",
-            "doc"     : "http://s2/doc"
-          },
-          "class" : ['AdminServlet', 'ddd']
-        }
-      };
-      matcher.identifyServlets(this.scan, ref);
-      //var servletIndex = matcher.createIndex(this.scan, ref);
-      //console.log(servletIndex);
+      matcher.identifyServlets(this.scan, servletRef);
     },
     openTomcatManager  : function(tomcat) {
       var managerURL =  `http://${this.ssh.host}:${tomcat.conf.connector.port}/manager/html`;

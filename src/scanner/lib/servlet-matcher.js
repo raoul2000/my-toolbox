@@ -1,7 +1,7 @@
 "use strict";
 
 function findByClassname(servlet, ref) {
-  return Object.keys(ref).find( k => ref[k].class.indexOf(servlet.classname) !== -1 );
+  return Object.keys(ref).find( k => ref[k].class.indexOf(servlet.class) !== -1 );
 }
 
 
@@ -10,7 +10,7 @@ function identifyServlets( tcScan, ref) {
     tc.conf.contextList.forEach(ctxList => {
       ctxList.context.forEach( ctx => {
         ctx.servlet.forEach(servlet => {
-          var servletKey = findByClassname(servlet.class, ref);
+          var servletKey = findByClassname(servlet, ref);
           if(servletKey) {
             console.log('found ref item : ', servletKey);
           } else {
