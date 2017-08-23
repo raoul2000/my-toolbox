@@ -47,6 +47,8 @@ module.exports = {
           console.log(filenames);
           if( Array.isArray(filenames) ) {
             filenames.forEach(file => {
+              // TODO : only add o desktop if not already there - existing item
+              // could by highlighted by CSS (flash ?)
               store.commit('addToDesktop',{
                 "file" : file,
                 "data" : JSON.parse(fs.readFileSync(file, 'utf8'))
