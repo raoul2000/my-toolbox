@@ -1,6 +1,6 @@
 
-
-module.exports = Vue.component('modal',  {
+console.log('loaded modal-about');
+module.exports = Vue.component('modal-about',  {
 
   data : function(){
     return {

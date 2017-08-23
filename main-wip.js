@@ -22,14 +22,15 @@ function createWindow () {
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
   //  pathname: path.join(__dirname, 'src/scanner/index.html'),
-    //pathname: path.join(__dirname, 'src/app/index.html'),
-    pathname: path.join(__dirname, '/index.html'),
+    pathname: path.join(__dirname, 'src/app/index.html'),
+    //pathname: path.join(__dirname, '/index.html'),
     protocol: 'file:',
     slashes: true
   }));
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
+  require('vue-devtools').install();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {

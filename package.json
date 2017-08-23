@@ -6,6 +6,7 @@
   "scripts": {
     "start": "electron .",
     "dev": "electron . --debug",
+    "wip": "electron main-wip.js --debug",
     "buildEXE": "electron-packager . my-toolbox --platform=win32 --arch=x64",
     "jsonserver": "json-server --delay 1000 --static ./test/data/nexus/static --routes ./test/data/nexus/routes.json ./test/data/nexus/db.json"
   },
@@ -22,7 +23,8 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "devtron": "^1.4.0",
-    "electron": "^1.4.1"
+    "electron": "^1.4.1",
+    "vue-devtools": "^3.1.6"
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
@@ -42,6 +44,7 @@
     "ssh2-sftp-client": "^1.0.5",
     "vue": "^2.4.2",
     "vue-router": "^2.7.0",
+    "vuex": "^2.3.1",
     "xmldom": "^0.1.27"
   }
 }

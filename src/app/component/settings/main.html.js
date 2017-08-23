@@ -5,9 +5,21 @@ module.exports = `
     <hr/>
     <form class="form-horizontal">
       <div class="form-group">
-        <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+        <label for="data-folder" class="col-sm-2 control-label">Data Folder</label>
         <div class="col-sm-10">
-          <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+
+          <div class="input-group">
+            <input id="data-folder" v-model="dataFolder"  type="text" class="form-control" placeholder="">
+            <span class="input-group-btn">
+              <button  @click="selectDataFolder()" class="btn btn-default" type="button">
+                <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+              </button>
+            </span>
+          </div>
+          <span id="helpBlock" class="help-block">
+            Path to the existing local folder where data are stored.
+          </span>
+
         </div>
       </div>
       <div class="form-group">
@@ -28,7 +40,7 @@ module.exports = `
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <button type="button" class="btn btn-default" @click="onCancel()">Cancel</button>
-          <button type="button" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-primary" @click="onSave()">Save</button>
         </div>
       </div>
     </form>

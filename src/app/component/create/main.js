@@ -27,7 +27,7 @@ module.exports = {
   },
   methods : {
     createItem : function() {
-      this.$router.push('/create');
+      this.$router.push('/settings');
     },
     removeFromDesktop1 : function(item) {
       store.commit('removeFromDesktop',item);
