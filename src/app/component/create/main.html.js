@@ -28,28 +28,28 @@ module.exports = `
         <div class="form-group">
           <label for="hostname" class="col-sm-2 control-label">Host</label>
           <div class="col-sm-10">
-            <input v-model.trim="ssh.host"
+            <input v-model.trim="scan.ssh.host"
               type="text" class="form-control" id="hostname" placeholder="IP or hostname" required="required">
           </div>
         </div>
         <div class="form-group">
           <label for="port" class="col-sm-2 control-label">Port</label>
           <div class="col-sm-10">
-            <input  v-model.number="ssh.port"
+            <input  v-model.number="scan.ssh.port"
               type="number" class="form-control" id="port" placeholder="port (default : 22)">
           </div>
         </div>
         <div class="form-group">
           <label for="username" class="col-sm-2 control-label">Username</label>
           <div class="col-sm-10">
-            <input v-model.trim="ssh.username"
+            <input v-model.trim="scan.ssh.username"
               type="text" class="form-control" id="username" placeholder="username" required="required">
           </div>
         </div>
         <div class="form-group">
           <label for="password" class="col-sm-2 control-label">Password</label>
           <div class="col-sm-10">
-            <input v-model="ssh.password"
+            <input v-model="scan.ssh.password"
               type="password" class="form-control" id="password" placeholder="Password">
           </div>
         </div>

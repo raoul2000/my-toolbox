@@ -5,6 +5,18 @@ module.exports = new Vuex.Store({
     currentRoute : null,
     desktop : []
   },
+  getters: {
+    desktopItemByIndex : function(state, getters) {
+      return function(index) {
+        return state.desktop[index];
+      };
+    },
+    desktopItemByFilename : function(state, getters) {
+      return function(filename) {
+        return state.desktop.find( item => item.filename === filename);
+      };
+    }
+  },
   mutations: {
     setCurrentRoute(state, route) {
       state.currentRoute = route;

@@ -11,7 +11,8 @@ module.exports = {
   template: require('./main.html'),
   methods : {
     onCancel : function() {
-      this.$router.push(store.state.currentRoute);
+      this.$router.go(-1);
+      //this.$router.push(store.state.currentRoute);
     },
     selectDataFolder : function() {
       var self = this;

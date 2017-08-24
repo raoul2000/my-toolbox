@@ -10,7 +10,7 @@ PNotify.prototype.options.width = "450px";
  * @param  {type} type  notification  type "success", "warning",  "error"
  * @param  {string} title notification title
  */
-function notify(text, type, title) {
+module.exports = function (text, type, title) {
   let notif = new PNotify({
     title : title || "",
     text: text,

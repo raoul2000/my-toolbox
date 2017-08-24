@@ -55,7 +55,7 @@ function scan(sshOptions) {
       extractTomcatIds(entities)
       .filter(function(item){
         // only keep a reduced set of tomcat ids for tests purposes
-        return item === "inout" || item === "core" ;
+        return item === "inout" || item === "core" || item === "swing"  ;
         //return true;
       }).map( tcId => {
         return function() {

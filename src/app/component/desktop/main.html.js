@@ -21,6 +21,7 @@ module.exports = `
       <h3 class="title">{{ item.data.name }}</h3>
       <p>(index = {{index}})</p>
       <button @click="removeFromDesktop(index)">remove</button>
+      <button @click="view(index)">view</button>
     </div>
   </div>
 

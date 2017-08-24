@@ -58,8 +58,6 @@
 			<modal-about v-if="showAbout" @close="showAbout = false">
 			</modal-about>
 
-
-			{{ currentRoute }}
 			<div class="container" role="main">
 
 			  <router-view>
@@ -80,5 +78,6 @@
 <script src="../../node_modules/vue/dist/vue.js" charset="utf-8"></script>
 <script src="../../node_modules/vue-router/dist/vue-router.js"></script>
 <script src="../../node_modules/vuex/dist/vuex.js"></script>
+<script src="./service/notification.js" type="text/javascript"></script>
 <script src="app.js" charset="utf-8"></script>
 </html>

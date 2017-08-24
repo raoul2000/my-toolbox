@@ -1,6 +1,7 @@
 var remote = require('electron').remote;
 var fs = require('fs');
 const store    = require('../../service/store/store');
+const notify   = require('../../service/notification');
 
 module.exports = {
   data : function(){
@@ -29,6 +30,10 @@ module.exports = {
     createItem : function() {
       this.$router.push('/create');
     },
+    view : function(index) {
+      this.$router.push({ path: '/view', query: { "index": index }});
+
+    },
     removeFromDesktop1 : function(item) {
       store.commit('removeFromDesktop',item);
     },
@@ -49,10 +54,14 @@ module.exports = {
             filenames.forEach(file => {
               // TODO : only add o desktop if not already there - existing item
               // could by highlighted by CSS (flash ?)
-              store.commit('addToDesktop',{
-                "file" : file,
-                "data" : JSON.parse(fs.readFileSync(file, 'utf8'))
-              });
+              if( store.getters.desktopItemByFilename(file) !== undefined) {
+                notify('The item is already included in the desktop','warning','warning');
+              } else {
+                store.commit('addToDesktop',{
+                  "filename" : file,
+                  "data" : JSON.parse(fs.readFileSync(file, 'utf8'))
+                });
+              }
             });
           }
         }
