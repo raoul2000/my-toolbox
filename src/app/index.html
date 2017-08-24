@@ -5,6 +5,10 @@
 	<title>vuejs</title>
 	<!-- bootstrap -->
 	<link href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- PNotify plugin -->
+	<link href="../../node_modules/pnotify/dist/pnotify.css"             rel="stylesheet">
+	<link href="../../node_modules/pnotify/dist/pnotify.buttons.css"     rel="stylesheet">
+	<link href="style.css" rel="stylesheet">
 </head>
 <body style="padding-top:70px;">
 	<div id="app">
@@ -55,13 +59,13 @@
 			</modal-about>
 
 
+			{{ currentRoute }}
 			<div class="container" role="main">
-				{{ currentRoute }}
+
 			  <router-view>
-
 			  </router-view>
-				<db-explorer/>
 
+				<!--db-explorer/-->
 			</div>
 		</div>
 	</div>
@@ -71,6 +75,8 @@
 </script>
 
 <script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="../../node_modules/pnotify/dist/pnotify.js"            type="text/javascript"></script>
+<script src="../../node_modules/pnotify/dist/pnotify.buttons.js"    type="text/javascript"></script>
 <script src="../../node_modules/vue/dist/vue.js" charset="utf-8"></script>
 <script src="../../node_modules/vue-router/dist/vue-router.js"></script>
 <script src="../../node_modules/vuex/dist/vuex.js"></script>

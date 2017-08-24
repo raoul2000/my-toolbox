@@ -30,7 +30,13 @@ const app = new Vue({
   watch: {
     '$route' (to, from) {
       this.currentRoute = this.$route.name;
-      console.log('$route',this.$route);
+      //console.log('$route',this.$route);
+      
+      // to be able to go back to previous route before "settings" do not
+      // commit route when equal to 'settings'
+      if( this.currentRoute !== 'settings') {
+        store.commit('setCurrentRoute',this.$route.name);
+      }
     }
   },
   methods : {

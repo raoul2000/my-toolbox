@@ -1,6 +1,6 @@
 var remote = require('electron').remote;
-var config = require('../../common/config');
-
+var config = require('../../service/config');
+const store    = require('../../service/store/store');
 
 module.exports = {
   data : function(){
@@ -11,7 +11,7 @@ module.exports = {
   template: require('./main.html'),
   methods : {
     onCancel : function() {
-      this.$router.push('/desktop');
+      this.$router.push(store.state.currentRoute);
     },
     selectDataFolder : function() {
       var self = this;
@@ -33,8 +33,9 @@ module.exports = {
       // TODO : validate data Folder
       config.set('dataFolder',this.dataFolder);
 
-      // navigate to desktop
-      this.$router.push('/desktop');
+      // navigate to preview route (go back)
+      this.$router.push(store.state.currentRoute);
+
     }
   },
   mounted : function() {

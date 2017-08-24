@@ -11,7 +11,7 @@ var matcher = require('./lib/servlet-matcher');
 var waterfall = require("promise-waterfall");
 const NodeSSH = require('node-ssh');
 
-//const store = require('../common/config');
+//const store = require('../service/config');
 
 //store.set("obj1", { foo : {bar : "1"}});
 //console.log(store.get('obj1.foo.bar'));

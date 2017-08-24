@@ -2,9 +2,13 @@
 
 module.exports = new Vuex.Store({
   state: {
+    currentRoute : null,
     desktop : []
   },
   mutations: {
+    setCurrentRoute(state, route) {
+      state.currentRoute = route;
+    },
     increment (state) {
       state.count++;
     },

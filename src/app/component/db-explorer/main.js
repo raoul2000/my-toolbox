@@ -1,7 +1,5 @@
 "use strict";
 
-var db = require('../../service/db');
-
 var data = {
   name: 'My Tree',
   children: [
