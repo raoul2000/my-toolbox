@@ -107,7 +107,7 @@ module.exports = {
     startScan : function(simulationMode){
       this.action = "start-scan";
       var self = this;
-      if(true) {
+      if(false) {
         console.log("startScan in SIMULATION mode");
         var result = JSON.parse(fs.readFileSync(__dirname+'/data-2.json', 'utf8'));
         /*

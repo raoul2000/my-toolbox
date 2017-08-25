@@ -1,25 +1,14 @@
-var remote = require('electron').remote;
-var fs = require('fs');
+var remote     = require('electron').remote;
+var fs         = require('fs');
 const store    = require('../../service/store/store');
 const notify   = require('../../service/notification');
+const config   = require('../../service/config');
 
+/**
+ * The Desktop view allows the user to load one more items from the dataFolder into the main view
+ * From there, the user can perform actions on desktop items.
+ */
 module.exports = {
-  data : function(){
-    return {
-      message : "message from list",
-      name : '',
-      todos: [
-        { text: 'Apprendre JavaScript' },
-        { text: 'Apprendre Vue' },
-        { text: 'Créer quelque chose de génial' }
-      ],
-      options0 : [],
-      selected : '',
-      items2 : [
-
-      ]
-    };
-  },
   template: require('./main.html'),
   computed : {
     items : function(){
@@ -32,16 +21,13 @@ module.exports = {
     },
     view : function(index) {
       this.$router.push({ path: '/view', query: { "index": index }});
-
-    },
-    removeFromDesktop1 : function(item) {
-      store.commit('removeFromDesktop',item);
     },
     removeFromDesktop : function(index) {
       store.commit('removeFromDesktop',index);
     },
-    openFolder : function() {
+    openDesktopItems : function() {
       var self = this;
+      var baseFolder = config.get('dataFolder');
       remote.dialog.showOpenDialog(
         remote.getCurrentWindow(),  // is modal on the main window
         {
@@ -57,10 +43,16 @@ module.exports = {
               if( store.getters.desktopItemByFilename(file) !== undefined) {
                 notify('The item is already included in the desktop','warning','warning');
               } else {
-                store.commit('addToDesktop',{
-                  "filename" : file,
-                  "data" : JSON.parse(fs.readFileSync(file, 'utf8'))
-                });
+                console.log(file.replace(baseFolder,''));
+                var relativeFilePath = file.replace(baseFolder,'');
+                if(relativeFilePath === file) {
+                  notify('It is not permitted to select an item out of the data folder','error','Error');
+                } else {
+                  store.commit('addToDesktop',{
+                    "filename" : relativeFilePath,
+                    "data" : JSON.parse(fs.readFileSync(file, 'utf8'))
+                  });
+                }
               }
             });
           }
@@ -68,20 +60,8 @@ module.exports = {
       );
     }
   },
-  // life cycle hook
-  beforeCreate : function(){
-  },
+  // life cycle hook ///////////////////////////////////////////////////////////
   mounted : function(){
     //this.loadOptionsFromUrl();
-  },
-	created: function () {
-    // `this` est une référence à l'instance de vm
-    console.log('created : message is: ' + this.message);
-  },
-	beforeUpdate: function() {
-		console.log('beforeUpdate');
-	},
-	updated : function() {
-		console.log('updated: name is = '+this.name);
-	}
+  }
 };

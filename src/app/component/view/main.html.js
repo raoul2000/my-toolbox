@@ -3,36 +3,90 @@ module.exports = `
 
   <div class="row">
     <div class="col-lg-12">
+      <div v-html="HTMLHeader"></div>
       <h1>{{scan.name}}</h1>
       <hr/>
+
+      <div class="btn-group" role="group" style="margin-bottom:1em;">
+        <button
+          type="button"
+          class="btn btn-default"
+          v-bind:disabled="disableAction"
+          v-on:click="pingAllURL"
+        >
+          <span class="glyphicon glyphicon-flash" aria-hidden="true"></span> ping All
+        </button>
+        <button
+          type="button"
+          class="btn btn-default"
+          v-bind:disabled="disableAction"
+          v-on:click="versionAllURL"
+          title="get all version number"
+        >
+          <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Version
+        </button>
+      </div> <!-- toolbar end -->
+
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="summary-view">
-        <div v-for="tomcat in scan.tomcat">
-          <h3>{{ tomcat.id }}</h3>
-          <hr/>
-          <p><a href="#" @click.stop.prevent="openTomcatManager(tomcat)">manager</a></p>
-          <ul>
-            <template v-for="conf in tomcat.conf.contextList">
-              <template v-for="context in conf.context">
-                    <template v-for="servlet in context.servlet">
-                        <li v-if="servlet.ref">
-                          <b>{{ servlet.ref.name}}</b>
-                          http://{{scan.ssh.host}}:{{tomcat.conf.connector.port}}{{context.path}}
-                        </li>
-                    </template>
-              </template>
-            </template>
-          </ul>
-        </div>
-      </div><!--// summary-view -->
-    </div>
-  </div><!--// row -->
 
   <div class="row">
+    <div class="col-lg-12">
+      <table class="table table-striped table-hover table-condensed">
+        <thead>
+          <tr>
+            <th>name</th>
+            <th>URL</th>
+            <th>version</th>
+            <th>status</th>
+            <th>action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template v-for="tomcat in summary">
+            <tr style="background-color: white">
+              <td colspan="5">
+
+                <h3>
+                  <button
+                    @click.stop.prevent="openTomcatManager(tomcat)"
+                    class="btn btn-default pull-right btn-xs"
+                    title="open in a new window">
+                      Manager
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-default btn-xs pull-right"
+                    data-container="body"
+                    data-toggle="popover"
+                    data-placement="top"
+                    data-trigger="focus"
+                    :data-content="tomcat.version.value">
+                    <span aria-hidden="true" class="glyphicon glyphicon-info-sign"></span>
+                  </button>
+                  Tomcat {{ tomcat.id }}
+                </h3>
+
+              </td>
+            </tr>
+
+            <tr is="url-list"
+              v-for="item in tomcat.servlet"
+              v-bind:item="item"
+              v-bind:action="action"
+              v-on:action-completed="actionCompleted"
+              v-bind:key="item.id">
+            </tr>
+
+          </template>
+        </tbody>
+      </table>
+    </div><!-- // col-lg-12 -->
+  </div><!-- // row -->
+
+
+  <div class="row" style="display:none">
     <div class="col-lg-12">
 
       <div class="detail-view">
@@ -68,7 +122,6 @@ module.exports = `
           </div>
         </div>
       </div><!--// detail-view -->
-
 
     </div>
   </div><!--// row -->

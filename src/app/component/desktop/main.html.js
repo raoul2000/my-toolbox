@@ -6,7 +6,7 @@ module.exports = `
       <h1>Desktop</h1>
       <hr/>
       <div class="btn-group" role="group" style="margin-bottom:1em;">
-        <button @click="openFolder" type="button" class="btn btn-primary">
+        <button @click="openDesktopItems" type="button" class="btn btn-primary">
           <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
         </button>
         <button @click="createItem" type="button" class="btn btn-default">

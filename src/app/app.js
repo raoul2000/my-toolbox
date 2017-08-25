@@ -1,4 +1,5 @@
-
+const path     = require('path');
+const fs       = require('fs');
 
 const Desktop  = require('./component/desktop/main');
 const Settings = require('./component/settings/main');
@@ -10,9 +11,8 @@ const store    = require('./service/store/store');
 const config   = require('./service/config');
 const notify   = require('./service/notification');
 
-const path = require('path');
-const fs   = require('fs');
 
+// register routes
 const router = new VueRouter({
   routes :[
     { path: '/desktop',  component: Desktop,  name : 'desktop' },
@@ -22,42 +22,32 @@ const router = new VueRouter({
   ]
 });
 
+// The main app vue component is created here
 const app = new Vue({
   router,
-  components: { Desktop },
   data : function() {
     return {
-      loading: true,
-      currentRoute : null,
-      message : "hello !",
-      showAbout : false
+      loading       : true,
+      currentRoute  : null,
+      showAbout     : false
     };
   },
   watch: {
+    /**
+     * Store the current route name
+     */
     '$route' (to, from) {
       this.currentRoute = this.$route.name;
       store.commit('setCurrentRoute',this.$route.name);
-
-      //console.log('$route',this.$route);
-
-      // TODO : check if using router.go(n) would not be enough to goBack from Setting
-      // see https://router.vuejs.org/en/essentials/navigation.html
-
-      // to be able to go back to previous route before "settings" do not
-      // commit route when equal to 'settings'
-      // not needed anymore
-      /*if( this.currentRoute !== 'settings') {
-        store.commit('setCurrentRoute',this.$route.name);
-      }*/
     }
   },
   methods : {
-    showMainView : function() {
-      return this.loading === false && this.currentRoute !== 'settings';
-    },
     showToolbar : function() {
       return this.currentRoute !== 'settings';
     },
+    /**
+     * Check current configuration and load the webapp definition file
+     */
     initApplication : function() {
       // check data folder exist
       if(config.has('dataFolder') === false ) {
@@ -72,7 +62,7 @@ const app = new Vue({
         return;
       }
 
-      // load web-app reference dictionnary
+      // load web-app reference dictionnary into the store
       var webappDefFilename = path.join(path.dirname(config.path),'web-app-def.json');
       console.log("loading ",webappDefFilename);
       if ( fs.existsSync(webappDefFilename) === false ) {
@@ -87,12 +77,14 @@ const app = new Vue({
       }
     }
   },
+  /**
+   * Set the default route to be displayed in the main view
+   */
   created: function () {
     this.$router.push('/desktop');  // default route
     this.loading = false;
   },
   mounted : function() {
     this.initApplication();
-
   }
 }).$mount('#app');
