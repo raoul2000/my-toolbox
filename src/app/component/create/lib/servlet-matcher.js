@@ -1,7 +1,14 @@
 "use strict";
 
-function findByClassname(servlet, ref) {
-  return Object.keys(ref).find( k => ref[k].class.indexOf(servlet.class) !== -1 );
+function findByClassname(servlet, webappDefinitions) {
+
+  return webappDefinitions.find( webappDefinition => {
+    if( servlet.class && webappDefinition.class) {
+      return webappDefinition.class.indexOf(servlet.class) !== -1 ;
+    } else {
+      return false;
+    }
+  });
 }
 
 
@@ -10,13 +17,15 @@ function identifyServlets( tcScan, ref) {
     tc.conf.contextList.forEach(ctxList => {
       ctxList.context.forEach( ctx => {
         ctx.servlet.forEach(servlet => {
-          var servletKey = findByClassname(servlet, ref);
-          if(servletKey) {
-            console.log('found ref item : ', servletKey);
+          var refItem = findByClassname(servlet, ref);
+          if(refItem) {
+            console.log('found ref item : ', refItem);
+            servlet.rid = refItem.id;
           } else {
             console.log('NOT found ref item : ');
+            servlet.rid = null;
           }
-          servlet.ref = ref[servletKey];
+
         });
       });
     });

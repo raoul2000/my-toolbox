@@ -3,7 +3,8 @@
 module.exports = new Vuex.Store({
   state: {
     currentRoute : null,
-    desktop : []
+    desktop : [],
+    webappDefinition : []
   },
   getters: {
     desktopItemByIndex : function(state, getters) {
@@ -15,9 +16,17 @@ module.exports = new Vuex.Store({
       return function(filename) {
         return state.desktop.find( item => item.filename === filename);
       };
+    },
+    webappDefById : function(state, getters) {
+      return function(webappId) {
+        return state.webappDefinition.find( item => item.id === webappId);
+      };
     }
   },
   mutations: {
+    setWebAppDefinition(state, definition) {
+      state.webappDefinition = definition;
+    },
     setCurrentRoute(state, route) {
       state.currentRoute = route;
     },
@@ -26,14 +35,6 @@ module.exports = new Vuex.Store({
     },
     addToDesktop ( state, item) {
       state.desktop.push(item);
-    },
-    removeFromDesktop1 (state, item) {
-      for(var i = 0; i< state.desktop.length; i++ ){
-      	if (state.desktop[i].data.name === item.data.name) {
-          state.desktop.splice(i, 1);
-          break;
-        }
-      }
     },
     removeFromDesktop (state, index) {
       state.desktop.splice(index, 1);

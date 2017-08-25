@@ -63,7 +63,7 @@ module.exports = {
   template: require('./main.html'),
   methods : {
     identifyServlet : function() {
-      matcher.identifyServlets(this.scan, servletRef);
+      matcher.identifyServlets(this.scan, store.webappDefinition);
     },
     saveScanResult : function() {
       var self = this;
@@ -106,26 +106,26 @@ module.exports = {
     },
     startScan : function(simulationMode){
       this.action = "start-scan";
-      if(false) {
+      var self = this;
+      if(true) {
         console.log("startScan in SIMULATION mode");
         var result = JSON.parse(fs.readFileSync(__dirname+'/data-2.json', 'utf8'));
+        /*
         this.scan.entity = Object.keys(result.entities).map( prop => {
           return {name : prop, "value" : result.entities[prop]};
         });
+        */
+       this.scan.entity = result.entity;
         this.scan.tomcat = result.tomcat;
-        this.identifyServlet();
+        matcher.identifyServlets(self.scan, store.state.webappDefinition);
 
         this.action = null ;
       } else {
-        var self = this;
+
         scan(this.scan.ssh)
         .then( result => {
           console.log(result);
-          /*
-          fs.writeFile(__dirname+'/data-2.json', JSON.stringify(result, null, 2) , 'utf-8', (err) => {
-            if(err) console.error(err);
-          });
-          */
+
           //entitiesAsObject = result.entities;
           self.scan.entity = Object.keys(result.entities).map( prop => {
             return {name : prop, "value" : result.entities[prop]};
@@ -133,6 +133,7 @@ module.exports = {
           self.scan.tomcat = result.tomcat;
           // copy SSH
           this.scan.ssh = this.scan.ssh;
+          matcher.identifyServlets(self.scan, store.state.webappDefinition);
           self.action = null;
           return Promise.resolve(true);
         })
