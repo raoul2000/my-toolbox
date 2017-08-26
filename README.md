@@ -40,6 +40,8 @@ To clone and run this repository you'll need [Git](https://git-scm.com) and [Nod
 npm install
 # Run the app
 npm start
+# run the wip app
+npm run wip
 ```
 
 Learn more about Electron and its API in the [documentation](http://electron.atom.io/docs/).
