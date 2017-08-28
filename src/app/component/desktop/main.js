@@ -19,12 +19,25 @@ module.exports = {
     createItem : function() {
       this.$router.push('/create');
     },
+    /**
+     * Opens a view for a specific item.
+     *
+     * @param  {inetger} index indes of the item in the current store
+     */
     view : function(index) {
       this.$router.push({ path: '/view', query: { "index": index }});
     },
+    /**
+     * Remove an item from the desktopn
+     * @param  {integer} index the item index in the current store
+     */
     removeFromDesktop : function(index) {
       store.commit('removeFromDesktop',index);
     },
+    /**
+     * Opens a file selection dialog box (native) so the user can select one or more
+     * item that will be added to the desktopn.
+     */
     openDesktopItems : function() {
       var self = this;
       var baseFolder = config.get('dataFolder');
@@ -38,14 +51,13 @@ module.exports = {
           console.log(filenames);
           if( Array.isArray(filenames) ) {
             filenames.forEach(file => {
-              // TODO : only add o desktop if not already there - existing item
-              // could by highlighted by CSS (flash ?)
               if( store.getters.desktopItemByFilename(file) !== undefined) {
                 notify('The item is already included in the desktop','warning','warning');
               } else {
                 console.log(file.replace(baseFolder,''));
                 var relativeFilePath = file.replace(baseFolder,'');
                 if(relativeFilePath === file) {
+                  // TODO : wee how to highlight the existing item (css animate ?)
                   notify('It is not permitted to select an item out of the data folder','error','Error');
                 } else {
                   store.commit('addToDesktop',{
@@ -59,9 +71,5 @@ module.exports = {
         }
       );
     }
-  },
-  // life cycle hook ///////////////////////////////////////////////////////////
-  mounted : function(){
-    //this.loadOptionsFromUrl();
   }
 };

@@ -12,7 +12,6 @@ module.exports = {
   methods : {
     onCancel : function() {
       this.$router.go(-1);
-      //this.$router.push(store.state.currentRoute);
     },
     selectDataFolder : function() {
       var self = this;
