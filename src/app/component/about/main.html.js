@@ -8,10 +8,9 @@ modal
         <h4 class="modal-title">About My Toolbox</h4>
       </div>
       <div class="modal-body">
-        <p>This is my toolbox ... </p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <img src="./assets/image/toolbox.jpg" alt="my-toolbox" class="img-responsive center-block"/>
+        <p>This is my toolbox and this is a <b>work in progress</b> so use it at your own risk...
+        or just don't use it at all !</p>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

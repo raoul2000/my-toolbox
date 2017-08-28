@@ -16,6 +16,15 @@ module.exports = `
     </div>
   </div>
 
+
+    <div class="row">
+      <div class="col-xs-4">
+        <div class="dk-item">
+          <h3><b>TEST</b> / <span>CAT1</span></h3>
+        </div>
+      </div>
+    </div>
+
   <div class="row">
     <div class="col-xs-4" v-for="(item, index)  in items" :title="item.file">
       <h3 class="title">{{ item.data.name }}</h3>
