@@ -15,38 +15,13 @@ var descriptor = require('./lib/tc-scan/descriptor');
 var matcher = require('./lib/servlet-matcher');
 var waterfall = require("promise-waterfall");
 
-var servletRef = {
-  "servlet1" : {
-    "id" : "servlet1",
-    "name" : "Servlet 1",
-    "url" : {
-      "release" : "http://s1/release",
-      "snapshot": "http://s1/release",
-      "changes" : "http://s1/changes",
-      "doc"     : "http://s1/doc"
-    },
-    "class" : ['dummyCheckin', 'checkin.CheckinServlet']
-  },
-  "servlet2" : {
-    "id" : "servlet2",
-    "name" : "Servlet 2",
-    "url" : {
-      "release" : "http://s2/release",
-      "snapshot": "http://s2/release",
-      "changes" : "http://s2/changes",
-      "doc"     : "http://s2/doc"
-    },
-    "class" : ['AdminServlet', 'ddd']
-  }
-};
-
 module.exports = {
   data : function(){
     return {
-      connectionOk : true,
-      action : null,
-      logEntries : [],
-      scan : {
+      "connectionOk" : true,
+      "action"       : null,
+      "logEntries"   : [],
+      "scan"         : {
         "name"   : '',
         "ssh"    : {
           "host"         : '10.25.7.131',
@@ -86,6 +61,10 @@ module.exports = {
         }
       );
     },
+    /**
+     * Create and opens a link to the tomcat manager page
+     * @param  {Object} tomcat the tomcat object
+     */
     openTomcatManager  : function(tomcat) {
       var managerURL =  `http://${this.scan.ssh.host}:${tomcat.conf.connector.port}/manager/html`;
       console.info("opening Tomcat Manager : "+managerURL);
@@ -107,7 +86,7 @@ module.exports = {
     startScan : function(simulationMode){
       this.action = "start-scan";
       var self = this;
-      if(false) {
+      if(false) { // for dev only
         console.log("startScan in SIMULATION mode");
         var result = JSON.parse(fs.readFileSync(__dirname+'/data-2.json', 'utf8'));
         /*

@@ -10,6 +10,7 @@ module.exports = Vue.component('modal-about',  {
   // life cycle hook
   mounted : function(){
     var self = this;
+    // trigger modal display attaching event handler to close
     $('#modal').modal("show").one('hidden.bs.modal', function (e) {
       self.$emit('close');
     });
