@@ -4,16 +4,8 @@ var slug = require('slug');
 var fs = require('fs');
 const store    = require('../../service/store/store');
 var checkSSHConnection = require('../../service/ssh/check-connection').checkConnection;
-
-
-
 var scan = require('./lib/scanner').scan;
-var extractTomcatProperties = require('./lib/tc-scan/properties').extractTomcatProperties;
-var tcConfig = require('./lib/tc-scan/config');
-var getEntities = require('./lib/entities').getEntities;
-var descriptor = require('./lib/tc-scan/descriptor');
 var matcher = require('./lib/servlet-matcher');
-var waterfall = require("promise-waterfall");
 
 module.exports = {
   data : function(){
@@ -139,19 +131,5 @@ module.exports = {
         && this.scan.ssh.host.length > 0
         && this.scan.ssh.username.length > 0;
     }
-  },
-  // life cycle hook
-  beforeCreate : function(){
-  },
-  mounted : function(){
-    //this.loadOptionsFromUrl();
-  },
-	created: function () {
-  },
-	beforeUpdate: function() {
-		console.log('beforeUpdate');
-	},
-	updated : function() {
-		console.log('updated: name is = '+this.name);
-	}
+  }
 };
