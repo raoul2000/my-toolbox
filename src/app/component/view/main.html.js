@@ -48,26 +48,10 @@ module.exports = `
             <tr style="background-color: white">
               <td colspan="5">
 
-                <h3>
-                  <button
-                    @click.stop.prevent="openTomcatManager(tomcat)"
-                    class="btn btn-default pull-right btn-xs"
-                    title="open in a new window">
-                      Manager
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-default btn-xs pull-right"
-                    data-container="body"
-                    data-toggle="popover"
-                    data-placement="top"
-                    data-trigger="focus"
-                    :data-content="tomcat.version.value">
-                    <span aria-hidden="true" class="glyphicon glyphicon-info-sign"></span>
-                  </button>
+                <h3 class="tomcat-id">
                   Tomcat {{ tomcat.id }}
+                  <small>{{tomcat.version.value}} - <a href="#" @click.stop.prevent="openTomcatManager(tomcat)">manager</a></small>
                 </h3>
-
               </td>
             </tr>
 
