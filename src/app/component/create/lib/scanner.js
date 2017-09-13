@@ -40,8 +40,12 @@ function scan(sshOptions) {
     "tomcat" : []
   };
 
+  // one and only SSH connection object
+  // Released at the end of the promise chain (or on exception)
+
   let ssh = new NodeSSH();
 
+  // start the Promise chain
   return ssh.connect(sshOptions)
   .then( () => getEntities(ssh) )
   .then( entities => {
