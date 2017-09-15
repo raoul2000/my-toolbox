@@ -1,5 +1,5 @@
 "use strict";
-var xmlParser = require('./helper/xml-parser');
+var xmlParser = require('../../../../lib/xml/parser');
 /**
  * Extract context informations from a tomcat web descriptor provided as a DOM.
  * Returns an object where the key is the servlet name and value are servlet class and url-pattern

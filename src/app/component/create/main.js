@@ -3,7 +3,7 @@ var remote = require('electron').remote;
 var slug = require('slug');
 var fs = require('fs');
 const store    = require('../../service/store/store');
-var checkSSHConnection = require('../../service/ssh/check-connection').checkConnection;
+var checkSSHConnection = require('../../lib/ssh/check-connection').checkConnection;
 var scan = require('./lib/scanner').scan;
 var matcher = require('./lib/servlet-matcher');
 

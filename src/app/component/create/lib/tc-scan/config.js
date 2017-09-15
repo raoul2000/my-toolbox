@@ -1,6 +1,6 @@
 "use strict";
 
-var xmlParser = require('./helper/xml-parser');
+var xmlParser = require('../../../../lib/xml/parser');
 var    waterfall = require("promise-waterfall");
 
 /**
