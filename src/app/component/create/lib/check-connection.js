@@ -3,6 +3,9 @@
 const NodeSSH = require('node-ssh');
 
 /**
+ * Checks that the SSH connection is valid.
+ * This function tries to open a SSH connection using the provided arguments
+ *
  * options :
  * {
  *    'host' : '127.0.0.1',
@@ -10,6 +13,9 @@ const NodeSSH = require('node-ssh');
  *    'username' : 'user',
  *    'password' : '*****'
  * }
+ *
+ * The SSH connection is released at the end.
+ * 
  * @param  {Object} options SSH connection settings
  * @return {Promise}
  */
