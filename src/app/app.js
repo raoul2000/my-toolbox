@@ -7,6 +7,8 @@ const About    = require('./component/about/main');
 const DbNav    = require('./component/db-explorer/main');
 const Create   = require('./component/create/main');
 const View     = require('./component/view/main');
+const Deploy   = require('./component/deploy/main');
+
 const store    = require('./service/store/store');
 const config   = require('./service/config');
 const notify   = require('./service/notification');
@@ -18,7 +20,8 @@ const router = new VueRouter({
     { path: '/desktop',  component: Desktop,  name : 'desktop' },
     { path: '/settings', component: Settings, name : 'settings'},
     { path: '/create',   component: Create,   name : 'create'},
-    { path: '/view',     component: View,     name : 'view'}
+    { path: '/view',     component: View,     name : 'view'},
+    { path: '/deploy',   component: Deploy,   name : 'deploy'}
   ]
 });
 
