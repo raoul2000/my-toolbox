@@ -15,9 +15,22 @@ module.exports = {
               "version" : "1.0.2",
               "installFolder" : "file-1.0.2"
             }
+          },
+          {
+            "selected" : false, // extra
+            "filename" : "/folder/file2.txt",
+            "metadata" : {
+              "symlink" : "file2",
+              "version" : "1.0.22",
+              "installFolder" : "file-1.0.22"
+            }
           }
         ]
       };
     },
-  template: require('./main.html')
+  template: require('./main.html'),
+  mounted : function(){
+    var self = this;
+  }
+  
 };
