@@ -5,11 +5,28 @@ const store    = require('../../service/store/store');
 module.exports = {
   data : function(){
     return {
-      dataFolder : ''
+      dataFolder : '',
+      deployFolder : ''
     };
   },
   template: require('./main.html'),
   methods : {
+    selectSingleFolder : function() {
+      var self = this;
+      remote.dialog.showOpenDialog(
+        remote.getCurrentWindow(),  // is modal on the main window
+        {
+          "title"      : "Select the Data folder",
+          "properties" : [ 'openDirectory']
+        },
+        function(folders) {
+          console.log(folders);
+          if( Array.isArray(folders) ) {
+            self.dataFolder = folders[0];
+          }
+        }
+      
+    },
     onCancel : function() {
       this.$router.go(-1);
     },
@@ -41,5 +58,6 @@ module.exports = {
   mounted : function() {
     // TODO : set a default value ?
     this.dataFolder = config.get('dataFolder');
+    this.deployFolder = config.get('deployFolder');
   }
 };

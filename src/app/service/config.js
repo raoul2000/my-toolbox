@@ -9,7 +9,10 @@ const Store = require('electron-store');
 const store = new Store({
   "name" : "my-toolbox",
   "defaults" : {
-    "dataFolder" : app.getPath('home')
+    "dataFolder" : app.getPath('home'),
+    // 'deployFolder' : absolute path of the folder where  all the artefact files
+    // candidate for deployment are stored.
+    "deployFolder" : app.getPath('home')
   }
 });
 console.log("loading config from ", store.path);

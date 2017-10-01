@@ -4,10 +4,11 @@ module.exports = `
     <h1>Settings</h1>
     <hr/>
     <form class="form-horizontal">
+
+      <!--// BEGIN data folder -->
       <div class="form-group">
         <label for="data-folder" class="col-sm-2 control-label">Data Folder</label>
         <div class="col-sm-10">
-
           <div class="input-group">
             <input id="data-folder" v-model="dataFolder"  type="text" class="form-control" placeholder="">
             <span class="input-group-btn">
@@ -19,9 +20,42 @@ module.exports = `
           <span id="helpBlock" class="help-block">
             Path to the existing local folder where data are stored.
           </span>
-
         </div>
       </div>
+      <!--// END data folder -->
+
+
+      <div class="form-group">
+        <label for="data-folder" class="col-sm-2 control-label">Deploy Folder</label>
+        <div class="col-sm-10">
+          <div class="input-group">
+            <input id="deploy-folder" v-model="deployFolder"  type="text" class="form-control" placeholder="">
+            <span class="input-group-btn">
+              <button  @click="selectDeployFolder()" class="btn btn-default" type="button">
+                <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+              </button>
+            </span>
+          </div>
+          <span id="helpBlock" class="help-block">
+            Local folder where files to deploy are located.
+          </span>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <input id="deploy-folder" v-model="deployFolder"  type="text" class="form-control" placeholder="">
+        <span class="input-group-btn">
+          <button  @click="selectDeployFolder()" class="btn btn-default" type="button">
+            <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+          </button>
+        </span>
+      </div>
+      <span id="helpBlock" class="help-block">
+        Local folder where files to deploy are located.
+      </span>
+
+
+
       <div class="form-group">
         <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
         <div class="col-sm-10">

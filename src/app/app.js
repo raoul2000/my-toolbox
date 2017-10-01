@@ -70,14 +70,13 @@ const app = new Vue({
       console.log("loading ",webappDefFilename);
       if ( fs.existsSync(webappDefFilename) === false ) {
         notify(`Configuration file not found : some feature may not be available <br/><code>${webappDefFilename}</code>`,'warning', 'warning');
-
       } else {
         var obj = JSON.parse(fs.readFileSync(webappDefFilename, 'utf8'));
         store.commit(
           'setWebAppDefinition',
           Object.keys(obj).map( k => obj[k])
         );
-      }
+      }      
     }
   },
   /**

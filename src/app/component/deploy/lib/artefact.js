@@ -68,7 +68,6 @@ exports.saveMetadata = function(metadataFilePath, metadata) {
             return file;
           })
           .filter( file => file.metadata);          // ignore file with no metadata (load failure)
-
           resolve(result);
         }
       });

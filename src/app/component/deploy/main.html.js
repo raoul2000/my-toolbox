@@ -2,7 +2,10 @@ module.exports = `
 
 <div class="row">
   <div class="col-lg-12">
-    <table class="table table-striped table-hover table-condensed">
+
+    <table
+      v-if="modules.length != 0"
+      class="table table-striped table-hover table-condensed">
       <thead>
         <tr>
           <th></th>
@@ -20,7 +23,7 @@ module.exports = `
 
             </td>
             <td>
-              {{module.filename}}
+              {{module.dataFilename}}
             </td>
             <td>
               {{module.metadata.version}}
