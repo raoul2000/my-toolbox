@@ -24,7 +24,7 @@ module.exports = `
       </div>
       <!--// END data folder -->
 
-
+      <!--// BEGIN deploy folder -->
       <div class="form-group">
         <label for="data-folder" class="col-sm-2 control-label">Deploy Folder</label>
         <div class="col-sm-10">
@@ -41,18 +41,7 @@ module.exports = `
           </span>
         </div>
       </div>
-
-      <div class="input-group">
-        <input id="deploy-folder" v-model="deployFolder"  type="text" class="form-control" placeholder="">
-        <span class="input-group-btn">
-          <button  @click="selectDeployFolder()" class="btn btn-default" type="button">
-            <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
-          </button>
-        </span>
-      </div>
-      <span id="helpBlock" class="help-block">
-        Local folder where files to deploy are located.
-      </span>
+      <!--// END deploy folder -->
 
 
 
