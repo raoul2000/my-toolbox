@@ -1,6 +1,8 @@
 'use strict';
 
 var remote = require('electron').remote;
+var fs         = require('fs');
+var path         = require('path');
 
 /**
  * The Main vuesjs component
@@ -8,7 +10,7 @@ var remote = require('electron').remote;
  */
 module.exports = {
   template : require('./main.html'),
-  props    : ['module'],
+  props    : ['module','deployFolder'],
   data     : function() {
     return {
       "editionMode" : false
@@ -26,7 +28,16 @@ module.exports = {
         notify('A <b>install folder</b> value is required','error','error');
       } else {
         this.editionMode = false;
-        // TODO : update the corresponding metadata file with new entered values
+        let metafilePath = path.join(this.deployFolder, this.module.metaFilename);
+        console.log('updating file',metafilePath );
+        let newMeta = this.module.metadata;
+        console.log('newMeta',JSON.stringify(newMeta, null ,2) );
+        try {
+          fs.writeFileSync(metafilePath, JSON.stringify(newMeta, null ,2));
+        } catch (e) {
+          notify( "Failed to save metadata file "+metafilePath,'error','error');
+          console.warn("failed to save metadata file "+metafilePath,e);
+        }
       }
     }
   },
