@@ -3,6 +3,16 @@
 var fs = require('fs');
 var path = require('path');
 
+exports.delete = function(baseFolder, filenames) {
+  /*
+  let file1 = path.join(folder, dataFilename);
+  let file2 = path.join(folder, metaFilename);
+  console.log("deleting", file1);
+  console.log("deleting", file2);
+  */
+};
+
+
 /**
  * Updates or create metadataFilePath with the JSON metadata
  *
@@ -24,6 +34,8 @@ exports.saveMetadata = function(metadataFilePath, metadata) {
     });
   });
 };
+
+
 
 /**
  * Browse folderPath and returns a list of files.
@@ -53,7 +65,7 @@ exports.saveMetadata = function(metadataFilePath, metadata) {
           .map( metaFilename    => {   // for each metadata file, find its matching data file or NULL if not found
             let dataFilename = files.find( fileName => metaFilename.length > fileName.length && metaFilename.startsWith(fileName) );
             return {
-              "selected" : false,
+              "selected"     : false,
               "metaFilename" : metaFilename,
               "dataFilename" : dataFilename || null
             };
