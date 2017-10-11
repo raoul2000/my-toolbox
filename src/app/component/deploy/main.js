@@ -5,13 +5,15 @@ const store    = require('../../service/store/store');
 const config   = require('../../service/config');
 const artefact = require('./lib/artefact');
 
+
 Vue.component('module-row', require('./module-row/main'));
 
 module.exports = {
   data : function(){
     return {
         "deployFolder" : "",
-        "modules" : []
+        "modules" : [],
+
       };
     },
   template: require('./main.html'),
@@ -29,6 +31,18 @@ module.exports = {
       artefact
         .buildListFromLocalFolder(this.deployFolder)
         .then( moduleList => this.modules = moduleList );
+
+      artefact
+        .buildListFromLocalFolder(this.deployFolder)
+        .then( moduleList => {
+          store.commit("updateModules",moduleList);
+          /*
+          if(moduleList.length > 0 ) {
+            moduleList
+              .filter( module  => store.getters.getModuleByDataFilename(module.dataFilename) === undefined)
+              .forEach( module => store.commit('addModule', module));
+          }*/
+        });
     },
     showFolderInExplorer : function() {
       electron.shell.openItem(this.deployFolder);
