@@ -1,6 +1,7 @@
 
 
 module.exports = new Vuex.Store({
+  strict: true, // TODO : DEV only
   state: {
     currentRoute : null,
     desktop : [],
@@ -53,36 +54,15 @@ module.exports = new Vuex.Store({
     addModule(state, module) {
       state.modules.push(module);
     },
-    updateModules_ok(state, freshModules) {
-      // add
-      for (var i = 0; i < freshModules.length; i++) {
-        let freshModule = freshModules[i];
-        if( state.modules.findIndex( curModule => curModule.dataFilename === freshModule.dataFilename) === -1) {
-          console.log("fresh module to insert", freshModule);
-          state.modules.push(freshModule);
-        }
-      }
-
-      // remove
-      let idxToRemove = [];
-      for (var i = 0; i < state.modules.length; i++) {
-        let currentModule = state.modules[i];
-        if( freshModules.findIndex( freshModule => freshModule.dataFilename === currentModule.dataFilename) === -1) {
-          console.log("current module to remove (delayed)", currentModule);
-          idxToRemove.push(i);
-        }
-      }
-      console.log('index to remove', idxToRemove);
-      //let orderIdx = idxToRemove.sort().reverse();
-      let orderIdx = idxToRemove.sort(function(a, b){return b-a})
-      console.log('index to remove (ordered)', orderIdx);
-
-      orderIdx.forEach( idx => {
-        console.log('removing idx', idx);
-        state.modules.splice(idx, 1);
-      });
-    },
-    updateModules(state, freshModules) {
+    /**
+     * Update the list of modules int the store taking freshModules into account.
+     * Modules are identified by dataFilename. Note that the entire module is not updated
+     * if for instance some metadata have changed (e.g. modified outside of the app)
+     *
+     * @param  {[type]} state        [description]
+     * @param  {array} freshModules  freshModule array
+     */
+    updateModuleList(state, freshModules) {
       // push freshModules not already present in the store.modules
       freshModules
         .filter( freshModule  => state.modules.findIndex( currentModule => currentModule.dataFilename === freshModule.dataFilename) === -1)
@@ -102,6 +82,42 @@ module.exports = new Vuex.Store({
           console.log("deleting module index",item.index);
           state.modules.splice(item.index, 1);
         });
+    },
+    /**
+     * Updates a single module in the store using the freshModule
+     * @param  {[type]} state       [description]
+     * @param  {[type]} freshModule [description]
+     * @return {[type]}             [description]
+     */
+    updateModule_old(state, freshModule) {
+      let idx = state.modules.findIndex( currentModule => currentModule.dataFilename === freshModule.dataFilename);
+      if( idx !== -1) {
+        state.modules[idx] = freshModule;
+      }
+    },
+    updateModule(state, args, source ) {
+      let idx = state.modules.findIndex( currentModule => currentModule.dataFilename === args.dataFilename);
+      if( idx !== -1) {
+        let target = state.modules[idx];
+        Object.keys(args.updateWith)
+        .filter( sourceProp => target.hasOwnProperty(sourceProp))
+        .forEach( sourceProp => {
+          console.log("prop = "+sourceProp+" old = "+target[sourceProp]+" new = "+args.updateWith[sourceProp]);
+          target[sourceProp] = args.updateWith[sourceProp];
+        });
+      }
+    },
+    deleteModule(state, theModule) {
+      let idx = state.modules.findIndex( currentModule => currentModule.dataFilename === theModule.dataFilename);
+      if( idx !== -1) {
+        state.modules.splice(idx, 1);
+      }
+    },
+    selectModule(state, args) {
+      let idx = state.modules.findIndex( currentModule => currentModule.dataFilename === args.dataFilename);
+      if( idx !== -1) {
+        state.modules[idx].selected = args.selected;
+      }
     }
   }
 });

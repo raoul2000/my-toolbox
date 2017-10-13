@@ -31,7 +31,7 @@ module.exports = `
         </button>
         <ul class="dropdown-menu">
           <li><a id="btn-deploy-ansible" href="#">Ansible</a></li>
-          <li><a id="btn-deploy-ssh" href="#">Direct</a></li>
+          <li><a v-on:click.stop.prevent="startDeploySSH()" href="#">Direct</a></li>
         </ul>
       </div>
     </div>
@@ -60,6 +60,24 @@ module.exports = `
         </tr>
       </tbody>
     </table>
+
+    <div id="modal-deploy-ssh" class="modal fade" tabindex="-1" role="dialog">
+    modal
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">About My Toolbox</h4>
+          </div>
+          <div class="modal-body">
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
   </div><!-- // col-lg-12 -->
 </div><!-- // row -->
+
+
+
 `;

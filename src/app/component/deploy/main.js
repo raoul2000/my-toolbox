@@ -9,39 +9,34 @@ const artefact = require('./lib/artefact');
 Vue.component('module-row', require('./module-row/main'));
 
 module.exports = {
+
   data : function(){
     return {
-        "deployFolder" : "",
-        "modules" : [],
-
+        "deployFolder" : ""
       };
     },
   template: require('./main.html'),
+  computed: {
+    modules () {
+      return store.state.modules;
+    }
+  },
   methods : {
-    removeModuleByDataFilename: function (dataFilename) {
-      for (var i = 0; i < this.modules.length; i++) {
-        if(this.modules[i].dataFilename === dataFilename){
-          this.modules.splice(i, 1);
-          break;
-        }
+    startDeploySSH : function() {
+      console.log('startDeploySSH');
+      if( store.state.modules.findIndex( module => module.selected) === -1) {
+        notify('No module selected','warning', 'warning');
+      } else {
+        $('#modal-deploy-ssh').modal("show").one('hidden.bs.modal', function (e) {
+
+        });
       }
     },
     refresh : function() {
-      console.log('click REFRESH');
-      artefact
-        .buildListFromLocalFolder(this.deployFolder)
-        .then( moduleList => this.modules = moduleList );
-
       artefact
         .buildListFromLocalFolder(this.deployFolder)
         .then( moduleList => {
-          store.commit("updateModules",moduleList);
-          /*
-          if(moduleList.length > 0 ) {
-            moduleList
-              .filter( module  => store.getters.getModuleByDataFilename(module.dataFilename) === undefined)
-              .forEach( module => store.commit('addModule', module));
-          }*/
+          store.commit("updateModuleList",moduleList);
         });
     },
     showFolderInExplorer : function() {
@@ -49,12 +44,12 @@ module.exports = {
     },
     deleteSelectedModules : function() {
       let modulesToDelete = this.modules.filter( item => item.selected);
-      let deployFolder = this.deployFolder;
-      let self = this;
       console.log(modulesToDelete);
       if(modulesToDelete.length === 0 ) {
         notify('No file selected','warning', 'warning');
       } else {
+        let deployFolder = this.deployFolder;
+        let self = this;
         (new PNotify({
             title: 'Confirmation Needed',
             text: `Are you sure you want to delete ${modulesToDelete.length} modules ?`,
@@ -75,7 +70,7 @@ module.exports = {
             console.log("deleting",modulesToDelete );
             modulesToDelete.forEach(module => {
               // TODO : call fs.unlinkSync() sur data and meta filename
-              self.removeModuleByDataFilename(module.dataFilename);
+              store.commit("deleteModule",module);
             });
         });
       }
@@ -95,6 +90,5 @@ module.exports = {
     console.log("deployFolder = ",deployFolder);
     this.deployFolder = deployFolder;
     this.refresh();
-
   }
 };

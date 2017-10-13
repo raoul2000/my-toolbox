@@ -66,6 +66,7 @@ exports.saveMetadata = function(metadataFilePath, metadata) {
             let dataFilename = files.find( fileName => metaFilename.length > fileName.length && metaFilename.startsWith(fileName) );
             return {
               "selected"     : false,
+              "action"       : null,
               "metaFilename" : metaFilename,
               "dataFilename" : dataFilename || null
             };
