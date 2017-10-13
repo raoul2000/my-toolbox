@@ -63,6 +63,9 @@ module.exports = new Vuex.Store({
      * @param  {array} freshModules  freshModule array
      */
     updateModuleList(state, freshModules) {
+      state.modules = freshModules;
+    },
+    updateModuleListDiff(state, freshModules) {
       // push freshModules not already present in the store.modules
       freshModules
         .filter( freshModule  => state.modules.findIndex( currentModule => currentModule.dataFilename === freshModule.dataFilename) === -1)
@@ -89,12 +92,6 @@ module.exports = new Vuex.Store({
      * @param  {[type]} freshModule [description]
      * @return {[type]}             [description]
      */
-    updateModule_old(state, freshModule) {
-      let idx = state.modules.findIndex( currentModule => currentModule.dataFilename === freshModule.dataFilename);
-      if( idx !== -1) {
-        state.modules[idx] = freshModule;
-      }
-    },
     updateModule(state, args, source ) {
       let idx = state.modules.findIndex( currentModule => currentModule.dataFilename === args.dataFilename);
       if( idx !== -1) {

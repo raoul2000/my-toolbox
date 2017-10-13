@@ -27,7 +27,7 @@ module.exports = `
   <td>
     <button
       v-if="!inEdition"
-      v-on:click="enableEditMode(true)" type="button" class="btn btn-default btn-xs">
+      v-on:click="enableEditMode()" type="button" class="btn btn-default btn-xs">
       <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
     </button>
 

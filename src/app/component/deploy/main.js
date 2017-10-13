@@ -36,6 +36,7 @@ module.exports = {
       artefact
         .buildListFromLocalFolder(this.deployFolder)
         .then( moduleList => {
+          moduleList.forEach(item => item.action = "idle" );
           store.commit("updateModuleList",moduleList);
         });
     },

@@ -6,7 +6,7 @@ var path         = require('path');
 const store    = require('../../../service/store/store');
 
 const ACTION_EDITING = "editing";
-const ACTION_IDLE = "idle";
+const ACTION_IDLE    = "idle";
 
 /**
  * The Main vuesjs component
@@ -28,6 +28,9 @@ module.exports = {
     inEdition: function () {
       return this.module.action === ACTION_EDITING;
     },
+    /**
+     * Reflects the module selection check box
+     */
     selected : {
       get()  {
         let module = store.getters.getModuleByDataFilename(this.module.dataFilename);
@@ -36,38 +39,58 @@ module.exports = {
         }
       },
       set(value) {
-        store.commit('selectModule', this.module, { "dataFilename" : this.module.dataFilename, "selected" : value});
+        store.commit('updateModule', {
+          "dataFilename" : this.module.dataFilename,
+          "updateWith"   : {
+            "selected" : value
+          }
+        });
       }
     }
   },
   methods : {
-    enableEditMode : function(enabled = true) {
-      console.log('enableEditMode');
+    /**
+     * Set this module is edit mode.
+     * This change is applied on the stored module object
+     */
+    enableEditMode : function() {
       store.commit('updateModule', {
         "dataFilename" : this.module.dataFilename,
         "updateWith"   : {
-          "action" : enabled === true ? ACTION_EDITING : ACTION_IDLE
+          "action" : ACTION_EDITING
         }
       });
     },
+    /**
+     * User has finished editing metadata for this module.
+     * Walidate user input and on success :
+     * - update the stored module
+     * - update the local metadata file
+     *
+     */
     submitChanges : function() {
       console.log('submitChanges');
       // validate changes
-      if( this.module.metadata.version.length === 0 ) {
+      if( this.metadata.version.length === 0 ) {
         notify('A <b>version number</b> is required','error','error');
-      } else if( this.module.metadata.symlink.length === 0 ) {
+      } else if( this.metadata.symlink.length === 0 ) {
         notify('A <b>symlink</b> value is required','error','error');
-      } else if( this.module.metadata.installFolder.length === 0 ) {
+      } else if( this.metadata.installFolder.length === 0 ) {
         notify('A <b>install folder</b> value is required','error','error');
       } else {
-        this.enableEditMode(false);
-        //store.commit('updateModule',this.module);
+
+        // User input is Valide ; update the store
+        //
         store.commit('updateModule', {
           "dataFilename" : this.module.dataFilename,
-          "updateWith"   : this.metadata
+          "updateWith"   : {
+            "action"   : ACTION_IDLE,
+            "metadata" : this.metadata
+          }
         });
 
         // write to local metadata file
+        //
         let metafilePath = path.join(this.deployFolder, this.module.metaFilename);
         console.log('updating file',metafilePath );
         let newMeta = this.module.metadata;
@@ -81,7 +104,5 @@ module.exports = {
         }
       }
     }
-  },
-  watch: {
   }
 };
