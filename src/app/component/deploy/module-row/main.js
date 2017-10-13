@@ -6,7 +6,7 @@ var path         = require('path');
 const store    = require('../../../service/store/store');
 
 const ACTION_EDITING = "editing";
-const ACTION_IDLE = null;
+const ACTION_IDLE = "idle";
 
 /**
  * The Main vuesjs component
@@ -17,7 +17,11 @@ module.exports = {
   props    : ['module','deployFolder'],
   data     : function() {
     return {
-      "editionMode___" : false
+      "metadata" : {
+        "symlink" : this.module.metadata.symlink,
+        "version" : this.module.metadata.version,
+        "installFolder" : this.module.metadata.installFolder
+      }
     };
   },
   computed: {
@@ -57,7 +61,11 @@ module.exports = {
         notify('A <b>install folder</b> value is required','error','error');
       } else {
         this.enableEditMode(false);
-        store.commit('updateModule',this.module);
+        //store.commit('updateModule',this.module);
+        store.commit('updateModule', {
+          "dataFilename" : this.module.dataFilename,
+          "updateWith"   : this.metadata
+        });
 
         // write to local metadata file
         let metafilePath = path.join(this.deployFolder, this.module.metaFilename);

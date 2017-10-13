@@ -9,19 +9,19 @@ module.exports = `
   <td>
     <span v-if=" ! inEdition">{{module.metadata.version}}</span>
     <span v-else>
-      <input type="text" v-model="module.metadata.version" placeholder="version number (ex : 2.10.5)"/>
+      <input type="text" v-model="metadata.version" placeholder="version number (ex : 2.10.5)"/>
     </span>
   </td>
   <td>
     <span v-if="! inEdition">{{module.metadata.symlink}}</span>
     <span v-else>
-      <input type="text" v-model="module.metadata.symlink" placeholder="symlink name"/>
+      <input type="text" v-model="metadata.symlink" placeholder="symlink name"/>
     </span>
   </td>
   <td>
     <span v-if="!inEdition">{{module.metadata.installFolder}}</span>
     <span v-else>
-      <input type="text" v-model="module.metadata.installFolder" placeholder="install folder"/>
+      <input type="text" v-model="metadata.installFolder" placeholder="install folder"/>
     </span>
   </td>
   <td>
