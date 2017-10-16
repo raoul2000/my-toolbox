@@ -55,6 +55,14 @@ module.exports = new Vuex.Store({
       state.modules.push(module);
     },
     /**
+     * Replace stores modules with freshModules
+     * @param  {object} state        the store state
+     * @param  {Array} freshModules list of modules
+     */
+    initModuleList(state, freshModules) {
+      state.modules = freshModules;
+    },
+    /**
      * Update the list of modules int the store taking freshModules into account.
      * Modules are identified by dataFilename. Note that the entire module is not updated
      * if for instance some metadata have changed (e.g. modified outside of the app)
@@ -63,9 +71,6 @@ module.exports = new Vuex.Store({
      * @param  {array} freshModules  freshModule array
      */
     updateModuleList(state, freshModules) {
-      state.modules = freshModules;
-    },
-    updateModuleListDiff(state, freshModules) {
       // push freshModules not already present in the store.modules
       freshModules
         .filter( freshModule  => state.modules.findIndex( currentModule => currentModule.dataFilename === freshModule.dataFilename) === -1)

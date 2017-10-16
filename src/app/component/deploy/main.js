@@ -1,9 +1,10 @@
 var electron   = require('electron');
 var remote     = require('electron').remote;
 var fs         = require('fs');
+var path         = require('path');
 const store    = require('../../service/store/store');
 const config   = require('../../service/config');
-const artefact = require('./lib/artefact');
+const moduleModel   = require('./lib/module');
 
 
 Vue.component('module-row', require('./module-row/main'));
@@ -12,7 +13,15 @@ module.exports = {
 
   data : function(){
     return {
-        "deployFolder" : ""
+        "deployFolder" : "",
+        "ssh" :
+          {
+            'host' : "",
+            'port' : 22,
+            'username' : "",
+            'password' : ""
+          },
+          "targetPath" : ""
       };
     },
   template: require('./main.html'),
@@ -22,21 +31,59 @@ module.exports = {
     }
   },
   methods : {
-    startDeploySSH : function() {
-      console.log('startDeploySSH');
-      if( store.state.modules.findIndex( module => module.selected) === -1) {
-        notify('No module selected','warning', 'warning');
+    enterSSHSettings : function() {
+      console.log('enterSSHSettings');
+      let modulesToDeploy = store.state.modules.filter(
+        module => module.selected === true
+        && module.action === moduleModel.ACTION.IDLE
+      );
+      if( modulesToDeploy.length === 0 ) {
+        notify('No module selected, or selected module not ready','warning', 'warning');
       } else {
+        $('#modal-deploy-ssh').modal("show");
+        /*
         $('#modal-deploy-ssh').modal("show").one('hidden.bs.modal', function (e) {
 
-        });
+        });*/
       }
     },
+    /**
+     * [description]
+     * @return {[type]} [description]
+     */
+    startDeploySSH : function() {
+      console.log("startDeploySSH");
+      $('#modal-deploy-ssh').modal("hide");
+      let self = this;
+      
+      let tasks = store.state.modules.filter(
+        module => module.selected === true
+        && module.action === moduleModel.ACTION.IDLE
+      ).map( module => {
+        return {
+          "ssh" : self.ssh,
+          "srcFilepath" : path.posix.join(self.deployFolder,module.dataFilename),
+          "destFilepath" : path.posix.join(self.targetPath, module.metadata.installFolder, module.dataFilename),
+          "symlinkPath" : path.posix.join(self.targetPath, module.metadata.symlink),
+          "script" : {
+            "srcFilepath" : path.join(config.get('nexus.confFolder'), 'deploy-1.bash'),
+            "destFilepath" : path.posix.join(self.targetPath, module.metadata.installFolder, 'deploy-1.bash'),
+            "arg" : [
+              self.targetPath, module.metadata.installFolder, module.dataFilename , module.metadata.symlink
+            ]
+          }
+        };
+      });
+      console.log(tasks);
+    },
+    /**
+     * [description]
+     * @return {[type]} [description]
+     */
     refresh : function() {
-      artefact
+      moduleModel
         .buildListFromLocalFolder(this.deployFolder)
         .then( moduleList => {
-          moduleList.forEach(item => item.action = "idle" );
           store.commit("updateModuleList",moduleList);
         });
     },
@@ -44,10 +91,13 @@ module.exports = {
       electron.shell.openItem(this.deployFolder);
     },
     deleteSelectedModules : function() {
-      let modulesToDelete = this.modules.filter( item => item.selected);
+      let modulesToDelete = this.modules.filter(
+        module => module.selected === true
+        && module.action === moduleModel.ACTION.IDLE
+      );
       console.log(modulesToDelete);
       if(modulesToDelete.length === 0 ) {
-        notify('No file selected','warning', 'warning');
+        notify('No module selected or selected module not ready','warning', 'warning');
       } else {
         let deployFolder = this.deployFolder;
         let self = this;

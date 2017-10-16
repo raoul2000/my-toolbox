@@ -31,7 +31,7 @@ module.exports = `
         </button>
         <ul class="dropdown-menu">
           <li><a id="btn-deploy-ansible" href="#">Ansible</a></li>
-          <li><a v-on:click.stop.prevent="startDeploySSH()" href="#">Direct</a></li>
+          <li><a v-on:click.stop.prevent="enterSSHSettings()" href="#">Direct</a></li>
         </ul>
       </div>
     </div>
@@ -61,19 +61,91 @@ module.exports = `
       </tbody>
     </table>
 
+    <!-- /.modal -->
+
     <div id="modal-deploy-ssh" class="modal fade" tabindex="-1" role="dialog">
-    modal
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">About My Toolbox</h4>
+            <h4 class="modal-title"Deploy SSH</h4>
           </div>
           <div class="modal-body">
+
+            <form v-on:submit.prevent="startDeploySSH()" class="form-horizontal"
+              data-toggle="validator" data-disable="true">
+
+              <div class="form-group">
+                <label for="ssh-hostname" class="col-sm-3 control-label">Host</label>
+                <div class="col-sm-8">
+                  <input
+                    v-model="ssh.hostname"
+                    required title="target server hostname or IP address"
+                    type="text" class="form-control" placeholder="hostname or IP address">
+                </div>
+              </div> <!-- input ssh hostname -->
+
+              <div class="form-group">
+                <label for="ssh-port" class="col-sm-3 control-label">SSH Port</label>
+                <div class="col-sm-3">
+                  <input
+                    v-model="ssh.port"
+                    title="SSH Port"
+                    type="number" class="form-control" placeholder="default : 22">
+                </div>
+              </div> <!-- input ssh port -->
+
+              <div class="form-group">
+                <label for="ssh-username" class="col-sm-3 control-label">Username</label>
+                <div class="col-sm-6">
+                  <input
+                    v-model="ssh.username"
+                    required
+                     title="SSH login name"
+                    type="text" class="form-control" placeholder="">
+                </div>
+              </div> <!-- input ssh username -->
+
+              <div class="form-group">
+                <label for="ssh-password" class="col-sm-3 control-label">Password</label>
+                <div class="col-sm-6">
+                  <input
+                    v-model="ssh.password"
+                    required title="SSH login password"
+                    type="password" class="form-control" placeholder="">
+                </div>
+              </div> <!-- input ssh password -->
+
+              <div class="form-group">
+                <label for="ssh-target-path" class="col-sm-3 control-label">Target Folder</label>
+                <div class="col-sm-8">
+                  <input
+                    v-model="targetPath"
+                     required
+                     title="Remote install folder root path"
+                    type="text" class="form-control" placeholder="">
+                </div>
+              </div> <!-- input ssh target-path -->
+
+              <div class="form-group">
+                <div class="col-sm-3">&nbsp;</div>
+                <div class="col-sm-8">
+                  <hr/>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button id="btn-start-ssh-deploy" type="submit" class="btn btn-danger">
+                    Deploy
+                  </button>
+                </div>
+              </div>
+
+            </form>
+
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+    </div>
+
+    <!-- /.modal -->
 
   </div><!-- // col-lg-12 -->
 </div><!-- // row -->

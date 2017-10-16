@@ -3,6 +3,11 @@
 var fs = require('fs');
 var path = require('path');
 
+exports.ACTION = {
+  EDITING : "editing",
+  IDLE    : "idle"
+};
+
 exports.delete = function(baseFolder, filenames) {
   /*
   let file1 = path.join(folder, dataFilename);
@@ -66,7 +71,7 @@ exports.saveMetadata = function(metadataFilePath, metadata) {
             let dataFilename = files.find( fileName => metaFilename.length > fileName.length && metaFilename.startsWith(fileName) );
             return {
               "selected"     : false,
-              "action"       : null,
+              "action"       : exports.ACTION.IDLE,
               "metaFilename" : metaFilename,
               "dataFilename" : dataFilename || null
             };

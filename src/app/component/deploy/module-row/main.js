@@ -1,12 +1,15 @@
 'use strict';
 
 var remote = require('electron').remote;
-var fs         = require('fs');
-var path         = require('path');
-const store    = require('../../../service/store/store');
+var fs       = require('fs');
+var path     = require('path');
+const store  = require('../../../service/store/store');
+const ACTION = require('../lib/module').ACTION;
 
+/*
 const ACTION_EDITING = "editing";
 const ACTION_IDLE    = "idle";
+*/
 
 /**
  * The Main vuesjs component
@@ -26,7 +29,7 @@ module.exports = {
   },
   computed: {
     inEdition: function () {
-      return this.module.action === ACTION_EDITING;
+      return this.module.action === ACTION.EDITING;
     },
     /**
      * Reflects the module selection check box
@@ -57,7 +60,7 @@ module.exports = {
       store.commit('updateModule', {
         "dataFilename" : this.module.dataFilename,
         "updateWith"   : {
-          "action" : ACTION_EDITING
+          "action" : ACTION.EDITING
         }
       });
     },
@@ -84,7 +87,7 @@ module.exports = {
         store.commit('updateModule', {
           "dataFilename" : this.module.dataFilename,
           "updateWith"   : {
-            "action"   : ACTION_IDLE,
+            "action"   : ACTION.IDLE,
             "metadata" : this.metadata
           }
         });
