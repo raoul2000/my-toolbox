@@ -55,7 +55,7 @@ module.exports = {
       console.log("startDeploySSH");
       $('#modal-deploy-ssh').modal("hide");
       let self = this;
-      
+
       let tasks = store.state.modules.filter(
         module => module.selected === true
         && module.action === moduleModel.ACTION.IDLE
@@ -66,8 +66,8 @@ module.exports = {
           "destFilepath" : path.posix.join(self.targetPath, module.metadata.installFolder, module.dataFilename),
           "symlinkPath" : path.posix.join(self.targetPath, module.metadata.symlink),
           "script" : {
-            "srcFilepath" : path.join(config.get('nexus.confFolder'), 'deploy-1.bash'),
-            "destFilepath" : path.posix.join(self.targetPath, module.metadata.installFolder, 'deploy-1.bash'),
+            "srcFilepath"  : path.join(__dirname,"script",'type-1.bash'),
+            "destFilepath" : path.posix.join(self.targetPath, module.metadata.installFolder, 'type-1.bash'),
             "arg" : [
               self.targetPath, module.metadata.installFolder, module.dataFilename , module.metadata.symlink
             ]
