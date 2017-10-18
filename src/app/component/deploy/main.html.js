@@ -79,7 +79,7 @@ module.exports = `
                 <label for="ssh-hostname" class="col-sm-3 control-label">Host</label>
                 <div class="col-sm-8">
                   <input
-                    v-model="ssh.hostname"
+                    v-model="ssh.host"
                     required title="target server hostname or IP address"
                     type="text" class="form-control" placeholder="hostname or IP address">
                 </div>

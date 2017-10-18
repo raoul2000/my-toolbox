@@ -53,7 +53,40 @@ exit $EXIT_CODE
  * @param  {[type]} options [description]
  * @return {[type]}         [description]
  */
-exports.run = function(options,notify) {
+
+exports.run = function(args) {
+
+  let options = args;
+  let notify = null;
+  //let notify  = args.notify;
+
+  if(notify && typeof notify !== 'function') {
+    return Promise.reject(new Error("argument notify must be a function"));
+  }
+
+  let progressHandler = function(total_transferred, chunk, total) {
+    let percent = Math.floor((total_transferred / total) * 100);
+    console.log(percent);
+  };
+
+  let ssh = new NodeSSH();
+  return ssh
+    .connect(options.ssh)
+    .then(() => {
+      return ssh.putFile(options.srcFilepath, options.destFilepath,null,{
+        'step' : progressHandler
+      });
+    })
+    .then(() => ssh.dispose())
+    .catch(err => {
+      console.error('deployByScript',err);
+      ssh.dispose();
+      throw new Error(err);
+    }
+  );
+
+};
+exports.run_orig = function(options,notify) {
   console.log('deploy-ssh-script : ',options);
 
   if(notify && typeof notify !== 'function') {
@@ -116,20 +149,6 @@ exports.run = function(options,notify) {
     return ssh.putFile(options.srcFilepath, options.destFilepath,null,{
       'step' : progressHandler
     });
-  })
-  .then(() => {
-    sendNotification(`upload install script from ${options.script.srcFilepath} to remote ${options.script.destFilepath}`);
-    return ssh.putFile(options.script.srcFilepath, options.script.destFilepath,null,{
-      'step' : progressHandler
-    });
-  })
-  .then(() => {
-    sendNotification(`set permission on script : ${options.script.destFilepath}`);
-    return ssh.execCommand(cmdSetScriptPermission,[],{stream: 'stdout'}).then( cmdResultHandler );
-  })
-  .then(() => {
-    sendNotification(`execute remote script : ${options.script.destFilepath}`);
-    return ssh.exec(options.script.destFilepath, options.script.arg,{stream: 'both'}).then( cmdResultHandler );
   })
   .then(() => ssh.dispose())
   .catch(err => {

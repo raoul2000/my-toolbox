@@ -5,6 +5,8 @@ var path         = require('path');
 const store    = require('../../service/store/store');
 const config   = require('../../service/config');
 const moduleModel   = require('./lib/module');
+const deploySSH   = require('./lib/deploy-ssh');
+const promiseUtils   = require('../../lib/promise-utils');
 
 
 Vue.component('module-row', require('./module-row/main'));
@@ -16,12 +18,12 @@ module.exports = {
         "deployFolder" : "",
         "ssh" :
           {
-            'host' : "",
+            'host' : "192.168.203.182",
             'port' : 22,
-            'username' : "",
-            'password' : ""
+            'username' : "meth01",
+            'password' : "meth01"
           },
-          "targetPath" : ""
+          "targetPath" : "/methode/meth01/tmp"
       };
     },
   template: require('./main.html'),
@@ -75,6 +77,11 @@ module.exports = {
         };
       });
       console.log(tasks);
+
+      promiseUtils.parallel(tasks,deploySSH.run)
+      .then( result => {
+        console.log(result);
+      });
     },
     /**
      * [description]
