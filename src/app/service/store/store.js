@@ -85,7 +85,7 @@ module.exports = new Vuex.Store({
           return {"index" : index, "module" : currentModule};
         } )
         .filter( currentItem => freshModules.findIndex(freshModule => freshModule.dataFilename === currentItem.module.dataFilename) === -1)
-        .sort(function(a, b){return b.index - a.index})
+        .sort(function(a, b){return b.index - a.index}) // sort reverse index (from higher to lower index) to be able to use splice (see below)
         .forEach( item => {
           console.log("deleting module index",item.index);
           state.modules.splice(item.index, 1);
@@ -104,6 +104,7 @@ module.exports = new Vuex.Store({
         Object.keys(args.updateWith)
         .filter( sourceProp => target.hasOwnProperty(sourceProp))
         .forEach( sourceProp => {
+          // TODO : use extend ?
           console.log("prop = "+sourceProp+" old = "+target[sourceProp]+" new = "+args.updateWith[sourceProp]);
           target[sourceProp] = args.updateWith[sourceProp];
         });
