@@ -25,18 +25,46 @@ module.exports = `
     </span>
   </td>
   <td>
-    <button
-      v-if="!inEdition"
-      v-on:click="enableEditMode()" type="button" class="btn btn-default btn-xs">
-      <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-    </button>
+    <div v-if="inEdition">
+      <button
+        v-on:click="submitChanges()" type="button" class="btn btn-default btn-xs">
+          <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+      </button>
+    </div>
+    <div v-else>
+      <button
+        v-if="!inEdition"
+        v-on:click="enableEditMode()" type="button" class="btn btn-default btn-xs">
+          <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+      </button>
+    </div>
+  </td>
+  <td>
 
-    <button
-      v-else
-      v-on:click="submitChanges()" type="button" class="btn btn-default btn-xs">
-      <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-    </button>
+  <div class="download-progress">
+    <div class="progress-percent">
+      <span class="step">{{step}}</span>
+      <span class="percent-value">{{progress}}</span>
+    </div>
 
+  </div>
+
+  <em>{{status}} busy = {{busy}} ({{step}} {{progress}})</em>
+  <div v-if="status === 'success'">
+    SUCCESS
+  </div>
+  <div v-else-if="status === 'error'">
+    ERROR
+  </div>
+  <div v-else-if="status === 'deploying'">
+    {{step}} {{progress}}
+
+    <div class="progress progress-bar-thin" style="min-width:100px">
+      <div class="progress-bar" role="progressbar"  v-bind:style="{width : progress}">
+      </div>
+    </div>
+
+  </div>
   </td>
 </tr>
 `;

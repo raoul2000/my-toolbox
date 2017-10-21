@@ -49,6 +49,7 @@ module.exports = `
           <th>symlink</th>
           <th>install Folder</th>
           <th></th>
+          <th>status</th>
         </tr>
       </thead>
       <tbody>

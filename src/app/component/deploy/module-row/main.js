@@ -6,10 +6,6 @@ var path     = require('path');
 const store  = require('../../../service/store/store');
 const ACTION = require('../lib/module').ACTION;
 
-/*
-const ACTION_EDITING = "editing";
-const ACTION_IDLE    = "idle";
-*/
 
 /**
  * The Main vuesjs component
@@ -29,7 +25,21 @@ module.exports = {
   },
   computed: {
     inEdition: function () {
-      return this.module.action === ACTION.EDITING;
+      return this.module.status === ACTION.EDITING;
+    },
+    status: function() {
+      //return store.getters.getModuleByDataFilename(this.module.dataFilename).status;
+      return this.module.status;
+    },
+    progress: function() {
+      return `${this.module.progress}%`;
+    },
+    busy: function() {
+      return this.module.busy;
+    },
+    step: function() {
+      //return store.getters.getModuleByDataFilename(this.module.dataFilename).step;
+      return this.module.step;
     },
     /**
      * Reflects the module selection check box
@@ -60,7 +70,8 @@ module.exports = {
       store.commit('updateModule', {
         "dataFilename" : this.module.dataFilename,
         "updateWith"   : {
-          "action" : ACTION.EDITING
+          "status" : ACTION.EDITING,
+          "busy"   : true
         }
       });
     },
@@ -87,7 +98,8 @@ module.exports = {
         store.commit('updateModule', {
           "dataFilename" : this.module.dataFilename,
           "updateWith"   : {
-            "action"   : ACTION.IDLE,
+            "status"   : "start",
+            "busy"     : false,
             "metadata" : this.metadata
           }
         });

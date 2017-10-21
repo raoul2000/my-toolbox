@@ -93,16 +93,27 @@ module.exports = new Vuex.Store({
     },
     /**
      * Updates a single module in the store using the freshModule
+     * args : {
+     *  dataFilename : "...",
+     *  updateWith : {
+     *    "propName1" : "propValue1",
+     *    "propName2" : [1,2,3],
+     *    etc ...
+     *  }
+     * }
      * @param  {[type]} state       [description]
-     * @param  {[type]} freshModule [description]
-     * @return {[type]}             [description]
+     * @param  {[type]} args [description]
      */
-    updateModule(state, args, source ) {
+    updateModule(state, args ) {
+      console.log('store.updateModule');
       let idx = state.modules.findIndex( currentModule => currentModule.dataFilename === args.dataFilename);
       if( idx !== -1) {
         let target = state.modules[idx];
         Object.keys(args.updateWith)
-        .filter( sourceProp => target.hasOwnProperty(sourceProp))
+        .filter( sourceProp => {
+          console.log("check property : ", sourceProp);
+          return target.hasOwnProperty(sourceProp);
+        })
         .forEach( sourceProp => {
           // TODO : use extend ?
           console.log("prop = "+sourceProp+" old = "+target[sourceProp]+" new = "+args.updateWith[sourceProp]);

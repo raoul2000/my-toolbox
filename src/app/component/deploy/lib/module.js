@@ -70,8 +70,6 @@ exports.saveMetadata = function(metadataFilePath, metadata) {
           .map( metaFilename    => {   // for each metadata file, find its matching data file or NULL if not found
             let dataFilename = files.find( fileName => metaFilename.length > fileName.length && metaFilename.startsWith(fileName) );
             return {
-              "selected"     : false,
-              "action"       : exports.ACTION.IDLE,
               "metaFilename" : metaFilename,
               "dataFilename" : dataFilename || null
             };

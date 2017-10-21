@@ -6,6 +6,7 @@ const store    = require('../../service/store/store');
 const config   = require('../../service/config');
 const moduleModel   = require('./lib/module');
 const deploySSH   = require('./lib/deploy-ssh');
+const deployEvent   = require('./deploy-event');
 const promiseUtils   = require('../../lib/promise-utils');
 
 
@@ -37,16 +38,12 @@ module.exports = {
       console.log('enterSSHSettings');
       let modulesToDeploy = store.state.modules.filter(
         module => module.selected === true
-        && module.action === moduleModel.ACTION.IDLE
+        && module.busy === false
       );
       if( modulesToDeploy.length === 0 ) {
         notify('No module selected, or selected module not ready','warning', 'warning');
       } else {
         $('#modal-deploy-ssh').modal("show");
-        /*
-        $('#modal-deploy-ssh').modal("show").one('hidden.bs.modal', function (e) {
-
-        });*/
       }
     },
     /**
@@ -60,9 +57,11 @@ module.exports = {
 
       let tasks = store.state.modules.filter(
         module => module.selected === true
-        && module.action === moduleModel.ACTION.IDLE
+        && module.busy === false
       ).map( module => {
         return {
+          "module" : module,
+          "notifier" : deployEvent.createEventEmitter(module),
           "ssh" : self.ssh,
           "srcFilepath" : path.posix.join(self.deployFolder,module.dataFilename),
           "destFilepath" : path.posix.join(self.targetPath, module.metadata.installFolder, module.dataFilename),
@@ -71,7 +70,10 @@ module.exports = {
             "srcFilepath"  : path.join(__dirname,"script",'type-1.bash'),
             "destFilepath" : path.posix.join(self.targetPath, module.metadata.installFolder, 'type-1.bash'),
             "arg" : [
-              self.targetPath, module.metadata.installFolder, module.dataFilename , module.metadata.symlink
+              self.targetPath,
+              module.metadata.installFolder,
+              module.dataFilename,
+              module.metadata.symlink
             ]
           }
         };
@@ -91,7 +93,20 @@ module.exports = {
       moduleModel
         .buildListFromLocalFolder(this.deployFolder)
         .then( moduleList => {
-          store.commit("updateModuleList",moduleList);
+          let extendedModuleList = moduleList.map( module => {
+            return {
+              "dataFilename" : module.dataFilename,
+              "metaFilename" : module.metaFilename,
+              "metadata"     : module.metadata,
+              // extra properties
+              "selected"     : false,
+              "status"       : "start",
+              "step"         : null,
+              "progress"     : -1,
+              "busy"         : false
+            };
+          });
+          store.commit("updateModuleList",extendedModuleList);
         });
     },
     showFolderInExplorer : function() {
@@ -100,7 +115,7 @@ module.exports = {
     deleteSelectedModules : function() {
       let modulesToDelete = this.modules.filter(
         module => module.selected === true
-        && module.action === moduleModel.ACTION.IDLE
+        && module.busy === false
       );
       console.log(modulesToDelete);
       if(modulesToDelete.length === 0 ) {

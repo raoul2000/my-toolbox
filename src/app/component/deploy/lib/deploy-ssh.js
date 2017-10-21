@@ -64,12 +64,25 @@ exports.run = function(args) {
     return Promise.reject(new Error("argument notify must be a function"));
   }
 
+  var _notify = function(event, data) {
+    console.log("event : ",event, "data : ",data);
+    if( args.notifier ) {
+      console.log("event emitted");
+      args.notifier.emit(event, data);
+    }
+  };
+
+  let previousPercent = -1;
   let progressHandler = function(total_transferred, chunk, total) {
     let percent = Math.floor((total_transferred / total) * 100);
-    console.log(percent);
+    if( percent > previousPercent ) {
+      _notify("upload-progress", percent);
+      previousPercent = percent;
+    }
   };
 
   let ssh = new NodeSSH();
+  _notify("connect");
   return ssh
     .connect(options.ssh)
     .then(() => {
@@ -77,10 +90,14 @@ exports.run = function(args) {
         'step' : progressHandler
       });
     })
-    .then(() => ssh.dispose())
+    .then(() => {
+      ssh.dispose();
+      _notify("success");
+    })
     .catch(err => {
       console.error('deployByScript',err);
       ssh.dispose();
+      _notify("error", err );
       throw new Error(err);
     }
   );

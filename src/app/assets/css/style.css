@@ -24,3 +24,12 @@ h3.tomcat-id small {
   display: block;
   font-size: 0.5em;
 }
+
+.progress-percent {
+  font-size: 0.8em;
+}
+
+.progress-bar-thin {
+  height: 2px;
+  margin-bottom: 5px;
+}
