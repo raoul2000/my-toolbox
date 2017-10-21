@@ -51,7 +51,7 @@ module.exports = `
 
   <em>{{status}} busy = {{busy}} ({{step}} {{progress}})</em>
   <div v-if="status === 'success'">
-    SUCCESS
+    SUCCESS^
   </div>
   <div v-else-if="status === 'error'">
     ERROR
