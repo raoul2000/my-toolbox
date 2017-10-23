@@ -33,38 +33,33 @@ module.exports = `
     </div>
     <div v-else>
       <button
-        v-if="!inEdition"
+        v-if="!busy"
         v-on:click="enableEditMode()" type="button" class="btn btn-default btn-xs">
           <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
       </button>
     </div>
   </td>
   <td>
-
-  <div class="download-progress">
-    <div class="progress-percent">
-      <span class="step">{{step}}</span>
-      <span class="percent-value">{{progress}}</span>
+    <div v-if="status === 'success'">
+      <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
     </div>
+    <div v-else-if="status === 'error'">
+      <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+    </div>
+    <div v-else-if="status === 'deploying'">
+      <div v-if="step === 'connecting'">
+        <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span> connecting ...
+      </div>
+      <div v-else-if="step === 'upload'">
 
-  </div>
-
-  <em>{{status}} busy = {{busy}} ({{step}} {{progress}})</em>
-  <div v-if="status === 'success'">
-    SUCCESS^
-  </div>
-  <div v-else-if="status === 'error'">
-    ERROR
-  </div>
-  <div v-else-if="status === 'deploying'">
-    {{step}} {{progress}}
-
-    <div class="progress progress-bar-thin" style="min-width:100px">
-      <div class="progress-bar" role="progressbar"  v-bind:style="{width : progress}">
+        <span class="progress-percent">{{progress}}</span>
+      
+        <div class="progress progress-bar-thin" style="min-width:100px">
+          <div class="progress-bar" role="progressbar"  v-bind:style="{width : progress}">
+          </div>
+        </div>
       </div>
     </div>
-
-  </div>
   </td>
 </tr>
 `;
