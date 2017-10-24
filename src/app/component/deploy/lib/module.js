@@ -3,6 +3,16 @@
 var fs = require('fs');
 var path = require('path');
 
+const STATUS = {
+  IDLE : "idle",
+  EDITING : "editing",
+  DEPLOYING : "deploying",
+  DEPLOYED_SUCCESS : "deployed-success",
+  DEPLOYED_ERROR : "deployed-error"
+};
+
+exports.STATUS = STATUS;
+
 exports.ACTION = {
   EDITING : "editing",
   IDLE    : "idle"

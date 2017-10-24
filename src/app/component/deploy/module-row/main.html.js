@@ -1,7 +1,7 @@
 module.exports = `
 <tr>
   <td>
-    <input type="checkbox" v-model="selected"/>
+    <input type="checkbox" v-model="selected" :disabled="busy"/>
   </td>
   <td>
     {{module.dataFilename}}
@@ -53,7 +53,7 @@ module.exports = `
       <div v-else-if="step === 'upload'">
 
         <span class="progress-percent">{{progress}}</span>
-      
+
         <div class="progress progress-bar-thin" style="min-width:100px">
           <div class="progress-bar" role="progressbar"  v-bind:style="{width : progress}">
           </div>

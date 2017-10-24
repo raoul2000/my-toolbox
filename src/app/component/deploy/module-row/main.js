@@ -15,6 +15,8 @@ module.exports = {
   template : require('./main.html'),
   props    : ['module','deployFolder'],
   data     : function() {
+    // this data ojbject is used as the form model so the user can modify
+    // metadata. Other module properties are computed properties.
     return {
       "metadata" : {
         "symlink" : this.module.metadata.symlink,
@@ -28,7 +30,6 @@ module.exports = {
       return this.module.status === ACTION.EDITING;
     },
     status: function() {
-      //return store.getters.getModuleByDataFilename(this.module.dataFilename).status;
       return this.module.status;
     },
     progress: function() {
@@ -38,7 +39,6 @@ module.exports = {
       return this.module.busy;
     },
     step: function() {
-      //return store.getters.getModuleByDataFilename(this.module.dataFilename).step;
       return this.module.step;
     },
     /**
@@ -63,7 +63,7 @@ module.exports = {
   },
   methods : {
     /**
-     * Set this module is edit mode.
+     * Set this module in edit mode.
      * This change is applied on the stored module object
      */
     enableEditMode : function() {
@@ -93,8 +93,8 @@ module.exports = {
         notify('A <b>install folder</b> value is required','error','error');
       } else {
 
-        // User input is Valide ; update the store
-        //
+        // User input is Valid : update the store
+
         store.commit('updateModule', {
           "dataFilename" : this.module.dataFilename,
           "updateWith"   : {
@@ -105,7 +105,7 @@ module.exports = {
         });
 
         // write to local metadata file
-        //
+
         let metafilePath = path.join(this.deployFolder, this.module.metaFilename);
         console.log('updating file',metafilePath );
         let newMeta = this.module.metadata;
