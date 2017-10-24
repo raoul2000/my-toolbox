@@ -33,17 +33,17 @@ module.exports = `
     </div>
     <div v-else>
       <button
-        v-if="!busy"
+        :disabled="busy"
         v-on:click="enableEditMode()" type="button" class="btn btn-default btn-xs">
           <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
       </button>
     </div>
   </td>
   <td>
-    <div v-if="status === 'success'">
+    <div v-if="step === 'deploy-success'">
       <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
     </div>
-    <div v-else-if="status === 'error'">
+    <div v-else-if="step === 'deploy-error'">
       <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
     </div>
     <div v-else-if="status === 'deploying'">
@@ -53,11 +53,11 @@ module.exports = `
       <div v-else-if="step === 'upload'">
 
         <span class="progress-percent">{{progress}}</span>
-
         <div class="progress progress-bar-thin" style="min-width:100px">
           <div class="progress-bar" role="progressbar"  v-bind:style="{width : progress}">
           </div>
         </div>
+        
       </div>
     </div>
   </td>

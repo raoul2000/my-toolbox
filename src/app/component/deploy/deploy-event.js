@@ -3,7 +3,7 @@ const EventEmitter = require('events');
 
 class DeployEventEmitter extends EventEmitter {}
 
-exports.createEventEmitter = function(module) {
+exports.createDeploymentObserver = function(module) {
   let emitter = new DeployEventEmitter();
   emitter
   .on("connect", () => {
@@ -21,6 +21,7 @@ exports.createEventEmitter = function(module) {
     store.commit('updateModule', {
       dataFilename : module.dataFilename,
       updateWith   : {
+        status   : "deploying",
         busy     : true,
         step     : "upload",
         progress : percent
@@ -31,9 +32,9 @@ exports.createEventEmitter = function(module) {
     store.commit('updateModule', {
       dataFilename : module.dataFilename,
       updateWith   : {
-        status   : "success",
+        status   : "idle",
         busy     : false,
-        step     : "",
+        step     : "deploy-success",
         progress : 100
       }
     });
@@ -42,9 +43,9 @@ exports.createEventEmitter = function(module) {
     store.commit('updateModule', {
       dataFilename : module.dataFilename,
       updateWith   : {
-        status   : "error",
+        status   : "idel",
         busy     : false,
-        step     : "",
+        step     : "deploy-error",
         progress : -1
       }
     });

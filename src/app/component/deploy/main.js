@@ -13,14 +13,13 @@ const promiseUtils   = require('../../lib/promise-utils');
 Vue.component('module-row', require('./module-row/main'));
 
 module.exports = {
-
   data : function(){
     return {
         "deployFolder" : "",
         "ssh" :
           {
-            'host' : "192.168.203.182",
-            'port' : 22,
+            'host'     : "192.168.203.182",
+            'port'     : 22,
             'username' : "meth01",
             'password' : "meth01"
           },
@@ -61,7 +60,7 @@ module.exports = {
       ).map( module => {
         return {
           "module" : module,
-          "notifier" : deployEvent.createEventEmitter(module),
+          "notifier" : deployEvent.createDeploymentObserver(module),
           "ssh" : self.ssh,
           "srcFilepath" : path.posix.join(self.deployFolder,module.dataFilename),
           "destFilepath" : path.posix.join(self.targetPath, module.metadata.installFolder, module.dataFilename),
@@ -100,7 +99,7 @@ module.exports = {
               "metadata"     : module.metadata,
               // extra properties
               "selected"     : false,
-              "status"       : "start",
+              "status"       : "idle",
               "step"         : null,
               "progress"     : -1,
               "busy"         : false

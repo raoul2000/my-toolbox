@@ -1,10 +1,10 @@
 'use strict';
 
-var remote = require('electron').remote;
-var fs       = require('fs');
-var path     = require('path');
-const store  = require('../../../service/store/store');
-const ACTION = require('../lib/module').ACTION;
+const remote   = require('electron').remote;
+const fs       = require('fs');
+const path     = require('path');
+const store    = require('../../../service/store/store');
+const ACTION   = require('../lib/module').ACTION;
 
 
 /**
@@ -19,8 +19,8 @@ module.exports = {
     // metadata. Other module properties are computed properties.
     return {
       "metadata" : {
-        "symlink" : this.module.metadata.symlink,
-        "version" : this.module.metadata.version,
+        "symlink"       : this.module.metadata.symlink,
+        "version"       : this.module.metadata.version,
         "installFolder" : this.module.metadata.installFolder
       }
     };
@@ -98,7 +98,7 @@ module.exports = {
         store.commit('updateModule', {
           "dataFilename" : this.module.dataFilename,
           "updateWith"   : {
-            "status"   : "start",
+            "status"   : "idle",
             "busy"     : false,
             "metadata" : this.metadata
           }

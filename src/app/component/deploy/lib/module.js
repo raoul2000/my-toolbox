@@ -6,9 +6,7 @@ var path = require('path');
 const STATUS = {
   IDLE : "idle",
   EDITING : "editing",
-  DEPLOYING : "deploying",
-  DEPLOYED_SUCCESS : "deployed-success",
-  DEPLOYED_ERROR : "deployed-error"
+  DEPLOYING : "deploying"
 };
 
 exports.STATUS = STATUS;
