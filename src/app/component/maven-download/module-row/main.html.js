@@ -2,7 +2,9 @@ module.exports = `
 <tr id="module.id" class="init" >
   <td width="90px">
     <div class="btn-group">
-      <button type="button" class="btn btn-sm btn-default chk-module" data-toggle="tooltip" title="download version info">
+      <button
+        v-on:click="loadVersionInfo()"
+        type="button" class="btn btn-sm btn-default chk-module" data-toggle="tooltip" title="download version info">
         <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
       </button>
       <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -20,35 +22,56 @@ module.exports = `
   <td>{{module.id}}</td>
   <td>{{module.name}}</td>
   <td nowrap="true">
-    <div class="sel-package-widget">
-      <select class="sel-version-cat" name="">
-        <option value="release" selected="selected">release</option>
-        <option value="snapshot">snapshot</option>
+    <div v-if="status != 'LOADING_VERSION' && moduleVersionOptions.length != 0 ">
+
+      <select
+        v-model="selectedModuleType">
+        <option v-for="option in moduleTypeOptions" v-bind:value="option">
+          {{ option }}
+        </option>
       </select>
-      <select class="sel-version-val" name="">
+
+      <select
+        v-model="selectedVersion">
+        <option :value="null" selected="selected">select version ...</option>
+        <option v-for="option in moduleVersionOptions" v-bind:value="option">
+          {{ option }}
+        </option>
       </select>
+
     </div>
-    <div class="status">
+
+    <div v-else-if="status == 'LOADING_VERSION'">
       <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span> Loading ...
     </div>
   </td>
 
   <td>
-    <div class="progress-find-download-file">
+    <div v-if="status == 'LOADING_FILENAME'">
       <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span> Loading ...
     </div>
 
-    <div class="download-filename">
-      <div class="single-value">
-      </div>
-      <select class="sel-filename-val multi-value" name="">
-        <option>this_is_a long_filename_1234567.war</option>
+    <div v-else-if="filenameOptions.length > 1">
+      <select
+        v-model="selectedFilename">
+        <option v-for="option in filenameOptions" v-bind:value="option.text">
+          {{ option.text }}
+        </option>
       </select>
     </div>
+    <div v-else-if="filenameOptions.length == 1">
+      {{selectedFilename}}
+    </div>
+    <div v-else-if="filenameOptions.length == 0">
+      <em>no file available</em>
+    </div>
+
+
   </td>
 
   <td nowrap="true">
-    <div class="action">
+    <div
+      v-if="selectedFilename != ''">
       <button type="button" class="but-download-start btn btn-default btn-xs" title="start download">
         <span class="glyphicon glyphicon-play"  aria-hidden="true"></span>
       </button>
