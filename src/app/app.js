@@ -8,6 +8,7 @@ const DbNav    = require('./component/db-explorer/main');
 const Create   = require('./component/create/main');
 const View     = require('./component/view/main');
 const Deploy   = require('./component/deploy/main');
+const MavenDownload   = require('./component/maven-download/main');
 
 const store    = require('./service/store/store');
 const config   = require('./service/config');
@@ -21,7 +22,8 @@ const router = new VueRouter({
     { path: '/settings', component: Settings, name : 'settings'},
     { path: '/create',   component: Create,   name : 'create'},
     { path: '/view',     component: View,     name : 'view'},
-    { path: '/deploy',   component: Deploy,   name : 'deploy'}
+    { path: '/deploy',   component: Deploy,   name : 'deploy'},
+    { path: '/maven-download',   component: MavenDownload,   name : 'maven-download'}
   ]
 });
 
@@ -76,7 +78,7 @@ const app = new Vue({
           'setWebAppDefinition',
           Object.keys(obj).map( k => obj[k])
         );
-      }      
+      }
     }
   },
   /**
