@@ -5,6 +5,7 @@ const fs       = require('fs');
 const path     = require('path');
 const store    = require('../../../service/store/store');
 const nexusAPI = require('../lib/nexus-api');
+const nexusDownloader = require('../lib/nexus-downloader');
 const config   = require('../../../service/config');
 
 /**
@@ -91,6 +92,12 @@ module.exports = {
           "selectedFilename" : this.selectedFilename
         }
       });
+      nexusDownloader.download(
+        downloadUrl,
+        localFilePath,
+        config.get('nexus.requestTimeout'),
+        downloadContinue(arg.moduleId)
+      )
     },
     loadVersionInfo : function() {
       console.log('loading version info : ',this.module.id);
