@@ -5,6 +5,7 @@ const fs       = require('fs');
 const path     = require('path');
 const store    = require('../../../service/store/store');
 const nexusAPI = require('../lib/nexus-api');
+const config   = require('../../../service/config');
 
 /**
  * The Main vuesjs component
@@ -23,7 +24,9 @@ module.exports = {
         "release"  : [],
         "snapshot" : []
       },
-      "filenameOptions"    : []
+      "filenameOptions"    : [],
+      "task" : null,
+      "downloadFolder" : ""
     };
   },
   computed: {
@@ -77,6 +80,18 @@ module.exports = {
     }
   },
   methods : {
+    startDownload : function() {
+      this.status = "DOWNLOAD_IN_PROGRESS";
+      store.commit("addTask",{
+        "id" : this.module.id,
+        "type" : "download",
+        "status" : "started", // "started", "done"
+        "progress" : 0,
+        "input" : {
+          "selectedFilename" : this.selectedFilename
+        }
+      });
+    },
     loadVersionInfo : function() {
       console.log('loading version info : ',this.module.id);
       this.status = "LOADING_VERSION";
@@ -115,6 +130,15 @@ module.exports = {
         }
         this.status = "VERSION_LOADED";
       });
+    }
+  },
+  mounted : function(){
+    this.task =  store.getters.findTaskById(this.module.id);
+    console.log('mounted : task = ',this.task);
+    if( this.task ) {
+      this.status = "DOWNLOAD_IN_PROGRESS";
+      this.selectedFilename = this.task.input.selectedFilename;
+      this.filenameOptions.push(this.selectedFilename);
     }
   }
 };

@@ -72,10 +72,11 @@ module.exports = `
   <td nowrap="true">
     <div
       v-if="selectedFilename != ''">
-      <button type="button" class="but-download-start btn btn-default btn-xs" title="start download">
+      <button
+        v-on:click="startDownload()" type="button" class="btn btn-default btn-xs" title="start download">
         <span class="glyphicon glyphicon-play"  aria-hidden="true"></span>
       </button>
-      <button type="button" disabled class="but-download-cancel btn btn-default btn-xs" title="cancel download">
+      <button type="button" :disabled="status == 'DOWNLOAD_IN_PROGRESS'" class="btn btn-default btn-xs" title="cancel download">
         <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
       </button>
     </div>

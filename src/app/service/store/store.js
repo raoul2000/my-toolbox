@@ -6,7 +6,8 @@ module.exports = new Vuex.Store({
     currentRoute : null,
     desktop : [],
     webappDefinition : [],
-    modules : []
+    modules : [],
+    tasks : []
   },
   getters: {
     desktopItemByIndex : function(state, getters) {
@@ -33,6 +34,11 @@ module.exports = new Vuex.Store({
       return function(dataFilename) {
         return state.modules.findIndex( item => item.dataFilename === dataFilename);
       };
+    },
+    findTaskById : function(state, getters) {
+      return function(taskId) {
+        return state.tasks.find( task => task.id === taskId);
+      };
     }
   },
   mutations: {
@@ -53,6 +59,9 @@ module.exports = new Vuex.Store({
     },
     addModule(state, module) {
       state.modules.push(module);
+    },
+    addTask(state, task) {
+      state.tasks.push(task);
     },
     /**
      * Replace stores modules with freshModules

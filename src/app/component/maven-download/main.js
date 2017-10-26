@@ -39,6 +39,7 @@ module.exports = {
       return;
     }
     console.log("deployFolder = ",nexusConfFolder);
+
     this.refresh();
   }
 };
