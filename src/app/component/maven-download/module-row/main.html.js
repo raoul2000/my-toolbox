@@ -3,6 +3,7 @@ module.exports = `
   <td width="90px">
     <div class="btn-group">
       <button
+        :disabled="status != 'IDLE'"
         v-on:click="loadVersionInfo()"
         type="button" class="btn btn-sm btn-default chk-module" data-toggle="tooltip" title="download version info">
         <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
@@ -13,8 +14,13 @@ module.exports = `
       </button>
       <ul class="dropdown-menu nx-external-link-open">
         <li class="dropdown-header">Open links</li>
-        <li title="open documentation in default browser"><a :href="module.url.doc">Documentation</a></li>
+        <li title="open documentation in default browser">
+          <a :href="module.url.doc">Documentation</a>
+        </li>
         <li title="open CHANGES in default browser"><a :href="module.url.changes">Changes</a></li>
+        <li class="dropdown-header">Nexus</li>
+        <li title="open RELEASE repository"><a :href="module.url.release">Release</a></li>
+        <li title="open SNAPSHOT repository"><a :href="module.url.snapshot">Snapshot</a></li>
       </ul>
     </div>
 

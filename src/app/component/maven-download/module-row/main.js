@@ -16,7 +16,7 @@ module.exports = {
   props    : ['module'],
   data     : function() {
     return {
-      "status"             : "INIT",
+      "status"             : "IDLE",
       "selectedModuleType" : "release",
       "selectedVersion"    : null,
       "selectedFilename"   : "",
@@ -75,7 +75,7 @@ module.exports = {
         if(warfileDesc.length === 1) {
           self.selectedFilename = warfileDesc[0].text;
         }
-        self.status = "INIT";
+        self.status = "IDLE";
       });
     }
   },
@@ -128,7 +128,7 @@ module.exports = {
             snapshot: extractSnapshotVersion(result.snapshot)
           };
         }
-        this.status = "VERSION_LOADED";
+        this.status = "IDLE";
       });
     }
   },

@@ -14,6 +14,13 @@ const store    = require('./service/store/store');
 const config   = require('./service/config');
 const notify   = require('./service/notification');
 
+let shell = require('electron').shell;
+document.addEventListener('click', function (event) {
+  if (event.target.tagName === 'A' && event.target.href.startsWith('http')) {
+    event.preventDefault();
+    shell.openExternal(event.target.href);
+  }
+});
 
 // register routes
 const router = new VueRouter({

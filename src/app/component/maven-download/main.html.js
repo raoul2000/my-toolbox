@@ -4,20 +4,6 @@ module.exports = `
 
   <h2>Download</h2>
   <hr/>
-
-  <!-- toolbar -->
-  <div class="toolbar-container" style="margin-bottom:1em;">
-
-    <div class="btn-group" role="group" >
-      <button v-on:click="refresh()" type="button" class="btn btn-default">
-        <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
-      </button>
-    </div>
-
-  </div>
-  <!-- end toolbar -->
-
-
   <table
     v-if="modules.length != 0"
     class="table table-striped table-hover table-condensed">
