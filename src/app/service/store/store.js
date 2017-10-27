@@ -63,6 +63,12 @@ module.exports = new Vuex.Store({
     addTask(state, task) {
       state.tasks.push(task);
     },
+    updateTask(state,freshTask) {
+      let taskIdx = state.tasks.findIndex( task => task.id === freshTask.id);
+      if( taskIdx !== -1) {
+        state.tasks[taskIdx] = freshTask;
+      }
+    },
     /**
      * Replace stores modules with freshModules
      * @param  {object} state        the store state

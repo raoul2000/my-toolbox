@@ -84,11 +84,11 @@ module.exports = {
     startDownload : function() {
       this.status = "DOWNLOAD_IN_PROGRESS";
       store.commit("addTask",{
-        "id" : this.module.id,
-        "type" : "download",
-        "status" : "started", // "started", "done"
+        "id"       : this.module.id,
+        "type"     : "download",
+        "status"   : "started", // "started", "done"
         "progress" : 0,
-        "input" : {
+        "input"    : {
           "selectedFilename" : this.selectedFilename
         }
       });
