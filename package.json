@@ -1,5 +1,6 @@
 {
   "name": "my-toolbox",
+  "productName" : "my-toolbox",
   "version": "0.0.1",
   "description": "My Toolbox",
   "main": "main.js",
