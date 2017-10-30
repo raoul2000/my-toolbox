@@ -30,7 +30,4 @@ module.exports = `
 
   </div><!-- // col-lg-12 -->
 </div><!-- // row -->
-
-
-
 `;

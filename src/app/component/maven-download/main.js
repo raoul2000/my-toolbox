@@ -3,19 +3,16 @@ var remote     = require('electron').remote;
 var fs         = require('fs');
 var path         = require('path');
 const config   = require('../../service/config');
+const store    = require('../../service/store/store');
 
 
 Vue.component('module-row', require('./module-row/main'));
 
 module.exports = {
   data : function(){
-    return {
-        "modules" : []
-      };
+    return { "modules" : store.state.webappDefinition };
     },
   template: require('./main.html'),
-  computed: {
-  },
   methods : {
     refresh : function() {
 
@@ -28,18 +25,8 @@ module.exports = {
     }
   },
   mounted : function(){
-    var self = this;
-    if(config.has('nexus.confFolder') === false ) {
-      notify('No nexus.confFolder configured','error', 'error');
-      return;
-    }
-    var nexusConfFolder = config.get('nexus.confFolder');
-    if ( fs.existsSync(nexusConfFolder) === false ) {
-      notify(`Configured Deploy Folder Not Found : <b>${nexusConfFolder}</b>`,'error', 'error');
-      return;
-    }
-    console.log("deployFolder = ",nexusConfFolder);
 
-    this.refresh();
+
+    //this.refresh();
   }
 };

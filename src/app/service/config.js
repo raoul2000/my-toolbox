@@ -11,12 +11,12 @@ const store = new Store({
   "name" : "my-toolbox",
   "defaults" : {
     "appDataPath" : app.getPath('userData'), // on windows C:\Users\Utilisateur\AppData\Roaming\<appName>
-    "ctdbPath"    : path.join(app.getPath('userData'),'ctbd'),
-    "dataFolder"  : app.getPath('home'),
-    // 'deployFolder' : absolute path of the folder where  modules are :
+    "ctdbFolderPath"    : path.join(app.getPath('userData'),'ctbd'),
+    // 'deployFolderPath' : absolute path of the folder where  modules are :
     // - downloaded from maven
     // - uploaded on deployement
-    "deployFolder" : app.getPath('downloads')
+    "deployFolderPath" : app.getPath('downloads'),
+    "webappCatalogFilePath" : path.join(app.getPath('userData'),"web-app-catalog.json")
   }
 });
 console.log("loading config from ", store.path);

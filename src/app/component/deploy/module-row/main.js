@@ -1,6 +1,5 @@
 'use strict';
 
-const remote   = require('electron').remote;
 const fs       = require('fs');
 const path     = require('path');
 const store    = require('../../../service/store/store');
@@ -13,7 +12,7 @@ const ACTION   = require('../lib/module').ACTION;
  */
 module.exports = {
   template : require('./main.html'),
-  props    : ['module','deployFolder'],
+  props    : ['module','deployFolderPath'],
   data     : function() {
     // this data ojbject is used as the form model so the user can modify
     // metadata. Other module properties are computed properties.
@@ -27,18 +26,23 @@ module.exports = {
   },
   computed: {
     inEdition: function () {
+      console.log('inEdition');
       return this.module.status === ACTION.EDITING;
     },
     status: function() {
+      console.log('status');
       return this.module.status;
     },
     progress: function() {
+      console.log('progress');
       return `${this.module.progress}%`;
     },
     busy: function() {
+      console.log('busy');
       return this.module.busy;
     },
     step: function() {
+      console.log('step');
       return this.module.step;
     },
     /**
@@ -67,6 +71,7 @@ module.exports = {
      * This change is applied on the stored module object
      */
     enableEditMode : function() {
+      console.log('enableEditMode');
       store.commit('updateModule', {
         "dataFilename" : this.module.dataFilename,
         "updateWith"   : {
@@ -106,7 +111,7 @@ module.exports = {
 
         // write to local metadata file
 
-        let metafilePath = path.join(this.deployFolder, this.module.metaFilename);
+        let metafilePath = path.join(this.deployFolderPath, this.module.metaFilename);
         console.log('updating file',metafilePath );
         let newMeta = this.module.metadata;
         console.log('newMeta',JSON.stringify(newMeta, null ,2) );

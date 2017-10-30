@@ -5,65 +5,72 @@ module.exports = `
     <hr/>
     <form class="form-horizontal">
 
-      <!--// BEGIN data folder -->
-      <div class="form-group">
-        <label for="data-folder" class="col-sm-2 control-label">Data Folder</label>
-        <div class="col-sm-10">
-          <div class="input-group">
-            <input id="data-folder" v-model="dataFolder"  type="text" class="form-control" placeholder="">
-            <span class="input-group-btn">
-              <button  @click="selectDataFolder()" class="btn btn-default" type="button">
-                <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
-              </button>
-            </span>
-          </div>
-          <span id="helpBlock" class="help-block">
-            Path to the existing local folder where data are stored.
+    <!--// CTDB data folder -->
+    <div class="form-group">
+      <label for="ctdb-folder" class="col-sm-2 control-label">CTDB base Folder</label>
+      <div class="col-sm-10">
+        <div class="input-group">
+          <input id="ctdb-folder" v-model="ctdbFolderPath"  type="text" class="form-control" placeholder="">
+          <span class="input-group-btn">
+            <button  @click="selectCTDBFolderPath()" class="btn btn-default" type="button">
+              <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+            </button>
           </span>
         </div>
+        <span id="helpBlock" class="help-block">
+          CTDB Path
+        </span>
       </div>
-      <!--// END data folder -->
+    </div>
+    <!--// CTDB data folder -->
 
-      <!--// BEGIN deploy folder -->
-      <div class="form-group">
-        <label for="data-folder" class="col-sm-2 control-label">Deploy Folder</label>
-        <div class="col-sm-10">
-          <div class="input-group">
-            <input id="deploy-folder" v-model="deployFolder"  type="text" class="form-control" placeholder="">
-            <span class="input-group-btn">
-              <button  @click="selectDeployFolder()" class="btn btn-default" type="button">
-                <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
-              </button>
-            </span>
-          </div>
-          <span id="helpBlock" class="help-block">
-            Local folder where files to deploy are located.
+    <!--// BEGIN deploy folder -->
+    <div class="form-group">
+      <label for="data-folder" class="col-sm-2 control-label">Deploy Folder</label>
+      <div class="col-sm-10">
+        <div class="input-group">
+          <input id="deploy-folder" v-model="deployFolderPath"  type="text" class="form-control" placeholder="">
+          <span class="input-group-btn">
+            <button  @click="selectDeployFolderPath()" class="btn btn-default" type="button">
+              <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+            </button>
           </span>
         </div>
+        <span id="helpBlock" class="help-block">
+          Local folder where files are downloaded from maven, and deployed to server
+        </span>
       </div>
-      <!--// END deploy folder -->
+    </div>
+    <!--// END deploy folder -->
 
 
-
-      <div class="form-group">
-        <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
-        <div class="col-sm-10">
-          <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+    <!--// BEGIN webapp Catalog File Path-->
+    <div class="form-group">
+      <label for="webappfile-path" class="col-sm-2 control-label">Deploy Folder</label>
+      <div class="col-sm-10">
+        <div class="input-group">
+          <input id="webappfile-path" v-model="webappCatalogFilePath"  type="text" class="form-control" placeholder="">
+          <span class="input-group-btn">
+            <button  @click="selectWebappCatalogFilePath()" class="btn btn-default" type="button">
+              <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+            </button>
+          </span>
         </div>
+        <span id="helpBlock" class="help-block">
+          Web App Catalog File path
+        </span>
       </div>
+    </div>
+    <!--// END webapp Catalog File Path -->
+
+
+
+
+      <hr/>
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-          <div class="checkbox">
-            <label>
-              <input type="checkbox"> Remember me
-            </label>
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
+        <button type="button" class="btn btn-primary" @click="onSave()">Save</button>
           <button type="button" class="btn btn-default" @click="onCancel()">Cancel</button>
-          <button type="button" class="btn btn-primary" @click="onSave()">Save</button>
         </div>
       </div>
     </form>

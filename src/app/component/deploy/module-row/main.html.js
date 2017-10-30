@@ -57,7 +57,7 @@ module.exports = `
           <div class="progress-bar" role="progressbar"  v-bind:style="{width : progress}">
           </div>
         </div>
-        
+
       </div>
     </div>
   </td>

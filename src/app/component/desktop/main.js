@@ -5,7 +5,7 @@ const notify   = require('../../service/notification');
 const config   = require('../../service/config');
 
 /**
- * The Desktop view allows the user to load one more items from the dataFolder into the main view
+ * The Desktop view allows the user to load one more items from the ctdb folder path into the main view
  * From there, the user can perform actions on desktop items.
  */
 module.exports = {
@@ -40,11 +40,12 @@ module.exports = {
      */
     openDesktopItems : function() {
       var self = this;
-      var baseFolder = config.get('dataFolder');
+      var baseFolder = config.get('ctdbFolderPath');
       remote.dialog.showOpenDialog(
         remote.getCurrentWindow(),  // is modal on the main window
         {
           "title"      : "Select Item",
+          "defaultPath" : baseFolder,
           "properties" : [ 'openFile', 'multiSelections']
         },
         function(filenames) {
@@ -58,7 +59,7 @@ module.exports = {
                 var relativeFilePath = file.replace(baseFolder,'');
                 if(relativeFilePath === file) {
                   // TODO : wee how to highlight the existing item (css animate ?)
-                  notify('It is not permitted to select an item out of the data folder','error','Error');
+                  notify('It is not permitted to select an item out of the base folder','error','Error');
                 } else {
                   store.commit('addToDesktop',{
                     "filename" : relativeFilePath,

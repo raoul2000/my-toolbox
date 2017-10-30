@@ -15,7 +15,7 @@ Vue.component('module-row', require('./module-row/main'));
 module.exports = {
   data : function(){
     return {
-        "deployFolder" : "",
+        "deployFolderPath" : "",
         "ssh" :
           {
             'host'     : "192.168.203.182",
@@ -62,7 +62,7 @@ module.exports = {
           "module" : module,
           "notifier" : deployEvent.createDeploymentObserver(module),
           "ssh" : self.ssh,
-          "srcFilepath" : path.posix.join(self.deployFolder,module.dataFilename),
+          "srcFilepath" : path.posix.join(self.deployFolderPath,module.dataFilename),
           "destFilepath" : path.posix.join(self.targetPath, module.metadata.installFolder, module.dataFilename),
           "symlinkPath" : path.posix.join(self.targetPath, module.metadata.symlink),
           "script" : {
@@ -90,7 +90,7 @@ module.exports = {
      */
     refresh : function() {
       moduleModel
-        .buildListFromLocalFolder(this.deployFolder)
+        .buildListFromLocalFolder(this.deployFolderPath)
         .then( moduleList => {
           let extendedModuleList = moduleList.map( module => {
             return {
@@ -109,7 +109,7 @@ module.exports = {
         });
     },
     showFolderInExplorer : function() {
-      electron.shell.openItem(this.deployFolder);
+      electron.shell.openItem(this.deployFolderPath);
     },
     deleteSelectedModules : function() {
       let modulesToDelete = this.modules.filter(
@@ -120,7 +120,7 @@ module.exports = {
       if(modulesToDelete.length === 0 ) {
         notify('No module selected or selected module not ready','warning', 'warning');
       } else {
-        let deployFolder = this.deployFolder;
+        let deployFolderPath = this.deployFolderPath;
         let self = this;
         (new PNotify({
             title: 'Confirmation Needed',
@@ -150,17 +150,17 @@ module.exports = {
   },
   mounted : function(){
     var self = this;
-    if(config.has('deployFolder') === false ) {
+    if(config.has('deployFolderPath') === false ) {
       notify('No deploy folder configured','error', 'error');
       return;
     }
-    var deployFolder = config.get('deployFolder');
-    if ( fs.existsSync(deployFolder) === false ) {
-      notify(`Configured Deploy Folder Not Found : <b>${deployFolder}</b>`,'error', 'error');
+    var deployFolderPath = config.get('deployFolderPath');
+    if ( fs.existsSync(deployFolderPath) === false ) {
+      notify(`Configured Deploy Folder Not Found : <b>${deployFolderPath}</b>`,'error', 'error');
       return;
     }
-    console.log("deployFolder = ",deployFolder);
-    this.deployFolder = deployFolder;
+    console.log("deployFolderPath = ",deployFolderPath);
+    this.deployFolderPath = deployFolderPath;
     this.refresh();
   }
 };

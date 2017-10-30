@@ -5,8 +5,9 @@ const store    = require('../../service/store/store');
 module.exports = {
   data : function(){
     return {
-      dataFolder : '',
-      deployFolder : ''
+      deployFolderPath : '',
+      ctdbFolderPath : '',
+      webappCatalogFilePath : ''
     };
   },
   template: require('./main.html'),
@@ -29,19 +30,30 @@ module.exports = {
         }
       );
     },
-    selectDeployFolder : function() {
+    selectDeployFolderPath : function() {
       var self = this;
       this.selectSingleFolder({
         "title"      : "Select the Deploy folder",
+        "defaultPath" : self.deployFolderPath,
         "properties" : [ 'openDirectory']
-      }, value => self.deployFolder=value );
+      }, value => self.deployFolderPath=value );
     },
-    selectDataFolder : function() {
+    selectCTDBFolderPath : function() {
       var self = this;
       this.selectSingleFolder({
-        "title"      : "Select the Data folder",
+        "title"      : "Select the CTDB base Folder",
+        "defaultPath" : self.ctdbFolderPath,
         "properties" : [ 'openDirectory']
-      }, value => self.dataFolder=value );
+      }, value => self.ctdbFolderPath=value );
+    },
+
+    selectWebappCatalogFilePath : function() {
+      var self = this;
+      this.selectSingleFolder({
+        "title"      : "Select the Web App Catalog file",
+        "defaultPath" : self.webappCatalogFilePath,
+        "properties" : [ 'openFile']
+      }, value => self.webappCatalogFilePath=value );
     },
 
     onCancel : function() {
@@ -49,8 +61,9 @@ module.exports = {
     },
     onSave : function() {
       // TODO : validate Folder
-      config.set('dataFolder',this.dataFolder);
-      config.set('deployFolder',this.deployFolder);
+      config.set('ctdbFolderPath',this.ctdbFolderPath);
+      config.set('deployFolderPath',this.deployFolderPath);
+      config.set('webappCatalogFilePath',this.webappCatalogFilePath);
 
       // navigate to preview route (go back)
       this.$router.push(store.state.currentRoute);
@@ -58,8 +71,8 @@ module.exports = {
     }
   },
   mounted : function() {
-    // TODO : set a default value ?
-    this.dataFolder = config.get('dataFolder');
-    this.deployFolder = config.get('deployFolder');
+    this.deployFolderPath = config.get('deployFolderPath');
+    this.ctdbFolderPath = config.get('ctdbFolderPath');
+    this.webappCatalogFilePath = config.get('webappCatalogFilePath');
   }
 };

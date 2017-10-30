@@ -61,31 +61,39 @@ const app = new Vue({
      * Check current configuration and load the webapp definition file
      */
     initApplication : function() {
-      // check data folder exist
-      if(config.has('dataFolder') === false ) {
-        notify('Data folder not defined','error', 'error');
+
+      // CTDB Path /////////////////////////////////////////////////////////////
+      if(config.has('ctdbFolderPath') === false ) {
+        notify('CTDB folder not defined','error', 'error');
         return;
       }
+      var ctdbFolderPath = config.get('ctdbFolderPath');
+      if ( fs.existsSync(ctdbFolderPath) === false ) {
+        // try to create path but only if parent folder exists
+        if( fs.existsSync(path.dirname(ctdbFolderPath))) {
+            fs.mkdirSync(ctdbFolderPath, 0744);
+        } else {
+          notify(`Failed to create CTDB path : <b>${ctdbFolderPath}</b><br/> Make sure that parent folder exists`,'error', 'error');
+          return;
+        }
+      }
 
-      // check that data folder exists
-      var dataFolder = config.get('dataFolder');
-      if ( fs.existsSync(dataFolder) === false ) {
-        notify(`Configured Data Folder Not Found : <b>${dataFolder}</b>`,'error', 'error');
+      // webappCatalogFilePath /////////////////////////////////////////////////////
+      if(config.has('webappCatalogFilePath') === false ) {
+        notify('Web-App Catalog file path not configured','error', 'error');
         return;
       }
-
-      // load web-app reference dictionnary into the store
-      var webappDefFilename = path.join(path.dirname(config.path),'web-app-def.json');
-      console.log("loading ",webappDefFilename);
-      if ( fs.existsSync(webappDefFilename) === false ) {
-        notify(`Configuration file not found : some feature may not be available <br/><code>${webappDefFilename}</code>`,'warning', 'warning');
-      } else {
-        var obj = JSON.parse(fs.readFileSync(webappDefFilename, 'utf8'));
-        store.commit(
-          'setWebAppDefinition',
-          Object.keys(obj).map( k => obj[k])
-        );
+      var webappCatalogFilePath = config.get('webappCatalogFilePath');
+      if ( fs.existsSync(webappCatalogFilePath) === false ) {
+        notify(`Configured Web-App Catalog file path Not Found : <b>${webappCatalogFilePath}</b>`,'error', 'error');
+        return;
       }
+      // load webapp Catalog
+      var obj = JSON.parse(fs.readFileSync(webappCatalogFilePath, 'utf8'));
+      store.commit(
+        'setWebAppDefinition',
+        Object.keys(obj).map( k => obj[k])
+      );
     }
   },
   /**
