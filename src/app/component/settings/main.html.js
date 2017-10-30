@@ -46,7 +46,7 @@ module.exports = `
 
     <!--// BEGIN webapp Catalog File Path-->
     <div class="form-group">
-      <label for="webappfile-path" class="col-sm-2 control-label">Deploy Folder</label>
+      <label for="webappfile-path" class="col-sm-2 control-label">Webapp Catalog</label>
       <div class="col-sm-10">
         <div class="input-group">
           <input id="webappfile-path" v-model="webappCatalogFilePath"  type="text" class="form-control" placeholder="">

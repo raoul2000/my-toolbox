@@ -26,7 +26,6 @@ module.exports = {
   },
   computed: {
     inEdition: function () {
-      console.log('inEdition');
       return this.module.status === ACTION.EDITING;
     },
     status: function() {
@@ -34,15 +33,12 @@ module.exports = {
       return this.module.status;
     },
     progress: function() {
-      console.log('progress');
       return `${this.module.progress}%`;
     },
     busy: function() {
-      console.log('busy');
       return this.module.busy;
     },
     step: function() {
-      console.log('step');
       return this.module.step;
     },
     /**

@@ -10,7 +10,7 @@ const deployEvent   = require('./deploy-event');
 const promiseUtils   = require('../../lib/promise-utils');
 
 
-Vue.component('module-row', require('./module-row/main'));
+Vue.component('deploy-row', require('./deploy-row/main'));
 
 module.exports = {
   data : function(){
@@ -34,7 +34,6 @@ module.exports = {
   },
   methods : {
     enterSSHSettings : function() {
-      console.log('enterSSHSettings');
       let modulesToDeploy = store.state.modules.filter(
         module => module.selected === true
         && module.busy === false
