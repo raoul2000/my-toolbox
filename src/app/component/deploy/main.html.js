@@ -56,6 +56,7 @@ module.exports = `
         <tr is="deploy-row"
           v-for="module in modules"
           v-bind:module="module"
+          v-bind:deployFolderPath="deployFolderPath"
           v-bind:key="module.dataFilename">
         </tr>
       </tbody>
