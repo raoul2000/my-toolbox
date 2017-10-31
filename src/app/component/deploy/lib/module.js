@@ -48,26 +48,23 @@ exports.saveMetadata = function(metadataFilePath, metadata) {
   });
 };
 
-
-
 /**
- * Browse folderPath and returns a list of files.
- * Select files must have a '.war' extension.
- * If no metadata is found for a war file, it is created with empty (null) values
- * otherwise it is loaded and returned in the 'metadata' property.
- *
- * artefact Info = {
+ * Returns a list of war/meta file pairs.
+ * Search in folder *folderPath* for all files satisfying following conditions :
+ * - a file with same name and extension meta exist
+ * - the meta file is json with a non empty moduleId property
+ * Each item is returned as :
+ *  {
  *  'dataFilename' : 'file.war',
  *  'metaFilename' : 'file.war.meta',
  *  'metadata' : {
- *      .......
+ *      'moduleId' : 'XXXX'
  *  }
  * }
  * @param  {string} folderPath path to the folder to process
  * @return {array}            list of artefacts info.
  */
  exports.buildListFromLocalFolder = function(folderPath) {
-
    return new Promise( (resolve, reject) => {
       fs.readdir(folderPath, (err, files) => {
         if(err) {
@@ -83,10 +80,14 @@ exports.saveMetadata = function(metadataFilePath, metadata) {
             };
           })
           .filter( file => file.dataFilename !== null) // only keep data/meta file pair
-          .map( file => {                             // load all metadata files
+          .map( file => {                              // load all metadata files
             let fname = path.join(folderPath, file.metaFilename);
             try {
               file.metadata = JSON.parse(fs.readFileSync( fname, 'utf8'));
+              // If the metadata does not contain a moduleId, consider it as invalid
+              if( ! file.metadata.moduleId ) {
+                file.metadata = null;
+              }
             } catch (e) {
               console.warn("failed to load metadata from file "+fname,e);
             }
