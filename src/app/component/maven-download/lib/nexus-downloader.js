@@ -78,7 +78,7 @@ exports.download = function(options) {
         //     }
         // }
         if( options.progress) {
-          _notifyEvent("upload-progress",state);
+          _notifyEvent("progress",state);
         }
         // check is download was not interrupted by request
         if( options.canContinue && options.canContinue() === false) {

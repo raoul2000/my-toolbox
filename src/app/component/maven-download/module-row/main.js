@@ -7,6 +7,7 @@ const store    = require('../../../service/store/store');
 const nexusAPI = require('../lib/nexus-api');
 const nexusDownloader = require('../lib/nexus-downloader');
 const config   = require('../../../service/config');
+const downloadObserver   = require('download-observer');
 
 /**
  * The Main vuesjs component
@@ -82,8 +83,24 @@ module.exports = {
   },
   methods : {
     startDownload : function() {
+
+      // create URL
+      var downloadUrl = this.selectedModuleType === 'release'
+        ? this.module.url.release
+        :  this.module.url.snapshot;
+      downloadUrl = downloadUrl.concat('/', this.selectedVersion,'/',this.selectedFilename);
+
+      // create local filepath
+      let localFilePath = path.join(config.get('deployFolderPath') , this.selectedFilename);
+      console.log("localFilePath = "+localFilePath);
+
+      // if target file already exist, delete it
+      if( fs.existsSync(localFilePath)) {
+        fs.unlinkSync(localFilePath);
+      }
+
       this.status = "DOWNLOAD_IN_PROGRESS";
-      store.commit("addTask",{
+      let downloadTask = {
         "id"       : this.module.id,
         "type"     : "download",
         "status"   : "started", // "started", "done"
@@ -91,13 +108,16 @@ module.exports = {
         "input"    : {
           "selectedFilename" : this.selectedFilename
         }
+      };
+      store.commit("addTask",downloadTask);
+
+      // start download
+      nexusDownloader.download({
+        "url" : downloadUrl,
+        "destinationFilePath" : localFilePath,
+        "requestTimeout" : 10,
+        "notifier" : downloadObserver.create(this.module.id)
       });
-      nexusDownloader.download(
-        downloadUrl,
-        localFilePath,
-        config.get('nexus.requestTimeout'),
-        downloadContinue(arg.moduleId)
-      )
     },
     loadVersionInfo : function() {
       console.log('loading version info : ',this.module.id);
