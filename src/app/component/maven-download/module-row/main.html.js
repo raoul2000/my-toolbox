@@ -5,7 +5,8 @@ module.exports = `
       <button
         :disabled="status != 'IDLE'"
         v-on:click="loadVersionInfo()"
-        type="button" class="btn btn-sm btn-default chk-module" data-toggle="tooltip" title="download version info">
+        title="download version info"
+        type="button" class="btn btn-sm btn-default" data-toggle="tooltip" >
         <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
       </button>
       <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -31,6 +32,7 @@ module.exports = `
     <div v-if="status != 'LOADING_VERSION' && moduleVersionOptions.length != 0 ">
 
       <select
+        :disabled="status != 'IDLE'"
         v-model="selectedModuleType">
         <option v-for="option in moduleTypeOptions" v-bind:value="option">
           {{ option }}
@@ -38,6 +40,7 @@ module.exports = `
       </select>
 
       <select
+        :disabled="status != 'IDLE'"
         v-model="selectedVersion">
         <option :value="null" selected="selected">select version ...</option>
         <option v-for="option in moduleVersionOptions" v-bind:value="option">
@@ -59,6 +62,7 @@ module.exports = `
 
     <div v-else-if="filenameOptions.length > 1">
       <select
+        :disabled="status != 'IDLE'"
         v-model="selectedFilename">
         <option v-for="option in filenameOptions" v-bind:value="option.text">
           {{ option.text }}
@@ -71,7 +75,6 @@ module.exports = `
     <div v-else-if="filenameOptions.length == 0">
       <em>no file available</em>
     </div>
-
 
   </td>
 
@@ -93,28 +96,25 @@ module.exports = `
   </td>
 
   <td>
-  <div v-if="downloadTask">
+    <div v-if="downloadTask">
       <div v-if="downloadTask.status === 'success'">
-        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+        <span title="download success" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
       </div>
       <div v-else-if="downloadTask.status === 'error'">
-        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        <span title="download error" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
       </div>
       <div v-else-if="downloadTask.status === 'abort'">
         <span title="download aborted by user" class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
       </div>
       <div v-else-if="downloadTask.status === 'connect'">
-        <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span> connecting ...
+        <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span> connecting...
       </div>
       <div v-else-if="downloadTask.status === 'downloading'">
-
-          <span class="progress-percent">{{downloadTask.progress}}%</span>
-          <div class="progress progress-bar-thin" style="min-width:100px">
-            <div class="progress-bar" role="progressbar"  v-bind:style="{width : downloadTask.progress + '%'}">
-            </div>
+        <span class="progress-percent">{{downloadTask.progress}}%</span>
+        <div class="progress progress-bar-thin" style="min-width:100px">
+          <div class="progress-bar" role="progressbar"  v-bind:style="{width : downloadTask.progress + '%'}">
           </div>
-
-
+        </div>
       </div>
     </div>
   </td>

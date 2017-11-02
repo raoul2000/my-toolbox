@@ -106,6 +106,7 @@ module.exports = {
         fs.unlinkSync(localFilePath);
       }
 
+      // create and add the download task to the store
       let downloadTask = {
         "id"       : this.module.id,
         "type"     : "download",
@@ -129,7 +130,14 @@ module.exports = {
           console.log('conContinue');
           return self.stopDownloadRequest === false;
         }
-      }).then(result => {
+      }).then(result => { // = "success" | "abort"
+        console.log('result = ',result);
+        // delete local file if download was aborted by user
+        if( result === "abort" && fs.existsSync(localFilePath)) {
+          fs.unlinkSync(localFilePath);
+        }
+        this.status = "IDLE";
+      }).catch(err => {
         this.status = "IDLE";
       });
     },
