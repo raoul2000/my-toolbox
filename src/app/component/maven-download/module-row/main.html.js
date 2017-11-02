@@ -73,7 +73,7 @@ module.exports = `
       {{selectedFilename}}
     </div>
     <div v-else-if="filenameOptions.length == 0">
-      <em>no file available</em>
+      <em style="color:#ababab;">no file available</em>
     </div>
 
   </td>

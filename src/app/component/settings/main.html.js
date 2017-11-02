@@ -12,7 +12,10 @@ module.exports = `
         <div class="input-group">
           <input id="ctdb-folder" v-model="ctdbFolderPath"  type="text" class="form-control" placeholder="">
           <span class="input-group-btn">
-            <button  @click="selectCTDBFolderPath()" class="btn btn-default" type="button">
+            <button
+              @click="selectCTDBFolderPath()"
+              title="select a new folder"
+              class="btn btn-default" type="button">
               <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
             </button>
           </span>
@@ -26,12 +29,15 @@ module.exports = `
 
     <!--// BEGIN deploy folder -->
     <div class="form-group">
-      <label for="data-folder" class="col-sm-2 control-label">Deploy Folder</label>
+      <label for="deploy-folder" class="col-sm-2 control-label">Deploy Folder</label>
       <div class="col-sm-10">
         <div class="input-group">
           <input id="deploy-folder" v-model="deployFolderPath"  type="text" class="form-control" placeholder="">
           <span class="input-group-btn">
-            <button  @click="selectDeployFolderPath()" class="btn btn-default" type="button">
+            <button
+              @click="selectDeployFolderPath()"
+              title="select a new folder"
+              class="btn btn-default" type="button">
               <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
             </button>
           </span>
@@ -51,7 +57,10 @@ module.exports = `
         <div class="input-group">
           <input id="webappfile-path" v-model="webappCatalogFilePath"  type="text" class="form-control" placeholder="">
           <span class="input-group-btn">
-            <button  @click="selectWebappCatalogFilePath()" class="btn btn-default" type="button">
+            <button
+              @click="selectWebappCatalogFilePath()"
+              title="select a new file"
+              class="btn btn-default" type="button">
               <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
             </button>
           </span>

@@ -5,8 +5,8 @@ const store    = require('../../service/store/store');
 module.exports = {
   data : function(){
     return {
-      deployFolderPath : '',
-      ctdbFolderPath : '',
+      deployFolderPath      : '',
+      ctdbFolderPath        : '',
       webappCatalogFilePath : ''
     };
   },
@@ -33,29 +33,28 @@ module.exports = {
     selectDeployFolderPath : function() {
       var self = this;
       this.selectSingleFolder({
-        "title"      : "Select the Deploy folder",
+        "title"       : "Select the Deploy folder",
         "defaultPath" : self.deployFolderPath,
-        "properties" : [ 'openDirectory']
+        "properties"  : [ 'openDirectory']
       }, value => self.deployFolderPath=value );
     },
     selectCTDBFolderPath : function() {
       var self = this;
       this.selectSingleFolder({
-        "title"      : "Select the CTDB base Folder",
+        "title"       : "Select the CTDB base Folder",
         "defaultPath" : self.ctdbFolderPath,
-        "properties" : [ 'openDirectory']
+        "properties"  : [ 'openDirectory']
       }, value => self.ctdbFolderPath=value );
     },
 
     selectWebappCatalogFilePath : function() {
       var self = this;
       this.selectSingleFolder({
-        "title"      : "Select the Web App Catalog file",
+        "title"       : "Select the Web App Catalog file",
         "defaultPath" : self.webappCatalogFilePath,
-        "properties" : [ 'openFile']
+        "properties"  : [ 'openFile']
       }, value => self.webappCatalogFilePath=value );
     },
-
     onCancel : function() {
       this.$router.go(-1);
     },
