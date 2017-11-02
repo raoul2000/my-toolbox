@@ -63,7 +63,7 @@ module.exports = new Vuex.Store({
     addTask(state, task) {
       state.tasks.push(task);
     },
-    updateTask(state,freshTask) {
+    updateTask_old(state,freshTask) {
       let taskIdx = state.tasks.findIndex( task => task.id === freshTask.id);
       if( taskIdx !== -1) {
         state.tasks[taskIdx] = freshTask;
@@ -133,6 +133,24 @@ module.exports = new Vuex.Store({
           // TODO : use extend ?
           console.log("prop = "+sourceProp+" old = "+target[sourceProp]+" new = "+args.updateWith[sourceProp]);
           target[sourceProp] = args.updateWith[sourceProp];
+        });
+      }
+    },
+    updateTask(state,freshTask) {
+      console.log('store : updating task',freshTask);
+      let taskIdx = state.tasks.findIndex( task => task.id === freshTask.id);
+      if( taskIdx !== -1) {
+        let objToUpdate = state.tasks[taskIdx];
+        let freshProperties = freshTask.updateWith;
+        Object.keys(freshProperties)
+        .filter( sourceProp => {
+          console.log("check property : ", sourceProp);
+          return objToUpdate.hasOwnProperty(sourceProp);
+        })
+        .forEach( sourceProp => {
+          // TODO : use extend ?
+          console.log("prop = "+sourceProp+" old = "+objToUpdate[sourceProp]+" new = "+freshProperties[sourceProp]);
+          objToUpdate[sourceProp] = freshProperties[sourceProp];
         });
       }
     },

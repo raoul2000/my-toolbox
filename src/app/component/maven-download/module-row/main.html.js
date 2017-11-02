@@ -79,25 +79,45 @@ module.exports = `
     <div
       v-if="selectedFilename != ''">
       <button
-        v-on:click="startDownload()" type="button" class="btn btn-default btn-xs" title="start download">
+        v-on:click="startDownload()"
+        :disabled="status == 'DOWNLOAD_IN_PROGRESS'"
+        type="button" class="btn btn-default btn-xs" title="start download">
         <span class="glyphicon glyphicon-play"  aria-hidden="true"></span>
       </button>
-      <button type="button" :disabled="status == 'DOWNLOAD_IN_PROGRESS'" class="btn btn-default btn-xs" title="cancel download">
+      <button
+        v-on:click="stopDownload()"
+        type="button" :disabled="status != 'DOWNLOAD_IN_PROGRESS'" class="btn btn-default btn-xs" title="cancel download">
         <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
       </button>
     </div>
   </td>
+
   <td>
-    <div class="download-status" style="display:none">
-      <div class="download-success">
+  <div v-if="downloadTask">
+      <div v-if="downloadTask.status === 'success'">
         <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
       </div>
-      <div class="download-error">
+      <div v-else-if="downloadTask.status === 'error'">
         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
       </div>
-      <span class="downloaded-filename"></span>
-    </div>
+      <div v-else-if="downloadTask.status === 'abort'">
+        <span title="download aborted by user" class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+      </div>
+      <div v-else-if="downloadTask.status === 'connect'">
+        <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span> connecting ...
+      </div>
+      <div v-else-if="downloadTask.status === 'downloading'">
 
+          <span class="progress-percent">{{downloadTask.progress}}%</span>
+          <div class="progress progress-bar-thin" style="min-width:100px">
+            <div class="progress-bar" role="progressbar"  v-bind:style="{width : downloadTask.progress + '%'}">
+            </div>
+          </div>
+
+
+      </div>
+    </div>
   </td>
+
 </tr>
 `;

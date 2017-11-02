@@ -7,7 +7,7 @@ const store    = require('../../../service/store/store');
 const nexusAPI = require('../lib/nexus-api');
 const nexusDownloader = require('../lib/nexus-downloader');
 const config   = require('../../../service/config');
-const downloadObserver   = require('download-observer');
+const downloadObserver   = require('./download-observer');
 
 /**
  * The Main vuesjs component
@@ -28,7 +28,8 @@ module.exports = {
       },
       "filenameOptions"    : [],
       "task" : null,
-      "downloadFolder" : ""
+      "downloadFolder" : "",
+      "stopDownloadRequest" : false
     };
   },
   computed: {
@@ -48,6 +49,9 @@ module.exports = {
         options.push("snapshot");
       }
       return options;
+    },
+    downloadTask : function() {
+      return store.getters.findTaskById(this.module.id);
     }
   },
   watch : {
@@ -82,8 +86,11 @@ module.exports = {
     }
   },
   methods : {
+    stopDownload : function() {
+      this.stopDownloadRequest = true;
+    },
     startDownload : function() {
-
+      let self = this;
       // create URL
       var downloadUrl = this.selectedModuleType === 'release'
         ? this.module.url.release
@@ -99,7 +106,6 @@ module.exports = {
         fs.unlinkSync(localFilePath);
       }
 
-      this.status = "DOWNLOAD_IN_PROGRESS";
       let downloadTask = {
         "id"       : this.module.id,
         "type"     : "download",
@@ -112,11 +118,19 @@ module.exports = {
       store.commit("addTask",downloadTask);
 
       // start download
+      this.stopDownloadRequest = false;
+      this.status = "DOWNLOAD_IN_PROGRESS";
       nexusDownloader.download({
         "url" : downloadUrl,
         "destinationFilePath" : localFilePath,
         "requestTimeout" : 10,
-        "notifier" : downloadObserver.create(this.module.id)
+        "notifier" : downloadObserver.create(this.module.id),
+        "canContinue" : function() {
+          console.log('conContinue');
+          return self.stopDownloadRequest === false;
+        }
+      }).then(result => {
+        this.status = "IDLE";
       });
     },
     loadVersionInfo : function() {
