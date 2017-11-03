@@ -127,27 +127,29 @@ module.exports = new Vuex.Store({
      * @param  {[type]} args [description]
      */
     updateModule(state, args ) {
-      console.log('store.updateModule');
-      let idx = state.modules.findIndex( currentModule => currentModule.dataFilename === args.dataFilename);
-      if( idx !== -1) {
-
-        let objToUpdate = state.modules[idx];
-        let freshProperties = args.updateWith;
-        updateObject(objToUpdate, freshProperties );
-        /*
-        Object.keys(args.updateWith)
-        .filter( sourceProp => {
-          console.log("check property : ", sourceProp);
-          return target.hasOwnProperty(sourceProp);
-        })
-        .forEach( sourceProp => {
-          // TODO : use extend ?
-          console.log("prop = "+sourceProp+" old = "+target[sourceProp]+" new = "+args.updateWith[sourceProp]);
-          target[sourceProp] = args.updateWith[sourceProp];
-        });*/
+      let modToUpdate = state.modules.find( currentModule => currentModule.dataFilename === args.dataFilename);
+      if( modToUpdate ) {
+        Object.assign(modToUpdate, args.updateWith);
+      }
+    },
+    updateModuleMeta(state, args) {
+      let modToUpdate = state.modules.find( currentModule => currentModule.dataFilename === args.dataFilename);
+      if( modToUpdate ) {
+        Object.assign(modToUpdate.metadata, args.updateWith);
       }
     },
     updateTask(state,freshTask) {
+      console.log('store : updating task',freshTask);
+      let taskIdx = state.tasks.findIndex( task => task.id === freshTask.id);
+      if( taskIdx !== -1) {
+        let objToUpdate = state.tasks[taskIdx];
+        let freshProperties = freshTask.updateWith;
+        Object.assign(objToUpdate, freshProperties);
+        //updateObject(objToUpdate, freshProperties );
+      }
+    },
+
+    updateTask_old(state,freshTask) {
       console.log('store : updating task',freshTask);
       let taskIdx = state.tasks.findIndex( task => task.id === freshTask.id);
       if( taskIdx !== -1) {

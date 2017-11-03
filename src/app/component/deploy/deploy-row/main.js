@@ -18,6 +18,7 @@ module.exports = {
     // metadata. Other module properties are computed properties.
     return {
       "metadata" : {
+        "moduleId"      : this.module.id,
         "symlink"       : this.module.metadata.symlink,
         "version"       : this.module.metadata.version,
         "installFolder" : this.module.metadata.installFolder
@@ -62,6 +63,15 @@ module.exports = {
     }
   },
   methods : {
+    updateFormField : function(fieldName, value) {
+      this.metadata[fieldName] = value;
+      store.commit('updateModuleMeta', {
+        "dataFilename" : this.module.dataFilename,
+        "updateWith"   : {
+          [fieldName] : value
+        }
+      });
+    },
     /**
      * Set this module in edit mode.
      * This change is applied on the stored module object
@@ -95,13 +105,11 @@ module.exports = {
       } else {
 
         // User input is Valid : update the store
-
         store.commit('updateModule', {
           "dataFilename" : this.module.dataFilename,
           "updateWith"   : {
             "status"   : "idle",
-            "busy"     : false,
-            "metadata" : this.metadata
+            "busy"     : false
           }
         });
 

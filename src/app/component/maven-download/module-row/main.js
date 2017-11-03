@@ -148,9 +148,9 @@ module.exports = {
           // delete local file if download was aborted by user
           fs.unlinkSync(localFilePath);
         }
-        this.status = "IDLE";
+        self.status = "IDLE";
       }).catch(err => {
-        this.status = "IDLE";
+        self.status = "IDLE";
       });
     },
     loadVersionInfo : function() {
@@ -185,8 +185,8 @@ module.exports = {
       .then( result => {
         if( result.release && result.snapshot) {
           this.version = {
-            release: extractReleaseVersion(result.release),
-            snapshot: extractSnapshotVersion(result.snapshot)
+            "release"  : extractReleaseVersion(result.release),
+            "snapshot" : extractSnapshotVersion(result.snapshot)
           };
         }
         this.status = "IDLE";
