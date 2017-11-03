@@ -66,6 +66,7 @@ exports.saveMetadata = function(metadataFilePath, metadata) {
  */
  exports.buildListFromLocalFolder = function(folderPath) {
    return new Promise( (resolve, reject) => {
+     console.log('buildListFromLocalFolder');
       fs.readdir(folderPath, (err, files) => {
         if(err) {
           reject(err);

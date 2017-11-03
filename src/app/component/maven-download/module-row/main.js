@@ -91,22 +91,22 @@ module.exports = {
     },
     startDownload : function() {
       let self = this;
-      // create URL
+      // create URL ////////////////////////////////////////////////////////////
       var downloadUrl = this.selectedModuleType === 'release'
         ? this.module.url.release
         :  this.module.url.snapshot;
       downloadUrl = downloadUrl.concat('/', this.selectedVersion,'/',this.selectedFilename);
 
-      // create local filepath
+      // create local filepath /////////////////////////////////////////////////
       let localFilePath = path.join(config.get('deployFolderPath') , this.selectedFilename);
       console.log("localFilePath = "+localFilePath);
 
-      // if target file already exist, delete it
+      // if target file already exist, delete it ///////////////////////////////
       if( fs.existsSync(localFilePath)) {
         fs.unlinkSync(localFilePath);
       }
 
-      // create and add the download task to the store
+      // create and add the download task to the store /////////////////////////
       let downloadTask = {
         "id"       : this.module.id,
         "type"     : "download",
@@ -118,22 +118,34 @@ module.exports = {
       };
       store.commit("addTask",downloadTask);
 
-      // start download
+      // start download ////////////////////////////////////////////////////////
       this.stopDownloadRequest = false;
       this.status = "DOWNLOAD_IN_PROGRESS";
+
       nexusDownloader.download({
-        "url" : downloadUrl,
+        "url"                 : downloadUrl,
         "destinationFilePath" : localFilePath,
-        "requestTimeout" : 10,
-        "notifier" : downloadObserver.create(this.module.id),
-        "canContinue" : function() {
+        "requestTimeout"      : 10,
+        "notifier"            : downloadObserver.create(this.module.id),
+        "canContinue"         : function() {
           console.log('conContinue');
           return self.stopDownloadRequest === false;
         }
       }).then(result => { // = "success" | "abort"
         console.log('result = ',result);
-        // delete local file if download was aborted by user
-        if( result === "abort" && fs.existsSync(localFilePath)) {
+        if ( result === 'success') {
+          //write the metadata file for the downloaded file
+          fs.writeFileSync(
+            localFilePath.concat('.meta'),
+            JSON.stringify({
+              "moduleId"      : self.module.id,
+              "version"       : self.selectedVersion,
+              "symlink"       : self.module.id,
+              "installFolder" : self.module.id+'-'+self.selectedVersion
+            },null,2) // pretty print json
+          );
+        } else if( result === "abort" && fs.existsSync(localFilePath)) {
+          // delete local file if download was aborted by user
           fs.unlinkSync(localFilePath);
         }
         this.status = "IDLE";
