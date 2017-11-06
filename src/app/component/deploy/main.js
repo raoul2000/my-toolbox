@@ -58,16 +58,16 @@ module.exports = {
         && module.busy === false
       ).map( module => {
         return {
-          "module" : module,
-          "notifier" : deployEvent.createDeploymentObserver(module),
-          "ssh" : self.ssh,
-          "srcFilepath" : path.posix.join(self.deployFolderPath,module.dataFilename),
+          "module"       : module,
+          "ssh"          : self.ssh,
+          "notifier"     : deployEvent.createDeploymentObserver(module),
+          "srcFilepath"  : path.posix.join(self.deployFolderPath,module.dataFilename),
           "destFilepath" : path.posix.join(self.targetPath, module.metadata.installFolder, module.dataFilename),
-          "symlinkPath" : path.posix.join(self.targetPath, module.metadata.symlink),
-          "script" : {
+          "symlinkPath"  : path.posix.join(self.targetPath, module.metadata.symlink),
+          "script"       : {
             "srcFilepath"  : path.join(__dirname,"script",'type-1.bash'),
             "destFilepath" : path.posix.join(self.targetPath, module.metadata.installFolder, 'type-1.bash'),
-            "arg" : [
+            "arg"          : [
               self.targetPath,
               module.metadata.installFolder,
               module.dataFilename,

@@ -5,6 +5,8 @@ var path = require('path');
 const NodeSSH = require('node-ssh');
 
 
+
+
 /* script example ----------------------------------------------------
 
 #!/bin/bash
@@ -60,15 +62,23 @@ exports.run = function(args) {
   let notify = null;
   //let notify  = args.notify;
 
+  // validate options //////////////////////////////////////////////////////////
   if(notify && typeof notify !== 'function') {
     return Promise.reject(new Error("argument notify must be a function"));
   }
 
+  // do we have an installer script ?
+  let runRemoteScript = null;
+  if( options.script && options.script.scrFilepath && options.destFilepath) {
+    runRemoteScript = options.script;
+  }
+
+  // define private function //////////////////////////////////////////////////
   var _notify = function(event, data) {
     console.log("event : ",event, "data : ",data);
-    if( args.notifier ) {
+    if( options.notifier ) {
       console.log("event emitted");
-      args.notifier.emit(event, data);
+      options.notifier.emit(event, data);
     }
   };
 
@@ -81,6 +91,19 @@ exports.run = function(args) {
     }
   };
 
+  let cmdResultHandler = function(result) {
+    if( result.code !== 0) {
+      console.error("Edit code = ", result.code);
+      console.error("STDERR::\n",result.stderr);
+      throw new Error(result);
+    } else {
+      console.log("STDOUT::\n", result.stdout);
+      return true;
+    }
+  };
+
+  // Start the SSH Deploy process //////////////////////////////////////////////
+
   let ssh = new NodeSSH();
   _notify("connect");
   return ssh
@@ -89,6 +112,25 @@ exports.run = function(args) {
       return ssh.putFile(options.srcFilepath, options.destFilepath,null,{
         'step' : progressHandler
       });
+    })
+    .then(() => {
+      if( runRemoteScript ) {
+        _notify("upload-installer");
+        return ssh.putFile(runRemoteScript.srcFilepath, runRemoteScript.destFilepath,null,{
+          'step' : progressHandler
+        })
+        .then( () => {
+          let cmdSetScriptPermission = `chmod u=rwx "${runRemoteScript.destFilepath}"`;
+          return ssh.execCommand(cmdSetScriptPermission,[],{stream: 'stdout'})
+          .then( cmdResultHandler );
+        })
+        .then( () => {
+          return ssh.exec(runRemoteScript.destFilepath, runRemoteScript.arg,{stream: 'both'})
+          .then( cmdResultHandler );
+        });
+      } else {
+        return true;
+      }
     })
     .then(() => {
       ssh.dispose();
@@ -101,8 +143,8 @@ exports.run = function(args) {
       throw new Error(err);
     }
   );
-
 };
+
 exports.run_orig = function(options,notify) {
   console.log('deploy-ssh-script : ',options);
 
