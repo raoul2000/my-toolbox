@@ -69,7 +69,7 @@ exports.run = function(args) {
 
   // do we have an installer script ?
   let runRemoteScript = null;
-  if( options.script && options.script.scrFilepath && options.destFilepath) {
+  if( options.script && options.script.srcFilepath && options.script.destFilepath) {
     runRemoteScript = options.script;
   }
 
@@ -127,6 +127,11 @@ exports.run = function(args) {
         .then( () => {
           return ssh.exec(runRemoteScript.destFilepath, runRemoteScript.arg,{stream: 'both'})
           .then( cmdResultHandler );
+        })
+        .then( () => {
+          return ssh.execCommand(`rm "${runRemoteScript.destFilepath}"`,[],{stream: 'stdout'})
+          .then( cmdResultHandler );
+
         });
       } else {
         return true;

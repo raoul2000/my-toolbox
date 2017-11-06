@@ -65,8 +65,8 @@ module.exports = {
           "destFilepath" : path.posix.join(self.targetPath, module.metadata.installFolder, module.dataFilename),
           "symlinkPath"  : path.posix.join(self.targetPath, module.metadata.symlink),
           "script"       : {
-            "srcFilepath"  : path.join(__dirname,"script",'type-1.bash'),
-            "destFilepath" : path.posix.join(self.targetPath, module.metadata.installFolder, 'type-1.bash'),
+            "srcFilepath"  : path.join(__dirname,"script",'default.bash'),
+            "destFilepath" : path.posix.join(self.targetPath, module.metadata.installFolder, 'default.bash'),
             "arg"          : [
               self.targetPath,
               module.metadata.installFolder,
