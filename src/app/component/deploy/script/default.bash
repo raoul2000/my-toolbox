@@ -35,8 +35,11 @@ cd $WORK_DIR
 unzip -qo "$ARCHIVE_FILENAME"
 
 # update softlink
+# TODO : link should be done on relative folder name
 echo "log:update softlink $SYMLINK_NAME"
-ln -sfn "$INSTALL_DIRNAME" "$INSTALL_BASE_DIR/$SYMLINK_NAME"
+# ln -sfn "$INSTALL_DIRNAME" "$INSTALL_BASE_DIR/$SYMLINK_NAME"
+cd "$INSTALL_BASE_DIR"
+ln -sfn "$INSTALL_FOLDER" "$SYMLINK_NAME"
 
 echo "done:$EXIT_CODE"
 exit $EXIT_CODE

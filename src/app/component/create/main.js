@@ -20,7 +20,7 @@ module.exports = {
           "port"         : 22,
           "username"     : 'meth01',
           "password"     : 'meth01',
-          "readyTimeout" : 5000
+          "readyTimeout" : 50000
         },
         "entity" : [],
         "tomcat" : []
