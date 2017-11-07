@@ -1,0 +1,1638 @@
+{
+  "name": "sdfsdf sdf d",
+  "ssh": {
+    "host": "10.25.7.131",
+    "port": 22,
+    "username": "meth01",
+    "password": "meth01",
+    "readyTimeout": 5000
+  },
+  "entity": [
+    {
+      "name": "ADRE1_HOME_DATA",
+      "value": "/methode/meth01/mnt/alert/content/ADRE1"
+    },
+    {
+      "name": "ADRE1_HOME",
+      "value": "/methode/meth01/autonomy/ADRE1"
+    },
+    {
+      "name": "ADRE1_PORT",
+      "value": "3501"
+    },
+    {
+      "name": "ADRE1_INDEX_PORT",
+      "value": "3502"
+    },
+    {
+      "name": "ADRE1_SERVICE_PORT",
+      "value": "3503"
+    },
+    {
+      "name": "ADRE2_HOME_DATA",
+      "value": "/methode/meth01/mnt/alert/content/ADRE2"
+    },
+    {
+      "name": "ADRE2_HOME",
+      "value": "/methode/meth01/autonomy/ADRE2"
+    },
+    {
+      "name": "ADRE2_PORT",
+      "value": "3504"
+    },
+    {
+      "name": "ADRE2_INDEX_PORT",
+      "value": "3505"
+    },
+    {
+      "name": "ADRE2_SERVICE_PORT",
+      "value": "3506"
+    },
+    {
+      "name": "DISH_ALERT_ACTION_PORT",
+      "value": "3601"
+    },
+    {
+      "name": "DISH_ALERT_PORT",
+      "value": "3602"
+    },
+    {
+      "name": "DISH_SEARCH_ACTION_PORT",
+      "value": "3603"
+    },
+    {
+      "name": "DISH_SEARCH_PORT",
+      "value": "3604"
+    },
+    {
+      "name": "DRE1_HOME_DATA",
+      "value": "/methode/meth01/mnt/search/content/DRE1"
+    },
+    {
+      "name": "DRE1_HOME",
+      "value": "/methode/meth01/autonomy/DRE1"
+    },
+    {
+      "name": "DRE1_PORT",
+      "value": "3401"
+    },
+    {
+      "name": "DRE1_INDEX_PORT",
+      "value": "3402"
+    },
+    {
+      "name": "DRE1_SERVICE_PORT",
+      "value": "3403"
+    },
+    {
+      "name": "DRE2_HOME_DATA",
+      "value": "/methode/meth01/mnt/search/content/DRE2"
+    },
+    {
+      "name": "DRE2_HOME",
+      "value": "/methode/meth01/autonomy/DRE2"
+    },
+    {
+      "name": "DRE2_PORT",
+      "value": "3404"
+    },
+    {
+      "name": "DRE2_INDEX_PORT",
+      "value": "3405"
+    },
+    {
+      "name": "DRE2_SERVICE_PORT",
+      "value": "3406"
+    },
+    {
+      "name": "DRE3_HOME_DATA",
+      "value": "/methode/meth01/mnt/search/content/DRE3"
+    },
+    {
+      "name": "DRE3_HOME",
+      "value": "/methode/meth01/autonomy/DRE3"
+    },
+    {
+      "name": "DRE3_PORT",
+      "value": "3407"
+    },
+    {
+      "name": "DRE3_INDEX_PORT",
+      "value": "3408"
+    },
+    {
+      "name": "DRE3_SERVICE_PORT",
+      "value": "3409"
+    },
+    {
+      "name": "DRE4_HOME_DATA",
+      "value": "/methode/meth01/mnt/search/content/DRE4"
+    },
+    {
+      "name": "DRE4_HOME",
+      "value": "/methode/meth01/autonomy/DRE4"
+    },
+    {
+      "name": "DRE4_PORT",
+      "value": "3410"
+    },
+    {
+      "name": "DRE4_INDEX_PORT",
+      "value": "3411"
+    },
+    {
+      "name": "DRE4_SERVICE_PORT",
+      "value": "3412"
+    },
+    {
+      "name": "REPOSITORY_ALIAS",
+      "value": "Editorial"
+    },
+    {
+      "name": "EOMDB1_IOR",
+      "value": "/methode/meth01/ior/eomdb1.ior"
+    },
+    {
+      "name": "EOMDB1_PORT",
+      "value": "3100"
+    },
+    {
+      "name": "REPOSITORY1_ID",
+      "value": "3100"
+    },
+    {
+      "name": "REPOSITORY1",
+      "value": "Servlets"
+    },
+    {
+      "name": "EOMDB2_IOR",
+      "value": "/methode/meth01/ior/eomdb2.ior"
+    },
+    {
+      "name": "EOMDB2_PORT",
+      "value": "3101"
+    },
+    {
+      "name": "REPOSITORY2_ID",
+      "value": "3101"
+    },
+    {
+      "name": "REPOSITORY2",
+      "value": "Editorial1"
+    },
+    {
+      "name": "EOMDB3_IOR",
+      "value": "/methode/meth01/ior/eomdb3.ior"
+    },
+    {
+      "name": "EOMDB3_PORT",
+      "value": "3102"
+    },
+    {
+      "name": "REPOSITORY3_ID",
+      "value": "3102"
+    },
+    {
+      "name": "REPOSITORY3",
+      "value": "Editorial2"
+    },
+    {
+      "name": "EOMDB4_IOR",
+      "value": "/methode/meth01/ior/eomdb4.ior"
+    },
+    {
+      "name": "EOMDB4_PORT",
+      "value": "3103"
+    },
+    {
+      "name": "REPOSITORY4_ID",
+      "value": "3103"
+    },
+    {
+      "name": "REPOSITORY4",
+      "value": "EditorialSwing1"
+    },
+    {
+      "name": "ALERTER1",
+      "value": "meth01_alerter1"
+    },
+    {
+      "name": "EOMJA1_IOR",
+      "value": "/methode/meth01/ior/eomja1.ior"
+    },
+    {
+      "name": "ALERTER1_INDEXDIR",
+      "value": "/methode/meth01/mnt/alerts-queue/alerter1"
+    },
+    {
+      "name": "ALERTER1_PORT",
+      "value": "3300"
+    },
+    {
+      "name": "ALERTER1_JMX_PORT",
+      "value": "3301"
+    },
+    {
+      "name": "ALERTER1_HTTP_PORT",
+      "value": "3302"
+    },
+    {
+      "name": "ALERTER2",
+      "value": "meth01_alerter2"
+    },
+    {
+      "name": "EOMJA2_IOR",
+      "value": "/methode/meth01/ior/eomja2.ior"
+    },
+    {
+      "name": "ALERTER2_INDEXDIR",
+      "value": "/methode/meth01/mnt/alerts-queue/alerter2"
+    },
+    {
+      "name": "ALERTER2_PORT",
+      "value": "3303"
+    },
+    {
+      "name": "ALERTER2_JMX_PORT",
+      "value": "3304"
+    },
+    {
+      "name": "ALERTER2_HTTP_PORT",
+      "value": "3305"
+    },
+    {
+      "name": "EOMJSEQC",
+      "value": "meth01_eomjseqc"
+    },
+    {
+      "name": "EOMJSEQC_IOR",
+      "value": "/methode/meth01/ior/eomjseqc.ior"
+    },
+    {
+      "name": "EOMJSEQC_PORT",
+      "value": "3291"
+    },
+    {
+      "name": "EOMJSEQC_JMX_PORT",
+      "value": "3292"
+    },
+    {
+      "name": "EOMJSEQC_HTTP_PORT",
+      "value": "3293"
+    },
+    {
+      "name": "EOMJSE1",
+      "value": "meth01_eomjse1"
+    },
+    {
+      "name": "EOMJSE1_INDEX",
+      "value": "Default"
+    },
+    {
+      "name": "EOMJSE1_IOR",
+      "value": "/methode/meth01/ior/eomjse1.ior"
+    },
+    {
+      "name": "EOMJSE1_INDEXDIR",
+      "value": "/methode/meth01/mnt/search-queue/content/DRE1/eomjse1"
+    },
+    {
+      "name": "EOMJSE1_PORT",
+      "value": "3200"
+    },
+    {
+      "name": "EOMJSE1_JMX_PORT",
+      "value": "3201"
+    },
+    {
+      "name": "EOMJSE1_HTTP_PORT",
+      "value": "3202"
+    },
+    {
+      "name": "EOMJSE2",
+      "value": "meth01_eomjse2"
+    },
+    {
+      "name": "EOMJSE2_INDEX",
+      "value": "OFR_Permanent"
+    },
+    {
+      "name": "EOMJSE2_IOR",
+      "value": "/methode/meth01/ior/eomjse2.ior"
+    },
+    {
+      "name": "EOMJSE2_INDEXDIR",
+      "value": "/methode/meth01/mnt/search-queue/content/DRE2/eomjse2"
+    },
+    {
+      "name": "EOMJSE2_PORT",
+      "value": "3203"
+    },
+    {
+      "name": "EOMJSE2_JMX_PORT",
+      "value": "3204"
+    },
+    {
+      "name": "EOMJSE2_HTTP_PORT",
+      "value": "3205"
+    },
+    {
+      "name": "EOMJSE3",
+      "value": "meth01_eomjse3"
+    },
+    {
+      "name": "EOMJSE3_INDEX",
+      "value": "OFR_Standing"
+    },
+    {
+      "name": "EOMJSE3_IOR",
+      "value": "/methode/meth01/ior/eomjse3.ior"
+    },
+    {
+      "name": "EOMJSE3_INDEXDIR",
+      "value": "/methode/meth01/mnt/search-queue/content/DRE3/eomjse3"
+    },
+    {
+      "name": "EOMJSE3_PORT",
+      "value": "3206"
+    },
+    {
+      "name": "EOMJSE3_JMX_PORT",
+      "value": "3207"
+    },
+    {
+      "name": "EOMJSE3_HTTP_PORT",
+      "value": "3208"
+    },
+    {
+      "name": "EOMJSE4",
+      "value": "meth01_eomjse4"
+    },
+    {
+      "name": "EOMJSE4_INDEX",
+      "value": "OFR_Libraries"
+    },
+    {
+      "name": "EOMJSE4_IOR",
+      "value": "/methode/meth01/ior/eomjse4.ior"
+    },
+    {
+      "name": "EOMJSE4_INDEXDIR",
+      "value": "/methode/meth01/mnt/search-queue/content/DRE4/eomjse4"
+    },
+    {
+      "name": "EOMJSE4_PORT",
+      "value": "3209"
+    },
+    {
+      "name": "EOMJSE4_JMX_PORT",
+      "value": "3210"
+    },
+    {
+      "name": "EOMJSE4_HTTP_PORT",
+      "value": "3211"
+    },
+    {
+      "name": "NOTIFIER",
+      "value": "NotifierdevEdi"
+    },
+    {
+      "name": "NOTIFIER_IOR",
+      "value": "/methode/meth01/ior/eomnc.ior"
+    },
+    {
+      "name": "NOTIFICATION_PORT",
+      "value": "3800"
+    },
+    {
+      "name": "NOTIFICATION_PLUG_PORT",
+      "value": "3801"
+    },
+    {
+      "name": "NOTIFICATION_PLUG_IOR",
+      "value": "/methode/meth01/ior/eomnc_plug.ior"
+    },
+    {
+      "name": "NOTIFIER_CH1",
+      "value": "NotifierdevEdiCH1dev"
+    },
+    {
+      "name": "NOTIFIER_CH1_IOR",
+      "value": "/methode/meth01/ior/eomnc_ch1.ior"
+    },
+    {
+      "name": "NOTIFICATION_CH1_PORT",
+      "value": "3802"
+    },
+    {
+      "name": "NOTIFIER_CH2",
+      "value": "NotifierdevEdiCH2dev"
+    },
+    {
+      "name": "NOTIFIER_CH2_IOR",
+      "value": "/methode/meth01/ior/eomnc_ch2.ior"
+    },
+    {
+      "name": "NOTIFICATION_CH2_PORT",
+      "value": "3803"
+    },
+    {
+      "name": "MYSQL_PORT",
+      "value": "3099"
+    },
+    {
+      "name": "MYSQL_USR",
+      "value": "root"
+    },
+    {
+      "name": "MYSQL_PWD",
+      "value": "sa"
+    },
+    {
+      "name": "TOMCAT_CORE_PORT",
+      "value": "3700"
+    },
+    {
+      "name": "TOMCAT_CORE_SHUTDOWN_PORT",
+      "value": "3701"
+    },
+    {
+      "name": "TOMCAT_CORE_AJP13_PORT",
+      "value": "3702"
+    },
+    {
+      "name": "TOMCAT_CORE_JMX_PORT",
+      "value": "3703"
+    },
+    {
+      "name": "TOMCAT_CORE_JMX_RMI_PORT",
+      "value": "3704"
+    },
+    {
+      "name": "TOMCAT_CORE_SSL_PORT",
+      "value": "3705"
+    },
+    {
+      "name": "METHUSR_checkin",
+      "value": "system_checkin"
+    },
+    {
+      "name": "METHPWD_checkin",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "METHUSR_formats",
+      "value": "system_formats"
+    },
+    {
+      "name": "METHPWD_formats",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "METHUSR_preview",
+      "value": "system_preview"
+    },
+    {
+      "name": "METHPWD_preview",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "METHUSR_rhelper",
+      "value": "system_rhelper"
+    },
+    {
+      "name": "METHPWD_rhelper",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "TOMCAT_INOUT_PORT",
+      "value": "3710"
+    },
+    {
+      "name": "TOMCAT_INOUT_SHUTDOWN_PORT",
+      "value": "3711"
+    },
+    {
+      "name": "TOMCAT_INOUT_AJP13_PORT",
+      "value": "3712"
+    },
+    {
+      "name": "TOMCAT_INOUT_JMX_PORT",
+      "value": "3713"
+    },
+    {
+      "name": "TOMCAT_INOUT_JMX_RMI_PORT",
+      "value": "3714"
+    },
+    {
+      "name": "TOMCAT_INOUT_SSL_PORT",
+      "value": "3715"
+    },
+    {
+      "name": "TOMCAT_MMS_PORT",
+      "value": "3716"
+    },
+    {
+      "name": "TOMCAT_MMS_SHUTDOWN_PORT",
+      "value": "3717"
+    },
+    {
+      "name": "TOMCAT_MMS_AJP13_PORT",
+      "value": "3718"
+    },
+    {
+      "name": "TOMCAT_MMS_JMX_PORT",
+      "value": "3719"
+    },
+    {
+      "name": "TOMCAT_MMS_JMX_RMI_PORT",
+      "value": "3720"
+    },
+    {
+      "name": "TOMCAT_MMS_SSL_PORT",
+      "value": "3721"
+    },
+    {
+      "name": "TOMCAT_TOOLS_PORT",
+      "value": "3722"
+    },
+    {
+      "name": "TOMCAT_TOOLS_SHUTDOWN_PORT",
+      "value": "3723"
+    },
+    {
+      "name": "TOMCAT_TOOLS_AJP13_PORT",
+      "value": "3724"
+    },
+    {
+      "name": "TOMCAT_TOOLS_JMX_PORT",
+      "value": "3725"
+    },
+    {
+      "name": "TOMCAT_TOOLS_JMX_RMI_PORT",
+      "value": "3726"
+    },
+    {
+      "name": "TOMCAT_TOOLS_SSL_PORT",
+      "value": "3727"
+    },
+    {
+      "name": "TOMCAT_OUTPUT_PORT",
+      "value": "3728"
+    },
+    {
+      "name": "TOMCAT_OUTPUT_SHUTDOWN_PORT",
+      "value": "3729"
+    },
+    {
+      "name": "TOMCAT_OUTPUT_AJP13_PORT",
+      "value": "3730"
+    },
+    {
+      "name": "TOMCAT_OUTPUT_JMX_PORT",
+      "value": "3731"
+    },
+    {
+      "name": "TOMCAT_OUTPUT_JMX_RMI_PORT",
+      "value": "3732"
+    },
+    {
+      "name": "TOMCAT_OUTPUT_SSL_PORT",
+      "value": "3733"
+    },
+    {
+      "name": "TOMCAT_PUB_PORT",
+      "value": "3734"
+    },
+    {
+      "name": "TOMCAT_PUB_SHUTDOWN_PORT",
+      "value": "3735"
+    },
+    {
+      "name": "TOMCAT_PUB_AJP13_PORT",
+      "value": "3736"
+    },
+    {
+      "name": "TOMCAT_PUB_JMX_PORT",
+      "value": "3737"
+    },
+    {
+      "name": "TOMCAT_PUB_JMX_RMI_PORT",
+      "value": "3738"
+    },
+    {
+      "name": "TOMCAT_PUB_SSL_PORT",
+      "value": "3739"
+    },
+    {
+      "name": "TOMCAT_WEB_PORT",
+      "value": "3740"
+    },
+    {
+      "name": "TOMCAT_WEB_SHUTDOWN_PORT",
+      "value": "3741"
+    },
+    {
+      "name": "TOMCAT_WEB_AJP13_PORT",
+      "value": "3742"
+    },
+    {
+      "name": "TOMCAT_WEB_JMX_PORT",
+      "value": "3743"
+    },
+    {
+      "name": "TOMCAT_WEB_JMX_RMI_PORT",
+      "value": "3744"
+    },
+    {
+      "name": "TOMCAT_WEB_SSL_PORT",
+      "value": "3745"
+    },
+    {
+      "name": "TOMCAT_PLAN_PORT",
+      "value": "3746"
+    },
+    {
+      "name": "TOMCAT_PLAN_SHUTDOWN_PORT",
+      "value": "3747"
+    },
+    {
+      "name": "TOMCAT_PLAN_AJP13_PORT",
+      "value": "3748"
+    },
+    {
+      "name": "TOMCAT_PLAN_JMX_PORT",
+      "value": "3749"
+    },
+    {
+      "name": "TOMCAT_PLAN_JMX_RMI_PORT",
+      "value": "3750"
+    },
+    {
+      "name": "TOMCAT_PLAN_SSL_PORT",
+      "value": "3751"
+    },
+    {
+      "name": "TOMCAT_SOCIAL_PORT",
+      "value": "3752"
+    },
+    {
+      "name": "TOMCAT_SOCIAL_SHUTDOWN_PORT",
+      "value": "3753"
+    },
+    {
+      "name": "TOMCAT_SOCIAL_AJP13_PORT",
+      "value": "3754"
+    },
+    {
+      "name": "TOMCAT_SOCIAL_JMX_PORT",
+      "value": "3755"
+    },
+    {
+      "name": "TOMCAT_SOCIAL_JMX_RMI_PORT",
+      "value": "3756"
+    },
+    {
+      "name": "TOMCAT_SOCIAL_SSL_PORT",
+      "value": "3757"
+    },
+    {
+      "name": "TOMCAT_ANALYTICS_PORT",
+      "value": "3758"
+    },
+    {
+      "name": "TOMCAT_ANALYTICS_SHUTDOWN_PORT",
+      "value": "3759"
+    },
+    {
+      "name": "TOMCAT_ANALYTICS_AJP13_PORT",
+      "value": "3760"
+    },
+    {
+      "name": "TOMCAT_ANALYTICS_JMX_PORT",
+      "value": "3761"
+    },
+    {
+      "name": "TOMCAT_ANALYTICS_JMX_RMI_PORT",
+      "value": "3762"
+    },
+    {
+      "name": "TOMCAT_ANALYTICS_SSL_PORT",
+      "value": "3763"
+    },
+    {
+      "name": "METHUSR_mis",
+      "value": "system_mis"
+    },
+    {
+      "name": "METHPWD_mis",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "METHUSR_mss",
+      "value": "system_mss"
+    },
+    {
+      "name": "METHPWD_mss",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "METHUSR_adorder",
+      "value": "system_adorder"
+    },
+    {
+      "name": "METHPWD_adorder",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "METHUSR_imgserv",
+      "value": "system_imgserv"
+    },
+    {
+      "name": "METHPWD_imgserv",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "METHUSR_mms",
+      "value": "system_mms"
+    },
+    {
+      "name": "METHPWD_mms",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "METHUSR_dsm",
+      "value": "system_dsm"
+    },
+    {
+      "name": "METHPWD_dsm",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "METHUSR_methodesocial",
+      "value": "system_methodesocial"
+    },
+    {
+      "name": "METHPWD_methodesocial",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "METHUSR_mfm",
+      "value": "system_mfm"
+    },
+    {
+      "name": "METHPWD_mfm",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "METHUSR_mws",
+      "value": "system_mws"
+    },
+    {
+      "name": "METHPWD_mws",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "METHUSR_piccontroller",
+      "value": "system_piccontroller"
+    },
+    {
+      "name": "METHPWD_piccontroller",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "METHUSR_dma",
+      "value": "system_dma"
+    },
+    {
+      "name": "METHPWD_dma",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "METHUSR_om",
+      "value": "system_om"
+    },
+    {
+      "name": "METHPWD_om",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "METHUSR_htmlpub",
+      "value": "system_htmlpub"
+    },
+    {
+      "name": "METHPWD_htmlpub",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "METHUSR_webclient",
+      "value": "system_webclient"
+    },
+    {
+      "name": "METHPWD_webclient",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "METHUSR_mras",
+      "value": "system_mras"
+    },
+    {
+      "name": "METHPWD_mras",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "METHUSR_planimport",
+      "value": "system_planimport"
+    },
+    {
+      "name": "METHPWD_planimport",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "METHUSR_analytics",
+      "value": "system_analytics"
+    },
+    {
+      "name": "METHPWD_analytics",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "VERSANT_PORT",
+      "value": "3001"
+    },
+    {
+      "name": "VERSANT_ROOT",
+      "value": "/methode/meth01/versant/vod80"
+    },
+    {
+      "name": "VERSANT_BIN",
+      "value": "/methode/meth01/versant/vod80/bin"
+    },
+    {
+      "name": "VERSANT_HOST_NAME",
+      "value": "ofr-dev-meth01-core"
+    },
+    {
+      "name": "VERSANT_SERVICE_PORT",
+      "value": "3001"
+    },
+    {
+      "name": "VERSANT_DB",
+      "value": "/methode/meth01/mnt/data/db"
+    },
+    {
+      "name": "VERSANT_DBID",
+      "value": "/methode/meth01/mnt/data/db"
+    },
+    {
+      "name": "VERSANT_DBID_NODE",
+      "value": "ofr-dev-meth01-core"
+    },
+    {
+      "name": "DB",
+      "value": "meth01"
+    },
+    {
+      "name": "METHENV",
+      "value": "dev"
+    },
+    {
+      "name": "SITE",
+      "value": "ofr"
+    },
+    {
+      "name": "LOGNAME",
+      "value": "meth01"
+    },
+    {
+      "name": "BASEDIR",
+      "value": "/methode"
+    },
+    {
+      "name": "HOME",
+      "value": "/methode/meth01"
+    },
+    {
+      "name": "ADMINDIR",
+      "value": "/methode/meth01/admin"
+    },
+    {
+      "name": "SCRIPTDIR",
+      "value": "/methode/meth01/scripts"
+    },
+    {
+      "name": "SCRIPTUTILDIR",
+      "value": "/methode/meth01/scripts/script_utils"
+    },
+    {
+      "name": "BACKUPDIR",
+      "value": "/methode/meth01/mnt/backups"
+    },
+    {
+      "name": "BINDIR",
+      "value": "/methode/meth01/bin"
+    },
+    {
+      "name": "CFGDIR",
+      "value": "/methode/meth01/cfg"
+    },
+    {
+      "name": "ENVDIR",
+      "value": "/methode/meth01/cfg/env"
+    },
+    {
+      "name": "IORDIR",
+      "value": "/methode/meth01/ior"
+    },
+    {
+      "name": "CLUSTERDIR",
+      "value": "/methode/meth01/cluster"
+    },
+    {
+      "name": "LOGDIR",
+      "value": "/methode/meth01/logfiles"
+    },
+    {
+      "name": "LOGMAINT",
+      "value": "/methode/meth01/logfiles/maint"
+    },
+    {
+      "name": "OLDLOGDIR",
+      "value": "/methode/meth01/logfiles/oldlogs"
+    },
+    {
+      "name": "SAVEDIR",
+      "value": "/methode/meth01/mnt/save"
+    },
+    {
+      "name": "TMPDIR",
+      "value": "/methode/meth01/mnt/tmp"
+    },
+    {
+      "name": "AUTONOMYDIR",
+      "value": "/methode/meth01/autonomy"
+    },
+    {
+      "name": "WORKDIR",
+      "value": "/methode/meth01/work"
+    },
+    {
+      "name": "EOMWORKDIR",
+      "value": "/methode/meth01/cfg/work"
+    },
+    {
+      "name": "PIDSDIR",
+      "value": "/methode/meth01/cluster/pids"
+    },
+    {
+      "name": "SERVLETSDIR",
+      "value": "/methode/meth01/methode-servlets"
+    },
+    {
+      "name": "DATADIR",
+      "value": "/methode/meth01/mnt/data"
+    },
+    {
+      "name": "MOUNTDIR",
+      "value": "/methode/meth01/mnt"
+    },
+    {
+      "name": "SEARCHDIR",
+      "value": "/methode/meth01/mnt/search"
+    },
+    {
+      "name": "ALERTDIR",
+      "value": "/methode/meth01/mnt/alert"
+    },
+    {
+      "name": "SHAREDIR",
+      "value": "/methode/meth01/mnt/tomcat/methode_share"
+    },
+    {
+      "name": "SERVLETSTMPDIR",
+      "value": "/methode/meth01/mnt/tomcat/methode-servlets"
+    },
+    {
+      "name": "WEBEXPORT",
+      "value": "/methode/meth01/mnt/tomcat/methode_share/webexport"
+    },
+    {
+      "name": "COMMONDIR",
+      "value": "/methode/common"
+    },
+    {
+      "name": "METHUSR",
+      "value": "system"
+    },
+    {
+      "name": "METHPWD",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "JAVA_HOME",
+      "value": "/methode/meth01/bin/java_latest"
+    },
+    {
+      "name": "PATH",
+      "value": "/methode/meth01/versant/vod80/bin:/methode/meth01/bin/java_latest/bin:/bin:/sbin:/usr/bin:/usr/local/bin:.:/methode/meth01/bin:/methode/meth01/cluster:/opt/VRTS/bin:/methode/meth01/admin:/methode/meth01/scripts:/methode/meth01/mysql:/methode/meth01/mysql/bin:/methode/meth01/mysql/lib:/methode/meth01/db/bin:/opt/VRTSvcs/bin/::/methode/meth01/db/bin"
+    },
+    {
+      "name": "MANPATH",
+      "value": "/usr/share/man:/usr/local/man"
+    },
+    {
+      "name": "LD_LIBRARY_PATH",
+      "value": "/lib:/methode/meth01/lib:/methode/meth01/versant/vod80/lib:/usr/local/lib:/usr/lib64:/methode/common/APDFL/Libs"
+    },
+    {
+      "name": "EDITOR",
+      "value": "vi"
+    },
+    {
+      "name": "GROUP_CORE",
+      "value": "ofr-dev-meth01-core"
+    },
+    {
+      "name": "GROUP_SEARCH",
+      "value": "ofr-dev-meth01-search"
+    },
+    {
+      "name": "GROUP_WORKER",
+      "value": "ofr-dev-meth01-worker"
+    },
+    {
+      "name": "GROUP_NFS",
+      "value": "ofr-dev-meth01-mount"
+    },
+    {
+      "name": "NS_PORT",
+      "value": "3900"
+    },
+    {
+      "name": "NS_IOR",
+      "value": "/methode/meth01/ior/Naming_Service.ior"
+    },
+    {
+      "name": "DB_ID",
+      "value": "33"
+    },
+    {
+      "name": "LDAP_CONNECTION_STRING",
+      "value": "eomldap://128.1.233.215?dn=CN=AnonymeAD,CN=Users,DC=domaine,DC=local&amp;amp;tls=false"
+    },
+    {
+      "name": "CONN",
+      "value": "-EOMUser system -EOMPassword sysofrpwd -EOMRepositoryIor /methode/meth01/ior/eomdb1.ior"
+    },
+    {
+      "name": "HAPROXY_PRINTPREVIEW_PORT",
+      "value": "3777"
+    },
+    {
+      "name": "WIN_HTTP_PORT",
+      "value": "1337"
+    },
+    {
+      "name": "SERVER_CORE",
+      "value": "10.25.7.131"
+    },
+    {
+      "name": "SERVER_SEARCH",
+      "value": "10.25.7.131"
+    },
+    {
+      "name": "SERVER_WORKER",
+      "value": "10.25.7.131"
+    },
+    {
+      "name": "SERVER_NS",
+      "value": "10.25.7.131"
+    },
+    {
+      "name": "SERVER_MYSQL",
+      "value": "10.25.7.131"
+    },
+    {
+      "name": "SERVER_DISH_SEARCH",
+      "value": "10.25.7.131"
+    },
+    {
+      "name": "SERVER_DISH_ALERT",
+      "value": "10.25.7.131"
+    },
+    {
+      "name": "SOURCE_FILER",
+      "value": "NetAppH2"
+    },
+    {
+      "name": "SERVER_WIN01",
+      "value": "10.25.7.132"
+    },
+    {
+      "name": "DEV_NS_PORT",
+      "value": "3900"
+    },
+    {
+      "name": "DEV_SERVER_NS",
+      "value": "main-dev-meth01-db"
+    },
+    {
+      "name": "DEV_SERVER_NS_IP",
+      "value": "10.25.7.131"
+    },
+    {
+      "name": "DEV_REPOSITORY1",
+      "value": "Servlets"
+    },
+    {
+      "name": "QA_NS_PORT",
+      "value": "3900"
+    },
+    {
+      "name": "QA_SERVER_NS_IP",
+      "value": "10.25.7.150"
+    },
+    {
+      "name": "QA_REPOSITORY1",
+      "value": "Servlets"
+    },
+    {
+      "name": "PRD_NS_PORT",
+      "value": "3900"
+    },
+    {
+      "name": "PRD_SERVER_NS_IP",
+      "value": "10.25.7.180"
+    },
+    {
+      "name": "PRD_REPOSITORY1",
+      "value": "Servlets"
+    },
+    {
+      "name": "WIRES_SERVER_NS",
+      "value": "10.25.7.131"
+    },
+    {
+      "name": "WIRES_NS_PORT",
+      "value": "5900"
+    },
+    {
+      "name": "WIRES_SERVLET_REPO",
+      "value": "Servlets"
+    },
+    {
+      "name": "WIRES_METHUSR",
+      "value": "system"
+    },
+    {
+      "name": "WIRES_METHPWD",
+      "value": "sysofrpwd"
+    },
+    {
+      "name": "PLAN_IMPORT_FOLDER",
+      "value": "&SHAREDIR;/import/plan-import/instruction-file"
+    },
+    {
+      "name": "MAPPING_HOST1",
+      "value": "http://p1dmpaomapsesws01.ouest-france.fr:8761/services/mappings-v3-ws/api/mappings"
+    },
+    {
+      "name": "MAPPING_HOST2",
+      "value": "http://p1dmpaomapsesws02.ouest-france.fr:8761/services/mappings-v3-ws/api/mappings"
+    },
+    {
+      "name": "IMPORT_JSON_FOLDER",
+      "value": "&SHAREDIR;/import/import-json-object-panel/input"
+    },
+    {
+      "name": "IMPORT_SHARE_REFV3_FOLDER",
+      "value": "&MOUNTDIR;/fe_share/import-refv3"
+    },
+    {
+      "name": "SIN_PUB_ACK_URL",
+      "value": "https://q1sessinws.ouest-france.fr/MethodeAcksWS-DEV"
+    },
+    {
+      "name": "MSS_PUB_ACK_URL",
+      "value": "http://qualsessinws.ouest-france.fr/MethodeAcksWS-DEV"
+    },
+    {
+      "name": "SIN_PUB_WEB_SERVICE_URL",
+      "value": "http://qualses.ouest-france.fr/content/publish"
+    },
+    {
+      "name": "FTP_EXPORT_ARCHIVAGE_PHOTO_LOGIN",
+      "value": "exp_sesmet"
+    },
+    {
+      "name": "FTP_EXPORT_ARCHIVAGE_PHOTO_PWD",
+      "value": "password"
+    },
+    {
+      "name": "FTP_EXPORT_ARCHIVAGE_PHOTO_URL",
+      "value": "q1sesexports01.ouest-france.fr/fichier/feed_DEV/feed_photo_simple/data/input"
+    },
+    {
+      "name": "KIBANA_GRAYLOG_SERVER_HOST",
+      "value": "q1logses01.ouest-france.fr"
+    },
+    {
+      "name": "KIBANA_GRAYLOG_SERVER_PORT",
+      "value": "12201"
+    },
+    {
+      "name": "KIBANA_GRAYLOG_LEVEL",
+      "value": "INFO"
+    },
+    {
+      "name": "KIBANA_DOMAINE",
+      "value": "editorial"
+    },
+    {
+      "name": "KIBANA_APPLICATION",
+      "value": "ses_methode_server"
+    },
+    {
+      "name": "KIBANA_FIELD_HOST",
+      "value": "devmeth01.ouest-france.fr"
+    },
+    {
+      "name": "SITECONFIG_FILE",
+      "value": "/SysConfig/WiP_Editorial/siteConfig_WiP_Editorial.cfg"
+    },
+    {
+      "name": "FTP_EXPORT_PAGE_COMPLETE_LOGIN",
+      "value": "exp_sesmet"
+    },
+    {
+      "name": "FTP_EXPORT_PAGE_COMPLETE_PWD",
+      "value": "password"
+    },
+    {
+      "name": "FTP_EXPORT_PAGE_COMPLETE_BROADSHEET_URL",
+      "value": "q1sesexports01.ouest-france.fr/projet/fichier/feed/output-pages/complet/broadsheet/data/export/"
+    },
+    {
+      "name": "FTP_EXPORT_PAGE_COMPLETE_TABLOID_URL",
+      "value": "q1sesexports01.ouest-france.fr/projet/fichier/feed/output-pages/complet/tabloid/data/export/"
+    },
+    {
+      "name": "FTP_EXPORT_PAGE_INCOMPLETE_LOGIN",
+      "value": "exp_sesmet"
+    },
+    {
+      "name": "FTP_EXPORT_PAGE_INCOMPLETE_PWD",
+      "value": "password"
+    },
+    {
+      "name": "FTP_EXPORT_PAGE_INCOMPLETE_BROADSHEET_URL",
+      "value": "q1sesexports01.ouest-france.fr/projet/fichier/feed/output-pages/incomplet/broadsheet/data/export/"
+    },
+    {
+      "name": "FTP_EXPORT_PAGE_INCOMPLETE_TABLOID_URL",
+      "value": "q1sesexports01.ouest-france.fr/projet/fichier/feed/output-pages/incomplet/tabloid/data/export/"
+    }
+  ],
+  "tomcat": [
+    {
+      "id": "core",
+      "installDir": "/methode/meth01/tomcat-core",
+      "prop": [
+        {
+          "name": "Server version",
+          "value": "Apache Tomcat/7.0.72"
+        },
+        {
+          "name": "Server built",
+          "value": "Sep 14 2016 12:12:26 UTC"
+        },
+        {
+          "name": "Server number",
+          "value": "7.0.72.0"
+        },
+        {
+          "name": "OS Name",
+          "value": "Linux"
+        },
+        {
+          "name": "OS Version",
+          "value": "2.6.32-642.4.2.el6.x86_64"
+        },
+        {
+          "name": "Architecture",
+          "value": "amd64"
+        },
+        {
+          "name": "JVM Version",
+          "value": "1.8.0_77-b03"
+        },
+        {
+          "name": "JVM Vendor",
+          "value": "Oracle Corporation"
+        }
+      ],
+      "conf": {
+        "contextList": [
+          {
+            "filePath": "/methode/meth01/tomcat-core/conf/Catalina/localhost/ROOT.xml",
+            "context": [
+              {
+                "path": "",
+                "docBase": "/methode/meth01/methode-servlets/preview",
+                "servlet": [
+                  {
+                    "name": "dav",
+                    "urlPattern": [
+                      "/"
+                    ],
+                    "class": "web.Dav"
+                  },
+                  {
+                    "name": "admin-servlet",
+                    "urlPattern": [
+                      "/as"
+                    ],
+                    "class": "AdminServlet",
+                    "ref": {
+                      "id": "servlet2",
+                      "name": "Servlet 2",
+                      "url": {
+                        "release": "http://s2/release",
+                        "snapshot": "http://s2/release",
+                        "changes": "http://s2/changes",
+                        "doc": "http://s2/doc"
+                      },
+                      "class": [
+                        "AdminServlet",
+                        "ddd"
+                      ]
+                    }
+                  },
+                  {
+                    "name": "session-control",
+                    "urlPattern": [
+                      "/servlet/SessionControl"
+                    ],
+                    "class": "SessionControl"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "filePath": "/methode/meth01/tomcat-core/conf/Catalina/localhost/checkin.xml",
+            "context": [
+              {
+                "path": "/checkin",
+                "docBase": "/methode/meth01/methode-servlets/checkin",
+                "servlet": [
+                  {
+                    "name": "Jersey Web Application",
+                    "urlPattern": [
+                      "/service/*"
+                    ],
+                    "class": "org.glassfish.jersey.servlet.ServletContainer"
+                  },
+                  {
+                    "name": "checkin",
+                    "urlPattern": [
+                      "/servlet/checkin/*"
+                    ],
+                    "class": "checkin.CheckinServlet",
+                    "ref": {
+                      "id": "servlet1",
+                      "name": "Servlet 1",
+                      "url": {
+                        "release": "http://s1/release",
+                        "snapshot": "http://s1/release",
+                        "changes": "http://s1/changes",
+                        "doc": "http://s1/doc"
+                      },
+                      "class": [
+                        "dummyCheckin",
+                        "checkin.CheckinServlet"
+                      ]
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "filePath": "/methode/meth01/tomcat-core/conf/Catalina/localhost/formats.xml",
+            "context": [
+              {
+                "path": "/formats",
+                "docBase": "/methode/meth01/methode-servlets/formats",
+                "servlet": [
+                  {
+                    "name": "Jersey Web Application",
+                    "urlPattern": [
+                      "/service/*"
+                    ],
+                    "class": "org.glassfish.jersey.servlet.ServletContainer"
+                  },
+                  {
+                    "name": "formats",
+                    "urlPattern": [
+                      "/servlet/formats"
+                    ],
+                    "class": "formats.CreateFormats"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "filePath": "/methode/meth01/tomcat-core/conf/Catalina/localhost/rhelper.xml",
+            "context": [
+              {
+                "path": "/rhelper",
+                "docBase": "/methode/meth01/methode-servlets/rhelper",
+                "servlet": [
+                  {
+                    "name": "Jersey Web Application",
+                    "urlPattern": [
+                      "/service/*"
+                    ],
+                    "class": "org.glassfish.jersey.servlet.ServletContainer"
+                  },
+                  {
+                    "name": "rhelper",
+                    "urlPattern": [
+                      ""
+                    ],
+                    "class": "rhelper.Servlet"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "connector": {
+          "protocol": "HTTP/1.1",
+          "port": "3700"
+        }
+      }
+    },
+    {
+      "id": "inout",
+      "installDir": "/methode/meth01/tomcat-inout",
+      "prop": [
+        {
+          "name": "Server version",
+          "value": "Apache Tomcat/7.0.72"
+        },
+        {
+          "name": "Server built",
+          "value": "Sep 14 2016 12:12:26 UTC"
+        },
+        {
+          "name": "Server number",
+          "value": "7.0.72.0"
+        },
+        {
+          "name": "OS Name",
+          "value": "Linux"
+        },
+        {
+          "name": "OS Version",
+          "value": "2.6.32-642.4.2.el6.x86_64"
+        },
+        {
+          "name": "Architecture",
+          "value": "amd64"
+        },
+        {
+          "name": "JVM Version",
+          "value": "1.8.0_77-b03"
+        },
+        {
+          "name": "JVM Vendor",
+          "value": "Oracle Corporation"
+        }
+      ],
+      "conf": {
+        "contextList": [
+          {
+            "filePath": "/methode/meth01/tomcat-inout/conf/Catalina/localhost/adorder.xml",
+            "context": [
+              {
+                "path": "/adorder",
+                "docBase": "/methode/meth01/methode-servlets/adorder",
+                "servlet": [
+                  {
+                    "name": "Jersey Web Application",
+                    "urlPattern": [
+                      "/service/*"
+                    ],
+                    "class": "org.glassfish.jersey.servlet.ServletContainer"
+                  },
+                  {
+                    "name": "adorder",
+                    "urlPattern": [
+                      "/servlet/adorder/*"
+                    ],
+                    "class": "adorder.AdorderServlet"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "filePath": "/methode/meth01/tomcat-inout/conf/Catalina/localhost/imgserv.xml",
+            "context": [
+              {
+                "path": "/imgserv",
+                "docBase": "/methode/meth01/methode-servlets/imgserv",
+                "servlet": [
+                  {
+                    "name": "Jersey Web Application",
+                    "urlPattern": [
+                      "/service/*"
+                    ],
+                    "class": "org.glassfish.jersey.servlet.ServletContainer"
+                  },
+                  {
+                    "name": "imgserv",
+                    "urlPattern": [
+                      ""
+                    ],
+                    "class": "imgserv.ImgservServlet"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "filePath": "/methode/meth01/tomcat-inout/conf/Catalina/localhost/mis.xml",
+            "context": [
+              {
+                "path": "/mis",
+                "docBase": "/methode/meth01/methode-servlets/mis",
+                "servlet": [
+                  {
+                    "name": "Jersey Web Application",
+                    "urlPattern": [
+                      "/service/*"
+                    ],
+                    "class": "org.glassfish.jersey.servlet.ServletContainer"
+                  },
+                  {
+                    "name": "H2Console",
+                    "urlPattern": [
+                      "/h2console/*"
+                    ],
+                    "class": "org.h2.server.web.WebServlet"
+                  },
+                  {
+                    "name": "import",
+                    "urlPattern": [
+                      "/servlet/import/*"
+                    ],
+                    "class": "com.eidosmedia.mis.Import"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "filePath": "/methode/meth01/tomcat-inout/conf/Catalina/localhost/mss.xml",
+            "context": [
+              {
+                "path": "/mss",
+                "docBase": "/methode/meth01/methode-servlets/mss",
+                "servlet": [
+                  {
+                    "name": "Syndication",
+                    "urlPattern": [
+                      "/servlet/mss",
+                      "/mss"
+                    ],
+                    "class": "com.eidosmedia.mss.Syndication"
+                  },
+                  {
+                    "name": "ConfiguratorAdmin",
+                    "urlPattern": [],
+                    "class": "com.eidosmedia.mss.configurator.AdminServlet"
+                  },
+                  {
+                    "name": "Jersey Web Application",
+                    "urlPattern": [
+                      "/service/*"
+                    ],
+                    "class": "org.glassfish.jersey.servlet.ServletContainer"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "connector": {
+          "protocol": "HTTP/1.1",
+          "port": "3710"
+        }
+      }
+    }
+  ]
+}
