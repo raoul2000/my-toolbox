@@ -39,12 +39,14 @@ module.exports = `
   <td>
     <div v-if="inEdition">
       <button
+        title="save changes"
         v-on:click="submitChanges()" type="button" class="btn btn-default btn-xs">
           <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
       </button>
     </div>
     <div v-else>
       <button
+        title="edit information"
         :disabled="busy"
         v-on:click="enableEditMode()" type="button" class="btn btn-default btn-xs">
           <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>

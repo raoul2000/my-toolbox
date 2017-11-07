@@ -9,32 +9,26 @@ module.exports = `
   <div class="toolbar-container" style="margin-bottom:1em;">
 
     <div class="btn-group" role="group" >
-      <button v-on:click="refresh()" type="button" class="btn btn-default">
+      <button title="update list" v-on:click="refresh()" type="button" class="btn btn-default">
         <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
       </button>
-      <button v-on:click="showFolderInExplorer()" type="button" class="btn btn-default">
+      <button title="open download folder" v-on:click="showFolderInExplorer()" type="button" class="btn btn-default">
         <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
       </button>
     </div>
 
     <div class="btn-group" role="group" >
-      <button v-on:click="deleteSelectedModules()" type="button" class="btn btn-default" style="color:_red">
+      <button title="delete selected file(s)" v-on:click="deleteSelectedModules()" type="button" class="btn btn-danger">
         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
       </button>
     </div>
 
-    <div class="btn-group" role="group" aria-label="deploy">
-      <div class="btn-group" role="group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Deploy ...
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li><a id="btn-deploy-ansible" href="#">Ansible</a></li>
-          <li><a v-on:click.stop.prevent="enterSSHSettings()" href="#">Direct</a></li>
-        </ul>
-      </div>
+    <div class="btn-group" role="group" >
+      <button title="deploy (SSH)" v-on:click="enterSSHSettings()" type="button" class="btn btn-primary">
+        <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+      </button>
     </div>
+
   </div> <!-- end toolbar -->
 
 
@@ -69,7 +63,7 @@ module.exports = `
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title"Deploy SSH</h4>
+            <h4 class="modal-title">Deploy SSH</h4>
           </div>
           <div class="modal-body">
 
@@ -129,12 +123,28 @@ module.exports = `
               </div> <!-- input ssh target-path -->
 
               <div class="form-group">
+                <label for="ssh-target-path" class="col-sm-3 control-label">&nbsp;</label>
+                <div class="col-sm-8">
+
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" value="">
+                        Only upload the file
+                    </label>
+                  </div>
+
+                </div>
+              </div> <!-- input download only -->
+
+              <div class="form-group">
                 <div class="col-sm-3">&nbsp;</div>
                 <div class="col-sm-8">
                   <hr/>
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button id="btn-start-ssh-deploy" type="submit" class="btn btn-danger">
-                    Deploy
+                  <button title="start deployment" type="submit" class="btn btn-primary">
+                    Deploy Now
+                  </button>
+                  <button title="cancel deployment" type="button" class="btn btn-default" data-dismiss="modal">
+                    Close
                   </button>
                 </div>
               </div>
