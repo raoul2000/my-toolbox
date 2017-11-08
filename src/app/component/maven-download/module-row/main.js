@@ -194,10 +194,11 @@ module.exports = {
     }
   },
   mounted : function(){
+    // FIXME : after download, if user comes bask to this view, the status is incorrect and button is disabled
     this.task =  store.getters.findTaskById(this.module.id);
     console.log('mounted : task = ',this.task);
     if( this.task ) {
-      this.status = "DOWNLOAD_IN_PROGRESS";
+      this.status = this.task.status;
       this.selectedFilename = this.task.input.selectedFilename;
       this.filenameOptions.push(this.selectedFilename);
     }
