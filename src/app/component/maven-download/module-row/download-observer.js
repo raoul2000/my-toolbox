@@ -10,7 +10,8 @@ exports.create = function(taskId) {
     store.commit('updateTask', {
       "id" : taskId,
       "updateWith"   : {
-        "status"   : "connect"
+        "status"   : "connect",
+        "busy"     : true
       }
     });
   })
@@ -19,6 +20,7 @@ exports.create = function(taskId) {
       "id" : taskId,
       "updateWith"   : {
         "status"   : "downloading", // "started", "done"
+        "busy"     : true,
         "progress" : percent
       }
     });
@@ -28,7 +30,8 @@ exports.create = function(taskId) {
       "id" : taskId,
       "updateWith"   : {
         "status"   : "success",
-        "progress" : 100
+        "progress" : 100,
+        "busy"     : false
       }
     });
   })
@@ -36,7 +39,8 @@ exports.create = function(taskId) {
     store.commit('updateTask', {
       "id" : taskId,
       "updateWith"   : {
-        "status"   : "abort"
+        "status"   : "abort",
+        "busy"     : false
       }
     });
   })
@@ -45,6 +49,7 @@ exports.create = function(taskId) {
       "id" : taskId,
       "updateWith"   : {
         "status"   : "error",
+        "busy"     : false,
         "error"    : error
       }
     });

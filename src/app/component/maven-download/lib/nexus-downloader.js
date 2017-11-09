@@ -18,7 +18,7 @@ var Q = require('q');
  * @return {[type]}         [description]
  */
 exports.download = function(options) {
-
+  console.log('downloader');
   return new Promise( (resolve, reject) => {
     // validate options ////////////////////////////////////////////////////////
     //

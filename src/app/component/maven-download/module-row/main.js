@@ -91,44 +91,50 @@ module.exports = {
     },
     startDownload : function() {
       let self = this;
+
       // create URL ////////////////////////////////////////////////////////////
+      //
       var downloadUrl = this.selectedModuleType === 'release'
         ? this.module.url.release
         :  this.module.url.snapshot;
       downloadUrl = downloadUrl.concat('/', this.selectedVersion,'/',this.selectedFilename);
 
       // create local filepath /////////////////////////////////////////////////
+      //
       let localFilePath = path.join(config.get('deployFolderPath') , this.selectedFilename);
       console.log("localFilePath = "+localFilePath);
 
       // if target file already exist, delete it ///////////////////////////////
+      // 
       if( fs.existsSync(localFilePath)) {
         fs.unlinkSync(localFilePath);
       }
 
       // create and add the download task to the store /////////////////////////
-      let downloadTask = {
+      //
+      store.commit("addTask",{
         "id"       : this.module.id,
         "type"     : "download",
         "status"   : "started", // "started", "done"
         "progress" : 0,
+        "busy"     : true,
         "input"    : {
-          "selectedFilename" : this.selectedFilename
+          "selectedFilename"    : this.selectedFilename,
+          "url"                 : downloadUrl,
+          "destinationFilePath" : localFilePath
         }
-      };
-      store.commit("addTask",downloadTask);
+      });
 
       // start download ////////////////////////////////////////////////////////
       this.stopDownloadRequest = false;
       this.status = "DOWNLOAD_IN_PROGRESS";
 
       nexusDownloader.download({
-        "url"                 : downloadUrl,
-        "destinationFilePath" : localFilePath,
+        "url"                 : this.downloadTask.input.url,
+        "destinationFilePath" : this.downloadTask.input.destinationFilePath,
         "requestTimeout"      : 10,
         "notifier"            : downloadObserver.create(this.module.id),
         "canContinue"         : function() {
-          console.log('conContinue');
           return self.stopDownloadRequest === false;
         }
       }).then(result => { // = "success" | "abort"
@@ -149,8 +155,10 @@ module.exports = {
           fs.unlinkSync(localFilePath);
         }
         self.status = "IDLE";
+        store.commit("deleteTask",self.downloadTask);
       }).catch(err => {
         self.status = "IDLE";
+        store.commit("deleteTask",self.downloadTask);
       });
     },
     loadVersionInfo : function() {
@@ -195,11 +203,11 @@ module.exports = {
   },
   mounted : function(){
     // FIXME : after download, if user comes bask to this view, the status is incorrect and button is disabled
-    this.task =  store.getters.findTaskById(this.module.id);
-    console.log('mounted : task = ',this.task);
-    if( this.task ) {
-      this.status = this.task.status;
-      this.selectedFilename = this.task.input.selectedFilename;
+    //this.task =  store.getters.findTaskById(this.module.id);
+    //console.log('mounted : task = ',this.task);
+    if( this.downloadTask ) {
+      this.status = this.downloadTask.busy ? "DOWNLOAD_IN_PROGRESS" : "IDLE";
+      this.selectedFilename = this.downloadTask.input.selectedFilename;
       this.filenameOptions.push(this.selectedFilename);
     }
   }

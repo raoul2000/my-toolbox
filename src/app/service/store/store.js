@@ -148,7 +148,12 @@ module.exports = new Vuex.Store({
         //updateObject(objToUpdate, freshProperties );
       }
     },
-
+    deleteTask(state, taskToDelete) {
+      let idx = state.tasks.findIndex( task => task.id === taskToDelete.id);
+      if( idx !== -1) {
+        state.tasks.splice(idx, 1);
+      }
+    },
     updateTask_old(state,freshTask) {
       console.log('store : updating task',freshTask);
       let taskIdx = state.tasks.findIndex( task => task.id === freshTask.id);
