@@ -31,7 +31,7 @@
 }
 @media screen and (min-width: 60em) {
   .cards_item {
-    width: 33.3333%;
+    width: 25%;
   }
   .no-flexbox .cards_item:nth-child(3n+1) {
     clear: both;
@@ -51,6 +51,15 @@
   border-radius: 0;
 }
 
+.card-danger {
+    border-top: 15px solid red;
+}
+
+.card-warning {
+    border-top: 15px solid orange;
+}
+
+
 .card_image img {
   width: 100%;
   border-top-left-radius: 0;
@@ -69,7 +78,7 @@
       -ms-flex-direction: column;
           flex-direction: column;
   margin-top: 0;
-  padding: 1.5em;
+  padding: 1em;
 }
 .card_content p {
   -webkit-box-flex: 1;
