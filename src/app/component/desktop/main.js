@@ -1,5 +1,6 @@
 var remote     = require('electron').remote;
 var fs         = require('fs');
+var path       = require('path');
 const store    = require('../../service/store/store');
 const notify   = require('../../service/notification');
 const config   = require('../../service/config');
@@ -25,7 +26,8 @@ module.exports = {
      * @param  {inetger} index indes of the item in the current store
      */
     view : function(index) {
-      this.$router.push({ path: '/view', query: { "index": index }});
+      //this.$router.push({ path: '/item-view', query: { "index": index }});
+      this.$router.push({ path: `/item-view/${index}/settings`});
     },
     /**
      * Remove an item from the desktopn

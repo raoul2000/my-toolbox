@@ -4,9 +4,15 @@ const fs       = require('fs');
 const Desktop  = require('./component/desktop/main');
 const Settings = require('./component/settings/main');
 const About    = require('./component/about/main');
+
 const DbNav    = require('./component/db-explorer/main');
 const Create   = require('./component/create/main');
 const View     = require('./component/view/main');
+
+const ItemView     = require('./component/desktop/item-view/main');
+const ItemViewSettings     = require('./component/desktop/item-view/settings/main');
+const ItemViewProfile     = require('./component/desktop/item-view/profile/main');
+
 const Deploy   = require('./component/deploy/main');
 const MavenDownload   = require('./component/maven-download/main');
 
@@ -15,6 +21,8 @@ const config   = require('./service/config');
 const notify   = require('./service/notification');
 
 let shell = require('electron').shell;
+// listen to all click events on an anchor having an 'http' href and opens
+// an external browser on the URL
 document.addEventListener('click', function (event) {
   if (event.target.tagName === 'A' && event.target.href.startsWith('http')) {
     event.preventDefault();
@@ -25,10 +33,20 @@ document.addEventListener('click', function (event) {
 // register routes
 const router = new VueRouter({
   routes :[
-    { path: '/desktop',  component: Desktop,  name : 'desktop' },
-    { path: '/settings', component: Settings, name : 'settings'},
-    { path: '/create',   component: Create,   name : 'create'},
-    { path: '/view',     component: View,     name : 'view'},
+    { path: '/desktop',      component: Desktop,  name : 'desktop' },
+    { path: '/settings',      component: Settings, name : 'settings'},
+    { path: '/create',        component: Create,   name : 'create'},
+    { path: '/view',          component: View,     name : 'view'},
+    { path: '/item-view/:id', component: ItemView,     children : [
+      {
+        path: 'settings',
+        component: ItemViewSettings
+      },
+      {
+        path: 'profile',
+        component: ItemViewProfile
+      }
+    ]},
     { path: '/deploy',   component: Deploy,   name : 'deploy'},
     { path: '/maven-download',   component: MavenDownload,   name : 'maven-download'}
   ]

@@ -33,6 +33,9 @@ module.exports = `
 
   <div class="row">
     <div class="col-lg-12">
+
+
+
       <table class="table table-striped table-hover table-condensed">
         <thead>
           <tr>
