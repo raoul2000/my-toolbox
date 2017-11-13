@@ -149,11 +149,11 @@ module.exports = {
   },
   mounted : function(){
     var self = this;
-    if(config.has('deployFolderPath') === false ) {
+    if(config.store.has('deployFolderPath') === false ) {
       notify('No deploy folder configured','error', 'error');
       return;
     }
-    var deployFolderPath = config.get('deployFolderPath');
+    var deployFolderPath = config.store.get('deployFolderPath');
     if ( fs.existsSync(deployFolderPath) === false ) {
       notify(`Configured Deploy Folder Not Found : <b>${deployFolderPath}</b>`,'error', 'error');
       return;

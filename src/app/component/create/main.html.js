@@ -78,7 +78,9 @@ module.exports = `
       <div class="form-group">
         <label for="notes" class="col-sm-2 control-label">Notes</label>
         <div class="col-sm-10">
-          <textarea id="notes" placeholder="Enter your notes here ..." class="form-control" rows="3"></textarea>
+          <textarea
+            v-model="server.notes" 
+            id="notes" placeholder="Enter your notes here ..." class="form-control" rows="3" style="height:243px"></textarea>
         </div>
       </div>
     </div>

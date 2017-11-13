@@ -17,7 +17,7 @@ module.exports = {
     refresh : function() {
 
       let modRefFilename = path.join(
-        config.get('nexus.confFolder'),
+        config.store.get('nexus.confFolder'),
         'module-ref.json'
       );
       console.log("loading module-ref from file : "+modRefFilename);

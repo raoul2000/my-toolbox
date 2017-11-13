@@ -7,16 +7,24 @@ var app = require('electron').remote.app;
 const Store = require('electron-store');
 const path = require('path');
 
+let defaultValue = {
+  'appDataPath'    : app.getPath('userData'),
+  'ctdbFolderPath' : path.join(app.getPath('userData'),'ctbd')
+};
+
 const store = new Store({
   "name" : "my-toolbox",
   "defaults" : {
-    "appDataPath" : app.getPath('userData'), // on windows C:\Users\Utilisateur\AppData\Roaming\<appName>
-    "ctdbFolderPath"    : path.join(app.getPath('userData'),'ctbd'),
+    "appDataPath"           : defaultValue.appDataPath, // on windows C:\Users\Utilisateur\AppData\Roaming\<appName>
+    "ctdbFolderPath"        : defaultValue.ctdbFolderPath,
     // 'deployFolderPath' : absolute path of the folder where  modules are :
     // - downloaded from maven
     // - uploaded on deployement
-    "deployFolderPath" : app.getPath('downloads'),
-    "webappCatalogFilePath" : path.join(app.getPath('userData'),"web-app-catalog.json")
+    "deployFolderPath"      : app.getPath('downloads'),
+    "webappCatalogFilePath" : path.join(app.getPath('userData'),"web-app-catalog.json"),
+    "recent" : {
+      // "ctdbPath" : '/path/to/latest'
+    }
   }
 });
 console.log("loading config from ", store.path);
@@ -26,6 +34,18 @@ console.log("appData ", app.getPath('appData'));
 console.log("userData ", app.getPath('userData'));
 
 
+module.exports = {
+  "store" : store,
+  "getCTDBPath" : function() {
+    console.log("getCTDBPath");
+    let result = ( store.has('recent.ctdbPath') ? store.get('recent.ctdbPath') : store.get('ctdbFolderPath'));
+    if( result.replace(store.get('ctdbFolderPath'),'') === result) {
+      result = store.get('ctdbFolderPath');
+    }
+    return result;
+  },
+  "setRecentCTDBPath" : function(path) {
 
-//module.exports = store;
-module.exports = store;
+  }
+
+};

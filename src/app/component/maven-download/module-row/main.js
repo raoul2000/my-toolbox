@@ -101,7 +101,7 @@ module.exports = {
 
       // create local filepath /////////////////////////////////////////////////
       //
-      let localFilePath = path.join(config.get('deployFolderPath') , this.selectedFilename);
+      let localFilePath = path.join(config.store.get('deployFolderPath') , this.selectedFilename);
       console.log("localFilePath = "+localFilePath);
 
       // if target file already exist, delete it ///////////////////////////////

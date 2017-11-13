@@ -39,33 +39,32 @@ module.exports = {
      * item that will be added to the desktopn.
      */
     openDesktopItems : function() {
-      var self = this;
-      var baseFolder = config.get('ctdbFolderPath');
+
       remote.dialog.showOpenDialog(
         remote.getCurrentWindow(),  // is modal on the main window
         {
           "title"      : "Select Item",
-          "defaultPath" : baseFolder,
+          "defaultPath" : config.getCTDBPath(),
           "properties" : [ 'openFile', 'multiSelections']
         },
         function(filenames) {
-          console.log(filenames);
+          let ctdbBasePath = config.store.get("ctdbFolderPath");
           if( Array.isArray(filenames) ) {
             filenames.forEach(file => {
-              if( store.getters.desktopItemByFilename(file) !== undefined) {
-                notify('The item is already included in the desktop','warning','warning');
+              console.log("duplisatce");
+              // check if this file is under the CTBD base folder
+              var relativeFilePath = file.replace(ctdbBasePath,'');
+              if(relativeFilePath === file) {
+                // TODO : wee how to highlight the existing item (css animate ?)
+                notify('It is not permitted to select an item out of the base folder','error','Error');
+              } else if( store.getters.desktopItemByFilename(relativeFilePath) !== undefined) {
+                notify(`The item is already included in the desktop : <b>${relativeFilePath}</b>`,'warning','warning');
               } else {
-                console.log(file.replace(baseFolder,''));
-                var relativeFilePath = file.replace(baseFolder,'');
-                if(relativeFilePath === file) {
-                  // TODO : wee how to highlight the existing item (css animate ?)
-                  notify('It is not permitted to select an item out of the base folder','error','Error');
-                } else {
-                  store.commit('addToDesktop',{
-                    "filename" : relativeFilePath,
-                    "data" : JSON.parse(fs.readFileSync(file, 'utf8'))
-                  });
-                }
+                store.commit('addToDesktop',{
+                  "filename" : relativeFilePath,
+                  "data"     : JSON.parse(fs.readFileSync(file, 'utf8'))
+                });
+                config.store.set('recent.ctdbPath',path.dirname(file));
               }
             });
           }

@@ -60,9 +60,9 @@ module.exports = {
     },
     onSave : function() {
       // TODO : validate Folder
-      config.set('ctdbFolderPath',this.ctdbFolderPath);
-      config.set('deployFolderPath',this.deployFolderPath);
-      config.set('webappCatalogFilePath',this.webappCatalogFilePath);
+      config.store.set('ctdbFolderPath',this.ctdbFolderPath);
+      config.store.set('deployFolderPath',this.deployFolderPath);
+      config.store.set('webappCatalogFilePath',this.webappCatalogFilePath);
 
       // navigate to preview route (go back)
       this.$router.push(store.state.currentRoute);
@@ -70,8 +70,8 @@ module.exports = {
     }
   },
   mounted : function() {
-    this.deployFolderPath = config.get('deployFolderPath');
-    this.ctdbFolderPath = config.get('ctdbFolderPath');
-    this.webappCatalogFilePath = config.get('webappCatalogFilePath');
+    this.deployFolderPath = config.store.get('deployFolderPath');
+    this.ctdbFolderPath = config.store.get('ctdbFolderPath');
+    this.webappCatalogFilePath = config.store.get('webappCatalogFilePath');
   }
 };

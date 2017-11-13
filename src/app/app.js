@@ -63,11 +63,11 @@ const app = new Vue({
     initApplication : function() {
 
       // CTDB Path /////////////////////////////////////////////////////////////
-      if(config.has('ctdbFolderPath') === false ) {
+      if(config.store.has('ctdbFolderPath') === false ) {
         notify('CTDB folder not defined','error', 'error');
         return;
       }
-      var ctdbFolderPath = config.get('ctdbFolderPath');
+      var ctdbFolderPath = config.store.get('ctdbFolderPath');
       if ( fs.existsSync(ctdbFolderPath) === false ) {
         // try to create path but only if parent folder exists
         if( fs.existsSync(path.dirname(ctdbFolderPath))) {
@@ -79,11 +79,11 @@ const app = new Vue({
       }
 
       // webappCatalogFilePath /////////////////////////////////////////////////////
-      if(config.has('webappCatalogFilePath') === false ) {
+      if(config.store.has('webappCatalogFilePath') === false ) {
         notify('Web-App Catalog file path not configured','error', 'error');
         return;
       }
-      var webappCatalogFilePath = config.get('webappCatalogFilePath');
+      var webappCatalogFilePath = config.store.get('webappCatalogFilePath');
       if ( fs.existsSync(webappCatalogFilePath) === false ) {
         notify(`Configured Web-App Catalog file path Not Found : <b>${webappCatalogFilePath}</b>`,'error', 'error');
         return;
