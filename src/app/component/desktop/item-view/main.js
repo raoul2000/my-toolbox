@@ -5,6 +5,7 @@ const store    = require('../../../service/store/store');
 
 module.exports = {
   props: ['message'],
+  store,
   data : function(){
     return {
       filename : null,
@@ -60,6 +61,5 @@ module.exports = {
     this.filename = dkItem.filename;
     this.name = dkItem.data.name;
     this.buildHTMLHeader();
-
   }
 };

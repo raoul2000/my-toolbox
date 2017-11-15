@@ -16,11 +16,12 @@ function updateObject(objToUpdate, freshProperties ) {
 module.exports = new Vuex.Store({
   strict: true, // TODO : DEV only
   state: {
-    currentRoute : null,
-    desktop : [],
+    currentRoute     : null,
+    selectedDesktopItemIndex : null,
+    desktop          : [],
     webappDefinition : [],
-    modules : [],
-    tasks : []
+    modules          : [],
+    tasks            : []
   },
   getters: {
     desktopItemByIndex : function(state, getters) {

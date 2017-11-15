@@ -13,7 +13,7 @@ module.exports = {
     return {
       "connectionOk" : true,
       "action"       : null,
-      "server"         : {
+      "server"       : {
         "name"   : '',
         "notes"  : '',
         "ssh"    : {
