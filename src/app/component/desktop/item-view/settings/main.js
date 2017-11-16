@@ -17,7 +17,6 @@ module.exports = {
    * index is passed as a route query param
    */
   mounted : function(){
-    console.log('mounted');
     let desktopItemIndex = this.$route.params.id;
     if( desktopItemIndex === -1 ) {
       console.error("missing desktopn item index");
@@ -28,6 +27,5 @@ module.exports = {
     let dkItem = this.$store.getters.desktopItemByIndex(desktopItemIndex);
     this.data = dkItem.data;
     this.filename = dkItem.filename;
-
   }
 };

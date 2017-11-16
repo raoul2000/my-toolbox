@@ -10,15 +10,18 @@ module.exports = {
     return {
       filename : null,
       HTMLHeader : '',
-      name : ''
+      name : '',
+      activeTab : 'settings'
     };
   },
   template: require('./main.html'),
   methods : {
     "openTabProfile" : function() {
       this.$router.push('profile');
+      this.activeTab = "profile";
     },
     "openTabHome" : function() {
+      this.activeTab = "settings";
       this.$router.push('settings');
     },
     /**

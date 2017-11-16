@@ -7,8 +7,12 @@ module.exports = `
       <h1>{{name}}</h1>
       <hr/>
       <ul class="nav nav-tabs">
-        <li role="presentation" class="active"><a v-on:click.stop.prevent="openTabHome()" href="#">Settings</a></li>
-        <li role="presentation"><a v-on:click.stop.prevent="openTabProfile()" href="#">Profile</a></li>
+        <li role="presentation" v-bind:class="{active : activeTab == 'settings'}">
+          <a v-on:click.stop.prevent="openTabHome()" href="#">Settings</a>
+        </li>
+        <li role="presentation"  v-bind:class="{active : activeTab == 'profile'}">
+          <a v-on:click.stop.prevent="openTabProfile()" href="#">Profile</a>
+        </li>
       </ul>
     </div>
   </div>
