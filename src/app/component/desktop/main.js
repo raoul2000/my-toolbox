@@ -17,6 +17,9 @@ module.exports = {
     }
   },
   methods : {
+    itemPath : function(item) {
+      return path.dirname(item.filename).split(path.delimiter).join(' - ');
+    },
     createItem : function() {
       this.$router.push('/create');
     },

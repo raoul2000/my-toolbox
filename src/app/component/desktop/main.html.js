@@ -33,6 +33,7 @@ module.exports = `
           <div class="card">
     					<div class="card_content">
     							<h2 class="card_heading" :title="item.data.name">{{ item.data.name }}</h2>
+                  <small>{{itemPath(item)}}</small>
 
                   <div class="btn-group btn-group-sm" role="group">
                     <button
