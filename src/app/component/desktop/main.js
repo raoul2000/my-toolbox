@@ -42,9 +42,14 @@ module.exports = {
      *
      * @param  {inetger} index indes of the item in the current store
      */
-    view : function(index) {
+    viewDetail : function(index, event) {
+      console.log(event);
+
+      if(event.target.closest(".btn-group") === null) {
+        this.$router.push({ path: `/item-view/${index}/settings`});
+        event.stopPropagation();
+      }
       //this.$router.push({ path: '/item-view', query: { "index": index }});
-      this.$router.push({ path: `/item-view/${index}/settings`});
     },
     /**
      * Remove an item from the desktopn

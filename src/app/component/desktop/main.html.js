@@ -30,16 +30,12 @@ module.exports = `
           :title="item.file"
           class="card_item">
 
-          <div class="card">
+          <div @click="viewDetail(index, $event)" class="card">
     					<div class="card_content">
     							<h2 class="card_heading" :title="item.data.name">{{ item.data.name }}</h2>
                   <small>{{itemPath(item)}}</small>
 
-                  <div class="btn-group btn-group-xs" role="group">
-                    <button @click="view(index)" type="button" class="btn btn-xs btn-default">
-                      <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                    </button>
-                    <div class="btn-group">
+                    <div class="btn-group card-button-bar">
                       <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
                       </button>

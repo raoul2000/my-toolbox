@@ -89,8 +89,20 @@
   margin-top: 0;
   padding: 0.7em;
 }
+
+.card_content:hover {
+  background-color: #eaeaea;
+  cursor: pointer;
+}
+
 .card_content p {
   -webkit-box-flex: 1;
       -ms-flex: 1 0 auto;
           flex: 1 0 auto;
+}
+
+.card-button-bar {
+  padding: 0.5em;
+    background-color: white;
+    margin: 0.5em;
 }
