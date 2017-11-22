@@ -18,7 +18,10 @@ module.exports = {
   },
   methods : {
     itemPath : function(item) {
-      return path.dirname(item.filename).split(path.delimiter).join(' - ');
+      return path.dirname(item.filename)
+        .split(path.sep)
+        .filter( i => i.length !== 0)
+        .join(' - ');
     },
     createItem : function() {
       this.$router.push('/create');
