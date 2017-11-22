@@ -30,8 +30,8 @@ module.exports = `
         :title="item.file" class="card-container">
 
         <div
-          @click="viewDetail(index, $event)" class="card"
-          class="project project-default">
+          @click="viewDetail(index, $event)"
+          v-bind:class="cardItemStyle(item)">
           <div
             @click.stop.prevent="removeFromDesktop(index)"
             title="remove from desktop" type="button" class="left-corner-icon pull-left">
@@ -48,6 +48,7 @@ module.exports = `
               {{ item.data.name }}
             </h3>
             <p>
+              <span class="label label-default">{{item.path[0]}}</span><br/>
               {{ item.data.notes}}
             </p>
           </div>

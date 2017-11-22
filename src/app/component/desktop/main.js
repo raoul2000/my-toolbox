@@ -17,11 +17,33 @@ module.exports = {
     }
   },
   methods : {
+    /**
+     * provide the appropriate CSS classes to be attached to the card container block.
+     * Searched among the item path tokens for a specific string and add its matching
+     * class to the class array returned to the view
+     */
+    cardItemStyle: function (item) {
+      console.log("cardItemStyle");
+      let validEnv = {
+        'dev'  : "project-success",
+        'qa'   : "project-primary",
+        'prod' : "project-danger"
+      };
+      let validEnvKeys = Object.keys(validEnv);
+      let classes = [ "project"];
+      let thisEnv = item.path
+        .filter( token => validEnvKeys.indexOf(token.toLowerCase()) > -1 )
+        .map( token => token.toLowerCase());
+
+      if( thisEnv.length === 0) {
+        classes.push('project-default');
+      } else {
+        classes.push(validEnv[thisEnv[0]]);
+      }
+      return classes;
+    } ,
     itemPath : function(item) {
-      return path.dirname(item.filename)
-        .split(path.sep)
-        .filter( i => i.length !== 0)
-        .join(' - ');
+      return item.path.join(' - ');
     },
     createItem : function() {
       this.$router.push('/create');
@@ -33,12 +55,12 @@ module.exports = {
      */
     viewDetail : function(index, event) {
       console.log(event);
-
       if(event.target.closest(".btn") === null) {
+        // to push a route with a query param use :
+        // this.$router.push({ path: '/item-view', query: { "index": index }})
         this.$router.push({ path: `/item-view/${index}/settings`});
         event.stopPropagation();
       }
-      //this.$router.push({ path: '/item-view', query: { "index": index }});
     },
     /**
      * Remove an item from the desktopn
@@ -68,14 +90,17 @@ module.exports = {
               // check if this file is under the CTBD base folder
               var relativeFilePath = file.replace(ctdbBasePath,'');
               if(relativeFilePath === file) {
-                // TODO : wee how to highlight the existing item (css animate ?)
                 notify('It is not permitted to select an item out of the base folder','error','Error');
               } else if( store.getters.desktopItemByFilename(relativeFilePath) !== undefined) {
+                // TODO : see how to highlight the existing item (css animate ?)
                 notify(`The item is already included in the desktop : <b>${relativeFilePath}</b>`,'warning','warning');
               } else {
                 store.commit('addToDesktop',{
                   "filename" : relativeFilePath,
-                  "data"     : JSON.parse(fs.readFileSync(file, 'utf8'))
+                  "data"     : JSON.parse(fs.readFileSync(file, 'utf8')),
+                  "path"     : path.dirname(relativeFilePath)
+                                .split(path.sep)
+                                .filter( i => i.length !== 0)
                 });
                 config.store.set('recent.ctdbPath',path.dirname(file));
               }

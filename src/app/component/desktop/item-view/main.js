@@ -44,18 +44,19 @@ module.exports = {
     buildHTMLHeader: function () {
       var HTMLResult = '';
       if(  this.filename) {
-        var tokens = this.filename.split(path.sep).filter( i => i.length !== 0);
+        //var tokens = this.filename.split(path.sep).filter( i => i.length !== 0);
+        var tokens = this.item.path;
         console.log("tokens", tokens);
-        if( tokens.length > 1) {
+        if( tokens.length >= 1) {
           HTMLResult = `<span class="header1">${tokens[0]}</span>`;
         }
-        if( tokens.length > 2) {
+        if( tokens.length >= 2) {
           HTMLResult = HTMLResult.concat(` - <span class="header2">${tokens[1]}</span>`);
         }
-        if( tokens.length > 3) {
+        if( tokens.length >= 3) {
           HTMLResult = HTMLResult.concat(` - <span class="header3">${tokens[2]}</span>`);
         }
-        if( tokens.length > 4) {
+        if( tokens.length >= 4) {
           var str = tokens.slice(3,tokens.length - 1).join('/');
           HTMLResult = HTMLResult.concat(` - <span class="header4">${str}</span>`);
         }
