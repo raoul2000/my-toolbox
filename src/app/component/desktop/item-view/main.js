@@ -2,6 +2,7 @@ var electron = require('electron');
 var path = require('path');
 var remote = require('electron').remote;
 const store    = require('../../../service/store/store');
+const { spawn } = require('child_process');
 
 module.exports = {
   props: ['message'],
@@ -11,11 +12,24 @@ module.exports = {
       filename : null,
       HTMLHeader : '',
       name : '',
-      activeTab : 'settings'
+      activeTab : 'settings',
+      item : null
     };
   },
   template: require('./main.html'),
   methods : {
+    openPuttySession : function() {
+      let ssh = this.item.data.ssh; // shortcut
+      let cmdArg = [
+        "-ssh",
+        `-P ${ssh.port}`,
+        `-l "${ssh.username}"`,
+        `-pw "${ssh.password}"`,
+        ssh.host
+      ];
+      console.log(cmdArg);
+      spawn('"putty.exe"', cmdArg , { shell: true });
+    },
     "openTabProfile" : function() {
       this.$router.push('profile');
       this.activeTab = "profile";
@@ -59,10 +73,10 @@ module.exports = {
     console.log('mounted');
     this.desktopItemIndex = this.$route.params.id;
     // find the desktop item in the store
-    var dkItem = store.getters.desktopItemByIndex(this.desktopItemIndex);
+    this.item = store.getters.desktopItemByIndex(this.desktopItemIndex);
 
-    this.filename = dkItem.filename;
-    this.name = dkItem.data.name;
+    this.filename = this.item.filename;
+    this.name = this.item.data.name;
     this.buildHTMLHeader();
   }
 };

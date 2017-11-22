@@ -6,6 +6,13 @@ module.exports = `
       <div v-html="HTMLHeader"></div>
       <h1>{{name}}</h1>
       <hr/>
+
+      <div class="btn-group" role="group" style="margin-bottom:1em;">
+        <button title="open SSH session" v-on:click="openPuttySession()" type="button" class="btn btn-default">
+          SSH
+        </button>
+      </div>
+
       <ul class="nav nav-tabs">
         <li role="presentation" v-bind:class="{active : activeTab == 'settings'}">
           <a v-on:click.stop.prevent="openTabHome()" href="#">Settings</a>

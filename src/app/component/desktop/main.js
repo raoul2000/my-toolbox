@@ -4,7 +4,6 @@ var path       = require('path');
 const store    = require('../../service/store/store');
 const notify   = require('../../service/notification');
 const config   = require('../../service/config');
-const { spawn } = require('child_process');
 
 /**
  * The Desktop view allows the user to load one more items from the ctdb folder path into the main view
@@ -18,19 +17,6 @@ module.exports = {
     }
   },
   methods : {
-    openPuttySession : function(item) {
-      console.log(item);
-      let ssh = item.data.ssh; // shortcut
-      let cmdArg = [
-        "-ssh",
-        `-P ${ssh.port}`,
-        `-l "${ssh.username}"`,
-        `-pw "${ssh.password}"`,
-        ssh.host
-      ];
-      console.log(cmdArg);
-      spawn('"putty.exe"', cmdArg , { shell: true });
-    },
     itemPath : function(item) {
       return path.dirname(item.filename).split(path.delimiter).join(' - ');
     },
@@ -45,7 +31,7 @@ module.exports = {
     viewDetail : function(index, event) {
       console.log(event);
 
-      if(event.target.closest(".btn-group") === null) {
+      if(event.target.closest(".btn") === null) {
         this.$router.push({ path: `/item-view/${index}/settings`});
         event.stopPropagation();
       }
