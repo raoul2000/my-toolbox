@@ -24,31 +24,38 @@ module.exports = `
 
   <div class="row">
     <div class="col-xs-12">
-      <ul class="cards">
-        <li
-          v-for="(item, index)  in items"
-          :title="item.file"
-          class="card_item">
 
-          <div @click="viewDetail(index, $event)" class="card">
-    					<div class="card_content">
-    							<h2 class="card_heading" :title="item.data.name">{{ item.data.name }}</h2>
-                  <small>{{itemPath(item)}}</small>
-                    <div>
-                      <button
-                        @click.stop.prevent="removeFromDesktop(index)"
-                        title="remove" type="button" class="btn btn-default btn-xs pull-right">
-                          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                      </button>
-                    </div>
-                  </div> <!-- toolbar end -->
-    					</div>
-    			</div>
+      <div
+        v-for="(item, index)  in items"
+        :title="item.file" class="card-container">
 
-        </li>
-      </ul>
+        <div
+          @click="viewDetail(index, $event)" class="card"
+          class="project project-default">
+          <div
+            @click.stop.prevent="removeFromDesktop(index)"
+            title="remove from desktop" type="button" class="left-corner-icon pull-left">
+            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+          </div>
+          <div class="shape">
+            <div class="shape-text" >
+            </div>
+          </div>
+          <div class="project-content">
+            <h3
+              :title="item.data.name"
+              class="lead">
+              {{ item.data.name }}
+            </h3>
+            <p>
+              {{ item.data.notes}}
+            </p>
+          </div>
+        </div>
+      </div> <!-- card-container -->
+
     </div>
-  </div>
+  </div><!-- row -->
 
 </div>
 `;
