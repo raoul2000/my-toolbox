@@ -18,6 +18,21 @@ module.exports = {
   },
   methods : {
     /**
+     * Creates and return the HTML content of a card item
+     */
+    cardItemContent : function(item) {
+      let title = item.path.length > 0 ? item.path[0] : "no name";
+      let name = item.data.name;
+      let extraInfo = item.path.length > 1 ? item.path.filter( (token, index) => index > 0).join(' - ') : "";
+
+      let html = `<div class="card-title" title="${title}">${title}</div>
+      <div class="card-name">${name}</div>`;
+      if( extraInfo.length > 0) {
+        html = html.concat(`<div class="card-extra">${extraInfo}</div>`);
+      }
+      return html;
+    },
+    /**
      * provide the appropriate CSS classes to be attached to the card container block.
      * Searched among the item path tokens for a specific string and add its matching
      * class to the class array returned to the view
@@ -41,9 +56,6 @@ module.exports = {
         classes.push(validEnv[thisEnv[0]]);
       }
       return classes;
-    } ,
-    itemPath : function(item) {
-      return item.path.join(' - ');
     },
     createItem : function() {
       this.$router.push('/create');
@@ -55,7 +67,7 @@ module.exports = {
      */
     viewDetail : function(index, event) {
       console.log(event);
-      if(event.target.closest(".btn") === null) {
+      if(event.target.closest(".btn") === null) { // make sure user clicked on the button
         // to push a route with a query param use :
         // this.$router.push({ path: '/item-view', query: { "index": index }})
         this.$router.push({ path: `/item-view/${index}/settings`});
@@ -71,7 +83,7 @@ module.exports = {
     },
     /**
      * Opens a file selection dialog box (native) so the user can select one or more
-     * item that will be added to the desktopn.
+     * item that will be added to the desktop.
      */
     openDesktopItems : function() {
 
@@ -100,7 +112,7 @@ module.exports = {
                   "data"     : JSON.parse(fs.readFileSync(file, 'utf8')),
                   "path"     : path.dirname(relativeFilePath)
                                 .split(path.sep)
-                                .filter( i => i.length !== 0)
+                                .filter( token => token.length !== 0)
                 });
                 config.store.set('recent.ctdbPath',path.dirname(file));
               }

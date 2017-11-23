@@ -34,7 +34,9 @@ module.exports = `
           v-bind:class="cardItemStyle(item)">
           <div
             @click.stop.prevent="removeFromDesktop(index)"
-            title="remove from desktop" type="button" class="left-corner-icon pull-left">
+            title="remove from desktop"
+            type="button"
+            class="left-corner-icon pull-left">
             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
           </div>
           <div class="shape">
@@ -42,15 +44,7 @@ module.exports = `
             </div>
           </div>
           <div class="project-content">
-            <h3
-              :title="item.data.name"
-              class="lead">
-              {{ item.data.name }}
-            </h3>
-            <p>
-              <span class="label label-default">{{item.path[0]}}</span><br/>
-              {{ item.data.notes}}
-            </p>
+            <div v-html="cardItemContent(item)"></div>
           </div>
         </div>
       </div> <!-- card-container -->

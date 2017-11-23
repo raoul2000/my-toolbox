@@ -15,6 +15,35 @@
   margin-right: 0.5em;
 }
 
+.card-title {
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  font-size: 19px;
+  color: inherit;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+}
+
+.card-name {
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+  margin-top: 28px;
+  margin-bottom: 10px;
+  font-size: 26px;
+}
+
+.card-extra {
+  font-stretch: extra-condensed;
+  font-style: italic;
+}
+
 .shape {
   border-style: solid;
   border-width: 0 70px 40px 0;
