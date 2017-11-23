@@ -1,7 +1,7 @@
-var electron = require('electron');
-var path = require('path');
-var remote = require('electron').remote;
-const store    = require('../../../service/store/store');
+var electron    = require('electron');
+var path        = require('path');
+var remote      = require('electron').remote;
+const store     = require('../../../service/store/store');
 const { spawn } = require('child_process');
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
   data : function(){
     return {
       filename : null,
-      HTMLHeader : '',
+      pageHeader : '',
       name : '',
       activeTab : 'settings',
       item : null
@@ -39,32 +39,28 @@ module.exports = {
       this.$router.push('settings');
     },
     /**
-     * Create the HTML header out of the desktop item relative file path.
+     * Create the HTML page header out of the desktop item relative file path.
      */
-    buildHTMLHeader: function () {
-      var HTMLResult = '';
-      if(  this.filename) {
-        //var tokens = this.filename.split(path.sep).filter( i => i.length !== 0);
-        var tokens = this.item.path;
-        console.log("tokens", tokens);
-        if( tokens.length >= 1) {
-          HTMLResult = `<span class="header1">${tokens[0]}</span>`;
-        }
-        if( tokens.length >= 2) {
-          HTMLResult = HTMLResult.concat(` - <span class="header2">${tokens[1]}</span>`);
-        }
-        if( tokens.length >= 3) {
-          HTMLResult = HTMLResult.concat(` - <span class="header3">${tokens[2]}</span>`);
-        }
-        if( tokens.length >= 4) {
-          var str = tokens.slice(3,tokens.length - 1).join('/');
-          HTMLResult = HTMLResult.concat(` - <span class="header4">${str}</span>`);
-        }
-      }
-      this.HTMLHeader = HTMLResult;
+    buildPageHeader : function() {
+
+      let subtitle = this.item.path.length > 0 ? this.item.path.join(' - ') : "";
+
+      // compute the container class
+      let validEnv = {
+        'dev'  : "bg-success",
+        'qa'   : "bg-info",
+        'prod' : "bg-danger"
+      };
+      let validEnvKeys = Object.keys(validEnv);
+      let classes = [ "project"];
+      let thisEnv = this.item.path
+        .filter( token => validEnvKeys.indexOf(token.toLowerCase()) > -1 )
+        .map( token => token.toLowerCase());
+      let subtitleClass = thisEnv.length === 0 ? "bg-default" : validEnv[thisEnv[0]];
+
+      this.pageHeader = `<div class="sub-title ${subtitleClass}">${subtitle}</div>`;
     }
   },
-
   /**
    * Build the summary view for the selected desktop item. The dekstop item
    * index is passed as a route query param
@@ -78,6 +74,7 @@ module.exports = {
 
     this.filename = this.item.filename;
     this.name = this.item.data.name;
-    this.buildHTMLHeader();
+
+    this.buildPageHeader();
   }
 };

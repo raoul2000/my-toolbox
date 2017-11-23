@@ -3,7 +3,7 @@ module.exports = `
 
   <div class="row">
     <div class="col-lg-12">
-      <div v-html="HTMLHeader"></div>
+      <div v-html="pageHeader"></div>
       <h1>{{name}}</h1>
       <hr/>
 
