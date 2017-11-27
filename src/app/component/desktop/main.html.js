@@ -36,7 +36,7 @@ module.exports = `
             @click.stop.prevent="removeFromDesktop(index)"
             title="remove from desktop"
             type="button"
-            class="left-corner-icon pull-left">
+            class="left-corner-icon">
             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
           </div>
           <div class="shape">
