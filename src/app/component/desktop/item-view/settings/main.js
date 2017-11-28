@@ -1,15 +1,71 @@
 
+var InlineInput = {
+  template : `
+  <div>
+    <span v-show="!editing" v-on:click="startEdit">{{currentVal}}</span>
+    <input ref="input" v-show="editing" type="text" v-on:blur="stopEdit" v-on:keyup.enter="stopEdit"/>
+  </div>`,
+  props: ['initialValue','valueName'],
+  data : function() {
+    return {
+      "editing"    : false,
+      "currentVal" : this.initialValue
+    };
+  },
+  methods : {
+    startEdit : function() {
+      this.editing = true;
+      var inputEl = this.$refs.input;
+      Vue.nextTick(function() {
+        inputEl.focus();
+      });
+    },
+    stopEdit : function() {
+      this.editing = false;
+      this.currentVal = this.$refs.input.value;
+      this.$emit('changeValue',{
+        "name" : this.valueName,
+        "value" : this.currentVal
+      });
+    }
+  },
+  mounted : function() {
+    this.$refs.input.value = this.initialValue;
+  }
+};
+
+
+
 module.exports = {
   props: ['message'],
+  components : {
+    "inlineInput" : InlineInput
+  },
   data : function(){
     return {
       data : null,
-      filename : ""
+      filename : "",
+      editingField : ''
     };
   },
   template: require('./main.html'),
   methods : {
-
+    changeValue : function(arg){
+      console.log('changeValue',arg);
+    },
+    isEditing : function(fieldName) {
+      console.log(this.$refs);
+      //return this.editingField === event.target.parentElement.getAttribute('data-field');
+      return this.editingField === fieldName;
+    },
+    stopEdit : function(event) {
+      console.log('stopEdit');
+      this.editingField = '';
+    },
+    startEdit : function(event) {
+      console.log('startEdit');
+      this.editingField = event.target.parentElement.getAttribute('data-field');
+    }
   },
 
   /**

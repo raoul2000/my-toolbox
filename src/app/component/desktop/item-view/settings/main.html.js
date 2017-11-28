@@ -6,8 +6,22 @@ module.exports = `
       <table class="table table-hover">
         <tbody>
           <tr>
-            <th>host</th>
-            <td>{{data.ssh.host}}</td>
+            <th width="200px">host</th>
+            <td data-field="host">
+              <inlineInput
+                :initialValue="data.ssh.host"
+                valueName="host"
+                v-on:changeValue="changeValue"/>
+              <span
+                v-show="!isEditing('host')"
+                v-on:click="startEdit">
+                {{data.ssh.host}}
+              </span>
+              <input
+                v-show="isEditing('host')"
+                v-on:blur="stopEdit"
+                type="text"/>
+            </td>
           </tr>
           <tr>
             <th>username</th>
@@ -27,7 +41,7 @@ module.exports = `
           <tr>
             <th>SSH Port</th>
             <td>{{data.ssh.port}}</td>
-          </tr>          
+          </tr>
           <tr>
             <th>notes</th>
             <td><div class="well">{{data.notes}}</div></td>
