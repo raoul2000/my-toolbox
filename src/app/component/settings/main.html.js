@@ -7,8 +7,8 @@ module.exports = `
 
     <!--// CTDB data folder -->
     <div class="form-group">
-      <label for="ctdb-folder" class="col-sm-2 control-label">CTDB base Folder</label>
-      <div class="col-sm-10">
+      <label for="ctdb-folder" class="col-sm-3 control-label">CTDB base Folder</label>
+      <div class="col-sm-9">
         <div class="input-group">
           <input id="ctdb-folder" v-model="ctdbFolderPath"  type="text" class="form-control" placeholder="">
           <span class="input-group-btn">
@@ -29,8 +29,8 @@ module.exports = `
 
     <!--// BEGIN deploy folder -->
     <div class="form-group">
-      <label for="deploy-folder" class="col-sm-2 control-label">Deploy Folder</label>
-      <div class="col-sm-10">
+      <label for="deploy-folder" class="col-sm-3 control-label">Deploy Folder</label>
+      <div class="col-sm-9">
         <div class="input-group">
           <input id="deploy-folder" v-model="deployFolderPath"  type="text" class="form-control" placeholder="">
           <span class="input-group-btn">
@@ -52,8 +52,8 @@ module.exports = `
 
     <!--// BEGIN webapp Catalog File Path-->
     <div class="form-group">
-      <label for="webappfile-path" class="col-sm-2 control-label">Webapp Catalog</label>
-      <div class="col-sm-10">
+      <label for="webappfile-path" class="col-sm-3 control-label">Webapp Catalog</label>
+      <div class="col-sm-9">
         <div class="input-group">
           <input id="webappfile-path" v-model="webappCatalogFilePath"  type="text" class="form-control" placeholder="">
           <span class="input-group-btn">
@@ -72,12 +72,57 @@ module.exports = `
     </div>
     <!--// END webapp Catalog File Path -->
 
+    <!--// BEGIN putty File Path-->
+    <div class="form-group">
+      <label for="puttyfile-path" class="col-sm-3 control-label">Putty</label>
+      <div class="col-sm-9">
+        <div class="input-group">
+          <input id="puttyfile-path" v-model="puttyFilePath"
+            type="text" class="form-control" placeholder="">
+          <span class="input-group-btn">
+            <button
+              @click="selectPuttyFilePath()"
+              title="select the putty.exe file"
+              class="btn btn-default" type="button">
+              <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+            </button>
+          </span>
+        </div>
+        <span id="helpBlock" class="help-block">
+          The Putty Program file is used to open an SSH console on the server
+        </span>
+      </div>
+    </div>
+    <!--// END putty File Path -->
+
+    <!--// BEGIN winscp File Path-->
+    <div class="form-group">
+      <label for="winscp-path" class="col-sm-3 control-label">WinSCP</label>
+      <div class="col-sm-9">
+        <div class="input-group">
+          <input id="winscp-path" v-model="winscpFilePath"
+            type="text" class="form-control" placeholder="">
+          <span class="input-group-btn">
+            <button
+              @click="selectWinscpFilePath()"
+              title="select the winscp.exe file"
+              class="btn btn-default" type="button">
+              <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+            </button>
+          </span>
+        </div>
+        <span id="helpBlock" class="help-block">
+          WinSCP is used to open an SFTP connection to the server
+        </span>
+      </div>
+    </div>
+    <!--// END winscp File Path -->
 
 
 
       <hr/>
       <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
+        <div class="col-sm-offset-3 col-sm-9">
         <button type="button" class="btn btn-primary" @click="onSave()">Save</button>
           <button type="button" class="btn btn-default" @click="onCancel()">Cancel</button>
         </div>

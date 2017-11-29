@@ -11,6 +11,9 @@ module.exports = `
         <button title="open SSH session" v-on:click="openPuttySession()" type="button" class="btn btn-default">
           SSH
         </button>
+        <button title="open WinSCP session" v-on:click="openWinscpSession()" type="button" class="btn btn-default">
+          SFTP
+        </button>
       </div>
 
       <ul class="nav nav-tabs">

@@ -2,6 +2,7 @@ var electron    = require('electron');
 var path        = require('path');
 var remote      = require('electron').remote;
 const store     = require('../../../service/store/store');
+const config   = require('../../../service/config');
 const { spawn } = require('child_process');
 
 module.exports = {
@@ -28,7 +29,13 @@ module.exports = {
         ssh.host
       ];
       console.log(cmdArg);
-      spawn('"putty.exe"', cmdArg , { shell: true });
+      spawn(`"${config.store.get('puttyFilePath')}"`, cmdArg , { shell: true });
+    },
+    openWinscpSession : function() {
+      let ssh = this.item.data.ssh; // shortcut
+      let uri = `sftp://${ssh.username}:${ssh.password}@${ssh.host}:${ssh.port}`;
+      console.log(uri);
+      spawn(`"${config.store.get('winscpFilePath')}"`, [ uri ] , { shell: true });
     },
     "openTabProfile" : function() {
       this.$router.push('profile');

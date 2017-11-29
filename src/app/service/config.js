@@ -22,6 +22,8 @@ const store = new Store({
     // - uploaded on deployement
     "deployFolderPath"      : app.getPath('downloads'),
     "webappCatalogFilePath" : path.join(app.getPath('userData'),"web-app-catalog.json"),
+    "puttyFilePath"         :'putty.exe',
+    "winscpFilePath"        :'winscp.exe',
     "recent" : {
       // "ctdbPath" : '/path/to/latest'
     }
@@ -36,6 +38,7 @@ console.log("userData ", app.getPath('userData'));
 
 module.exports = {
   "store" : store,
+  // TODO : add comments
   "getCTDBPath" : function() {
     console.log("getCTDBPath");
     let result = ( store.has('recent.ctdbPath') ? store.get('recent.ctdbPath') : store.get('ctdbFolderPath'));

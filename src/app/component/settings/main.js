@@ -1,13 +1,16 @@
 var remote = require('electron').remote;
 var config = require('../../service/config');
 const store    = require('../../service/store/store');
+const app = require('electron').remote.app;
 
 module.exports = {
   data : function(){
     return {
       deployFolderPath      : '',
       ctdbFolderPath        : '',
-      webappCatalogFilePath : ''
+      webappCatalogFilePath : '',
+      puttyFilePath         : '',
+      winscpFilePath        : ''
     };
   },
   template: require('./main.html'),
@@ -30,6 +33,23 @@ module.exports = {
         }
       );
     },
+    selectPuttyFilePath : function() {
+      var self = this;
+      this.selectSingleFolder({
+        "title"       : "Select the putty.exe file",
+        "defaultPath" : app.getPath('documents'),
+        "properties"  : [ 'openFile ']
+      }, value => self.puttyFilePath=value );
+    },
+    selectWinscpFilePath : function() {
+      var self = this;
+      this.selectSingleFolder({
+        "title"       : "Select the winscp.exe file",
+        "defaultPath" : app.getPath('documents'),
+        "properties"  : [ 'openFile ']
+      }, value => self.winscpFilePath=value );
+    },
+
     selectDeployFolderPath : function() {
       var self = this;
       this.selectSingleFolder({
@@ -38,6 +58,7 @@ module.exports = {
         "properties"  : [ 'openDirectory']
       }, value => self.deployFolderPath=value );
     },
+
     selectCTDBFolderPath : function() {
       var self = this;
       this.selectSingleFolder({
@@ -63,6 +84,8 @@ module.exports = {
       config.store.set('ctdbFolderPath',this.ctdbFolderPath);
       config.store.set('deployFolderPath',this.deployFolderPath);
       config.store.set('webappCatalogFilePath',this.webappCatalogFilePath);
+      config.store.set('puttyFilePath',this.puttyFilePath);
+      config.store.set('winscpFilePath',this.winscpFilePath);
 
       // navigate to preview route (go back)
       this.$router.push(store.state.currentRoute);
@@ -73,5 +96,7 @@ module.exports = {
     this.deployFolderPath = config.store.get('deployFolderPath');
     this.ctdbFolderPath = config.store.get('ctdbFolderPath');
     this.webappCatalogFilePath = config.store.get('webappCatalogFilePath');
+    this.puttyFilePath = config.store.get('puttyFilePath');
+    this.winscpFilePath = config.store.get('winscpFilePath');
   }
 };
