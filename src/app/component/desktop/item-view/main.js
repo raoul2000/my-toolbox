@@ -2,23 +2,26 @@ var electron    = require('electron');
 var path        = require('path');
 var remote      = require('electron').remote;
 const store     = require('../../../service/store/store');
-const config   = require('../../../service/config');
+const config    = require('../../../service/config');
+const notify    = require('../../../service/notification');
 const { spawn } = require('child_process');
 
 module.exports = {
-  props: ['message'],
   store,
   data : function(){
     return {
-      filename : null,
+      filename   : null,
       pageHeader : '',
-      name : '',
-      activeTab : 'settings',
-      item : null
+      name       : '',
+      activeTab  : 'settings',
+      item       : null
     };
   },
   template: require('./main.html'),
   methods : {
+    /**
+     * Start putty.exe application
+     */
     openPuttySession : function() {
       let ssh = this.item.data.ssh; // shortcut
       let cmdArg = [
@@ -30,7 +33,11 @@ module.exports = {
       ];
       console.log(cmdArg);
       spawn(`"${config.store.get('puttyFilePath')}"`, cmdArg , { shell: true });
+      // TODO : error handler if command fails (program file not found)
     },
+    /**
+     * Start winscp.exe application
+     */
     openWinscpSession : function() {
       let ssh = this.item.data.ssh; // shortcut
       let uri = `sftp://${ssh.username}:${ssh.password}@${ssh.host}:${ssh.port}`;
