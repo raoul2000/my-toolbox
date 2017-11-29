@@ -5,7 +5,10 @@ var InlineInput = {
     <span v-show="!editing" v-on:click="startEdit">{{currentVal}}</span>
     <input ref="input" v-show="editing" type="text" v-on:blur="stopEdit" v-on:keyup.enter="stopEdit"/>
   </div>`,
-  props: ['initialValue','valueName'],
+  props : {
+    "initialValue" : [String, Number],
+    "valueName"    : [String, Number]
+  },
   data : function() {
     return {
       "editing"    : false,
@@ -24,7 +27,7 @@ var InlineInput = {
       this.editing = false;
       this.currentVal = this.$refs.input.value;
       this.$emit('changeValue',{
-        "name" : this.valueName,
+        "name"  : this.valueName,
         "value" : this.currentVal
       });
     }
@@ -50,6 +53,9 @@ module.exports = {
   },
   template: require('./main.html'),
   methods : {
+    validateIP : function() {
+      return true;
+    },
     changeValue : function(arg){
       console.log('changeValue',arg);
     },

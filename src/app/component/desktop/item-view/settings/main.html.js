@@ -10,6 +10,7 @@ module.exports = `
             <td data-field="host">
               <inlineInput
                 :initialValue="data.ssh.host"
+                :validation="validateIP"
                 valueName="host"
                 v-on:changeValue="changeValue"/>
               <span
