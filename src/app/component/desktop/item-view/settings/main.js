@@ -25,11 +25,14 @@ var InlineInput = {
     },
     stopEdit : function() {
       this.editing = false;
-      this.currentVal = this.$refs.input.value;
-      this.$emit('changeValue',{
-        "name"  : this.valueName,
-        "value" : this.currentVal
-      });
+      let newValue = this.$refs.input.value;
+      if( newValue !== this.currentVal) {
+        this.currentVal = this.$refs.input.value;
+        this.$emit('changeValue',{
+          "name"  : this.valueName,
+          "value" : this.currentVal
+        });
+      }
     }
   },
   mounted : function() {
