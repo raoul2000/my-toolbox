@@ -1,13 +1,27 @@
 
+const validate = require('../../../../lib/validation');
+
+function checkIsIPV4(entry) {
+  var blocks = entry.split(".");
+  if(blocks.length === 4) {
+    return blocks.every(function(block) {
+      return parseInt(block,10) >=0 && parseInt(block,10) <= 255;
+    });
+  }
+  return false;
+}
+
+
 var InlineInput = {
   template : `
   <div>
-    <span v-show="!editing" v-on:click="startEdit">{{currentVal}}</span>
+    <span v-show="!editing" v-on:click="startEdit">{{currentVal}}</span>{{valid}}
     <input ref="input" v-show="editing" type="text" v-on:blur="stopEdit" v-on:keyup.enter="stopEdit"/>
   </div>`,
   props : {
     "initialValue" : [String, Number],
-    "valueName"    : [String, Number]
+    "valueName"    : [String, Number],
+    "valid"        : [Boolean]
   },
   data : function() {
     return {
@@ -51,16 +65,20 @@ module.exports = {
     return {
       data : null,
       filename : "",
-      editingField : ''
+      editingField : '',
+      validation : {
+        "host" : true
+      }
     };
   },
   template: require('./main.html'),
   methods : {
-    validateIP : function() {
-      return true;
+    validateHost : function(value) {
+      return checkIsIPV4(value);
     },
     changeValue : function(arg){
       console.log('changeValue',arg);
+      this.validation[arg.name] = validate.isIP(arg.value);
     },
     isEditing : function(fieldName) {
       console.log(this.$refs);
