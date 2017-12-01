@@ -2,19 +2,25 @@
 <html>
 <head>
 	<meta charset="UTF8">
-	<title>vuejs</title>
+	<title>My Toolbox</title>
+
 	<!-- bootstrap -->
 	<link href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
 	<!-- PNotify plugin -->
 	<link href="../../node_modules/pnotify/dist/pnotify.css"             rel="stylesheet">
 	<link href="../../node_modules/pnotify/dist/pnotify.buttons.css"     rel="stylesheet">
-	<link href="assets/css/style.css" rel="stylesheet">
-	<link href="assets/css/desktop.css" rel="stylesheet">
-	<link href="assets/css/animation.css" rel="stylesheet">
+
+	<!-- Animation -->
+	<link href="../../node_modules/animate.css/animate.min.css" 					rel="stylesheet">
+
+	<!-- Custom styles -->
+	<link href="assets/css/style.css"                                    rel="stylesheet">
+	<link href="assets/css/desktop.css"                                  rel="stylesheet">
 </head>
 <body style="padding-top:70px;">
 	<div id="app">
-		<div v-show="loading" class="container" style="display:none">
+		<div v-show="loading" class="container" style="display:block">
 			<div class="row">
 				<div >
 					loading ...

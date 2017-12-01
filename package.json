@@ -1,6 +1,6 @@
 {
   "name": "my-toolbox",
-  "productName" : "my-toolbox",
+  "productName": "my-toolbox",
   "version": "0.0.1",
   "description": "My Toolbox",
   "main": "main.js",
@@ -28,6 +28,7 @@
     "vue-devtools": "^3.1.6"
   },
   "dependencies": {
+    "animate.css": "^3.5.2",
     "bootstrap": "^3.3.7",
     "bootstrap-validator": "^0.11.9",
     "conf": "^1.1.1",

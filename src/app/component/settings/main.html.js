@@ -1,4 +1,8 @@
 module.exports = `
+<transition
+  name="custom-classes-transition"
+  enter-active-class="animated slideInRight"
+>
 <div class="row">
   <div class="col-lg-12">
     <h1>Settings</h1>
@@ -130,4 +134,5 @@ module.exports = `
     </form>
   </div>
 </div>
+</transition>
 `;

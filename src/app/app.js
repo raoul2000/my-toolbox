@@ -119,9 +119,9 @@ const app = new Vue({
    */
   created: function () {
     this.$router.push('/desktop');  // default route
-    this.loading = false;
   },
   mounted : function() {
     this.initApplication();
+    this.loading = false;
   }
 }).$mount('#app');
