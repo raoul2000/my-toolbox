@@ -13,6 +13,33 @@ const url  = require('url');
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
+function createWindowLoader() {
+  let main = null;
+  let loading = new BrowserWindow({show: false, frame: false});
+
+  loading.once('show', () => {
+    main = new BrowserWindow({show: false});
+    main.webContents.once('dom-ready', () => {
+      console.log('main loaded');
+      main.show();
+      loading.hide();
+      loading.close();
+    });
+    // long loading html
+    main.loadURL(url.format({
+      pathname: path.join(__dirname, 'src/app/index.html'),
+      protocol: 'file:',
+      slashes: true
+    }));
+  });
+  loading.loadURL(url.format({
+    pathname: path.join(__dirname, 'loading.html'),
+    protocol: 'file:',
+    slashes: true
+  }));
+  loading.show();
+}
+
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 800, height: 600});
@@ -43,6 +70,7 @@ function createWindow () {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
+//app.on('ready', createWindowLoader);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {

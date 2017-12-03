@@ -19,16 +19,8 @@
 	<link href="assets/css/desktop.css"                                  rel="stylesheet">
 </head>
 <body style="padding-top:70px;">
-	<div id="app">
-		<div v-show="loading" class="container" style="display:block">
-			<div class="row">
-				<div >
-					loading ...
-				</div>
-			</div>
-		</div>
-
-		<div v-show="!loading" style="display:none">
+	<div id="app" v-cloak>
+		<div>
 			<nav v-show="showToolbar()" class="navbar navbar-default navbar-fixed-top">
 	      <div class="container">
 	        <div class="navbar-header">
