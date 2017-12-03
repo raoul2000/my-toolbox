@@ -20,6 +20,9 @@
 </head>
 <body style="padding-top:70px;">
 	<div id="app" v-cloak>
+		<div class="loading">
+			<h1>loading ...</h1>
+		</div>
 		<div>
 			<nav v-show="showToolbar()" class="navbar navbar-default navbar-fixed-top">
 	      <div class="container">
@@ -84,5 +87,13 @@
 <script src="../../node_modules/vue-router/dist/vue-router.js"></script>
 <script src="../../node_modules/vuex/dist/vuex.js"></script>
 <script src="./service/notification.js" type="text/javascript"></script>
-<script src="app.js" charset="utf-8"></script>
+<!-- script src="app.js" charset="utf-8"></script -->
+<script type="text/javascript">
+var loadScript = function(sourceSrc){
+	var scriptTag = document.createElement('script');
+	scriptTag.src = sourceSrc;
+	document.getElementsByTagName('head')[0].appendChild(scriptTag);
+};
+loadScript('app.js');
+</script>
 </html>

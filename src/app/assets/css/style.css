@@ -1,4 +1,8 @@
-[v-cloak] > * { display:none; }
+/* show loading div while cloak */
+#app[v-cloak] > .loading  { display:block; }
+#app[v-cloak] > *  { display:none; }
+.loading  { display:none; }
+
 
 .router-link-active {
 
