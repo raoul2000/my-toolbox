@@ -4,9 +4,9 @@
 .loading  { display:none; }
 
 
-.inline-input .inline-editing .glyphicon-pencil,
-.inline-input .glyphicon-pencil {
-  display:none;
+.inline-input {
+  width:100%;
+  height: 1em;
 }
 
 .inline-input:hover .glyphicon-pencil {
@@ -14,6 +14,22 @@
   cursor: pointer;
 }
 
+.inline-input.inline-editing .glyphicon-pencil,
+.inline-input .glyphicon-pencil {
+  display:none;
+}
+
+.inline-input textarea {
+  width : 100%;
+  padding : 4px;
+}
+.inline-input .inline-ctrl-text ,
+.inline-input .inline-ctrl-password ,
+.inline-input .inline-ctrl-textarea {
+  /*width:90%;*/
+  /*height: 1em;
+  border:1px solid #eee;*/
+}
 .router-link-active {
 
 }

@@ -52,7 +52,14 @@ module.exports = `
           </tr>
           <tr>
             <th>notes</th>
-            <td><div class="well">{{data.notes}}</div></td>
+            <td>
+              <inlineInput
+                :initialValue="data.notes"
+                :valid="validation.notes"
+                inputType="textarea"
+                valueName="notes"
+                v-on:changeValue="changeValue"/>
+            </td>
           </tr>
         </tbody>
       </table>
