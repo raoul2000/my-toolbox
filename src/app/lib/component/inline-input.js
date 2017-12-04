@@ -4,19 +4,20 @@ module.exports = {
   template : `
   <div
     class="inline-input"
+    v-on:click="startEdit"
     v-bind:class="{ 'inline-editing' : editing, 'inline-validation-error' : !valid}">
 
     <span v-if="inputType == 'text'" class="inline-ctrl-text">
-      <span v-if="!editing" v-on:click="startEdit" class="current-value">{{currentVal}}</span>
+      <span v-if="!editing" class="current-value">{{currentVal}}</span>
       <input v-else type="text" v-on:blur="stopEdit" v-on:keyup.enter="stopEdit"/>
     </span>
     <span v-else-if="inputType == 'password'" class="inline-ctrl-password">
-      <span v-if="!editing" v-on:click="startEdit" class="current-value">********</span>
+      <span v-if="!editing" class="current-value">********</span>
       <input v-else type="password" v-on:blur="stopEdit" v-on:keyup.enter="stopEdit"/>
     </span>
     <span v-else-if="inputType == 'textarea'" class="inline-ctrl-textarea">
-      <span v-if="!editing" v-on:click="startEdit" class="current-value">{{currentVal}}</span>
-      <textarea v-else  v-on:blur="stopEdit" />
+      <span v-if="!editing" class="current-value">{{currentVal}}</span>
+      <textarea v-else  v-on:blur="stopEdit" v-on:keyup.esc="stopEdit"/>
     </span>
 
     <span

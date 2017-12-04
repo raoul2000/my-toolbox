@@ -23,6 +23,9 @@
   width : 100%;
   padding : 4px;
 }
+.inline-input input {
+  width : 100%;
+}
 .inline-input .inline-ctrl-text ,
 .inline-input .inline-ctrl-password ,
 .inline-input .inline-ctrl-textarea {

@@ -26,7 +26,8 @@ module.exports = {
   template: require('./main.html'),
   methods : {
     /**
-     * Update the JSON file the current desktop item has been loaded from
+     * Update the JSON file the current desktop item has been loaded from.
+     * This method is called after successfull value change (SSH or notes)
      */
     updateDesktopItemFile : function() {
       let filePath = path.join(config.store.get("ctdbFolderPath"), this.filename);
@@ -37,6 +38,9 @@ module.exports = {
         }
       });
     },
+    /**
+     * Handle Notes update : updtae the store and the file
+     */
     changeNotesValue : function(arg) {
       store.commit('updateDesktopItem', {
         filename : this.filename,
@@ -46,13 +50,19 @@ module.exports = {
       });
       // update the file
       this.updateDesktopItemFile();
-
     },
+    /**
+     * Handle SSH settings update : updtae the store and the file
+     */
     changeSSHValue : function(arg){
-      console.log("changeSSHValue");
+
       if( arg.name === "host") {
+        // host is actually IP
+        // TODO : change property name from 'host' to 'ip'
         this.validation[arg.name] = validate.isIP(arg.value);
       } else if( arg.name === "port" && arg.value !== '') {
+        // port is not required (default is 22) but if set, it must
+        // be validated
         this.validation[arg.name] = validate.isPortNumber(arg.value);
       }
 
@@ -60,8 +70,7 @@ module.exports = {
         let updateData =  {
           filename : this.filename,
           selector : 'ssh',
-          updateWith   : {
-          }
+          updateWith : {}
         };
         updateData.updateWith[arg.name] = arg.value;
         store.commit('updateDesktopItem',updateData);
