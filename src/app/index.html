@@ -12,17 +12,24 @@
 	<link href="../../node_modules/pnotify/dist/pnotify.buttons.css"     rel="stylesheet">
 
 	<!-- Animation -->
-	<link href="../../node_modules/animate.css/animate.min.css" 					rel="stylesheet">
+	<link href="../../node_modules/animate.css/animate.min.css" 				 rel="stylesheet">
 
 	<!-- Custom styles -->
 	<link href="assets/css/style.css"                                    rel="stylesheet">
 	<link href="assets/css/desktop.css"                                  rel="stylesheet">
+
 </head>
 <body style="padding-top:70px;">
 	<div id="app" v-cloak>
-		<div class="loading">
-			<h1>loading ...</h1>
-		</div>
+
+		<div class="loading container">
+			<div class="row">
+				<div class="col-lg-12">
+					<h4>Loading ...</h4>
+				</div>
+			</div>
+		</div> <!-- // loading message -->
+
 		<div>
 			<nav v-show="showToolbar()" class="navbar navbar-default navbar-fixed-top">
 	      <div class="container">
@@ -74,6 +81,7 @@
 		</div>
 	</div>
 </body>
+
 <script type="text/javascript">
 	window.$ = window.jQuery = require('../../node_modules/jquery/dist/jquery.min.js');
 </script>
@@ -83,17 +91,17 @@
 <script src="../../node_modules/pnotify/dist/pnotify.buttons.js"    type="text/javascript"></script>
 <script src="../../node_modules/pnotify/dist/pnotify.confirm.js"    type="text/javascript"></script>
 <script src="../../node_modules/pnotify/dist/pnotify.history.js"    type="text/javascript"></script>
-<script src="../../node_modules/vue/dist/vue.js" charset="utf-8"></script>
-<script src="../../node_modules/vue-router/dist/vue-router.js"></script>
+<script src="../../node_modules/vue/dist/vue.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../node_modules/vue-router/dist/vue-router.js" type="text/javascript"></script>
 <script src="../../node_modules/vuex/dist/vuex.js"></script>
 <script src="./service/notification.js" type="text/javascript"></script>
 <!-- script src="app.js" charset="utf-8"></script -->
 <script type="text/javascript">
-var loadScript = function(sourceSrc){
-	var scriptTag = document.createElement('script');
-	scriptTag.src = sourceSrc;
-	document.getElementsByTagName('head')[0].appendChild(scriptTag);
-};
-loadScript('app.js');
+	var loadScript = function(sourceSrc){
+		var scriptTag = document.createElement('script');
+		scriptTag.src = sourceSrc;
+		document.getElementsByTagName('head')[0].appendChild(scriptTag);
+	};
+	loadScript('app.js');
 </script>
 </html>
