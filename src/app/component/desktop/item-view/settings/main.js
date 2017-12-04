@@ -1,5 +1,10 @@
 
 const validate = require('../../../../lib/validation');
+const config   = require('../../../../service/config');
+
+var fs         = require('fs');
+var path       = require('path');
+
 
 module.exports = {
   components : {
@@ -20,12 +25,48 @@ module.exports = {
   },
   template: require('./main.html'),
   methods : {
-    changeValue : function(arg){
-      console.log('changeValue',arg);
+    /**
+     * Update the JSON file the current desktop item has been loaded from
+     */
+    updateDesktopItemFile : function() {
+      let filePath = path.join(config.store.get("ctdbFolderPath"), this.filename);
+      fs.writeFile(filePath, JSON.stringify(this.data, null, 2) , 'utf-8', (err) => {
+        if(err) {
+          notify('failed to save changes to file','error','error');
+          console.error(err);
+        }
+      });
+    },
+    changeNotesValue : function(arg) {
+      store.commit('updateDesktopItem', {
+        filename : this.filename,
+        updateWith   : {
+          notes  : arg.value
+        }
+      });
+      // update the file
+      this.updateDesktopItemFile();
+
+    },
+    changeSSHValue : function(arg){
+      console.log("changeSSHValue");
       if( arg.name === "host") {
         this.validation[arg.name] = validate.isIP(arg.value);
-      } else if( arg.name === "username") {
-        this.validation[arg.name] = validate.isNotEmptyString(arg.value);
+      } else if( arg.name === "port" && arg.value !== '') {
+        this.validation[arg.name] = validate.isPortNumber(arg.value);
+      }
+
+      if( this.validation[arg.name] ) {
+        let updateData =  {
+          filename : this.filename,
+          selector : 'ssh',
+          updateWith   : {
+          }
+        };
+        updateData.updateWith[arg.name] = arg.value;
+        store.commit('updateDesktopItem',updateData);
+        // update the file
+        this.updateDesktopItemFile();
       }
     }
   },

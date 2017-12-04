@@ -13,7 +13,7 @@ module.exports = `
                 :valid="validation.host"
                 inputType="text"
                 valueName="host"
-                v-on:changeValue="changeValue"/>
+                v-on:changeValue="changeSSHValue"/>
             </td>
           </tr>
           <tr>
@@ -24,7 +24,7 @@ module.exports = `
               :valid="validation.username"
               inputType="text"
               valueName="username"
-              v-on:changeValue="changeValue"/>
+              v-on:changeValue="changeSSHValue"/>
 
             </td>
           </tr>
@@ -36,7 +36,7 @@ module.exports = `
               :valid="validation.password"
               inputType="password"
               valueName="password"
-              v-on:changeValue="changeValue"/>
+              v-on:changeValue="changeSSHValue"/>
             </td>
           </tr>
           <tr>
@@ -47,7 +47,7 @@ module.exports = `
                 :valid="validation.port"
                 inputType="text"
                 valueName="port"
-                v-on:changeValue="changeValue"/>
+                v-on:changeValue="changeSSHValue"/>
             </td>
           </tr>
           <tr>
@@ -58,7 +58,7 @@ module.exports = `
                 :valid="validation.notes"
                 inputType="textarea"
                 valueName="notes"
-                v-on:changeValue="changeValue"/>
+                v-on:changeValue="changeNotesValue"/>
             </td>
           </tr>
         </tbody>

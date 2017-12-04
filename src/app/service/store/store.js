@@ -65,17 +65,30 @@ module.exports = new Vuex.Store({
     increment (state) {
       state.count++;
     },
+    ////////////////////////////////////////////////////////////////////////////
+    // DESKTOP ITEMS
+
     addToDesktop ( state, item) {
       state.desktop.push(item);
     },
     removeFromDesktop (state, index) {
       state.desktop.splice(index, 1);
     },
+
+    updateDesktopItem ( state, args) {
+      let itemToUpdate = state.desktop.find( currentItem => currentItem.filename === args.filename);
+      if( itemToUpdate ) {
+        if( args.selector === 'ssh') {
+          Object.assign(itemToUpdate.data.ssh, args.updateWith);
+        } else  {
+          Object.assign(itemToUpdate.data, args.updateWith);
+        }
+      }
+    },
+    ////////////////////////////////////////////////////////////////////////////
+    // MODULE
     addModule(state, module) {
       state.modules.push(module);
-    },
-    addTask(state, task) {
-      state.tasks.push(task);
     },
     /**
      * Replace stores modules with freshModules
@@ -139,6 +152,11 @@ module.exports = new Vuex.Store({
         Object.assign(modToUpdate.metadata, args.updateWith);
       }
     },
+    ////////////////////////////////////////////////////////////////////////////
+    // TASKS
+    addTask(state, task) {
+      state.tasks.push(task);
+    },
     updateTask(state,freshTask) {
       console.log('store : updating task',freshTask);
       let taskIdx = state.tasks.findIndex( task => task.id === freshTask.id);
@@ -153,15 +171,6 @@ module.exports = new Vuex.Store({
       let idx = state.tasks.findIndex( task => task.id === taskToDelete.id);
       if( idx !== -1) {
         state.tasks.splice(idx, 1);
-      }
-    },
-    updateTask_old(state,freshTask) {
-      console.log('store : updating task',freshTask);
-      let taskIdx = state.tasks.findIndex( task => task.id === freshTask.id);
-      if( taskIdx !== -1) {
-        let objToUpdate = state.tasks[taskIdx];
-        let freshProperties = freshTask.updateWith;
-        updateObject(objToUpdate, freshProperties );
       }
     },
     deleteModule(state, theModule) {

@@ -1,6 +1,17 @@
 'use strict';
 const net = require('net');
 
+exports.isPortNumber = function(val) {
+console.log("isPortNumber");
+  if( val === null || val === undefined || Number.parseInt(val) != val ) {
+    return false;
+  }
+  let intValue = Number.parseInt(val);
+  if(  intValue < 1  ) {
+    return false;
+  }
+  return true;
+};
 
 exports.isIP = function(val) {
   // Tests if input is an IP address. Returns 0 for invalid strings,
