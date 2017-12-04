@@ -8,7 +8,8 @@ var path       = require('path');
 
 module.exports = {
   components : {
-    "inlineInput" : require('../../../../lib/component/inline-input')
+    "inlineInput"    : require('../../../../lib/component/inline-input'),
+    "inlineTextarea" : require('../../../../lib/component/inline-textarea')
   },
   data : function(){
     return {

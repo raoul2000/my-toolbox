@@ -3,49 +3,68 @@ var markdown = require( "markdown" ).markdown;
 module.exports = {
   template : `
   <div
-    class="inline-input"
+    class="inline-textarea"
     v-on:click="startEdit"
     v-bind:class="{ 'inline-editing' : editing, 'inline-validation-error' : !valid}">
-
-    <span v-if="inputType == 'text'" class="inline-ctrl-text">
-      <span v-if="!editing" class="current-value">{{currentVal}}</span>
-      <input v-else type="text" v-on:blur="stopEdit" v-on:keyup.enter="stopEdit"/>
-    </span>
-    <span v-else-if="inputType == 'password'" class="inline-ctrl-password">
-      <span v-if="!editing" class="current-value">********</span>
-      <input v-else type="password" v-on:blur="stopEdit" v-on:keyup.enter="stopEdit"/>
-    </span>
 
     <span
       v-if="! editing"
       v-on:click="startEdit"
       title="edit"
-      style="float:right"
+      style="float:left"
       class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
     <span
       v-if="! valid"
       title="invalid input"
       class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red"></span>
+
+
+    <div v-if="!editing">
+      <div v-if="inputType=='markdown'" v-html="currentVal" />
+      <div v-else class="current-value">{{currentVal}}</div>
+    </div>
+    <textarea v-else  v-on:blur="stopEdit" v-on:keyup.esc="stopEdit"/>
+
   </div>`,
   props : {
     "initialValue" : [String, Number],
     "valueName"    : [String, Number],
+    "inputType"    : {
+      type : String,
+      default : "text" // text | markdown
+    },
     "valid"        : [Boolean],
-    "inputType"    : [String], // text, password
   },
   data : function() {
     return {
-      "editing"      : false,
-      "currentVal"   : this.initialValue,
-      "fieldElement" : null
+      "editing"       : false,
+      "rawCurrentVal" : this.initialValue,
+      "fieldElement"  : null
     };
+  },
+  computed : {
+    currentVal : {
+      get : function(){
+        console.log('get current val');
+        if( this.editing ) {
+          return this.rawCurrentVal;
+        } else if( this.inputType === "markdown") {
+          return markdown.toHTML(this.rawCurrentVal);
+        } else {
+          return this.rawCurrentVal;
+        }
+      },
+      set : function(val) {
+        this.rawCurrentVal = val;
+      }
+    }
   },
   methods : {
     startEdit : function() {
       this.editing = true;
       var self = this;
       Vue.nextTick(function() {
-        self.fieldElement = self.$el.querySelector('input');
+        self.fieldElement = self.$el.querySelector('textarea');
         self.fieldElement.value = self.currentVal;
         self.fieldElement.focus();
       });

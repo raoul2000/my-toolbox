@@ -50,19 +50,16 @@ module.exports = `
                 v-on:changeValue="changeSSHValue"/>
             </td>
           </tr>
-          <tr>
-            <th>notes</th>
-            <td>
-              <inlineInput
-                :initialValue="data.notes"
-                :valid="validation.notes"
-                inputType="textarea"
-                valueName="notes"
-                v-on:changeValue="changeNotesValue"/>
-            </td>
-          </tr>
         </tbody>
       </table>
+
+      <inlineTextarea
+        :initialValue="data.notes"
+        :valid="validation.notes"
+        inputType="markdown"
+        valueName="notes"
+        v-on:changeValue="changeNotesValue"/>
+
     </div>
   </div>
 

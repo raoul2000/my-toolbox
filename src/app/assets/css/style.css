@@ -9,22 +9,29 @@
   height: 1em;
 }
 
+.inline-textarea {
+  width:100%;
+}
+
+.inline-textarea:hover .glyphicon-pencil,
 .inline-input:hover .glyphicon-pencil {
   display:inline;
   cursor: pointer;
 }
 
+.inline-textarea.inline-editing .glyphicon-pencil,
 .inline-input.inline-editing .glyphicon-pencil,
+.inline-textarea .glyphicon-pencil,
 .inline-input .glyphicon-pencil {
   display:none;
 }
 
-.inline-input textarea {
+.inline-textarea textarea {
   width : 100%;
   padding : 4px;
 }
 .inline-input input {
-  width : 100%;
+  width : 90%;
 }
 .inline-input .inline-ctrl-text ,
 .inline-input .inline-ctrl-password ,
