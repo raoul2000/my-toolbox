@@ -20,8 +20,8 @@ module.exports = {
 
 
     <div v-if="!editing">
-      <div v-if="inputType=='markdown'" v-html="currentVal" />
-      <div v-else class="current-value">{{currentVal}}</div>
+      <div v-if="inputType=='markdown'" class="html-value" v-html="currentVal" />
+      <div v-else class="text-value">{{currentVal}}</div>
     </div>
     <textarea v-else  v-on:blur="stopEdit" v-on:keyup.esc="stopEdit"/>
 

@@ -12,7 +12,13 @@
 .inline-textarea {
   width:100%;
 }
-
+.inline-textarea .html-value {
+ margin-left: 2em;
+ border-left-color: aliceblue;
+ border-left-width: 30px;
+ border-left-style: solid;
+ padding-left: 2em;
+}
 .inline-textarea:hover .glyphicon-pencil,
 .inline-input:hover .glyphicon-pencil {
   display:inline;
@@ -33,13 +39,10 @@
 .inline-input input {
   width : 90%;
 }
-.inline-input .inline-ctrl-text ,
-.inline-input .inline-ctrl-password ,
-.inline-input .inline-ctrl-textarea {
-  /*width:90%;*/
-  /*height: 1em;
-  border:1px solid #eee;*/
-}
+
+
+
+
 .router-link-active {
 
 }
