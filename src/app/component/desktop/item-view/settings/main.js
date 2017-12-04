@@ -14,19 +14,40 @@ function checkIsIPV4(entry) {
 
 var InlineInput = {
   template : `
-  <div>
-    <span v-show="!editing" v-on:click="startEdit">{{currentVal}}</span>{{valid}}
-    <input ref="input" v-show="editing" type="text" v-on:blur="stopEdit" v-on:keyup.enter="stopEdit"/>
+  <div
+    class="inline-input"
+    v-bind:class="{ 'inline-editing' : editing, 'inline-validation-error' : !valid}">
+
+    <span
+      v-if="inputType == 'text'"
+      v-show="!editing" >{{currentVal}}</span>
+    <span
+      v-else-if=" inputType == 'password'"
+      v-show="!editing" >********</span>
+      
+    <input v-if="inputType == 'text' || inputType == 'password'" ref="input" v-show="editing" :type="inputType" v-on:blur="stopEdit" v-on:keyup.enter="stopEdit"/>
+    <textarea v-else ref="input" v-on:blur="stopEdit" v-on:keyup.enter="stopEdit" />
+    <span
+      v-if="! editing"
+      v-on:click="startEdit"
+      title="edit"
+      class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+    <span
+      v-if="! valid"
+      title="invalid input"
+      class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red"></span>
   </div>`,
   props : {
     "initialValue" : [String, Number],
     "valueName"    : [String, Number],
-    "valid"        : [Boolean]
+    "valid"        : [Boolean],
+    "inputType"    : [String],
   },
   data : function() {
     return {
       "editing"    : false,
       "currentVal" : this.initialValue
+
     };
   },
   methods : {
@@ -57,7 +78,6 @@ var InlineInput = {
 
 
 module.exports = {
-  props: ['message'],
   components : {
     "inlineInput" : InlineInput
   },
@@ -67,7 +87,10 @@ module.exports = {
       filename : "",
       editingField : '',
       validation : {
-        "host" : true
+        "host"     : true,
+        "username" : true,
+        "password" : true,
+        "port"     : true
       }
     };
   },
@@ -78,7 +101,11 @@ module.exports = {
     },
     changeValue : function(arg){
       console.log('changeValue',arg);
-      this.validation[arg.name] = validate.isIP(arg.value);
+      if( arg.name === "host") {
+        this.validation[arg.name] = validate.isIP(arg.value);
+      } else if( arg.name === "username") {
+        this.validation[arg.name] = validate.isNotEmptyString(arg.value);
+      }
     },
     isEditing : function(fieldName) {
       console.log(this.$refs);

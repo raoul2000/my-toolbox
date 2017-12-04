@@ -7,3 +7,14 @@ exports.isIP = function(val) {
   // returns 4 for IP version 4 addresses, and returns 6 for IP version 6 addresses.
   return net.isIP(val) !== 0;
 };
+
+exports.isNotEmptyString = function(val, trim = true) {
+  if( val === null || val === undefined ) {
+    return false;
+  }
+  if( trim ) {
+    return val.trim().length !== 0;
+  } else {
+    return val.length !== 0;
+  }
+};

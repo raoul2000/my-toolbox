@@ -11,37 +11,44 @@ module.exports = `
               <inlineInput
                 :initialValue="data.ssh.host"
                 :valid="validation.host"
+                inputType="text"
                 valueName="host"
                 v-on:changeValue="changeValue"/>
-              <span
-                v-show="!isEditing('host')"
-                v-on:click="startEdit">
-                {{data.ssh.host}}
-              </span>
-              <input
-                v-show="isEditing('host')"
-                v-on:blur="stopEdit"
-                type="text"/>
             </td>
           </tr>
           <tr>
             <th>username</th>
-            <td>{{data.ssh.username}}</td>
+            <td>
+            <inlineInput
+              :initialValue="data.ssh.username"
+              :valid="validation.username"
+              inputType="text"
+              valueName="username"
+              v-on:changeValue="changeValue"/>
+
+            </td>
           </tr>
           <tr>
             <th>password</th>
             <td>
-              <span v-if="data.ssh.password.length != 0">
-              ********
-              </span>
-              <span v-else>
-                <em><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> no password</em>
-              </span>
+            <inlineInput
+              :initialValue="data.ssh.password"
+              :valid="validation.password"
+              inputType="password"
+              valueName="password"
+              v-on:changeValue="changeValue"/>
             </td>
           </tr>
           <tr>
             <th>SSH Port</th>
-            <td>{{data.ssh.port}}</td>
+            <td>
+              <inlineInput
+                :initialValue="data.ssh.port"
+                :valid="validation.port"
+                inputType="text"
+                valueName="port"
+                v-on:changeValue="changeValue"/>
+            </td>
           </tr>
           <tr>
             <th>notes</th>

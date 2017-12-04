@@ -4,6 +4,16 @@
 .loading  { display:none; }
 
 
+.inline-input .inline-editing .glyphicon-pencil,
+.inline-input .glyphicon-pencil {
+  display:none;
+}
+
+.inline-input:hover .glyphicon-pencil {
+  display:inline;
+  cursor: pointer;
+}
+
 .router-link-active {
 
 }
