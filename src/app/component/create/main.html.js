@@ -22,13 +22,6 @@ module.exports = `
     <div class="col-xs-6">
 
         <div class="form-group">
-          <label for="name" class="col-sm-2 control-label">Name</label>
-          <div class="col-sm-10">
-            <input v-model.trim="server.name"
-              type="text" class="form-control input-lg" id="name" placeholder="Item Name" required="required">
-          </div>
-        </div>
-        <div class="form-group">
           <label for="hostname" class="col-sm-2 control-label">Host</label>
           <div class="col-sm-10">
             <input v-model.trim="server.ssh.host"
@@ -79,7 +72,7 @@ module.exports = `
         <label for="notes" class="col-sm-2 control-label">Notes</label>
         <div class="col-sm-10">
           <textarea
-            v-model="server.notes" 
+            v-model="server.notes"
             id="notes" placeholder="Enter your notes here ..." class="form-control" rows="3" style="height:243px"></textarea>
         </div>
       </div>

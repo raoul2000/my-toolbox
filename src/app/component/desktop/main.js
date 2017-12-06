@@ -22,7 +22,7 @@ module.exports = {
      */
     cardItemContent : function(item) {
       let title = item.path.length > 0 ? item.path[0] : "no name";
-      let name = item.data.name;
+      let name = item.name;
       let extraInfo = item.path.length > 1 ? item.path.filter( (token, index) => index > 0).join(' - ') : "";
 
       let html = `<div class="card-title" title="${title}">${title}</div>
@@ -110,6 +110,7 @@ module.exports = {
                 store.commit('addToDesktop',{
                   "filename" : relativeFilePath,
                   "data"     : JSON.parse(fs.readFileSync(file, 'utf8')),
+                  "name"     : path.basename(relativeFilePath,".json"),
                   "path"     : path.dirname(relativeFilePath)
                                 .split(path.sep)
                                 .filter( token => token.length !== 0)

@@ -87,7 +87,7 @@ module.exports = {
     this.item = store.getters.desktopItemByIndex(this.desktopItemIndex);
 
     this.filename = this.item.filename;
-    this.name = this.item.data.name;
+    this.name = this.item.name;
 
     this.buildPageHeader();
   }

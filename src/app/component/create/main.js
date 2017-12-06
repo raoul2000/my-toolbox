@@ -14,7 +14,6 @@ module.exports = {
       "connectionOk" : true,
       "action"       : null,
       "server"       : {
-        "name"   : '',
         "notes"  : '',
         "ssh"    : {
           "host"         : '10.25.7.131',
@@ -35,7 +34,7 @@ module.exports = {
 
       var defaultFilename = path.join(
         config.getCTDBPath(),
-        slug(this.server.name).concat('.json')
+        "name".concat('.json')
       );
       console.log('saving to ', defaultFilename);
 
@@ -86,12 +85,14 @@ module.exports = {
   computed : {
     canSaveServer : function() {
       return this.action === null
-        && this.server.name.length > 0;
+        && this.server.ssh.host.length     > 0
+        && this.server.ssh.username.length > 0;
     },
     canTestConnection : function(){
       return this.action === null
         && this.server.ssh.host.length > 0
-        && this.server.ssh.username.length > 0;
+        && this.server.ssh.username.length > 0
+        && this.server.ssh.password.length > 0;
     }
   }
 };
