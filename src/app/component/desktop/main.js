@@ -18,7 +18,7 @@ module.exports = {
   },
   methods : {
     /**
-     * Creates and return the HTML content of a card item
+     * Creates and returns the HTML content of a card item
      */
     cardItemContent : function(item) {
       let title = item.path.length > 0 ? item.path[0] : "no name";
@@ -33,12 +33,11 @@ module.exports = {
       return html;
     },
     /**
-     * provide the appropriate CSS classes to be attached to the card container block.
+     * Provides the appropriate CSS classes to be attached to the card container block.
      * Searched among the item path tokens for a specific string and add its matching
      * class to the class array returned to the view
      */
     cardItemStyle: function (item) {
-      console.log("cardItemStyle");
       let validEnv = {
         'dev'  : "project-success",
         'qa'   : "project-primary",
@@ -57,16 +56,18 @@ module.exports = {
       }
       return classes;
     },
+    /**
+     * Navigate to the Item creation page
+     */
     createItem : function() {
       this.$router.push('/create');
     },
     /**
      * Opens a view for a specific item.
      *
-     * @param  {inetger} index indes of the item in the current store
+     * @param  {inetger} index index of the item in the current store
      */
     viewDetail : function(index, event) {
-      console.log(event);
       if(event.target.closest(".btn") === null) { // make sure user clicked on the button
         // to push a route with a query param use :
         // this.$router.push({ path: '/item-view', query: { "index": index }})
@@ -82,11 +83,62 @@ module.exports = {
       store.commit('removeFromDesktop',index);
     },
     /**
+     * Add one or more files to the current desktop.
+     * Each file must be stored under the CTDB folder and not be already present
+     * in the desktop.
+     *
+     * @param  {[string]} filenames List of select filenames (absolute)
+     */
+    addFilesToDesktop : function(filenames) {
+      let ctdbBasePath = config.store.get("ctdbFolderPath");
+      if( Array.isArray(filenames) ) {
+        filenames.forEach(file => {
+          // check if this file is under the CTBD base folder
+          var relativeFilePath = file.replace(ctdbBasePath,'');
+          if(relativeFilePath === file) {
+            notify('It is not permitted to select an item out of the base folder','error','Error');
+          } else {
+             let itemIndex = store.getters.desktopItemIndexByFilename(relativeFilePath);
+             if( itemIndex !== -1 ) {
+               notify(`The item is already part of your desktop :
+                 <pre>${relativeFilePath}</pre>`,'warning','warning');
+               // Animate (shake) the existing desktop item
+               // Modify directly the DOM using the computed element id that has
+               // been defined by the template
+               let elementId = "dkitem-idx"+itemIndex;
+               let div = document.getElementById(elementId);
+               if( div ) {
+                 if( div.classList.contains('animated') === false) {
+                   div.classList.add('animated');
+                 }
+                 if( div.classList.contains('shake')) {
+                   div.classList.remove('shake');
+                 }
+                 // on next tick add the effect (otherwise it is not applied)
+                 setTimeout(function(){
+                   div.classList.add('shake');
+                 },100);
+               }
+             } else {
+              store.commit('addToDesktop',{
+                "filename" : relativeFilePath,
+                "data"     : JSON.parse(fs.readFileSync(file, 'utf8')),
+                "name"     : path.basename(relativeFilePath,".json"),
+                "path"     : path.dirname(relativeFilePath)
+                              .split(path.sep)
+                              .filter( token => token.length !== 0)
+              });
+              config.store.set('recent.ctdbPath',path.dirname(file));
+            }
+          }
+        });
+      }
+    },
+    /**
      * Opens a file selection dialog box (native) so the user can select one or more
      * item that will be added to the desktop.
      */
     openDesktopItems : function() {
-
       remote.dialog.showOpenDialog(
         remote.getCurrentWindow(),  // is modal on the main window
         {
@@ -94,32 +146,7 @@ module.exports = {
           "defaultPath" : config.getCTDBPath(),
           "properties" : [ 'openFile', 'multiSelections']
         },
-        function(filenames) {
-          let ctdbBasePath = config.store.get("ctdbFolderPath");
-          if( Array.isArray(filenames) ) {
-            filenames.forEach(file => {
-              console.log("duplisatce");
-              // check if this file is under the CTBD base folder
-              var relativeFilePath = file.replace(ctdbBasePath,'');
-              if(relativeFilePath === file) {
-                notify('It is not permitted to select an item out of the base folder','error','Error');
-              } else if( store.getters.desktopItemByFilename(relativeFilePath) !== undefined) {
-                // TODO : see how to highlight the existing item (css animate ?)
-                notify(`The item is already included in the desktop : <b>${relativeFilePath}</b>`,'warning','warning');
-              } else {
-                store.commit('addToDesktop',{
-                  "filename" : relativeFilePath,
-                  "data"     : JSON.parse(fs.readFileSync(file, 'utf8')),
-                  "name"     : path.basename(relativeFilePath,".json"),
-                  "path"     : path.dirname(relativeFilePath)
-                                .split(path.sep)
-                                .filter( token => token.length !== 0)
-                });
-                config.store.set('recent.ctdbPath',path.dirname(file));
-              }
-            });
-          }
-        }
+        this.addFilesToDesktop
       );
     }
   }

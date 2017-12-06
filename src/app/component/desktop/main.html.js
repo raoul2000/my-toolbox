@@ -26,7 +26,7 @@ module.exports = `
 
       <div
         v-for="(item, index)  in items"
-        :title="item.file" class="card-container">
+        :title="item.file" class="card-container" :id="'dkitem-idx'+index">
 
         <div
           @click="viewDetail(index, $event)"
