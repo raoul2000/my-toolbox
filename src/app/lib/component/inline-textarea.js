@@ -49,7 +49,7 @@ module.exports = {
         if( this.editing ) {
           return this.rawCurrentVal;
         } else if( this.inputType === "markdown") {
-          return markdown.toHTML(this.rawCurrentVal);
+          return markdown.toHTML( this.rawCurrentVal ? this.rawCurrentVal : '');
         } else {
           return this.rawCurrentVal;
         }
