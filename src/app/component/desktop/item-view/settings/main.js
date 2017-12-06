@@ -1,6 +1,7 @@
 
 const validate = require('../../../../lib/validation');
 const config   = require('../../../../service/config');
+var checkSSHConnection = require('../../../../lib/ssh/check-connection').checkConnection;
 
 var fs         = require('fs');
 var path       = require('path');
@@ -11,8 +12,11 @@ module.exports = {
     "inlineInput"    : require('../../../../lib/component/inline-input'),
     "inlineTextarea" : require('../../../../lib/component/inline-textarea')
   },
+  template: require('./main.html'),
   data : function(){
     return {
+      action : null, // 'test-connection'
+      connectionOk : true,
       data : null,
       filename : "",
       validation : {
@@ -24,8 +28,29 @@ module.exports = {
       }
     };
   },
-  template: require('./main.html'),
+  computed : {
+    canTestConnection : function(){
+      return this.action === null
+        && this.data.ssh.host.length > 0
+        && this.data.ssh.username.length > 0
+        && this.data.ssh.password.length > 0;
+    }
+  },
+
   methods : {
+    testConnection : function() {
+      this.action = "test-connection";
+      this.connectionOk = null;
+      checkSSHConnection(this.data.ssh)
+      .then( success => {
+        this.connectionOk = true;
+        this.action = null;
+      })
+      .catch(error => {
+        this.action = null;
+        this.connectionOk = false;
+      });
+    },
     /**
      * Update the JSON file the current desktop item has been loaded from.
      * This method is called after successfull value change (SSH or notes)
