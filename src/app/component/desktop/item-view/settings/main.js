@@ -81,7 +81,6 @@ module.exports = {
      * Handle SSH settings update : updtae the store and the file
      */
     changeSSHValue : function(arg){
-
       if( arg.name === "host") {
         // host is actually IP
         // TODO : change property name from 'host' to 'ip'

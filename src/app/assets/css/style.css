@@ -11,6 +11,8 @@
 
 .inline-textarea {
   width:100%;
+  border: 1px solid #eee;
+  padding:1em;
 }
 .inline-textarea .html-value {
  margin-left: 2em;

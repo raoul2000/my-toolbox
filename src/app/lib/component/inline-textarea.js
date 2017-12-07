@@ -23,7 +23,7 @@ module.exports = {
       <div v-if="inputType=='markdown'" class="html-value" v-html="currentVal" />
       <div v-else class="text-value">{{currentVal}}</div>
     </div>
-    <textarea v-else  v-on:blur="stopEdit" v-on:keyup.esc="stopEdit"/>
+    <textarea v-else  v-on:blur="stopEdit" v-on:keyup.esc="stopEdit" placeholder="type your text here ..."/>
 
   </div>`,
   props : {
@@ -46,12 +46,13 @@ module.exports = {
     currentVal : {
       get : function(){
         console.log('get current val');
+        let displayVal = this.rawCurrentVal.length === 0 ? "click here to enter a value .." : this.rawCurrentVal;
         if( this.editing ) {
           return this.rawCurrentVal;
         } else if( this.inputType === "markdown") {
-          return markdown.toHTML( this.rawCurrentVal ? this.rawCurrentVal : '');
+          return markdown.toHTML( this.rawCurrentVal ? this.rawCurrentVal : displayVal);
         } else {
-          return this.rawCurrentVal;
+          return displayVal;
         }
       },
       set : function(val) {
