@@ -60,7 +60,56 @@ module.exports = {
      * Navigate to the Item creation page
      */
     createItem : function() {
-      this.$router.push('/create');
+      //this.$router.push('/create');
+      let newitem = {
+        "notes"  : '',
+        "ssh"    : {
+          "host"         : '',
+          "port"         : 22,
+          "username"     : '',
+          "password"     : '',
+          "readyTimeout" : 50000
+        },
+        "entity" : [],
+        "tomcat" : []
+      };
+
+      var defaultFilename = path.join(
+        config.getCTDBPath(),
+        "NO_NAME".concat('.json')
+      );
+      console.log('saving to ', defaultFilename);
+
+      remote.dialog.showSaveDialog(
+        remote.getCurrentWindow(),  // is modal on the main window
+        {
+          "title"      : "Save New Item",
+          "defaultPath" : defaultFilename
+        },
+        function(filename) {
+          console.log(filename);
+          if( filename ) {
+            let ctdbBasePath = config.store.get("ctdbFolderPath");
+            // check if this file is under the CTBD base folder
+            var relativeFilePath = filename.replace(ctdbBasePath,'');
+            if(relativeFilePath === filename) {
+              // TODO : wee how to highlight the existing item (css animate ?)
+              notify('It is not permitted to save an item out of the base folder','error','Error');
+            } else {
+              fs.writeFile(filename, JSON.stringify(newitem, null, 2) , 'utf-8', (err) => {
+                if(err) {
+                  notify('failed to save','error','error');
+                  console.error(err);
+                } else {
+                  notify(`Saved to <b>${relativeFilePath}</b>` ,'success','Success');
+                  config.store.set('recent.ctdbPath',path.dirname(filename));
+                }
+              });
+            }
+          }
+        }
+      );
+
     },
     /**
      * Opens a view for a specific item.
