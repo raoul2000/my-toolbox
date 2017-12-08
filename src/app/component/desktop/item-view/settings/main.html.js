@@ -68,8 +68,7 @@ module.exports = `
                 <button
                   v-bind:disabled="!canTestConnection"
                   v-on:click="testConnection" type="button" class="btn btn-default btn-block">
-
-                    <span v-show="action === 'test-connection'" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span>
+                    <i v-show="action === 'test-connection'" class="fa fa-refresh fa-spin"></i>
                     <span v-show="connectionOk === true" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                     <span v-show="connectionOk === false" class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red"></span>
 
@@ -84,12 +83,19 @@ module.exports = `
     </div>
 
     <div v-if="data != null" class="col-xs-7">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <i class="fa fa-sticky-note-o" aria-hidden="true"></i> Notes
+        </h3>
+      </div>
       <inlineTextarea
         :initialValue="data.notes"
         :valid="validation.notes"
         inputType="markdown"
         valueName="notes"
         v-on:changeValue="changeNotesValue"/>
+    </div>
     </div>
 
   </div>

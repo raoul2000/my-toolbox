@@ -1,4 +1,5 @@
 var markdown = require( "markdown" ).markdown;
+var autosize = require('autosize');
 
 module.exports = {
   template : `
@@ -23,7 +24,13 @@ module.exports = {
       <div v-if="inputType=='markdown'" class="html-value" v-html="currentVal" />
       <div v-else class="text-value">{{currentVal}}</div>
     </div>
-    <textarea v-else  v-on:blur="stopEdit" v-on:keyup.esc="stopEdit" placeholder="type your text here ..."/>
+    <textarea
+      v-else
+      id="inline-textarea-element"
+      v-on:blur="stopEdit"
+      v-on:keyup.esc="stopEdit"
+      placeholder="type your text here ..."
+      rows="4"/>
 
   </div>`,
   props : {
@@ -61,13 +68,15 @@ module.exports = {
     }
   },
   methods : {
+
     startEdit : function() {
-      this.editing = true;
       var self = this;
+      this.editing = true;  // start edit now
       Vue.nextTick(function() {
         self.fieldElement = self.$el.querySelector('textarea');
         self.fieldElement.value = self.currentVal;
         self.fieldElement.focus();
+        autosize(self.fieldElement);
       });
     },
     stopEdit : function() {

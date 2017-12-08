@@ -12,6 +12,7 @@
 .inline-textarea {
   width:100%;
   border: 1px solid #eee;
+  border-radius: 4px;
   padding:1em;
 }
 .inline-textarea .html-value {
@@ -37,6 +38,7 @@
 .inline-textarea textarea {
   width : 100%;
   padding : 4px;
+  overflow:hidden;
 }
 .inline-input input {
   width : 90%;
