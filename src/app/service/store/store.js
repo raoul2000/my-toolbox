@@ -1,21 +1,8 @@
 
-function updateObject(objToUpdate, freshProperties ) {
-  Object.keys(freshProperties)
-  .filter( sourceProp => {
-    console.log("check property : ", sourceProp);
-    return objToUpdate.hasOwnProperty(sourceProp);
-  })
-  .forEach( sourceProp => {
-    // TODO : use extend ?
-    console.log("prop = "+sourceProp+" old = "+objToUpdate[sourceProp]+" new = "+freshProperties[sourceProp]);
-    objToUpdate[sourceProp] = freshProperties[sourceProp];
-  });
-}
-
-
 module.exports = new Vuex.Store({
   strict: true, // TODO : DEV only
   state: {
+    desktopLoadedOnInit : false,
     currentRoute     : null,
     selectedDesktopItemIndex : null,
     desktop          : [],
@@ -61,6 +48,9 @@ module.exports = new Vuex.Store({
     }
   },
   mutations: {
+    desktopLoaded(state) {
+      state.desktopLoadedOnInit = true;
+    },
     setWebAppDefinition(state, definition) {
       state.webappDefinition = definition;
     },
@@ -169,7 +159,6 @@ module.exports = new Vuex.Store({
         let objToUpdate = state.tasks[taskIdx];
         let freshProperties = freshTask.updateWith;
         Object.assign(objToUpdate, freshProperties);
-        //updateObject(objToUpdate, freshProperties );
       }
     },
     deleteTask(state, taskToDelete) {

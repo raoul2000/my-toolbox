@@ -3,7 +3,7 @@ var path        = require('path');
 var remote      = require('electron').remote;
 var validate    = require('validator');
 const { spawn } = require('child_process');
-const store     = require('../../../service/store/store');
+const store     = require('../../../service/store/store'); // TODO : nod needed as already injected by parent (to check)
 const config    = require('../../../service/config');
 const notify    = require('../../../service/notification');
 

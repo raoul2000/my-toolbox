@@ -26,7 +26,8 @@ const store = new Store({
     "winscpFilePath"        :'winscp.exe',
     "recent" : {
       // "ctdbPath" : '/path/to/latest'
-    }
+    },
+    "desktop" : []
   }
 });
 console.log("loading config from ", store.path);
@@ -49,6 +50,19 @@ module.exports = {
   },
   "setRecentCTDBPath" : function(path) {
 
+  },
+  "addDesktopItem" : function(filepath) {
+    let desktop = store.get("desktop");
+    if( desktop.findIndex(filepath) === -1) {
+      desktop.push(filepath);
+      store.set("desktop",desktop);
+    }
+  },
+  "removeDesktopItem" : function(filepath) {
+    store.set("desktop",store.get("desktop").filter( file => file !== filepath));
+  },
+  "getDesktopItems" : function() {
+    return store.get("desktop");
   }
 
 };

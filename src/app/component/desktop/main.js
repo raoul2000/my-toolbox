@@ -57,7 +57,7 @@ module.exports = {
       return classes;
     },
     /**
-     * Navigate to the Item creation page
+     * Saves an empty item to file
      */
     createItem : function() {
       //this.$router.push('/create');
@@ -129,6 +129,12 @@ module.exports = {
      * @param  {integer} index the item index in the current store
      */
     removeFromDesktop : function(index) {
+      let item = store.getters.desktopItemByIndex(index);
+      let filePath = path.join(
+        config.store.get("ctdbFolderPath"),
+        item.filename
+      );
+      config.removeDesktopItem(filePath);
       store.commit('removeFromDesktop',index);
     },
     /**
@@ -178,6 +184,7 @@ module.exports = {
                               .filter( token => token.length !== 0)
               });
               config.store.set('recent.ctdbPath',path.dirname(file));
+              config.addDesktopItem(file);
             }
           }
         });
@@ -191,12 +198,22 @@ module.exports = {
       remote.dialog.showOpenDialog(
         remote.getCurrentWindow(),  // is modal on the main window
         {
-          "title"      : "Select Item",
+          "title"       : "Select Item",
           "defaultPath" : config.getCTDBPath(),
-          "properties" : [ 'openFile', 'multiSelections']
+          "properties"  : [ 'openFile', 'multiSelections']
         },
         this.addFilesToDesktop
       );
+    }
+  },
+  mounted : function () {
+    console.log('loading desktop');
+    if( store.state.desktopLoadedOnInit === false ) {
+      let persistentDekstopItems = config.getDesktopItems();
+      if( persistentDekstopItems.length > 0 ){
+        this.addFilesToDesktop(persistentDekstopItems);
+      }
+      store.commit('desktopLoaded');
     }
   }
 };
