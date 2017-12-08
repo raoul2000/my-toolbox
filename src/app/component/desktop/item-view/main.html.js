@@ -20,8 +20,8 @@ module.exports = `
         <li role="presentation" v-bind:class="{active : activeTab == 'settings'}">
           <a v-on:click.stop.prevent="openTabHome()" href="#">Settings</a>
         </li>
-        <li role="presentation"  v-bind:class="{active : activeTab == 'profile'}">
-          <a v-on:click.stop.prevent="openTabProfile()" href="#">Profile</a>
+        <li role="presentation"  v-bind:class="{active : activeTab == 'webapp'}">
+          <a v-on:click.stop.prevent="openTabWebapp()" href="#">Web App</a>
         </li>
       </ul>
     </div>

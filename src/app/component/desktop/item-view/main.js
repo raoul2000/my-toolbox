@@ -77,9 +77,9 @@ module.exports = {
         notify('No IP address or hostname provided','error','Error');
       }
     },
-    "openTabProfile" : function() {
-      this.$router.push('profile');
-      this.activeTab = "profile";
+    "openTabWebapp" : function() {
+      this.$router.push('webapp');
+      this.activeTab = "webapp";
     },
     "openTabHome" : function() {
       this.activeTab = "settings";

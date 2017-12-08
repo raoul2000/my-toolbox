@@ -11,7 +11,7 @@ const View     = require('./component/view/main');
 
 const ItemView     = require('./component/desktop/item-view/main');
 const ItemViewSettings     = require('./component/desktop/item-view/settings/main');
-const ItemViewProfile     = require('./component/desktop/item-view/profile/main');
+const ItemViewWebapp     = require('./component/desktop/item-view/webapp/main');
 
 const Deploy   = require('./component/deploy/main');
 const MavenDownload   = require('./component/maven-download/main');
@@ -43,8 +43,8 @@ const router = new VueRouter({
         component: ItemViewSettings
       },
       {
-        path: 'profile',
-        component: ItemViewProfile
+        path: 'webapp',
+        component: ItemViewWebapp
       }
     ]},
     { path: '/deploy',   component: Deploy,   name : 'deploy'},
