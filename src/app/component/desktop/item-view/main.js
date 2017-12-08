@@ -4,6 +4,7 @@ var remote      = require('electron').remote;
 const store     = require('../../../service/store/store');
 const config    = require('../../../service/config');
 const notify    = require('../../../service/notification');
+const validate  = require('../../../lib/validation');
 const { spawn } = require('child_process');
 
 module.exports = {
@@ -21,28 +22,60 @@ module.exports = {
   methods : {
     /**
      * Start putty.exe application
+     * Only the ip/host is required. All other parameters are optionals and can be entered
+     * by the user
      */
     openPuttySession : function() {
       let ssh = this.item.data.ssh; // shortcut
-      let cmdArg = [
-        "-ssh",
-        `-P ${ssh.port}`,
-        `-l "${ssh.username}"`,
-        `-pw "${ssh.password}"`,
-        ssh.host
-      ];
-      console.log(cmdArg);
-      spawn(`"${config.store.get('puttyFilePath')}"`, cmdArg , { shell: true });
-      // TODO : error handler if command fails (program file not found)
+      // build the command line argument list depending on what fields are provided
+      if(validate.isNotEmptyString(ssh.host)) {
+        let cmdArg = [  "-ssh"];
+
+        if( validate.isNotEmptyString(ssh.username)) {
+          cmdArg.push(`-l "${ssh.username}"`);
+          if( validate.isNotEmptyString(ssh.password)) {
+            cmdArg.push(`-pw "${ssh.username}"`);
+          }
+        }
+        cmdArg.push( validate.isNotEmptyString(ssh.port) ? `-P ${ssh.port}` : "-P 22");
+        cmdArg.push(ssh.host);
+
+        // run PUTTY
+        console.log(cmdArg);
+        spawn(`"${config.store.get('puttyFilePath')}"`, cmdArg , { shell: true });
+        // TODO : error handler if command fails (program file not found)
+      } else {
+        // no ip address available : error (sorry)
+        notify('No IP address or hostname provided','error','Error');
+      }
     },
     /**
-     * Start winscp.exe application
+     * Start winscp.exe application.
+     * Only the ip/host is required. All other parameters are optionals and can be entered
+     * by the user
      */
     openWinscpSession : function() {
       let ssh = this.item.data.ssh; // shortcut
-      let uri = `sftp://${ssh.username}:${ssh.password}@${ssh.host}:${ssh.port}`;
-      console.log(uri);
-      spawn(`"${config.store.get('winscpFilePath')}"`, [ uri ] , { shell: true });
+      if(validate.isNotEmptyString(ssh.host)) {
+
+        let uri = "sftp://";
+        if( validate.isNotEmptyString(ssh.username) ) {
+          uri = uri.concat(ssh.username);
+          if( validate.isNotEmptyString(ssh.password)) {
+            uri = uri.concat(`:${ssh.password}`);
+          }
+          uri = uri.concat("@");
+        }
+        uri = uri.concat(ssh.host);
+        if( validate.isNotEmptyString(ssh.port) ) {
+          uri = uri.concat(`:${ssh.port}`);
+        }
+        console.log(uri);
+        spawn(`"${config.store.get('winscpFilePath')}"`, [ uri ] , { shell: true });
+      }  else {
+        // no ip address available : error (sorry)
+        notify('No IP address or hostname provided','error','Error');
+      }
     },
     "openTabProfile" : function() {
       this.$router.push('profile');

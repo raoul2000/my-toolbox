@@ -74,8 +74,7 @@ module.exports = {
           notes  : arg.value
         }
       });
-      // update the file
-      this.updateDesktopItemFile();
+      this.updateDesktopItemFile(); // update the file
     },
     /**
      * Handle SSH settings update : updtae the store and the file
@@ -86,22 +85,19 @@ module.exports = {
         // TODO : change property name from 'host' to 'ip'
         this.validation[arg.name] = validate.isIP(arg.value);
       } else if( arg.name === "port" && arg.value !== '') {
-        // port is not required (default is 22) but if set, it must
-        // be validated
+        // port is not required (default is 22) but if set, it must  be validated
         this.validation[arg.name] = validate.isPortNumber(arg.value);
       }
 
-      if( this.validation[arg.name] ) {
-        let updateData =  {
-          filename : this.filename,
-          selector : 'ssh',
-          updateWith : {}
-        };
-        updateData.updateWith[arg.name] = arg.value;
-        store.commit('updateDesktopItem',updateData);
-        // update the file
-        this.updateDesktopItemFile();
-      }
+      // update store and file is ALWAYS done (even if validation fails)
+      let updateData =  {
+        filename : this.filename,
+        selector : 'ssh',
+        updateWith : {}
+      };
+      updateData.updateWith[arg.name] = arg.value;
+      store.commit('updateDesktopItem',updateData);
+      this.updateDesktopItemFile(); // update the file
     }
   },
 
