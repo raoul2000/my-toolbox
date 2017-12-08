@@ -12,7 +12,7 @@ module.exports = {
       <input v-else type="text" v-on:blur="stopEdit" v-on:keyup.enter="stopEdit"/>
     </span>
     <span v-else-if="inputType == 'password'" class="inline-ctrl-password">
-      <span v-if="!editing" class="current-value">********</span>
+      <span v-if="!editing" class="current-value">{{hiddenPassword}}</span>
       <input v-else type="password" v-on:blur="stopEdit" v-on:keyup.enter="stopEdit"/>
     </span>
 
@@ -39,6 +39,11 @@ module.exports = {
       "currentVal"   : this.initialValue,
       "fieldElement" : null
     };
+  },
+  computed : {
+    hiddenPassword : function(){
+      return this.currentVal && this.currentVal.length !== 0 ? new Array(this.currentVal.length + 1).join( '*' ) : '';
+    }
   },
   methods : {
     startEdit : function() {
