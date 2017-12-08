@@ -1,11 +1,11 @@
 var electron    = require('electron');
 var path        = require('path');
 var remote      = require('electron').remote;
+var validate    = require('validator');
+const { spawn } = require('child_process');
 const store     = require('../../../service/store/store');
 const config    = require('../../../service/config');
 const notify    = require('../../../service/notification');
-const validate  = require('../../../lib/validation');
-const { spawn } = require('child_process');
 
 module.exports = {
   store,
@@ -28,16 +28,16 @@ module.exports = {
     openPuttySession : function() {
       let ssh = this.item.data.ssh; // shortcut
       // build the command line argument list depending on what fields are provided
-      if(validate.isNotEmptyString(ssh.host)) {
+      if( ! validate.isEmpty(ssh.host)) {
         let cmdArg = [  "-ssh"];
 
-        if( validate.isNotEmptyString(ssh.username)) {
+        if(  ! validate.isEmpty(ssh.username)) {
           cmdArg.push(`-l "${ssh.username}"`);
-          if( validate.isNotEmptyString(ssh.password)) {
+          if( ! validate.isEmpty(ssh.password)) {
             cmdArg.push(`-pw "${ssh.username}"`);
           }
         }
-        cmdArg.push( validate.isNotEmptyString(ssh.port) ? `-P ${ssh.port}` : "-P 22");
+        cmdArg.push( ! validate.isEmpty(ssh.port+'')  ? `-P ${ssh.port}` : "-P 22");
         cmdArg.push(ssh.host);
 
         // run PUTTY
@@ -56,18 +56,18 @@ module.exports = {
      */
     openWinscpSession : function() {
       let ssh = this.item.data.ssh; // shortcut
-      if(validate.isNotEmptyString(ssh.host)) {
+      if( ! validate.isEmpty(ssh.host)) {
 
         let uri = "sftp://";
-        if( validate.isNotEmptyString(ssh.username) ) {
+        if( ! validate.isEmpty(ssh.username) ) {
           uri = uri.concat(ssh.username);
-          if( validate.isNotEmptyString(ssh.password)) {
+          if( ! validate.isEmpty(ssh.password)) {
             uri = uri.concat(`:${ssh.password}`);
           }
           uri = uri.concat("@");
         }
         uri = uri.concat(ssh.host);
-        if( validate.isNotEmptyString(ssh.port) ) {
+        if( ! validate.isEmpty(ssh.port+'') ) {
           uri = uri.concat(`:${ssh.port}`);
         }
         console.log(uri);

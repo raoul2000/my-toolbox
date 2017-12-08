@@ -1,11 +1,9 @@
 
-const validate = require('../../../../lib/validation');
-const config   = require('../../../../service/config');
+const validate         = require('validator');
+var fs                 = require('fs');
+var path               = require('path');
+const config           = require('../../../../service/config');
 var checkSSHConnection = require('../../../../lib/ssh/check-connection').checkConnection;
-
-var fs         = require('fs');
-var path       = require('path');
-
 
 module.exports = {
   components : {
@@ -77,16 +75,17 @@ module.exports = {
       this.updateDesktopItemFile(); // update the file
     },
     /**
-     * Handle SSH settings update : updtae the store and the file
+     * Handle SSH settings update : update the store and the file.
+     * Note that validation is not blocking the save operation.
      */
     changeSSHValue : function(arg){
       if( arg.name === "host") {
         // host is actually IP
         // TODO : change property name from 'host' to 'ip'
         this.validation[arg.name] = validate.isIP(arg.value);
-      } else if( arg.name === "port" && arg.value !== '') {
-        // port is not required (default is 22) but if set, it must  be validated
-        this.validation[arg.name] = validate.isPortNumber(arg.value);
+      } else if( arg.name === "port") {
+        // port is not required (default is 22) but if set, it must  be valid
+        this.validation[arg.name] = validate.isEmpty(arg.value) ? true : validate.isInt(arg.value+'',{ gt : 0});
       }
 
       // update store and file is ALWAYS done (even if validation fails)
