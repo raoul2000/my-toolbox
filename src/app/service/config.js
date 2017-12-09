@@ -30,6 +30,7 @@ const store = new Store({
     "desktop" : []
   }
 });
+
 console.log("loading config from ", store.path);
 console.log("version ", app.getVersion());
 console.log("name ", app.getName());
@@ -39,30 +40,42 @@ console.log("userData ", app.getPath('userData'));
 
 module.exports = {
   "store" : store,
-  // TODO : add comments
+  /**
+   * Returns the recent CTDB folder path.
+   * @return {string} absolute folder path
+   */
   "getCTDBPath" : function() {
-    console.log("getCTDBPath");
     let result = ( store.has('recent.ctdbPath') ? store.get('recent.ctdbPath') : store.get('ctdbFolderPath'));
     if( result.replace(store.get('ctdbFolderPath'),'') === result) {
       result = store.get('ctdbFolderPath');
     }
     return result;
   },
-  "setRecentCTDBPath" : function(path) {
-
-  },
+  /**
+   * Add a desktop item to the persistent config. This is to allow
+   * reload of the last used desktop
+   * @param  {string} filepath desktop item filepath
+   */
   "addDesktopItem" : function(filepath) {
     let desktop = store.get("desktop");
-    if( desktop.findIndex(filepath) === -1) {
+    // avoid add duplicate
+    if( desktop.findIndex( item => item === filepath) === -1) {
       desktop.push(filepath);
       store.set("desktop",desktop);
     }
   },
+  /**
+   * Remove a item from the persistent config.
+   * @param  {string} filepath desktop item filepath
+   */
   "removeDesktopItem" : function(filepath) {
     store.set("desktop",store.get("desktop").filter( file => file !== filepath));
   },
+  /**
+   * Returns the list of desktop item filepath previously saved in the persistent
+   * config file. This is used to reload the last used desktop.
+   */
   "getDesktopItems" : function() {
     return store.get("desktop");
   }
-
 };
