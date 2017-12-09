@@ -33,7 +33,7 @@ module.exports = {
       var self = this;
 
       var defaultFilename = path.join(
-        config.getCTDBPath(),
+        config.getRecentCTDBPath(),
         "name".concat('.json')
       );
       console.log('saving to ', defaultFilename);

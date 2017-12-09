@@ -45,7 +45,7 @@ module.exports = {
    * Returns the recent CTDB folder path.
    * @return {string} absolute folder path
    */
-  "getCTDBPath" : function() {
+  "getRecentCTDBPath" : function() {
     let result = ( store.has('recent.ctdbPath') ? store.get('recent.ctdbPath') : store.get('ctdbFolderPath'));
     if( result.replace(store.get('ctdbFolderPath'),'') === result) {
       result = store.get('ctdbFolderPath');

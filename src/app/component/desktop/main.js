@@ -75,7 +75,7 @@ module.exports = {
       };
 
       var defaultFilename = path.join(
-        config.getCTDBPath(),
+        config.getRecentCTDBPath(),
         "NO_NAME".concat('.json')
       );
       console.log('saving to ', defaultFilename);
@@ -199,7 +199,7 @@ module.exports = {
         remote.getCurrentWindow(),  // is modal on the main window
         {
           "title"       : "Select Item",
-          "defaultPath" : config.getCTDBPath(),
+          "defaultPath" : config.getRecentCTDBPath(),
           "properties"  : [ 'openFile', 'multiSelections']
         },
         this.addFilesToDesktop
