@@ -10,7 +10,8 @@ module.exports = {
       ctdbFolderPath        : '',
       webappCatalogFilePath : '',
       puttyFilePath         : '',
-      winscpFilePath        : ''
+      winscpFilePath        : '',
+      persistentDesktop     : true
     };
   },
   template: require('./main.html'),
@@ -86,6 +87,10 @@ module.exports = {
       config.store.set('webappCatalogFilePath',this.webappCatalogFilePath);
       config.store.set('puttyFilePath',this.puttyFilePath);
       config.store.set('winscpFilePath',this.winscpFilePath);
+      config.store.set('persistentDesktop',this.persistentDesktop);
+      if( ! this.persistentDesktop ) {
+        config.clearDesktop();
+      }
 
       // navigate to preview route (go back)
       this.$router.push(store.state.currentRoute);
@@ -98,5 +103,6 @@ module.exports = {
     this.webappCatalogFilePath = config.store.get('webappCatalogFilePath');
     this.puttyFilePath = config.store.get('puttyFilePath');
     this.winscpFilePath = config.store.get('winscpFilePath');
+    this.persistentDesktop = config.store.get('persistentDesktop');
   }
 };

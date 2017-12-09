@@ -207,8 +207,10 @@ module.exports = {
     }
   },
   mounted : function () {
-    console.log('loading desktop');
-    if( store.state.desktopLoadedOnInit === false ) {
+    if( config.store.get('persistentDesktop')
+        && store.state.desktopLoadedOnInit === false )
+    {
+      console.log('loading desktop from config file');
       let persistentDekstopItems = config.getDesktopItems();
       if( persistentDekstopItems.length > 0 ){
         this.addFilesToDesktop(persistentDekstopItems);

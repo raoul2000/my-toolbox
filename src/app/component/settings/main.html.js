@@ -122,7 +122,17 @@ module.exports = `
     </div>
     <!--// END winscp File Path -->
 
-
+    <!-- // BEGIN - persistent desktop -->
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-9">
+        <div class="checkbox">
+          <label>
+            <input v-model="persistentDesktop" type="checkbox"> Reload last desktop on startup
+          </label>
+        </div>
+      </div>
+    </div>
+    <!-- // END - persistent desktop -->
 
       <hr/>
       <div class="form-group">

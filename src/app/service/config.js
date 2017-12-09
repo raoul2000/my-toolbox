@@ -24,6 +24,7 @@ const store = new Store({
     "webappCatalogFilePath" : path.join(app.getPath('userData'),"web-app-catalog.json"),
     "puttyFilePath"         :'putty.exe',
     "winscpFilePath"        :'winscp.exe',
+    "persistentDesktop"     : true,
     "recent" : {
       // "ctdbPath" : '/path/to/latest'
     },
@@ -77,5 +78,11 @@ module.exports = {
    */
   "getDesktopItems" : function() {
     return store.get("desktop");
+  },
+  /**
+   * Remove all doesktop item from the persistent config storage (file)
+   */
+  "clearDesktop" : function() {
+    store.set("desktop",[]);
   }
 };
