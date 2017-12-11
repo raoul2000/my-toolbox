@@ -1,7 +1,9 @@
 
 module.exports = {
+  props : ['tomcat'],
   data : function(){
     return {
+      "tc" : this.tomcat
     };
   },
   template: require('./main.html'),
@@ -13,5 +15,6 @@ module.exports = {
    * index is passed as a route query param
    */
    mounted : function(){
+     console.log("tomcat mount");
    }
 };
