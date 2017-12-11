@@ -11,7 +11,15 @@ module.exports = {
   },
   template: require('./main.html'),
   methods : {
-
+    AddTomcat : function() {
+      console.log('addTomcat');
+      //this.$store.
+    }
+  },
+  computed : {
+    tomcatIds : function() {
+      return this.item.data.tomcat.map( tomcat => tomcat.id);
+    }
   },
   /**
    * Build the summary view for the selected desktop item. The dekstop item

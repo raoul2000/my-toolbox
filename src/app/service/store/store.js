@@ -80,6 +80,10 @@ module.exports = new Vuex.Store({
         }
       }
     },
+
+    addTomcat(state, args) {
+      state.modules.push(module);
+    },
     ////////////////////////////////////////////////////////////////////////////
     // MODULE
     addModule(state, module) {
