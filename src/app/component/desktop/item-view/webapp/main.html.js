@@ -6,6 +6,7 @@ module.exports = `
 
       <div v-for="tomcat in item.data.tomcat">
         <tomcat
+          :ip="item.data.ssh.host"
           :tomcat="tomcat"/>
       </div>
 

@@ -1,10 +1,11 @@
 
 module.exports = {
-  props : ['tomcat'],
+  props : ['tomcat','ip'],
+  components : {
+    "webapp"    : require('./webapp/main')
+  },
   data : function(){
-    return {
-      "tc" : this.tomcat
-    };
+    return {};
   },
   template: require('./main.html'),
   methods : {
