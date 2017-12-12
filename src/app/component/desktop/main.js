@@ -63,6 +63,7 @@ module.exports = {
     createItem : function() {
       //this.$router.push('/create');
       let newitem = {
+        "id" : helper.generateUUID(),
         "notes"  : '',
         "ssh"    : {
           "host"         : '',
@@ -177,7 +178,6 @@ module.exports = {
                }
              } else {
               store.commit('addToDesktop',{
-                "id"       : helper.generateUUID(),
                 "filename" : relativeFilePath,
                 "data"     : JSON.parse(fs.readFileSync(file, 'utf8')),
                 "name"     : path.basename(relativeFilePath,".json"),
