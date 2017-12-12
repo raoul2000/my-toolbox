@@ -4,6 +4,7 @@ var path       = require('path');
 const store    = require('../../service/store/store');
 const notify   = require('../../service/notification');
 const config   = require('../../service/config');
+const helper   = require('../../lib/lib').helper;
 
 /**
  * The Desktop view allows the user to load one more items from the ctdb folder path into the main view
@@ -176,6 +177,7 @@ module.exports = {
                }
              } else {
               store.commit('addToDesktop',{
+                "id"       : helper.generateUUID(),
                 "filename" : relativeFilePath,
                 "data"     : JSON.parse(fs.readFileSync(file, 'utf8')),
                 "name"     : path.basename(relativeFilePath,".json"),
