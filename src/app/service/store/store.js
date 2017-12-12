@@ -16,6 +16,12 @@ module.exports = new Vuex.Store({
         return state.desktop[index];
       };
     },
+    desktopItemById : function(state, getters) {
+      return function(id) {
+        console.log('desktopItemById');
+        return state.desktop.find( item => item.data.id === id);
+      };
+    },
     desktopItemByFilename : function(state, getters) {
       return function(filename) {
         return state.desktop.find( item => item.filename === filename);

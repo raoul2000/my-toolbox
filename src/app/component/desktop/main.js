@@ -63,6 +63,7 @@ module.exports = {
     createItem : function() {
       //this.$router.push('/create');
       let newitem = {
+        "id" : helper.generateUUID(),
         "notes"  : '',
         "ssh"    : {
           "host"         : '',
@@ -154,14 +155,14 @@ module.exports = {
           if(relativeFilePath === file) {
             notify('It is not permitted to select an item out of the base folder','error','Error');
           } else {
-             let itemIndex = store.getters.desktopItemIndexByFilename(relativeFilePath);
-             if( itemIndex !== -1 ) {
+             let newItem = JSON.parse(fs.readFileSync(file, 'utf8'));
+             if( store.getters.desktopItemById(newItem.id) ) {
                notify(`The item is already part of your desktop :
                  <pre>${relativeFilePath}</pre>`,'warning','warning');
                // Animate (shake) the existing desktop item
                // Modify directly the DOM using the computed element id that has
                // been defined by the template
-               let elementId = "dkitem-idx"+itemIndex;
+               let elementId = "dkitem-idx"+newItem.id;
                let div = document.getElementById(elementId);
                if( div ) {
                  if( div.classList.contains('animated') === false) {
@@ -177,9 +178,8 @@ module.exports = {
                }
              } else {
               store.commit('addToDesktop',{
-                "id"       : helper.generateUUID(),
                 "filename" : relativeFilePath,
-                "data"     : JSON.parse(fs.readFileSync(file, 'utf8')),
+                "data"     : newItem,
                 "name"     : path.basename(relativeFilePath,".json"),
                 "path"     : path.dirname(relativeFilePath)
                               .split(path.sep)
