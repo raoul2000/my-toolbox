@@ -1,3 +1,4 @@
+'use strict';
 
 const validate         = require('validator');
 var fs                 = require('fs');
@@ -13,10 +14,10 @@ module.exports = {
   template: require('./main.html'),
   data : function(){
     return {
-      action : null, // 'test-connection'
+      action       : null, // 'test-connection'
       connectionOk : true,
-      data : null,
-      filename : "",
+      data         : null,
+      filename     : "",
       validation : {
         "host"     : true,
         "username" : true,
@@ -34,7 +35,6 @@ module.exports = {
         && this.data.ssh.password.length > 0;
     }
   },
-
   methods : {
     testConnection : function() {
       this.action = "test-connection";
@@ -67,8 +67,8 @@ module.exports = {
      */
     changeNotesValue : function(arg) {
       store.commit('updateDesktopItem', {
-        filename : this.filename,
-        updateWith   : {
+        id          : this.data.id,
+        updateWith  : {
           notes  : arg.value
         }
       });
@@ -90,8 +90,8 @@ module.exports = {
 
       // update store and file is ALWAYS done (even if validation fails)
       let updateData =  {
-        filename : this.filename,
-        selector : 'ssh',
+        id         : this.data.id,
+        selector   : 'ssh',
         updateWith : {}
       };
       updateData.updateWith[arg.name] = arg.value;
@@ -105,15 +105,14 @@ module.exports = {
    * index is passed as a route query param
    */
   mounted : function(){
-    let desktopItemIndex = this.$route.params.id;
-    if( desktopItemIndex === -1 ) {
-      console.error("missing desktopn item index");
-      return;
-    }
-    this.desktopItemIndex = this.$route.params.id;
+    let itemId = this.$route.params.id;
     // find the desktop item in the store
-    let dkItem = this.$store.getters.desktopItemByIndex(desktopItemIndex);
-    this.data = dkItem.data;
-    this.filename = dkItem.filename;
+    let dkItem = this.$store.getters.desktopItemById(itemId);
+    if( dkItem ) {
+      this.data     = dkItem.data;
+      this.filename = dkItem.filename;
+    } else {
+      console.warn("fail to load item : id = "+itemId);
+    }
   }
 };

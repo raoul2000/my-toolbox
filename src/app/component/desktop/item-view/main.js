@@ -113,15 +113,17 @@ module.exports = {
    * index is passed as a route query param
    */
   mounted : function(){
-    // get the desktop item index from the route query param
     console.log('mounted');
-    this.desktopItemIndex = this.$route.params.id;
+    // get the desktop item index from the route query param
+    let itemId = this.$route.params.id;
     // find the desktop item in the store
-    this.item = store.getters.desktopItemByIndex(this.desktopItemIndex);
-
-    this.filename = this.item.filename;
-    this.name = this.item.name;
-
-    this.buildPageHeader();
+    this.item = store.getters.desktopItemById(itemId);
+    if( ! this.item ) {
+      console.warn('failed to load item : id = '+itemId);
+    } else {
+      this.filename = this.item.filename;
+      this.name = this.item.name;
+      this.buildPageHeader();
+    }
   }
 };

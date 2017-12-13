@@ -26,13 +26,13 @@ module.exports = `
 
       <div
         v-for="(item, index)  in items"
-        :title="item.file" class="card-container" :id="'dkitem-idx'+item.data.id">
+        :title="item.file" class="card-container" :id="getItemElementId(item.data)">
 
         <div
-          @click="viewDetail(index, $event)"
+          @click="viewDetail(item, $event)"
           v-bind:class="cardItemStyle(item)">
           <div
-            @click.stop.prevent="removeFromDesktop(index)"
+            @click.stop.prevent="removeFromDesktop(item)"
             title="remove from desktop"
             type="button"
             class="left-corner-icon">

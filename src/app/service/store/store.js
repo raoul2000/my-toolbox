@@ -11,6 +11,7 @@ module.exports = new Vuex.Store({
     tasks            : []
   },
   getters: {
+    // TODO : remove this method when not used anymore
     desktopItemByIndex : function(state, getters) {
       return function(index) {
         return state.desktop[index];
@@ -22,16 +23,18 @@ module.exports = new Vuex.Store({
         return state.desktop.find( item => item.data.id === id);
       };
     },
+    /*
     desktopItemByFilename : function(state, getters) {
       return function(filename) {
         return state.desktop.find( item => item.filename === filename);
       };
-    },
+    },*/
+    /*
     desktopItemIndexByFilename : function(state, getters) {
       return function(filename) {
         return state.desktop.findIndex( item => item.filename === filename);
       };
-    },
+    },*/
     webappDefById : function(state, getters) {
       return function(webappId) {
         return state.webappDefinition.find( item => item.id === webappId);
@@ -72,12 +75,20 @@ module.exports = new Vuex.Store({
     addToDesktop ( state, item) {
       state.desktop.push(item);
     },
+    /*
     removeFromDesktop (state, index) {
       state.desktop.splice(index, 1);
+    },*/
+    removeFromDesktopById (state, id) {
+      let itemIndex = state.desktop.findIndex( item => item.data.id === id);
+      if( itemIndex !== -1 ) {
+        state.desktop.splice(itemIndex, 1);
+      }
     },
 
     updateDesktopItem ( state, args) {
-      let itemToUpdate = state.desktop.find( currentItem => currentItem.filename === args.filename);
+      //let itemToUpdate = state.desktop.find( currentItem => currentItem.filename === args.filename);
+      let itemToUpdate = state.desktop.find( currentItem => currentItem.data.id === args.id);
       if( itemToUpdate ) {
         if( args.selector === 'ssh') {
           Object.assign(itemToUpdate.data.ssh, args.updateWith);

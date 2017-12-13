@@ -19,6 +19,14 @@ module.exports = {
   },
   methods : {
     /**
+     * Create the HTML element id for an item
+     * @param  {object} item the item data object
+     * @return {string} the element id
+     */
+    getItemElementId : function(item) {
+      return `id=${item.id}`;
+    },
+    /**
      * Creates and returns the HTML content of a card item
      */
     cardItemContent : function(item) {
@@ -118,26 +126,26 @@ module.exports = {
      *
      * @param  {inetger} index index of the item in the current store
      */
-    viewDetail : function(index, event) {
+    viewDetail : function(item, event) {
       if(event.target.closest(".btn") === null) { // make sure user clicked on the button
         // to push a route with a query param use :
-        // this.$router.push({ path: '/item-view', query: { "index": index }})
-        this.$router.push({ path: `/item-view/${index}/settings`});
+        // this.$router.push({ path: '/item-view', query: { "id": item.data.id }})
+        this.$router.push({ path: `/item-view/${item.data.id}/settings`});
         event.stopPropagation();
       }
     },
     /**
      * Remove an item from the desktopn
-     * @param  {integer} index the item index in the current store
+     * @param  {object} item the item in the current store
      */
-    removeFromDesktop : function(index) {
-      let item = store.getters.desktopItemByIndex(index);
+    removeFromDesktop : function(item) {
+      //let item = store.getters.desktopItemById(item.data.id);
       let filePath = path.join(
         config.store.get("ctdbFolderPath"),
         item.filename
       );
       config.removeDesktopItem(filePath);
-      store.commit('removeFromDesktop',index);
+      store.commit('removeFromDesktopById',item.data.id);
     },
     /**
      * Add one or more files to the current desktop.
@@ -159,10 +167,12 @@ module.exports = {
              if( store.getters.desktopItemById(newItem.id) ) {
                notify(`The item is already part of your desktop :
                  <pre>${relativeFilePath}</pre>`,'warning','warning');
-               // Animate (shake) the existing desktop item
-               // Modify directly the DOM using the computed element id that has
-               // been defined by the template
-               let elementId = "dkitem-idx"+newItem.id;
+
+               // Animate (shake) the existing desktop item Modify directly the DOM using
+               // the computed element id that has been defined by the template
+
+               //let elementId = "dkitem-id-"+newItem.id;
+               let elementId = this.getItemElementId(newItem);
                let div = document.getElementById(elementId);
                if( div ) {
                  if( div.classList.contains('animated') === false) {
