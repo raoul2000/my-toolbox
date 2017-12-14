@@ -1,5 +1,5 @@
 const validate = require('validator');
-const notify = require('../../../../../../service/notification');
+const notify   = require('../../../../../../service/notification');
 
 module.exports = {
   props: ['item', 'tomcat', 'webapp'],

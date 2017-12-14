@@ -1,5 +1,5 @@
-const validate         = require('validator');
-const notify    = require('../../../../../service/notification');
+const validate = require('validator');
+const notify   = require('../../../../../service/notification');
 const helper   = require('../../../../../lib/lib').helper;
 
 module.exports = {
@@ -41,7 +41,6 @@ module.exports = {
       if( arg.name === "id") {
         if(  validate.isEmpty(arg.value)) {
           this.validation.id = false;
-        //} else if( this.tomcatIds.indexOf(arg.value) !== -1) {
         } else if( ! this.isUniqueTomcatId(arg.value)) {
           this.validation.id = false;
           notify(`A Tomcat instance with the id <b>${arg.value}</b> is already in use`,'error','error');
@@ -68,12 +67,5 @@ module.exports = {
       updateInfo.updateWith[arg.name] = arg.value;
       this.$store.commit('updateTomcat',updateInfo );
     }
-  },
-  /**
-   * Build the summary view for the selected desktop item. The dekstop item
-   * index is passed as a route query param
-   */
-   mounted : function(){
-     console.log("tomcat mount");
-   }
+  }
 };
