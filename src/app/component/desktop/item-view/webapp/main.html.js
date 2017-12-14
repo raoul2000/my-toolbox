@@ -11,11 +11,14 @@ module.exports = `
 
       {{item.data.ssh.host}}
 
-      <div v-for="tomcat in item.data.tomcat">
+      <div v-for="tomcat in item.data.tomcat"  :key="tomcat.id">
+        <div style="border:4px solid #eee">
         <tomcat
           :ip="item.data.ssh.host"
           :tomcatIds="tomcatIds"
+          :item="item"
           :tomcat="tomcat"/>
+        </div>
       </div>
 
     </div>

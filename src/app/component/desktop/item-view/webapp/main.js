@@ -1,19 +1,30 @@
+const store     = require('../../../../service/store/store'); // TODO : nod needed as already injected by parent (to check)
+const helper   = require('../../../../lib/lib').helper;
 
 module.exports = {
+  store,
   components : {
     "tomcat"    : require('./tomcat/main')
   },
   data : function(){
     return {
       disableAction : false,
-      item : null
+      item          : null
     };
   },
   template: require('./main.html'),
   methods : {
     AddTomcat : function() {
       console.log('addTomcat');
-      //this.$store.
+      this.$store.commit('addTomcat', {
+        "item" : this.item,
+        "tomcat" : {
+          "_id"   : helper.generateUUID(),
+          "id"      : "",
+          "port"    : 0,
+          "webapps" : []
+        }
+      });
     }
   },
   computed : {

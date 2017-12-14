@@ -9,7 +9,7 @@ module.exports = {
   data : function(){
     return {
       validation : {
-        "id"     : true,
+        "name"   : true,
         "path"   : true
       }
     };
@@ -32,7 +32,7 @@ module.exports = {
           this.validation.path = true;
         }
       }
-      // webapp.id is always valid (even if empty)
+      // webapp.name is always valid (even if empty)
     }
   },
    mounted : function(){

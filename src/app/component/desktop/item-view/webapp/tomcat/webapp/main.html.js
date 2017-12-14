@@ -4,10 +4,10 @@ module.exports = `
   <hr/>
 
   ID = <inlineInput
-    :initialValue="webapp.id"
-    :valid="validation.id"
+    :initialValue="webapp.name"
+    :valid="validation.name"
     inputType="text"
-    valueName="webapp-id"
+    valueName="webapp-name"
     v-on:changeValue="changeValue"/>
     <br/>
 

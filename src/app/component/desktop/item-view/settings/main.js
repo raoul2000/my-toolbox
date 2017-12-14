@@ -67,7 +67,7 @@ module.exports = {
      */
     changeNotesValue : function(arg) {
       store.commit('updateDesktopItem', {
-        id          : this.data.id,
+        id          : this.data._id,
         updateWith  : {
           notes  : arg.value
         }
@@ -90,7 +90,7 @@ module.exports = {
 
       // update store and file is ALWAYS done (even if validation fails)
       let updateData =  {
-        id         : this.data.id,
+        id         : this.data._id,
         selector   : 'ssh',
         updateWith : {}
       };
@@ -102,17 +102,16 @@ module.exports = {
 
   /**
    * Build the summary view for the selected desktop item. The dekstop item
-   * index is passed as a route query param
+   * id is passed as a path param.
    */
   mounted : function(){
-    let itemId = this.$route.params.id;
     // find the desktop item in the store
-    let dkItem = this.$store.getters.desktopItemById(itemId);
+    let dkItem = this.$store.getters.desktopItemById(this.$route.params.id);
     if( dkItem ) {
       this.data     = dkItem.data;
       this.filename = dkItem.filename;
     } else {
-      console.warn("fail to load item : id = "+itemId);
+      console.warn("fail to load item : id = "+this.$route.params.id);
     }
   }
 };

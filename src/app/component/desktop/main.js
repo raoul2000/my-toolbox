@@ -71,7 +71,7 @@ module.exports = {
     createItem : function() {
       //this.$router.push('/create');
       let newitem = {
-        "id" : helper.generateUUID(),
+        "_id" : helper.generateUUID(),
         "notes"  : '',
         "ssh"    : {
           "host"         : '',
@@ -129,8 +129,8 @@ module.exports = {
     viewDetail : function(item, event) {
       if(event.target.closest(".btn") === null) { // make sure user clicked on the button
         // to push a route with a query param use :
-        // this.$router.push({ path: '/item-view', query: { "id": item.data.id }})
-        this.$router.push({ path: `/item-view/${item.data.id}/settings`});
+        // this.$router.push({ path: '/item-view', query: { "id": item.data._id }})
+        this.$router.push({ path: `/item-view/${item.data._id}/settings`});
         event.stopPropagation();
       }
     },
@@ -139,13 +139,12 @@ module.exports = {
      * @param  {object} item the item in the current store
      */
     removeFromDesktop : function(item) {
-      //let item = store.getters.desktopItemById(item.data.id);
       let filePath = path.join(
         config.store.get("ctdbFolderPath"),
         item.filename
       );
       config.removeDesktopItem(filePath);
-      store.commit('removeFromDesktopById',item.data.id);
+      store.commit('removeFromDesktopById',item.data._id);
     },
     /**
      * Add one or more files to the current desktop.

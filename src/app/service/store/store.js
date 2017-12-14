@@ -20,7 +20,7 @@ module.exports = new Vuex.Store({
     desktopItemById : function(state, getters) {
       return function(id) {
         console.log('desktopItemById');
-        return state.desktop.find( item => item.data.id === id);
+        return state.desktop.find( item => item.data._id === id);
       };
     },
     /*
@@ -80,7 +80,7 @@ module.exports = new Vuex.Store({
       state.desktop.splice(index, 1);
     },*/
     removeFromDesktopById (state, id) {
-      let itemIndex = state.desktop.findIndex( item => item.data.id === id);
+      let itemIndex = state.desktop.findIndex( item => item.data._id === id);
       if( itemIndex !== -1 ) {
         state.desktop.splice(itemIndex, 1);
       }
@@ -88,7 +88,7 @@ module.exports = new Vuex.Store({
 
     updateDesktopItem ( state, args) {
       //let itemToUpdate = state.desktop.find( currentItem => currentItem.filename === args.filename);
-      let itemToUpdate = state.desktop.find( currentItem => currentItem.data.id === args.id);
+      let itemToUpdate = state.desktop.find( currentItem => currentItem.data._id === args.id);
       if( itemToUpdate ) {
         if( args.selector === 'ssh') {
           Object.assign(itemToUpdate.data.ssh, args.updateWith);
@@ -98,8 +98,36 @@ module.exports = new Vuex.Store({
       }
     },
 
+    /**
+     * Add a Tomcat object to an item.
+     * args : {
+     *  item : { // the item object to update},
+     *  tomcat : { // the tomcat instance }
+     * }
+     * @param {Object} state current store state
+     * @param {Object} args  the argument
+     */
     addTomcat(state, args) {
-      state.modules.push(module);
+      let item = state.desktop.find( item => item.data._id === args.item.data._id);
+      if( item ) {
+        item.data.tomcat = [args.tomcat].concat(item.data.tomcat);
+      } else {
+        console.error("item not found : id = "+args.item.data._id);
+      }
+    },
+    updateTomcat(state, options ) {
+      console.log('updateTomcat');
+      let item = state.desktop.find( item => item.data._id === options.item.data._id);
+      if( item ) {
+        let tomcat = item.data.tomcat.find( tc => tc._uuid === options.tomcat._uuid);
+        if( tomcat ) {
+          Object.assign(tomcat, options.updateWith);
+        } else {
+          console.error("tomcat not found : id = "+options.tomcat._id);
+        }
+      } else {
+        console.error("item not found : id = "+options.item.data._id);
+      }
     },
     ////////////////////////////////////////////////////////////////////////////
     // MODULE
