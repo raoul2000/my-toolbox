@@ -1,3 +1,31 @@
+// Generic object to access desktop items, tomcats and webapps. Returns
+// the obejct instance or the array index.
+let find = {
+  "object" : {
+    itemById : function(items, id) {
+      return items.find( item => item.data._id === id);
+    },
+    tomcatById : function(tomcats, id) {
+      return tomcats.find( tomcat => tomcat._id === id);
+    },
+    webappById : function(webapps, id) {
+      return webapps.find( webapp => webapp._id === id);
+    }
+  },
+  "index" : {
+    itemById : function(items, id) {
+      return items.findIndex( item => item.data._id === id);
+    },
+    tomcatById : function(tomcats, id) {
+      return tomcats.findIndex( tomcat => tomcat._id === id);
+    },
+    webappById : function(webapps, id) {
+      return webapps.findIndex( webapp => webapp._id === id);
+    }
+  }
+};
+
+// THE STORE //////////////////////////////////////////////////////////////////
 
 module.exports = new Vuex.Store({
   strict: true, // TODO : DEV only
@@ -19,22 +47,9 @@ module.exports = new Vuex.Store({
     },
     desktopItemById : function(state, getters) {
       return function(id) {
-        console.log('desktopItemById');
-        return state.desktop.find( item => item.data._id === id);
+        return find.object.itemById(state.desktop, id);
       };
     },
-    /*
-    desktopItemByFilename : function(state, getters) {
-      return function(filename) {
-        return state.desktop.find( item => item.filename === filename);
-      };
-    },*/
-    /*
-    desktopItemIndexByFilename : function(state, getters) {
-      return function(filename) {
-        return state.desktop.findIndex( item => item.filename === filename);
-      };
-    },*/
     webappDefById : function(state, getters) {
       return function(webappId) {
         return state.webappDefinition.find( item => item.id === webappId);
@@ -54,7 +69,8 @@ module.exports = new Vuex.Store({
       return function(taskId) {
         return state.tasks.find( task => task.id === taskId);
       };
-    }
+    },
+
   },
   mutations: {
     desktopLoaded(state) {
@@ -80,15 +96,14 @@ module.exports = new Vuex.Store({
       state.desktop.splice(index, 1);
     },*/
     removeFromDesktopById (state, id) {
-      let itemIndex = state.desktop.findIndex( item => item.data._id === id);
+      let itemIndex = find.index.itemById(state.desktop, id);
       if( itemIndex !== -1 ) {
         state.desktop.splice(itemIndex, 1);
       }
     },
 
     updateDesktopItem ( state, args) {
-      //let itemToUpdate = state.desktop.find( currentItem => currentItem.filename === args.filename);
-      let itemToUpdate = state.desktop.find( currentItem => currentItem.data._id === args.id);
+      let itemToUpdate = find.object.itemById(state.desktop, args.id);
       if( itemToUpdate ) {
         if( args.selector === 'ssh') {
           Object.assign(itemToUpdate.data.ssh, args.updateWith);
@@ -107,30 +122,46 @@ module.exports = new Vuex.Store({
      * @param {Object} state current store state
      * @param {Object} args  the argument
      */
-    addTomcat(state, args) {
-      let item = state.desktop.find( item => item.data._id === args.item.data._id);
-      if( item ) {
-        item.data.tomcat = [args.tomcat].concat(item.data.tomcat);
-      } else {
-        console.error("item not found : id = "+args.item.data._id);
+    addTomcat(state, options) {
+      try {
+        let item   = find.object.itemById(state.desktop, options.item.data._id);
+        item.data.tomcats = [options.tomcat].concat(item.data.tomcats);
+      }catch(e) {
+        console.error("failed to addTomcat",options, e);
       }
     },
     updateTomcat(state, options ) {
-      console.log('updateTomcat');
-      let item = state.desktop.find( item => item.data._id === options.item.data._id);
-      if( item ) {
-        let tomcat = item.data.tomcat.find( tc => tc._uuid === options.tomcat._uuid);
-        if( tomcat ) {
-          Object.assign(tomcat, options.updateWith);
-        } else {
-          console.error("tomcat not found : id = "+options.tomcat._id);
-        }
-      } else {
-        console.error("item not found : id = "+options.item.data._id);
+      try {
+        let item   = find.object.itemById(state.desktop, options.item.data._id);
+        let tomcat = find.object.tomcatById(item.data.tomcats, options.tomcat._id);
+        Object.assign(tomcat, options.updateWith);
+      }catch(e) {
+        console.error("failed to updateTomcat",options, e);
       }
     },
+    addWebapp(state, options) {
+      try {
+        let item   = find.object.itemById(state.desktop, options.item.data._id);
+        let tomcat = find.object.tomcatById(item.data.tomcats, options.tomcat._id);
+        tomcat.webapps = [options.webapp].concat(tomcat.webapps);
+      }catch(e) {
+        console.error("failed to addWebapp",options, e);
+      }
+    },
+    updateWebapp(state, options) {
+      try {
+        let item   = find.object.itemById(state.desktop, options.item.data._id);
+        let tomcat = find.object.tomcatById(item.data.tomcats, options.tomcat._id);
+        let webapp = find.object.webappById(tomcat.webapps, options.webapp._id);
+        Object.assign(webapp, options.updateWith);
+      }catch(e) {
+        console.error("failed to updateWebapp",e);
+      }
+    },
+    
     ////////////////////////////////////////////////////////////////////////////
     // MODULE
+
     addModule(state, module) {
       state.modules.push(module);
     },

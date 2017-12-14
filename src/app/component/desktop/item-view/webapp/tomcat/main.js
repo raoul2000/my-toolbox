@@ -1,8 +1,9 @@
 const validate         = require('validator');
 const notify    = require('../../../../../service/notification');
+const helper   = require('../../../../../lib/lib').helper;
 
 module.exports = {
-  props : ['item', 'tomcat','ip', 'tomcatIds'],
+  props : ['item', 'tomcat'],
   components : {
     "webapp"      : require('./webapp/main'),
     "inlineInput" : require('../../../../../lib/component/inline-input'),
@@ -17,11 +18,24 @@ module.exports = {
   },
   template: require('./main.html'),
   methods : {
+    addWebapp : function() {
+      console.log('addWebapp');
+      this.$store.commit('addWebapp', {
+        "item"   : this.item,
+        "tomcat" : this.tomcat,
+        "webapp" : {
+          "_id"    : helper.generateUUID(),
+          "name"   : "",
+          "path"   : "/"
+        }
+      });
+    },
+
     isUniqueTomcatId : function(id) {
-      return this.item.data.tomcat.findIndex( tc => tc.id === id) === -1 ;
+      return this.item.data.tomcats.findIndex( tc => tc.id === id) === -1 ;
     },
     isUniqueTomcatPort : function(port) {
-      return this.item.data.tomcat.findIndex( tc => tc.port === parseInt(port)) === -1 ;
+      return this.item.data.tomcats.findIndex( tc => tc.port === parseInt(port)) === -1 ;
     },
     changeValue : function(arg) {
       if( arg.name === "id") {
@@ -47,17 +61,12 @@ module.exports = {
       }
       // always update even if not valid !
       let updateInfo = {
-        "item"   : this.item,
-        "tomcat" : this.tomcat,
+        "item"       : this.item,
+        "tomcat"     : this.tomcat,
         "updateWith" : {}
       };
       updateInfo.updateWith[arg.name] = arg.value;
       this.$store.commit('updateTomcat',updateInfo );
-    }
-  },
-  computed : {
-    webappsPath : function() {
-      return this.tomcat.webapps.map( webapp => webapp.path);
     }
   },
   /**

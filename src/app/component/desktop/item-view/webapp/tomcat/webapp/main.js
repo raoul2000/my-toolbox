@@ -1,41 +1,51 @@
-const validate  = require('validator');
-const notify    = require('../../../../../../service/notification');
+const validate = require('validator');
+const notify = require('../../../../../../service/notification');
 
 module.exports = {
-  props : ['webapp','ip','port','webappsPath'],
-  components : {
-    "inlineInput"    : require('../../../../../../lib/component/inline-input'),
+  props: ['item', 'tomcat', 'webapp'],
+  components: {
+    "inlineInput": require('../../../../../../lib/component/inline-input'),
   },
-  data : function(){
+  data: function() {
     return {
-      validation : {
-        "name"   : true,
-        "path"   : true
+      validation: {
+        "name": true,
+        "path": true
       }
     };
   },
   template: require('./main.html'),
-  computed : {
-    webappURL : function() {
-      return `http://${this.ip}:${this.port}${this.webapp.path}`;
+  computed: {
+    webappURL: function() {
+      return `http://${this.item.data.ssh.host}:${this.tomcat.port}${this.webapp.path}`;
     }
   },
-  methods : {
-    changeValue : function(arg) {
-      if( arg.name === "webapp-path") {
-        if(  validate.isEmpty(arg.value)) {
+  methods: {
+    changeValue: function(arg) {
+      if (arg.name === "path") {
+        if (validate.isEmpty(arg.value)) {
           this.validation.path = false;
-        } else if( this.webappsPath.indexOf(arg.value) !== -1) {
-          this.validation.path = false;
-          notify(`The path <b>${arg.value}</b> is already in use`,'error','error');
         } else {
-          this.validation.path = true;
+          // check duplicate path
+          let existingWebapp = this.tomcat.webapps.find(webapp => webapp.path === arg.value);
+          if (existingWebapp) {
+            notify(`The path <b>${arg.value}</b> is already in
+              use by web app <b>${existingWebapp.name}</b>`, 'error', 'error');
+            this.validation.path = false;
+          } else {
+            this.validation.path = true;
+          }
         }
       }
       // webapp.name is always valid (even if empty)
+      let updateInfo = {
+        "item"      : this.item,
+        "tomcat"    : this.tomcat,
+        "webapp"    : this.webapp,
+        "updateWith": {}
+      };
+      updateInfo.updateWith[arg.name] = arg.value;
+      this.$store.commit('updateWebapp', updateInfo);
     }
-  },
-   mounted : function(){
-     console.log("webapp mount");
-   }
+  }
 };

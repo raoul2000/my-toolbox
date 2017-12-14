@@ -7,7 +7,7 @@ module.exports = `
     :initialValue="webapp.name"
     :valid="validation.name"
     inputType="text"
-    valueName="webapp-name"
+    valueName="name"
     v-on:changeValue="changeValue"/>
     <br/>
 
@@ -15,7 +15,7 @@ module.exports = `
       :initialValue="webapp.path"
       :valid="validation.path"
       inputType="text"
-      valueName="webapp-path"
+      valueName="path"
       v-on:changeValue="changeValue"/>
       <br/>
       <a :href="webappURL">{{webappURL}}</a>

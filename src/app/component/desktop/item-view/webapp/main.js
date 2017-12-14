@@ -14,22 +14,17 @@ module.exports = {
   },
   template: require('./main.html'),
   methods : {
-    AddTomcat : function() {
+    addTomcat : function() {
       console.log('addTomcat');
       this.$store.commit('addTomcat', {
         "item" : this.item,
         "tomcat" : {
-          "_id"   : helper.generateUUID(),
+          "_id"     : helper.generateUUID(),
           "id"      : "",
           "port"    : 0,
           "webapps" : []
         }
       });
-    }
-  },
-  computed : {
-    tomcatIds : function() {
-      return this.item.data.tomcat.map( tomcat => tomcat.id);
     }
   },
   /**
