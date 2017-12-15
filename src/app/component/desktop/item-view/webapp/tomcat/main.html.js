@@ -1,23 +1,30 @@
 module.exports = `
 <div >
-  <h2> Tomcat </h2>
-  <hr/>
-  <div class="btn-group" role="group" style="margin-bottom:1em;">
-    <button title="Add Webapp" v-on:click="addWebapp()" type="button" class="btn btn-default">
-      Add Webapp
-    </button>
-    <button title="Delete Tomcat" v-on:click="deleteTomcat()" type="button" class="btn btn-default">
-      Delete Tomcat
+  <table class="header-tomcat">
+    <tr>
+    <td class="header-tomcat-text">Tomcat</td>
+    <td class="header-tomcat-text" width="100%">
+      <inlineInput
+        :initialValue="tomcat.id"
+        :valid="validation.id"
+        inputType="text"
+        valueName="id"
+        v-on:changeValue="changeValue"/>
+    </td>
+    <td>
+
+      <button title="Delete Tomcat" v-on:click="deleteTomcat()" type="button" class="btn btn-danger btn-xs">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+      </button>
+    </td>
+    </tr>
+  </table>
+
+  <div class="btn-group btn-group-sm secondary-toolbar" role="group">
+    <button title="Add Webapp" v-on:click="addWebapp()" type="button" class="btn btn-default btn-xs">
+      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> webapp
     </button>
   </div>
-
-  ID = <inlineInput
-    :initialValue="tomcat.id"
-    :valid="validation.id"
-    inputType="text"
-    valueName="id"
-    v-on:changeValue="changeValue"/>
-    <br/>
 
     Port : <inlineInput
       :initialValue="tomcat.port"

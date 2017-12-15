@@ -3,10 +3,19 @@
 #app[v-cloak] > *  { display:none; }
 .loading  { display:none; }
 
+table.header-tomcat {
+  border-bottom : 5px solid #efebeb;
+}
+td.header-tomcat-text {
+  font-size : 1.8em;
+  padding-right: 0.4em;
+
+}
+
 
 .inline-input {
   width:100%;
-  height: 1em;
+  min-height: 1.2em;
   cursor: pointer;
 }
 
@@ -46,6 +55,14 @@
 }
 
 
+.primary-toolbar {
+  margin-bottom:1em;
+}
+
+.secondary-toolbar {
+  margin-bottom:1em;
+  margin-top:1em;
+}
 
 
 .router-link-active {
