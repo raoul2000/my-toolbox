@@ -80,8 +80,8 @@ module.exports = {
           "password"     : '',
           "readyTimeout" : 50000
         },
-        "entity" : [],
-        "tomcat" : []
+        "entities" : [],
+        "tomcats" : []
       };
 
       var defaultFilename = path.join(

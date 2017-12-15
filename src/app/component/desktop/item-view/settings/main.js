@@ -5,6 +5,7 @@ var fs                 = require('fs');
 var path               = require('path');
 const config           = require('../../../../service/config');
 var checkSSHConnection = require('../../../../lib/ssh/check-connection').checkConnection;
+var persistence        = require('../../../../lib/lib').persistence;
 
 module.exports = {
   components : {
@@ -16,8 +17,7 @@ module.exports = {
     return {
       action       : null, // 'test-connection'
       connectionOk : true,
-      data         : null,
-      filename     : "",
+      item         : null,
       validation : {
         "host"     : true,
         "username" : true,
@@ -30,16 +30,16 @@ module.exports = {
   computed : {
     canTestConnection : function(){
       return this.action === null
-        && this.data.ssh.host.length > 0
-        && this.data.ssh.username.length > 0
-        && this.data.ssh.password.length > 0;
+        && this.item.data.ssh.host.length > 0
+        && this.item.data.ssh.username.length > 0
+        && this.item.data.ssh.password.length > 0;
     }
   },
   methods : {
     testConnection : function() {
       this.action = "test-connection";
       this.connectionOk = null;
-      checkSSHConnection(this.data.ssh)
+      checkSSHConnection(this.item.data.ssh)
       .then( success => {
         this.connectionOk = true;
         this.action = null;
@@ -50,29 +50,16 @@ module.exports = {
       });
     },
     /**
-     * Update the JSON file the current desktop item has been loaded from.
-     * This method is called after successfull value change (SSH or notes)
-     */
-    updateDesktopItemFile : function() {
-      let filePath = path.join(config.store.get("ctdbFolderPath"), this.filename);
-      fs.writeFile(filePath, JSON.stringify(this.data, null, 2) , 'utf-8', (err) => {
-        if(err) {
-          notify('failed to save changes to file','error','error');
-          console.error(err);
-        }
-      });
-    },
-    /**
      * Handle Notes update : updtae the store and the file
      */
     changeNotesValue : function(arg) {
       store.commit('updateDesktopItem', {
-        id          : this.data._id,
+        id          : this.item.data._id,
         updateWith  : {
           notes  : arg.value
         }
       });
-      this.updateDesktopItemFile(); // update the file
+      persistence.saveDesktopnItemToFile(this.item);
     },
     /**
      * Handle SSH settings update : update the store and the file.
@@ -90,13 +77,13 @@ module.exports = {
 
       // update store and file is ALWAYS done (even if validation fails)
       let updateData =  {
-        id         : this.data._id,
+        id         : this.item.data._id,
         selector   : 'ssh',
         updateWith : {}
       };
       updateData.updateWith[arg.name] = arg.value;
       store.commit('updateDesktopItem',updateData);
-      this.updateDesktopItemFile(); // update the file
+      persistence.saveDesktopnItemToFile(this.item);
     }
   },
 
@@ -106,11 +93,8 @@ module.exports = {
    */
   mounted : function(){
     // find the desktop item in the store
-    let dkItem = this.$store.getters.desktopItemById(this.$route.params.id);
-    if( dkItem ) {
-      this.data     = dkItem.data;
-      this.filename = dkItem.filename;
-    } else {
+    this.item = this.$store.getters.desktopItemById(this.$route.params.id);
+    if( ! this.item ) {
       console.warn("fail to load item : id = "+this.$route.params.id);
     }
   }

@@ -1,5 +1,6 @@
 const validate = require('validator');
 const notify   = require('../../../../../../service/notification');
+var persistence = require('../../../../../../lib/lib').persistence;
 
 module.exports = {
   props: ['item', 'tomcat', 'webapp'],
@@ -46,6 +47,7 @@ module.exports = {
       };
       updateInfo.updateWith[arg.name] = arg.value;
       this.$store.commit('updateWebapp', updateInfo);
+      persistence.saveDesktopnItemToFile(this.item);
     }
   }
 };

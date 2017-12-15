@@ -2,7 +2,7 @@ module.exports = `
 <div>
 
   <div class="row" style="margin-top:1.5em;">
-    <div v-if="data != null " class="col-xs-5">
+    <div v-if="item != null " class="col-xs-5">
 
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -21,7 +21,7 @@ module.exports = `
               <th width="200px">host</th>
               <td data-field="host">
                 <inlineInput
-                  :initialValue="data.ssh.host"
+                  :initialValue="item.data.ssh.host"
                   :valid="validation.host"
                   inputType="text"
                   valueName="host"
@@ -32,7 +32,7 @@ module.exports = `
               <th>username</th>
               <td>
               <inlineInput
-                :initialValue="data.ssh.username"
+                :initialValue="item.data.ssh.username"
                 :valid="validation.username"
                 inputType="text"
                 valueName="username"
@@ -44,7 +44,7 @@ module.exports = `
               <th>password</th>
               <td>
               <inlineInput
-                :initialValue="data.ssh.password"
+                :initialValue="item.data.ssh.password"
                 :valid="validation.password"
                 inputType="password"
                 valueName="password"
@@ -55,7 +55,7 @@ module.exports = `
               <th>SSH Port</th>
               <td>
                 <inlineInput
-                  :initialValue="data.ssh.port"
+                  :initialValue="item.data.ssh.port"
                   :valid="validation.port"
                   inputType="text"
                   valueName="port"
@@ -82,7 +82,7 @@ module.exports = `
       </div><!-- end of panel -->
     </div>
 
-    <div v-if="data != null" class="col-xs-7">
+    <div v-if="item != null" class="col-xs-7">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">
@@ -90,7 +90,7 @@ module.exports = `
         </h3>
       </div>
       <inlineTextarea
-        :initialValue="data.notes"
+        :initialValue="item.data.notes"
         :valid="validation.notes"
         inputType="markdown"
         valueName="notes"

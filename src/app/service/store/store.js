@@ -1,3 +1,6 @@
+
+
+
 // Generic object to access desktop items, tomcats and webapps. Returns
 // the obejct instance or the array index.
 let find = {
@@ -158,7 +161,7 @@ module.exports = new Vuex.Store({
         console.error("failed to updateWebapp",e);
       }
     },
-    
+
     ////////////////////////////////////////////////////////////////////////////
     // MODULE
 

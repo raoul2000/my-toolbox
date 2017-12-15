@@ -1,5 +1,6 @@
 const store     = require('../../../../service/store/store'); // TODO : nod needed as already injected by parent (to check)
-const helper   = require('../../../../lib/lib').helper;
+const helper    = require('../../../../lib/lib').helper;
+var persistence = require('../../../../lib/lib').persistence;
 
 module.exports = {
   store,
@@ -25,6 +26,7 @@ module.exports = {
           "webapps" : []
         }
       });
+      persistence.saveDesktopnItemToFile(this.item);
     }
   },
   /**

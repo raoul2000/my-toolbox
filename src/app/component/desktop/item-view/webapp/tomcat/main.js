@@ -1,6 +1,7 @@
 const validate = require('validator');
 const notify   = require('../../../../../service/notification');
 const helper   = require('../../../../../lib/lib').helper;
+var persistence = require('../../../../../lib/lib').persistence;
 
 module.exports = {
   props : ['item', 'tomcat'],
@@ -29,6 +30,7 @@ module.exports = {
           "path"   : "/"
         }
       });
+      persistence.saveDesktopnItemToFile(this.item);
     },
 
     isUniqueTomcatId : function(id) {
