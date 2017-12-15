@@ -22,6 +22,14 @@ module.exports = {
     }
   },
   methods: {
+    deleteWebapp : function() {
+      this.$store.commit('deleteWebapp', {
+        "item"      : this.item,
+        "tomcat"    : this.tomcat,
+        "webapp"    : this.webapp
+      });
+      persistence.saveDesktopnItemToFile(this.item);
+    },
     changeValue: function(arg) {
       if (arg.name === "path") {
         if (validate.isEmpty(arg.value)) {

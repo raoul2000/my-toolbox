@@ -142,6 +142,15 @@ module.exports = new Vuex.Store({
         console.error("failed to updateTomcat",options, e);
       }
     },
+    deleteTomcat(state, options) {
+      try {
+        let item   = find.object.itemById(state.desktop, options.item.data._id);
+        let tomcatIndex = find.index.tomcatById(item.data.tomcats, options.tomcat._id);
+        item.data.tomcats.splice(tomcatIndex, 1);
+      }catch(e) {
+        console.error("failed to deleteTomcat",e);
+      }
+    },
     addWebapp(state, options) {
       try {
         let item   = find.object.itemById(state.desktop, options.item.data._id);
@@ -161,7 +170,16 @@ module.exports = new Vuex.Store({
         console.error("failed to updateWebapp",e);
       }
     },
-
+    deleteWebapp(state, options) {
+      try {
+        let item   = find.object.itemById(state.desktop, options.item.data._id);
+        let tomcat = find.object.tomcatById(item.data.tomcats, options.tomcat._id);
+        let webappIndex = find.index.webappById(tomcat.webapps, options.webapp._id);
+        tomcat.webapps.splice(webappIndex, 1);
+      }catch(e) {
+        console.error("failed to deleteWebapp",e);
+      }
+    },
     ////////////////////////////////////////////////////////////////////////////
     // MODULE
 

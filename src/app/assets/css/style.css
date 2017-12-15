@@ -7,6 +7,7 @@
 .inline-input {
   width:100%;
   height: 1em;
+  cursor: pointer;
 }
 
 .inline-textarea {

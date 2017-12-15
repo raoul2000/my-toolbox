@@ -2,7 +2,11 @@ module.exports = `
 <div>
   webapp<br/>
   <hr/>
-
+  <div class="btn-group" role="group" style="margin-bottom:1em;">
+    <button title="Delete Webapp" v-on:click="deleteWebapp()" type="button" class="btn btn-default">
+      Delete Webapp
+    </button>
+  </div>
   ID = <inlineInput
     :initialValue="webapp.name"
     :valid="validation.name"

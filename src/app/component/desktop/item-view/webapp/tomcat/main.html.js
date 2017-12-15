@@ -1,6 +1,16 @@
 module.exports = `
 <div >
   <h2> Tomcat </h2>
+  <hr/>
+  <div class="btn-group" role="group" style="margin-bottom:1em;">
+    <button title="Add Webapp" v-on:click="addWebapp()" type="button" class="btn btn-default">
+      Add Webapp
+    </button>
+    <button title="Delete Tomcat" v-on:click="deleteTomcat()" type="button" class="btn btn-default">
+      Delete Tomcat
+    </button>
+  </div>
+
   ID = <inlineInput
     :initialValue="tomcat.id"
     :valid="validation.id"
@@ -17,11 +27,7 @@ module.exports = `
       v-on:changeValue="changeValue"/>
       <br/>
 
-      <div class="btn-group" role="group" style="margin-bottom:1em;">
-        <button title="Add Webapp" v-on:click="addWebapp()" type="button" class="btn btn-default">
-          Add Webapp
-        </button>
-      </div>
+
 
 
   <div v-for="webapp in tomcat.webapps" :key="webapp._id">

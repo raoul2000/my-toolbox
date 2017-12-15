@@ -32,7 +32,13 @@ module.exports = {
       });
       persistence.saveDesktopnItemToFile(this.item);
     },
-
+    deleteTomcat : function(){
+      this.$store.commit('deleteTomcat', {
+        "item"   : this.item,
+        "tomcat" : this.tomcat
+      });
+      persistence.saveDesktopnItemToFile(this.item);
+    },
     isUniqueTomcatId : function(id) {
       return this.item.data.tomcats.findIndex( tc => tc.id === id) === -1 ;
     },
