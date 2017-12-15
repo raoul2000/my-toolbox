@@ -23,12 +23,32 @@ module.exports = {
   },
   methods: {
     deleteWebapp : function() {
-      this.$store.commit('deleteWebapp', {
-        "item"      : this.item,
-        "tomcat"    : this.tomcat,
-        "webapp"    : this.webapp
+      let self = this;
+      (new PNotify({
+          title: 'Confirmation Needed',
+          text: `Are you sure you want to delete the webapp <code>${self.webapp.name}</code>?`,
+          icon: 'glyphicon glyphicon-question-sign',
+          hide: false,
+          confirm: {
+              confirm: true
+          },
+          buttons: {
+              closer: false,
+              sticker: false
+          },
+          history: {
+              history: false
+          },
+          stack: {"dir1": "down", "dir2": "left", "modal": true, "overlay_close": true}
+      })).get().on('pnotify.confirm', function() {
+        self.$store.commit('deleteWebapp', {
+          "item"      : self.item,
+          "tomcat"    : self.tomcat,
+          "webapp"    : self.webapp
+        });
+        persistence.saveDesktopnItemToFile(self.item);
       });
-      persistence.saveDesktopnItemToFile(this.item);
+
     },
     changeValue: function(arg) {
       if (arg.name === "path") {

@@ -33,11 +33,30 @@ module.exports = {
       persistence.saveDesktopnItemToFile(this.item);
     },
     deleteTomcat : function(){
-      this.$store.commit('deleteTomcat', {
-        "item"   : this.item,
-        "tomcat" : this.tomcat
+      let self = this;
+      (new PNotify({
+          title: 'Confirmation Needed',
+          text: `Are you sure you want to delete the tomcat <code>${self.tomcat.id.length}</code> and all its webapps ?`,
+          icon: 'glyphicon glyphicon-question-sign',
+          hide: false,
+          confirm: {
+              confirm: true
+          },
+          buttons: {
+              closer: false,
+              sticker: false
+          },
+          history: {
+              history: false
+          },
+          stack: {"dir1": "down", "dir2": "left", "modal": true, "overlay_close": true}
+      })).get().on('pnotify.confirm', function() {
+        self.$store.commit('deleteTomcat', {
+          "item"   : self.item,
+          "tomcat" : self.tomcat
+        });
+        persistence.saveDesktopnItemToFile(self.item);
       });
-      persistence.saveDesktopnItemToFile(this.item);
     },
     isUniqueTomcatId : function(id) {
       return this.item.data.tomcats.findIndex( tc => tc.id === id) === -1 ;
