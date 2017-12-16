@@ -21,7 +21,7 @@ module.exports = {
 
 
     <div v-if="!editing">
-      <div v-if="inputType=='markdown'" class="html-value" v-html="currentVal" />
+      <div v-if="inputType=='markdown'" class="html-value" v-html="displayValue" />
       <div v-else class="text-value">{{currentVal}}</div>
     </div>
     <textarea
@@ -41,36 +41,33 @@ module.exports = {
       default : "text" // text | markdown
     },
     "valid"        : [Boolean],
+    "emptyValue"   : [ String ]
   },
   data : function() {
     return {
       "editing"       : false,
-      "rawCurrentVal" : this.initialValue,
+      "currentVal"    : "".concat(this.initialValue),
       "fieldElement"  : null
     };
   },
   computed : {
-    currentVal : {
-      get : function(){
-        console.log('get current val');
-        let displayVal = this.rawCurrentVal.length === 0 ? "click here to enter a value .." : this.rawCurrentVal;
-        if( this.editing ) {
-          return this.rawCurrentVal;
-        } else if( this.inputType === "markdown") {
-          return markdown.toHTML( this.rawCurrentVal ? this.rawCurrentVal : displayVal);
-        } else {
-          return displayVal;
-        }
-      },
-      set : function(val) {
-        this.rawCurrentVal = val;
+    displayValue : function(){
+      let val = "";
+      if( (this.emptyValue && this.emptyValue.length !== 0) && this.currentVal.length === 0 ) {
+        val = this.emptyValue;
+      } else {
+        val = this.inputType === 'markdown'
+          ? markdown.toHTML(this.currentVal)
+          : this.currentVal;
       }
+      return val;
     }
   },
   methods : {
 
     startEdit : function() {
       var self = this;
+      this.currentVal = this.currentVal.trim();
       this.editing = true;  // start edit now
       Vue.nextTick(function() {
         self.fieldElement = self.$el.querySelector('textarea');

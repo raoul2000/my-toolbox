@@ -18,41 +18,42 @@ module.exports = `
         <table class="table table-hover">
           <tbody>
             <tr>
-              <th width="200px">host</th>
+              <th width="200px" class="field-label-right">host : </th>
               <td data-field="host">
                 <inlineInput
                   :initialValue="item.data.ssh.host"
                   :valid="validation.host"
                   inputType="text"
                   valueName="host"
+                  emptyValue="<em class='text-muted'>xxx.xxx.xxx.xxx</em>"
                   v-on:changeValue="changeSSHValue"/>
               </td>
             </tr>
             <tr>
-              <th>username</th>
+              <th class="field-label-right">username : </th>
               <td>
-              <inlineInput
-                :initialValue="item.data.ssh.username"
-                :valid="validation.username"
-                inputType="text"
-                valueName="username"
-                v-on:changeValue="changeSSHValue"/>
-
+                <inlineInput
+                  :initialValue="item.data.ssh.username"
+                  :valid="validation.username"
+                  inputType="text"
+                  valueName="username"
+                  emptyValue="<em class='text-muted'>...</em>"
+                  v-on:changeValue="changeSSHValue"/>
               </td>
             </tr>
             <tr>
-              <th>password</th>
+              <th class="field-label-right">password : </th>
               <td>
-              <inlineInput
-                :initialValue="item.data.ssh.password"
-                :valid="validation.password"
-                inputType="password"
-                valueName="password"
-                v-on:changeValue="changeSSHValue"/>
+                <inlineInput
+                  :initialValue="item.data.ssh.password"
+                  :valid="validation.password"
+                  inputType="password"
+                  valueName="password"
+                  v-on:changeValue="changeSSHValue"/>
               </td>
             </tr>
             <tr>
-              <th>SSH Port</th>
+              <th class="field-label-right">SSH Port : </th>
               <td>
                 <inlineInput
                   :initialValue="item.data.ssh.port"
@@ -94,6 +95,7 @@ module.exports = `
         :valid="validation.notes"
         inputType="markdown"
         valueName="notes"
+        emptyValue="enter a note..."
         v-on:changeValue="changeNotesValue"/>
     </div>
     </div>

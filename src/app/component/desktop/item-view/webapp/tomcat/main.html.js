@@ -9,6 +9,7 @@ module.exports = `
         :valid="validation.id"
         inputType="text"
         valueName="id"
+        emptyValue="<em class='text-muted'>ENTER ID HERE ...</em>"
         v-on:changeValue="changeValue"/>
     </td>
     <td>

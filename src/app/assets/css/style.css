@@ -3,6 +3,10 @@
 #app[v-cloak] > *  { display:none; }
 .loading  { display:none; }
 
+.field-label-right {
+  text-align: right;
+  white-space: nowrap;
+}
 table.header-tomcat {
   border-bottom : 5px solid #efebeb;
 }

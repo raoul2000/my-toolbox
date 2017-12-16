@@ -8,7 +8,7 @@ module.exports = {
     v-bind:class="{ 'inline-editing' : editing, 'inline-validation-error' : !valid}">
 
     <span v-if="inputType == 'text'" class="inline-ctrl-text">
-      <span v-if="!editing" class="current-value">{{currentVal}}</span>
+      <span v-if="!editing" class="current-value" v-html="displayValue"></span>
       <input v-else type="text" v-on:blur="stopEdit" v-on:keyup.enter="stopEdit"/>
     </span>
     <span v-else-if="inputType == 'password'" class="inline-ctrl-password">
@@ -32,22 +32,29 @@ module.exports = {
     "valueName"    : [String, Number],
     "valid"        : [Boolean],
     "inputType"    : [String], // text, password
+    "emptyValue"   : [String]
   },
   data : function() {
     return {
       "editing"      : false,
-      "currentVal"   : this.initialValue,
+      "currentVal"   : "".concat(this.initialValue),
       "fieldElement" : null
     };
   },
   computed : {
     hiddenPassword : function(){
       return this.currentVal && this.currentVal.length !== 0 ? new Array(this.currentVal.length + 1).join( '*' ) : '';
+    },
+    displayValue : function(){
+      return (this.emptyValue && this.emptyValue.length !== 0) && this.currentVal.length === 0
+        ? this.emptyValue
+        : this.currentVal;
     }
   },
   methods : {
     startEdit : function() {
       this.editing = true;
+      this.currentVal = this.currentVal.trim();
       var self = this;
       Vue.nextTick(function() {
         self.fieldElement = self.$el.querySelector('input');
@@ -57,8 +64,8 @@ module.exports = {
     },
     stopEdit : function() {
       this.editing = false;
-      let newValue = this.fieldElement.value;
-      if( newValue !== this.currentVal) {
+      let newValue = this.fieldElement.value.trim();
+      if( newValue !== this.currentVal ) {
         this.currentVal =  newValue;
         this.$emit('changeValue',{
           "name"  : this.valueName,
