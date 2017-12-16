@@ -7,11 +7,15 @@ module.exports = `
         <button title="Add Tomcat" v-on:click="addTomcat()" type="button" class="btn btn-default btn-xs">
           <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Tomcat
         </button>
+        <button title="Toggle Webapp View" v-on:click="toggleExpanAll()" type="button" class="btn btn-default btn-xs">
+          <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> toggle view
+        </button>
       </div>
 
       <div v-for="tomcat in item.data.tomcats"  :key="tomcat._id">
         <tomcat
           :item="item"
+          :expanded="expandAll"
           :tomcat="tomcat"/>
       </div>
 

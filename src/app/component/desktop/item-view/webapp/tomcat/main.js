@@ -4,7 +4,7 @@ const helper   = require('../../../../../lib/lib').helper;
 var persistence = require('../../../../../lib/lib').persistence;
 
 module.exports = {
-  props : ['item', 'tomcat'],
+  props : ['item', 'tomcat','expanded'],
   components : {
     "webapp"      : require('./webapp/main'),
     "inlineInput" : require('../../../../../lib/component/inline-input'),
@@ -15,7 +15,7 @@ module.exports = {
         "id"     : true,
         "port"   : true
       },
-      showWebapp : true
+      showWebapp : this.expanded
     };
   },
   template: require('./main.html'),
@@ -26,14 +26,14 @@ module.exports = {
   },
   methods : {
     toggleButtonClass : function() {
-      if( this.showWebapp ) {
+      if( this.expanded ) {
         return ["glyphicon", "glyphicon-menu-down"];
       } else {
         return ["glyphicon", "glyphicon-menu-right"];
       }
     },
     toggleWebappView : function() {
-      this.showWebapp = ! this.showWebapp;
+      this.expanded = ! this.expanded;
     },
     addWebapp : function() {
       console.log('addWebapp');

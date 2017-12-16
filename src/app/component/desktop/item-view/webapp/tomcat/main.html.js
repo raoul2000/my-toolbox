@@ -47,7 +47,7 @@ module.exports = `
     </tr>
   </table>
 
-  <div v-if="showWebapp">
+  <div v-if="expanded">
 
     <div class="btn-group btn-group-sm secondary-toolbar" role="group">
       <button title="Add Webapp" v-on:click="addWebapp()" type="button" class="btn btn-default btn-xs">

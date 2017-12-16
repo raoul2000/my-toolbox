@@ -10,11 +10,15 @@ module.exports = {
   data : function(){
     return {
       disableAction : false,
+      expandAll     : true,
       item          : null
     };
   },
   template: require('./main.html'),
   methods : {
+    toggleExpanAll : function() {
+      this.expandAll = ! this.expandAll;
+    },
     addTomcat : function() {
       console.log('addTomcat');
       this.$store.commit('addTomcat', {
