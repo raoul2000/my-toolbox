@@ -23,8 +23,8 @@ module.exports = {
      * @param  {object} item the item data object
      * @return {string} the element id
      */
-    getItemElementId : function(item) {
-      return `id=${item.id}`;
+    getItemElementId : function(itemData) {
+      return itemData._id;
     },
     /**
      * Creates and returns the HTML content of a card item
@@ -70,7 +70,7 @@ module.exports = {
      */
     createItem : function() {
       //this.$router.push('/create');
-      let newitem = {
+      let newItem = {
         "_id" : helper.generateUUID(),
         "notes"  : '',
         "ssh"    : {
@@ -86,7 +86,7 @@ module.exports = {
 
       var defaultFilename = path.join(
         config.getRecentCTDBPath(),
-        "NO_NAME".concat('.json')
+        "NO_NAME"
       );
       console.log('saving to ', defaultFilename);
 
@@ -106,13 +106,23 @@ module.exports = {
               // TODO : wee how to highlight the existing item (css animate ?)
               notify('It is not permitted to save an item out of the base folder','error','Error');
             } else {
-              fs.writeFile(filename, JSON.stringify(newitem, null, 2) , 'utf-8', (err) => {
+              fs.writeFile(filename, JSON.stringify(newItem, null, 2) , 'utf-8', (err) => {
                 if(err) {
                   notify('failed to save','error','error');
                   console.error(err);
                 } else {
-                  notify(`Saved to <b>${relativeFilePath}</b>` ,'success','Success');
+
+                  store.commit('addToDesktop',{
+                    "filename" : relativeFilePath,
+                    "data"     : newItem,
+                    "name"     : path.basename(relativeFilePath),
+                    "path"     : path.dirname(relativeFilePath)
+                                  .split(path.sep)
+                                  .filter( token => token.length !== 0)
+                  });
                   config.store.set('recent.ctdbPath',path.dirname(filename));
+                  config.addDesktopItem(filename);
+                  notify(`Saved to <b>${relativeFilePath}</b> and added to your desktop` ,'success','Success');
                 }
               });
             }
@@ -162,16 +172,16 @@ module.exports = {
           if(relativeFilePath === file) {
             notify('It is not permitted to select an item out of the base folder','error','Error');
           } else {
-             let newItem = JSON.parse(fs.readFileSync(file, 'utf8'));
-             if( store.getters.desktopItemById(newItem.id) ) {
+             let newItemData = JSON.parse(fs.readFileSync(file, 'utf8'));
+             if( store.getters.desktopItemById(newItemData._id) ) {
                notify(`The item is already part of your desktop :
                  <pre>${relativeFilePath}</pre>`,'warning','warning');
 
                // Animate (shake) the existing desktop item Modify directly the DOM using
                // the computed element id that has been defined by the template
 
-               //let elementId = "dkitem-id-"+newItem.id;
-               let elementId = this.getItemElementId(newItem);
+               //let elementId = "dkitem-id-"+newItemData.id;
+               let elementId = this.getItemElementId(newItemData);
                let div = document.getElementById(elementId);
                if( div ) {
                  if( div.classList.contains('animated') === false) {
@@ -188,8 +198,8 @@ module.exports = {
              } else {
               store.commit('addToDesktop',{
                 "filename" : relativeFilePath,
-                "data"     : newItem,
-                "name"     : path.basename(relativeFilePath,".json"),
+                "data"     : newItemData,
+                "name"     : path.basename(relativeFilePath),
                 "path"     : path.dirname(relativeFilePath)
                               .split(path.sep)
                               .filter( token => token.length !== 0)
