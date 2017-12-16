@@ -14,11 +14,27 @@ module.exports = {
       validation : {
         "id"     : true,
         "port"   : true
-      }
+      },
+      showWebapp : true
     };
   },
   template: require('./main.html'),
+  computed : {
+    tomcatManagerURL : function() {
+        return `http://${this.item.data.ssh.host}:${this.tomcat.port}/manager/html`;
+    }
+  },
   methods : {
+    toggleButtonClass : function() {
+      if( this.showWebapp ) {
+        return ["glyphicon", "glyphicon-menu-down"];
+      } else {
+        return ["glyphicon", "glyphicon-menu-right"];
+      }
+    },
+    toggleWebappView : function() {
+      this.showWebapp = ! this.showWebapp;
+    },
     addWebapp : function() {
       console.log('addWebapp');
       this.$store.commit('addWebapp', {
