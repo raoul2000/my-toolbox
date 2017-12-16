@@ -93,6 +93,7 @@ module.exports = {
       };
       updateInfo.updateWith[arg.name] = arg.value;
       this.$store.commit('updateTomcat',updateInfo );
+      persistence.saveDesktopnItemToFile(this.item);
     }
   }
 };
