@@ -3,17 +3,33 @@
 #app[v-cloak] > *  { display:none; }
 .loading  { display:none; }
 
+.webapp-container {
+  border-left: 14px solid #eee;
+  padding-left: 0.7em;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1em;
+  margin-bottom: 1em;  
+}
+
 .field-label-right {
   text-align: right;
   white-space: nowrap;
 }
+
 table.header-tomcat {
   border-bottom : 5px solid #efebeb;
 }
 td.header-tomcat-text {
   font-size : 1.8em;
   padding-right: 0.4em;
+}
 
+table.header-webapp {
+  border-bottom : 2px solid #eeeeee;
+}
+td.header-webapp-text {
+  font-size : 1.4em;
+  padding-right: 0.4em;
 }
 
 

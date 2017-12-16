@@ -35,16 +35,11 @@ module.exports = `
       v-on:changeValue="changeValue"/>
       <br/>
 
-
-
-
   <div v-for="webapp in tomcat.webapps" :key="webapp._id">
-    <div style="border:1px solid blue;padding:1em;">
     <webapp
       :item="item"
       :tomcat="tomcat"
       :webapp="webapp"/>
-    </div>
   </div>
 </div>
 `;
