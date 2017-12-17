@@ -84,12 +84,16 @@ module.exports = {
       }
     },
     "openTabWebapp" : function() {
-      this.$router.push('webapp');
-      this.activeTab = "webapp";
+      this.activeTab = "webapps";
+      this.$router.push('webapps');
     },
     "openTabHome" : function() {
       this.activeTab = "settings";
       this.$router.push('settings');
+    },
+    "openTabComponents" : function() {
+      this.activeTab = "components";
+      this.$router.push('components');
     },
     /**
      * Create the HTML page header out of the desktop item relative file path.

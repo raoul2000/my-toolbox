@@ -13,6 +13,9 @@ let find = {
     },
     webappById : function(webapps, id) {
       return webapps.find( webapp => webapp._id === id);
+    },
+    componentById : function(components, id) {
+      return components.find( component => component._id === id);
     }
   },
   "index" : {
@@ -24,7 +27,11 @@ let find = {
     },
     webappById : function(webapps, id) {
       return webapps.findIndex( webapp => webapp._id === id);
+    },
+    componentById : function(components, id) {
+      return components.findIndex( component => component._id === id);
     }
+
   }
 };
 
@@ -180,6 +187,25 @@ module.exports = new Vuex.Store({
         console.error("failed to deleteWebapp",e);
       }
     },
+    addComponent(state, options) {
+      console.log('addComponent');
+      try {
+        let item   = find.object.itemById(state.desktop, options.item.data._id);
+        item.data.components = [options.component].concat(item.data.components);
+      }catch(e) {
+        console.error("failed to addComponent",options, e);
+      }
+    },
+    updateComponent(state, options) {
+      try {
+        let item   = find.object.itemById(state.desktop, options.item.data._id);
+        let component = find.object.componentById(item.data.components, options.component._id);
+        Object.assign(component, options.updateWith);
+      }catch(e) {
+        console.error("failed to updateComponent",e);
+      }
+    },
+
     ////////////////////////////////////////////////////////////////////////////
     // MODULE
 

@@ -9,9 +9,10 @@ const DbNav    = require('./component/db-explorer/main');
 const Create   = require('./component/create/main');
 const View     = require('./component/view/main');
 
-const ItemView     = require('./component/desktop/item-view/main');
-const ItemViewSettings     = require('./component/desktop/item-view/settings/main');
-const ItemViewWebapp     = require('./component/desktop/item-view/webapp/main');
+const ItemView            = require('./component/desktop/item-view/main');
+const ItemViewSettings    = require('./component/desktop/item-view/settings/main');
+const ItemViewWebapps     = require('./component/desktop/item-view/webapps/main');
+const ItemViewComponents  = require('./component/desktop/item-view/components/main');
 
 const Deploy   = require('./component/deploy/main');
 const MavenDownload   = require('./component/maven-download/main');
@@ -43,8 +44,12 @@ const router = new VueRouter({
         component: ItemViewSettings
       },
       {
-        path: 'webapp',
-        component: ItemViewWebapp
+        path: 'webapps',
+        component: ItemViewWebapps
+      },
+      {
+        path: 'components',
+        component: ItemViewComponents
       }
     ]},
     { path: '/deploy',   component: Deploy,   name : 'deploy'},
