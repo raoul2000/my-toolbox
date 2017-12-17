@@ -2,7 +2,7 @@ module.exports = `
 <div>
 
   <div class="row" style="margin-top:1.5em;">
-    <div v-if="item != null " class="col-xs-5">
+    <div v-if="item != null " class="col-xs-3">
 
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -83,7 +83,7 @@ module.exports = `
       </div><!-- end of panel -->
     </div>
 
-    <div v-if="item != null" class="col-xs-7">
+    <div v-if="item != null" class="col-xs-9">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">

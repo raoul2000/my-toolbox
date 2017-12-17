@@ -19,6 +19,12 @@ module.exports = {
     };
   },
   template: require('./main.html'),
+  computed : {
+    // TODO : filter webapp display on user input
+    filtered : function() {
+      return 1;
+    }
+  },
   methods : {
     /**
      * Start putty.exe application

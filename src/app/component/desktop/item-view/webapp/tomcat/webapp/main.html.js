@@ -26,7 +26,7 @@ module.exports = `
   <table>
     <tr>
       <td class="field-label-right">
-        path :
+        path : 
       </td>
       <td width="100%">
         <inlineInput
