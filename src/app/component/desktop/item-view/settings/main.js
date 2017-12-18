@@ -10,7 +10,8 @@ var persistence        = require('../../../../lib/lib').persistence;
 module.exports = {
   components : {
     "inlineInput"    : require('../../../../lib/component/inline-input'),
-    "inlineTextarea" : require('../../../../lib/component/inline-textarea')
+    "inlineTextarea" : require('../../../../lib/component/inline-textarea'),
+    "autocomplete" : require('../../../../lib/component/auto-complete')
   },
   template: require('./main.html'),
   data : function(){
@@ -24,7 +25,16 @@ module.exports = {
         "password" : true,
         "port"     : true,
         "notes"    : true
-      }
+      },
+      selection: '',
+      suggestions: [
+        { city: 'Bangalore', state: 'Karnataka' },
+        { city: 'Chennai', state: 'Tamil Nadu' },
+        { city: 'Delhi', state: 'Delhi' },
+        { city: 'Kolkata', state: 'West Bengal' },
+        { city: 'Mumbai', state: 'Maharashtra' }
+      ]
+          
     };
   },
   computed : {
