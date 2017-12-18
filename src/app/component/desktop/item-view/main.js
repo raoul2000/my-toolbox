@@ -100,8 +100,17 @@ module.exports = {
      */
     buildPageHeader : function() {
 
-      let subtitle = this.item.path.length > 0 ? this.item.path.join(' - ') : "";
-
+      let subtitle = "";
+      if( this.item.path.length > 0 ) {
+        subtitle = this.item.path.map( (aPath, index) => {
+          if( index === 0 ) {
+            return `<b>${aPath}</b>`;
+          } else {
+            return aPath;
+          }
+        })
+        .join(' - ');
+      }
       // compute the container class
       let validEnv = {
         'dev'  : "bg-success",
