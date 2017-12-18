@@ -205,7 +205,15 @@ module.exports = new Vuex.Store({
         console.error("failed to updateComponent",e);
       }
     },
-
+    deleteComponent(state, options) {
+      try {
+        let item   = find.object.itemById(state.desktop, options.item.data._id);
+        let componentIndex = find.index.componentById(item.data.components, options.component._id);
+        item.data.components.splice(componentIndex, 1);
+      }catch(e) {
+        console.error("failed to deleteComponent",e);
+      }
+    },
     ////////////////////////////////////////////////////////////////////////////
     // MODULE
 
