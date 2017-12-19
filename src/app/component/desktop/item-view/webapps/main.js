@@ -9,15 +9,37 @@ module.exports = {
   },
   data : function(){
     return {
+      item          : null,
       disableAction : false,
       expandAll     : true,
-      item          : null
+      // manage view display
+      collapseTomcatView : false,
+      collapseWebappView : false
     };
   },
   template: require('./main.html'),
   methods : {
-    toggleExpanAll : function() {
-      this.expandAll = ! this.expandAll;
+    toggleWebappView : function() {
+      this.collapseWebappView = ! this.collapseWebappView;
+      let self = this;
+      document.querySelectorAll(".tomcat-container").forEach( node => {
+        if(  self.collapseWebappView ) {
+          node.classList.add('collapse-webapp-info');
+        } else {
+          node.classList.remove('collapse-webapp-info');
+        }
+      });
+    },
+    toggleTomcatView : function() {
+      this.collapseTomcatView = ! this.collapseTomcatView;
+      let self = this;
+      document.querySelectorAll(".tomcat-container").forEach( node => {
+        if( self.collapseTomcatView ) {
+          node.classList.add('collapse-tomcat');
+        } else {
+          node.classList.remove('collapse-tomcat');
+        }
+      });
     },
     addTomcat : function() {
       console.log('addTomcat');

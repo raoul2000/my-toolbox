@@ -1,5 +1,5 @@
 module.exports = `
-<div >
+<div>
   <table class="header-tomcat">
     <tr>
       <td style="padding-right:4px">

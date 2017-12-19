@@ -3,6 +3,13 @@
 #app[v-cloak] > *  { display:none; }
 .loading  { display:none; }
 
+.collapse-tomcat .webapps-container {
+  display:none;
+}
+.collapse-webapp-info .info-webapp {
+  display:none;
+}
+
 table.info-webapp {
   color : #b5b5b5;
 }

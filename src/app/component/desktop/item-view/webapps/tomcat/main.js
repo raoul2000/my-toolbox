@@ -33,7 +33,9 @@ module.exports = {
       }
     },
     toggleWebappView : function() {
-      this.expanded = ! this.expanded;
+      let elDiv = document.getElementById(this.tomcat._id);
+      elDiv.classList.toggle('collapse-tomcat');
+      //this.expanded = ! this.expanded;
     },
     addWebapp : function() {
       console.log('addWebapp');
