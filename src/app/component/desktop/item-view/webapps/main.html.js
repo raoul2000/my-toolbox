@@ -1,5 +1,5 @@
 module.exports = `
-<div  v-if="item != null ">
+<div id="webapps-panel" v-if="item != null ">
   <div class="row">
     <div class="col-lg-12">
 
@@ -12,8 +12,10 @@ module.exports = `
         </button>
       </div>
 
-
-      <div v-for="tomcat in item.data.tomcats"  :key="tomcat._id">
+      <div
+        class="tomcat-container"
+        v-for="tomcat in item.data.tomcats"
+        :key="tomcat._id">
         <tomcat
           :item="item"
           :expanded="expandAll"

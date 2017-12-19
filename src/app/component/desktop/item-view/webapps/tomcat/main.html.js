@@ -47,7 +47,9 @@ module.exports = `
     </tr>
   </table>
 
-  <div v-if="expanded">
+  <div
+    class="webapps-container"
+    v-if="expanded">
 
     <div class="btn-group btn-group-sm secondary-toolbar" role="group">
       <button title="Add Webapp" v-on:click="addWebapp()" type="button" class="btn btn-default btn-xs">
@@ -55,7 +57,9 @@ module.exports = `
       </button>
     </div>
 
-    <div v-for="webapp in tomcat.webapps" :key="webapp._id">
+    <div
+      class="single-webapp-container"
+      v-for="webapp in tomcat.webapps" :key="webapp._id">
       <webapp
         :item="item"
         :tomcat="tomcat"
