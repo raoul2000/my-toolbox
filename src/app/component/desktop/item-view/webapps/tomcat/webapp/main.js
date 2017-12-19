@@ -1,11 +1,10 @@
-const validate = require('validator');
-const notify   = require('../../../../../../service/notification');
-var persistence = require('../../../../../../lib/lib').persistence;
+const validate    = require('validator');
+const notify      = require('../../../../../../service/notification');
+const persistence = require('../../../../../../lib/lib').persistence;
 
 module.exports = {
   props: ['item', 'tomcat', 'webapp'],
   components: {
-    "inlineInput": require('../../../../../../lib/component/inline-input'),
     "inlineInput2": require('../../../../../../lib/component/inline-input-2')
   },
   data: function() {
@@ -89,7 +88,6 @@ module.exports = {
         });
         persistence.saveDesktopnItemToFile(self.item);
       });
-
     },
     changeValue: function(arg) {
       if (arg.name === "path") {
@@ -100,7 +98,7 @@ module.exports = {
           let existingWebapp = this.tomcat.webapps.find(webapp => webapp.path === arg.value);
           if (existingWebapp) {
             notify(`The path <b>${arg.value}</b> is already in
-              use by web app <b>${existingWebapp.name}</b>`, 'error', 'error');
+              use by web app <b>${existingWebapp.name}</b>`, 'warning', 'warning');
             this.validation.path = false;
           } else {
             this.validation.path = true;

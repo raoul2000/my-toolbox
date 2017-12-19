@@ -87,16 +87,16 @@ module.exports = {
           this.validation.id = false;
         } else if( ! this.isUniqueTomcatId(arg.value)) {
           this.validation.id = false;
-          notify(`A Tomcat instance with the id <b>${arg.value}</b> is already in use`,'error','error');
+          notify(`A Tomcat instance with the id <b>${arg.value}</b> is already in use`,'warning','warning');
         } else {
           this.validation.id = true;
         }
       } else if( arg.name === "port") {
         this.validation.port = false;
         if( ! validate.isInt(arg.value+'',{ gt : 0}) ) {
-          notify("The PORT number should be an integer value",'error','error');
+          notify("The PORT number should be an integer value",'warning','warning');
         } else if( ! this.isUniqueTomcatPort(arg.value)) {
-          notify(`The port <b>${arg.value}</b> is already in use`,'error','error');
+          notify(`The port <b>${arg.value}</b> is already in use`,'warning','warning');
         } else {
           this.validation.port = true;
           arg.value = parseInt(arg.value);

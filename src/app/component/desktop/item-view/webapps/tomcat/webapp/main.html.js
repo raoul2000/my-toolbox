@@ -43,7 +43,7 @@ module.exports = `
       <td width="100%">
         <select
           v-model="referenceWebappSelection">
-          <option :value="null" selected="selected">select version ...</option>
+          <option :value="null" selected="selected">** Custom Webapp **</option>
           <option
             v-for="option in webappDefinitionOptions"
             v-bind:value="option.id">
