@@ -40,9 +40,11 @@ module.exports = `
         <a :href="tomcatManagerURL" :title="tomcatManagerURL">manager</a>
       </td>
       <td>
-        <button title="Delete Tomcat" v-on:click="deleteTomcat()" type="button" class="btn btn-danger btn-xs">
-          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-        </button>
+          <span
+            v-on:click="deleteTomcat()"
+            title="Delete Tomcat"
+            style="cursor:pointer; color:red"
+            class="glyphicon glyphicon-remove" aria-hidden="true"></span>
       </td>
     </tr>
   </table>

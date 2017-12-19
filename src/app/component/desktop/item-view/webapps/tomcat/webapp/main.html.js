@@ -16,9 +16,10 @@ module.exports = `
       <a :href="webappURL" :title="webappURL">open</a>
     </td>
     <td>
-      <button title="Delete this Webapp" v-on:click="deleteWebapp()" type="button" class="btn btn-danger btn-xs">
-        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-      </button>
+      <span
+        title="Delete this Webapp" v-on:click="deleteWebapp()"
+        style="cursor:pointer; color:red"
+      class="glyphicon glyphicon-remove" aria-hidden="true"></span>
     </td>
     </tr>
   </table>
