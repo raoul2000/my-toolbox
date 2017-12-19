@@ -3,9 +3,6 @@ module.exports = `
 
   <div class="row" style="margin-top:1.5em;">
 
-    <autocomplete :suggestions="suggestions" v-model="selection">
-    </autocomplete>
-    
     <div v-if="item != null " class="col-xs-3">
 
       <div class="panel panel-default">

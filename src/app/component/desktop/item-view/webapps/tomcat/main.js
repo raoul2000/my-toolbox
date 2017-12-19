@@ -43,7 +43,8 @@ module.exports = {
         "webapp" : {
           "_id"    : helper.generateUUID(),
           "name"   : "",
-          "path"   : "/"
+          "path"   : "/",
+          "refId"  : null // refer to a webapp in the definition list
         }
       });
       persistence.saveDesktopnItemToFile(this.item);

@@ -4,8 +4,8 @@ module.exports = `
   <table class="header-webapp">
     <tr>
     <td class="header-webapp-text" width="100%">
-      <inlineInput
-        :initialValue="webapp.name"
+      <inlineInput2
+        :value="webapp.name"
         :valid="validation.name"
         inputType="text"
         emptyValue="<em class='text-muted'>ENTER WEBAPP NAME HERE ...</em>"
@@ -23,19 +23,34 @@ module.exports = `
     </tr>
   </table>
 
-  <table>
+  <table class="info-webapp">
     <tr>
       <td class="field-label-right">
-        path : 
+        path :
       </td>
       <td width="100%">
-        <inlineInput
-          :initialValue="webapp.path"
+        <inlineInput2
+          :value="webapp.path"
           :valid="validation.path"
           inputType="text"
           valueName="path"
           emptyValue="<em class='text-muted'>home page path</em>"
           v-on:changeValue="changeValue"/>
+      </td>
+      <td class="field-label-right">
+        ID :
+      </td>
+      <td width="100%">
+        <select
+          v-model="referenceWebappSelection">
+          <option :value="null" selected="selected">select version ...</option>
+          <option
+            v-for="option in webappDefinitionOptions"
+            v-bind:value="option.id">
+            {{ option.name }}
+          </option>
+        </select>
+
       </td>
     </tr>
   </table>

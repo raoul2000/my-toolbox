@@ -9,7 +9,7 @@ module.exports = {
 
     <span v-if="inputType == 'text'" class="inline-ctrl-text">
       <span v-if="!editing" class="current-value" v-html="displayValue"></span>
-      <input v-else type="text" v-on:blur="stopEdit" v-on:keyup.enter="stopEdit"/>
+      <input v-else type="text" v-model="inputValue" v-on:blur="stopEdit" v-on:keyup.enter="stopEdit"/>
     </span>
     <span v-else-if="inputType == 'password'" class="inline-ctrl-password">
       <span v-if="!editing" class="current-value">{{hiddenPassword}}</span>
@@ -28,7 +28,7 @@ module.exports = {
       class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red"></span>
   </div>`,
   props : {
-    "initialValue" : [String, Number],
+    "value"        : [String, Number],
     "valueName"    : [String, Number],
     "valid"        : [Boolean],
     "inputType"    : [String], // text, password
@@ -37,41 +37,40 @@ module.exports = {
   data : function() {
     return {
       "editing"      : false,
-      "currentVal"   : "".concat(this.initialValue),
-      "fieldElement" : null
+      "fieldElement" : null,
+      "inputValue"   : ""
     };
-  },
-  watch : {
-    initialValue : function() {
-      console.log('initialValue changed : ',this.initialValue);
-    }
   },
   computed : {
     hiddenPassword : function(){
-      return this.currentVal && this.currentVal.length !== 0 ? new Array(this.currentVal.length + 1).join( '*' ) : '';
+      return this.value && this.value.length !== 0 ? new Array(this.value.length + 1).join( '*' ) : '';
     },
     displayValue : function(){
-      return (this.emptyValue && this.emptyValue.length !== 0) && this.currentVal.length === 0
+      return (this.emptyValue && this.emptyValue.length !== 0) && this.value.length === 0
         ? this.emptyValue
-        : this.currentVal;
+        : this.value;
     }
   },
   methods : {
     startEdit : function() {
+      this.inputValue = "".concat(this.value);
       this.editing = true;
-      this.currentVal = this.currentVal.trim();
       var self = this;
       Vue.nextTick(function() {
         self.fieldElement = self.$el.querySelector('input');
-        self.fieldElement.value = self.currentVal;
         self.fieldElement.focus();
       });
     },
+    /**
+     * Edit is done.
+     * Send a custom event to parent component in order to update the value.
+     * Note that this.value is NEVER updated by this component, and must be updated
+     * by the parent component.
+     */
     stopEdit : function() {
       this.editing = false;
       let newValue = this.fieldElement.value.trim();
-      if( newValue !== this.currentVal ) {
-        this.currentVal =  newValue;
+      if( newValue !== this.value ) {
         this.$emit('changeValue',{
           "name"  : this.valueName,
           "value" : newValue

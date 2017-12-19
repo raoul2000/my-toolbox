@@ -3,12 +3,22 @@
 #app[v-cloak] > *  { display:none; }
 .loading  { display:none; }
 
+table.info-webapp {
+  color : #b5b5b5;
+}
+table.info-webapp select {
+  border: 0px;
+  border-bottom-width: 1px;
+  border-bottom-color: beige;
+  border-bottom-style: solid;
+}
+
 .webapp-container {
   border-left: 14px solid #eee;
   padding-left: 0.7em;
   border-bottom: 1px solid #eee;
   padding-bottom: 1em;
-  margin-bottom: 1em;  
+  margin-bottom: 1em;
 }
 
 .field-label-right {
@@ -25,7 +35,7 @@ td.header-tomcat-text {
 }
 
 table.header-webapp {
-  border-bottom : 2px solid #eeeeee;
+  /*border-bottom : 2px solid #eeeeee; */
 }
 td.header-webapp-text {
   font-size : 1.4em;

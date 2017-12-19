@@ -6,19 +6,60 @@ module.exports = {
   props: ['item', 'tomcat', 'webapp'],
   components: {
     "inlineInput": require('../../../../../../lib/component/inline-input'),
+    "inlineInput2": require('../../../../../../lib/component/inline-input-2')
   },
   data: function() {
     return {
       validation: {
         "name": true,
         "path": true
-      }
+      },
+      "referenceWebappSelection" : this.webapp.refId
     };
   },
   template: require('./main.html'),
   computed: {
     webappURL: function() {
       return `http://${this.item.data.ssh.host}:${this.tomcat.port}${this.webapp.path}`;
+    },
+    webappDefinitionOptions : function() {
+      return this.$store.state.webappDefinition.map( module => {
+        return {
+          "id"   : module.id,
+          "name" : `${module.id} - ${module.name}`
+        };
+      });
+    }
+  },
+  watch : {
+    referenceWebappSelection : function() {
+      if(this.referenceWebappSelection) {
+        let selectedModule = this.$store.state.webappDefinition.find( module => module.id === this.referenceWebappSelection);
+        if( selectedModule) {
+          // directly updates the store to update the webapp reference id
+          this.$store.commit('updateWebapp', {
+            "item"      : this.item,
+            "tomcat"    : this.tomcat,
+            "webapp"    : this.webapp,
+            "updateWith": {
+              "refId" : selectedModule.id
+            }
+          });
+
+          // Use the input change flow to update name and path
+
+          this.changeValue({
+            "name"  : "name",
+            "value" : selectedModule.name
+          });
+          if(selectedModule.path ) {
+            this.changeValue({
+              "name"  : "path",
+              "value" : selectedModule.path
+            });
+          }
+        }
+      }
     }
   },
   methods: {
