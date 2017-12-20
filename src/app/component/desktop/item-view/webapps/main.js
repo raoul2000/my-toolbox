@@ -14,10 +14,23 @@ module.exports = {
       expandAll     : true,
       // manage view display,
       expandTomcat : true,
-      expandWebapp : true
+      expandWebapp : true,
+      // filter : passed to the tomcat component to be applied on
+      // webapps
+      filterText : ""
     };
   },
   template: require('./main.html'),
+  watch : {
+    filterText : function() {
+      if(this.filterText.trim().length !== 0) {
+        // TODO : this will not trigger expan/collapse because the
+        // details view may already be expanded : in this case there is no
+        // change .. no redraw :(
+        this.expandTomcat = true;
+      }
+    }
+  },
   methods : {
     viewTomcatClass : function() {
       return this.expandTomcat

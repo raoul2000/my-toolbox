@@ -31,6 +31,10 @@ module.exports = `
         </button>
       </div><!-- end toolbar expand/collapse -->
 
+      <input
+        class="webapp-filter"
+        v-model="filterText" type="text" placeholder="enter filter ..."/>
+
       <div
         class="tomcat-container"
         v-for="tomcat in item.data.tomcats"
@@ -40,6 +44,7 @@ module.exports = `
           :item="item"
           :expandTomcat="expandTomcat"
           :expandWebapp="expandWebapp"
+          :filter="filterText"
           :tomcat="tomcat"/>
       </div>
 

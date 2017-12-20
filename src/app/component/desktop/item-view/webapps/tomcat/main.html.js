@@ -62,7 +62,7 @@ module.exports = `
 
     <div
       class="single-webapp-container"
-      v-for="webapp in tomcat.webapps" :key="webapp._id">
+      v-for="webapp in filteredWebapps" :key="webapp._id">
       <webapp
         :item="item"
         :tomcat="tomcat"

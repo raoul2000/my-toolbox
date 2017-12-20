@@ -4,7 +4,7 @@ const helper   = require('../../../../../lib/lib').helper;
 var persistence = require('../../../../../lib/lib').persistence;
 
 module.exports = {
-  props : ['item', 'tomcat', 'expandTomcat', 'expandWebapp'],
+  props : ['item', 'tomcat', 'expandTomcat', 'expandWebapp', 'filter'],
   components : {
     "webapp"      : require('./webapp/main'),
     "inlineInput" : require('../../../../../lib/component/inline-input'),
@@ -20,6 +20,16 @@ module.exports = {
   },
   template: require('./main.html'),
   computed : {
+    filteredWebapps : function() {
+      if( this.filter.trim().length === 0) {
+        return this.tomcat.webapps;
+      } else {
+        let normalizedFilter = this.filter.toLowerCase();
+        return this.tomcat.webapps.filter( webapp => {
+          return webapp.name.concat(webapp.refId).toLowerCase().match(normalizedFilter);
+        });
+      }
+    },
     tomcatManagerURL : function() {
         return `http://${this.item.data.ssh.host}:${this.tomcat.port}/manager/html`;
     }

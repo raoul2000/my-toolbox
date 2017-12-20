@@ -3,6 +3,14 @@
 #app[v-cloak] > *  { display:none; }
 .loading  { display:none; }
 
+
+.webapp-filter {
+  padding: 4px;
+  border-radius: 2px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #ccc;
+}
 .collapse-tomcat .webapps-container {
   display:none;
 }
