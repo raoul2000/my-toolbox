@@ -3,6 +3,14 @@ module.exports = `
 
   <table class="header-webapp">
     <tr>
+    <td style="padding-right:4px">
+      <span
+        v-on:click="toggleDetailView"
+        v-bind:class="toggleButtonClass()"
+        style="cursor:pointer;color: #999;"
+        title="expand/collapse"
+        aria-hidden="true"></span>
+    </td>
     <td class="header-webapp-text" width="100%">
       <inlineInput2
         :value="webapp.name"
@@ -18,13 +26,13 @@ module.exports = `
     <td>
       <span
         title="Delete this Webapp" v-on:click="deleteWebapp()"
-        style="cursor:pointer; color:red"
+        style="cursor:pointer; color:#fba8a8;"
       class="glyphicon glyphicon-remove" aria-hidden="true"></span>
     </td>
     </tr>
   </table>
 
-  <table class="info-webapp">
+  <table v-if="expanded" class="info-webapp">
     <tr>
       <td class="field-label-right">
         path :

@@ -7,13 +7,29 @@ module.exports = `
         <button title="Add Tomcat" v-on:click="addTomcat()" type="button" class="btn btn-default btn-xs">
           <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Tomcat
         </button>
-        <button title="Toggle Tomcat View" v-on:click="toggleTomcatView()" type="button" class="btn btn-default btn-xs">
-          <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Tomcat view
-        </button>
-        <button title="Toggle Webapp View" v-on:click="toggleWebappView()" type="button" class="btn btn-default btn-xs">
-          <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Webapp view
-        </button>
       </div>
+
+      <div class="btn-group btn-group-sm secondary-toolbar" role="group" >
+        <button
+          title="Expand/collapse Tomcat Details"
+          v-on:click="toggleTomcatView()"
+          type="button" class="btn btn-default btn-xs"
+        >
+          <span
+            v-bind:class="viewTomcatClass()"
+            aria-hidden="true"></span> s/h Tomcat
+        </button>
+        <button
+          title="Expand/collapse Webapp Details"
+          v-on:click="toggleWebappView()"
+          type="button" class="btn btn-default btn-xs"
+        >
+          <span
+            v-bind:class="viewWebappClass()"
+            class="glyphicon glyphicon-eye-open"
+            aria-hidden="true"></span> s/h Webapp
+        </button>
+      </div><!-- end toolbar expand/collapse -->
 
       <div
         class="tomcat-container"
@@ -22,7 +38,8 @@ module.exports = `
         :id="tomcat._id">
         <tomcat
           :item="item"
-          :expanded="!collapseTomcatView"
+          :expandTomcat="expandTomcat"
+          :expandWebapp="expandWebapp"
           :tomcat="tomcat"/>
       </div>
 

@@ -3,7 +3,7 @@ const notify      = require('../../../../../../service/notification');
 const persistence = require('../../../../../../lib/lib').persistence;
 
 module.exports = {
-  props: ['item', 'tomcat', 'webapp'],
+  props: ['item', 'tomcat', 'webapp', 'expandWebapp'],
   components: {
     "inlineInput2": require('../../../../../../lib/component/inline-input-2')
   },
@@ -13,7 +13,8 @@ module.exports = {
         "name": true,
         "path": true
       },
-      "referenceWebappSelection" : this.webapp.refId
+      expanded : this.expandWebapp,
+      referenceWebappSelection : this.webapp.refId
     };
   },
   template: require('./main.html'),
@@ -31,6 +32,14 @@ module.exports = {
     }
   },
   watch : {
+    /**
+     * when parent component triggers expand/collapse the view
+     * update the local state of the display
+     */
+    expandWebapp : function(){
+      console.log('expanded');
+      this.expanded = this.expandWebapp ? true : false;
+    },
     referenceWebappSelection : function() {
       if(this.referenceWebappSelection) {
         let selectedModule = this.$store.state.webappDefinition.find( module => module.id === this.referenceWebappSelection);
@@ -62,6 +71,14 @@ module.exports = {
     }
   },
   methods: {
+    toggleDetailView : function() {
+      this.expanded = ! this.expanded;
+    },
+    toggleButtonClass : function() {
+      return this.expanded
+        ? ["glyphicon", "glyphicon-triangle-bottom"]
+        : ["glyphicon", "glyphicon-triangle-right"];
+    },
     deleteWebapp : function() {
       let self = this;
       (new PNotify({

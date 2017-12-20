@@ -4,7 +4,7 @@ const helper   = require('../../../../../lib/lib').helper;
 var persistence = require('../../../../../lib/lib').persistence;
 
 module.exports = {
-  props : ['item', 'tomcat','expanded'],
+  props : ['item', 'tomcat', 'expandTomcat', 'expandWebapp'],
   components : {
     "webapp"      : require('./webapp/main'),
     "inlineInput" : require('../../../../../lib/component/inline-input'),
@@ -15,7 +15,7 @@ module.exports = {
         "id"     : true,
         "port"   : true
       },
-      showWebapp : this.expanded
+      expanded : this.expandTomcat
     };
   },
   template: require('./main.html'),
@@ -25,28 +25,24 @@ module.exports = {
     }
   },
   watch : {
-    expanded : function(){
-      console.log('expanded');
-      //this.showWebapp = ! this.showWebapp;
+    /**
+     * when parent component triggers expand/collapse the view
+     * update the local state of the display
+     */
+    expandTomcat : function(){
+      this.expanded = this.expandTomcat ? true : false;
     }
   },
   methods : {
     toggleButtonClass : function() {
-      if( this.expanded ) {
-        return ["glyphicon", "glyphicon-menu-down"];
-      } else {
-        return ["glyphicon", "glyphicon-menu-right"];
-      }
+      return this.expanded
+        ? ["glyphicon", "glyphicon-menu-down"]
+        : ["glyphicon", "glyphicon-menu-right"];
     },
     toggleWebappView : function() {
-
-      let elDiv = document.getElementById(this.tomcat._id);
-      elDiv.classList.toggle('collapse-tomcat');
-
-      //this.expanded = ! this.expanded;
+      this.expanded = ! this.expanded;
     },
     addWebapp : function() {
-      console.log('addWebapp');
       this.$store.commit('addWebapp', {
         "item"   : this.item,
         "tomcat" : this.tomcat,

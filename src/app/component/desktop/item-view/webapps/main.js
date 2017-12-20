@@ -12,34 +12,28 @@ module.exports = {
       item          : null,
       disableAction : false,
       expandAll     : true,
-      // manage view display
-      collapseTomcatView : false,
-      collapseWebappView : false
+      // manage view display,
+      expandTomcat : true,
+      expandWebapp : true
     };
   },
   template: require('./main.html'),
   methods : {
+    viewTomcatClass : function() {
+      return this.expandTomcat
+        ? ["glyphicon", "glyphicon-eye-close"]
+        : ["glyphicon", "glyphicon-eye-open"];
+    },
+    viewWebappClass : function() {
+      return this.expandWebapp
+        ? ["glyphicon", "glyphicon-eye-close"]
+        : ["glyphicon", "glyphicon-eye-open"];
+    },
     toggleWebappView : function() {
-      this.collapseWebappView = ! this.collapseWebappView;
-      let self = this;
-      document.querySelectorAll(".tomcat-container").forEach( node => {
-        if(  self.collapseWebappView ) {
-          node.classList.add('collapse-webapp-info');
-        } else {
-          node.classList.remove('collapse-webapp-info');
-        }
-      });
+      this.expandWebapp = ! this.expandWebapp;
     },
     toggleTomcatView : function() {
-      this.collapseTomcatView = ! this.collapseTomcatView;
-      let self = this;
-      document.querySelectorAll(".tomcat-container").forEach( node => {
-        if( self.collapseTomcatView ) {
-          node.classList.add('collapse-tomcat');
-        } else {
-          node.classList.remove('collapse-tomcat');
-        }
-      });
+      this.expandTomcat = ! this.expandTomcat;
     },
     addTomcat : function() {
       console.log('addTomcat');

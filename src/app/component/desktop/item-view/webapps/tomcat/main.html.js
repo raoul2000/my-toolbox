@@ -7,7 +7,8 @@ module.exports = `
           v-on:click="toggleWebappView"
           v-bind:class="toggleButtonClass()"
           style="cursor:pointer"
-           aria-hidden="true"></span>
+          title="expand/collapse"
+          aria-hidden="true"></span>
       </td>
       <td class="header-tomcat-text">
         Tomcat
@@ -43,7 +44,7 @@ module.exports = `
           <span
             v-on:click="deleteTomcat()"
             title="Delete Tomcat"
-            style="cursor:pointer; color:red"
+            style="cursor:pointer; color: #fba8a8;"
             class="glyphicon glyphicon-remove" aria-hidden="true"></span>
       </td>
     </tr>
@@ -65,6 +66,7 @@ module.exports = `
       <webapp
         :item="item"
         :tomcat="tomcat"
+        :expandWebapp="expandWebapp"
         :webapp="webapp"/>
     </div>
   </div>
