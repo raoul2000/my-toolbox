@@ -24,6 +24,12 @@ module.exports = {
         return `http://${this.item.data.ssh.host}:${this.tomcat.port}/manager/html`;
     }
   },
+  watch : {
+    expanded : function(){
+      console.log('expanded');
+      //this.showWebapp = ! this.showWebapp;
+    }
+  },
   methods : {
     toggleButtonClass : function() {
       if( this.expanded ) {
@@ -33,8 +39,10 @@ module.exports = {
       }
     },
     toggleWebappView : function() {
+
       let elDiv = document.getElementById(this.tomcat._id);
       elDiv.classList.toggle('collapse-tomcat');
+
       //this.expanded = ! this.expanded;
     },
     addWebapp : function() {
@@ -55,7 +63,7 @@ module.exports = {
       let self = this;
       (new PNotify({
           title: 'Confirmation Needed',
-          text: `Are you sure you want to delete the tomcat <code>${self.tomcat.id.length}</code> and all its webapps ?`,
+          text: `Are you sure you want to delete the tomcat <code>${self.tomcat.id}</code> and all its webapps ?`,
           icon: 'glyphicon glyphicon-question-sign',
           hide: false,
           confirm: {
