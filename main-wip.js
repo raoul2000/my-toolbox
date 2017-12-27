@@ -1,4 +1,6 @@
 const electron = require('electron');
+
+const ipcMain = electron.ipcMain;
 // Module to control application life.
 const app = electron.app;
 app.setName('My-Toolbox');
@@ -12,6 +14,7 @@ const url  = require('url');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+let splash;
 
 function createWindowLoader() {
   let main = null;
@@ -42,7 +45,20 @@ function createWindowLoader() {
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600});
+  mainWindow = new BrowserWindow({
+      width: 800,
+      height: 600,
+      show: false
+    });
+
+  splash = new BrowserWindow({
+    width: 810,
+    height: 610,
+    transparent: true,
+    frame: false,
+    alwaysOnTop: true
+  });
+  splash.loadURL(`file://${__dirname}/splash.html`);
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
@@ -52,6 +68,11 @@ function createWindow () {
     protocol: 'file:',
     slashes: true
   }));
+  // app-loaded
+  mainWindow.once('ready-to-show', () => {
+    //splash.destroy();
+    //mainWindow.show();
+  });
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
@@ -65,7 +86,10 @@ function createWindow () {
     mainWindow = null;
   });
 }
-
+ipcMain.on('app-loaded', () => {
+  splash.destroy();
+  mainWindow.show();
+});
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.

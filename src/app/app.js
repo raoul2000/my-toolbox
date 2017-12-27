@@ -1,3 +1,7 @@
+const electron = require('electron');
+const ipcRenderer = electron.ipcRenderer;
+
+
 const path     = require('path');
 const fs       = require('fs');
 
@@ -128,5 +132,6 @@ const app = new Vue({
   mounted : function() {
     this.initApplication();
     this.loading = false;
+    ipcRenderer.send('app-loaded');
   }
 }).$mount('#app');
