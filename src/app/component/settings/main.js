@@ -1,7 +1,7 @@
-var remote = require('electron').remote;
-var config = require('../../service/config');
-const store    = require('../../service/store/store');
-const app = require('electron').remote.app;
+var remote  = require('electron').remote;
+var config  = require('../../service/config');
+const store = require('../../service/store/store');
+const app   = require('electron').remote.app;
 
 module.exports = {
   data : function(){
@@ -77,8 +77,12 @@ module.exports = {
         "properties"  : [ 'openFile']
       }, value => self.webappCatalogFilePath=value );
     },
-    onCancel : function() {
+    goBack : function() {
+      Mousetrap.unbind('esc', 'keyup');
       this.$router.go(-1);
+    },
+    onCancel : function() {
+      this.goBack();
     },
     onSave : function() {
       // TODO : validate Folder
@@ -91,10 +95,7 @@ module.exports = {
       if( ! this.persistentDesktop ) {
         config.clearDesktop();
       }
-
-      // navigate to preview route (go back)
-      this.$router.push(store.state.currentRoute);
-      this.$router.go(-1);
+      this.goBack();
     }
   },
   mounted : function() {
@@ -104,5 +105,7 @@ module.exports = {
     this.puttyFilePath = config.store.get('puttyFilePath');
     this.winscpFilePath = config.store.get('winscpFilePath');
     this.persistentDesktop = config.store.get('persistentDesktop');
+
+    Mousetrap.bind('esc', this.goBack, 'keyup');
   }
 };

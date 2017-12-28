@@ -41,6 +41,7 @@
     "js-yaml": "^3.8.4",
     "markdown": "^0.5.0",
     "mkdirp": "^0.5.1",
+    "mousetrap": "^1.6.1",
     "node-ssh": "^4.2.2",
     "pnotify": "^3.0.0",
     "promise-waterfall": "^0.1.0",
