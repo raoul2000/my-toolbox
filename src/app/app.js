@@ -1,7 +1,6 @@
 const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
 
-
 const path     = require('path');
 const fs       = require('fs');
 
@@ -132,6 +131,8 @@ const app = new Vue({
   mounted : function() {
     this.initApplication();
     this.loading = false;
+    // the 'app-loaded' event causes the splash screen to hide and the main
+    // app view to show
     ipcRenderer.send('app-loaded');
   }
 }).$mount('#app');
