@@ -13,11 +13,11 @@ module.exports = {
       disableAction : false,
       expandAll     : true,
       // manage view display,
-      expandTomcat : true,
-      expandWebapp : true,
+      expandTomcat  : true,
+      expandWebapp  : true,
       // filter : passed to the tomcat component to be applied on
       // webapps
-      filterText : ""
+      filterText    : ""
     };
   },
   template: require('./main.html'),

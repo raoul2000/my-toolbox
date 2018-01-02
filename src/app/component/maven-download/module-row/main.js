@@ -105,13 +105,15 @@ module.exports = {
       console.log("localFilePath = "+localFilePath);
 
       // if target file already exist, delete it ///////////////////////////////
-      // 
+      //
       if( fs.existsSync(localFilePath)) {
         fs.unlinkSync(localFilePath);
       }
 
       // create and add the download task to the store /////////////////////////
-      //
+      // The state of the task is added to the store here. No work is actually
+      // starting yet
+
       store.commit("addTask",{
         "id"       : this.module.id,
         "type"     : "download",
@@ -126,6 +128,10 @@ module.exports = {
       });
 
       // start download ////////////////////////////////////////////////////////
+      // The nexusDownloader is starting download now. Note the "notifier" object
+      // passed here. It will be used by the nexusDownloader to update the state
+      // of the stored task
+      
       this.stopDownloadRequest = false;
       this.status = "DOWNLOAD_IN_PROGRESS";
 

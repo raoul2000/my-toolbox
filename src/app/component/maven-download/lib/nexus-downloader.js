@@ -7,13 +7,18 @@ var Q = require('q');
 
 /**
  * download to local path
+ *
  * options = {
- *  "url" : "http://.....",                       // mandatory
+ *  "url" : "http://.....",                       // mandatory : the url to download from
  *  "destinationFilePath" : "/folder/file.txt",   // mandatory : full path to the downloaded file
  *  "requestTimeout" : 5,                         // optional - timeout in seconds
  *  "notifier" : object                           // optional - object EventEmitter to observe download progress
- *  "canContinue" : f() {}                        // optional - function returing a boolean. When False, download is interrupted
+ *  "canContinue" : f() {}                        // optional - function returning a boolean. When False, download is interrupted
   * }
+  * 
+  * If a 'notifier' is provided, it must implement the EventEmitter interface in order
+  * to process progress events fired during the download task.
+  *
  * @param  {Object} options [description]
  * @return {[type]}         [description]
  */
