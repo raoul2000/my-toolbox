@@ -48,7 +48,7 @@ function createWindow () {
   mainWindow = new BrowserWindow({
       width: 800,
       height: 600,
-      show: false
+      show: true
     });
 
   splash = new BrowserWindow({
@@ -56,9 +56,9 @@ function createWindow () {
     height: 610,
     transparent: true,
     frame: false,
-    alwaysOnTop: true
+    alwaysOnTop: false
   });
-  splash.loadURL(`file://${__dirname}/splash.html`);
+  //splash.loadURL(`file://${__dirname}/splash.html`);
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({

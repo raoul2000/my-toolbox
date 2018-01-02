@@ -13,7 +13,7 @@ const Create   = require('./component/create/main');
 const View     = require('./component/view/main');
 
 const ItemView            = require('./component/desktop/item-view/main');
-const ItemViewSettings    = require('./component/desktop/item-view/settings/main');
+const ItemViewSettings    = require('./component/desktop/item-view/general/main');
 const ItemViewWebapps     = require('./component/desktop/item-view/webapps/main');
 const ItemViewComponents  = require('./component/desktop/item-view/components/main');
 
