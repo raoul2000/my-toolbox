@@ -40,3 +40,4 @@ jspm_packages
 my-toolbox**
 
 test/nexus/config-stage.json
+test/config-stage.json
