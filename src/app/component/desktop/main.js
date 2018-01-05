@@ -111,8 +111,9 @@ module.exports = {
           "password"     : '',
           "readyTimeout" : 50000
         },
-        "entities" : [],
-        "tomcats" : []
+        "entities"   : [],
+        "tomcats"    : [],
+        "components" : []
       };
 
       var defaultFilename = path.join(
