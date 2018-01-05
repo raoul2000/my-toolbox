@@ -21,7 +21,10 @@ function createWindowLoader() {
   let loading = new BrowserWindow({show: false, frame: false});
 
   loading.once('show', () => {
-    main = new BrowserWindow({show: false});
+    main = new BrowserWindow({
+      show: false,
+      icon: path.join(__dirname, 'src/app/assets/image/if_toolbox_86483.ico')
+    });
     main.webContents.once('dom-ready', () => {
       console.log('main loaded');
       main.show();
