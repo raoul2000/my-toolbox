@@ -21,7 +21,45 @@ module.exports = `
     </div>
   </div>
 
-  <div class="row">
+  <div v-if="groupByCategory" class="row">
+  	<div
+  		v-for="(category, categoryIndex)  in topLevelCategories"
+  		class="col-xs-12"
+       >
+  		<h5 style="margin-top: 3em;">{{category}}</h5>
+  		<hr/>
+
+  		<div
+  			v-for="(item, index)  in itemsByCategory(category)"
+  			:title="item.file" class="card-container" :id="getItemElementId(item.data)"
+  		>
+  			<div
+  				@click="viewDetail(item, $event)"
+  				v-bind:class="cardItemStyle(item)"
+  			>
+  				<div
+  					@click.stop.prevent="removeFromDesktop(item)"
+  					title="remove from desktop"
+  					type="button"
+  					class="left-corner-icon"
+  				>
+  					<span class="glyphicon glyphicon-trash" aria-hidden="true"/>
+  				</div>
+  				<div class="shape">
+  					<div class="shape-text"/>
+  				</div>
+  				<div class="project-content">
+  					<div v-html="cardItemContent(item)"/>
+  				</div>
+  			</div>
+  		</div><!-- itemsByCategory(category) -->
+  	</div><!-- topLevelCategories -->
+  </div><!-- row -->
+
+
+
+
+  <div v-else class="row">
     <div class="col-xs-12">
 
       <div

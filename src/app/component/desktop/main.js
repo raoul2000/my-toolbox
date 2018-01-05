@@ -15,9 +15,40 @@ module.exports = {
   computed : {
     items : function(){
       return store.state.desktop;
+    },
+    groupByCategory : function() {
+      return config.store.get("desktopGroupByCategory");
+    },
+    topLevelCategories : function() {
+      let keys = helper.groupBy(store.state.desktop, item => {
+        if( item.path.length === 0) {
+          return "NO CATEGORY";
+        } else {
+          return item.path[0];
+        }
+      }).keys();
+      return Array.from(keys);
     }
+    /*
+    groupedItems : function() {
+      return [];
+      helper.groupBy(store.state.desktop, item => {
+        try { return item.path[0];}
+        catch (ex) { return "default";}
+      });
+    }*/
   },
   methods : {
+    itemsByCategory : function(category) {
+      console.log("itemsByCategory",category);
+      return store.state.desktop.filter( item => {
+        if( item.path.length === 0 && category === "NO CATEGORY") {
+          return true;
+        } else {
+          return item.path[0] === category;
+        }
+      });
+    },
     /**
      * Create the HTML element id for an item
      * @param  {object} item the item data object

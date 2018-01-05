@@ -25,6 +25,7 @@ const store = new Store({
     "puttyFilePath"         :'putty.exe',
     "winscpFilePath"        :'winscp.exe',
     "persistentDesktop"     : true,
+    "desktopGroupByCategory": false,
     "recent" : {
       // "ctdbPath" : '/path/to/latest'
     },

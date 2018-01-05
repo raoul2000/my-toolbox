@@ -6,12 +6,13 @@ const app   = require('electron').remote.app;
 module.exports = {
   data : function(){
     return {
-      deployFolderPath      : '',
-      ctdbFolderPath        : '',
-      webappCatalogFilePath : '',
-      puttyFilePath         : '',
-      winscpFilePath        : '',
-      persistentDesktop     : true
+      deployFolderPath       : '',
+      ctdbFolderPath         : '',
+      webappCatalogFilePath  : '',
+      puttyFilePath          : '',
+      winscpFilePath         : '',
+      persistentDesktop      : true,
+      desktopGroupByCategory : false
     };
   },
   template: require('./main.html'),
@@ -92,6 +93,7 @@ module.exports = {
       config.store.set('puttyFilePath',this.puttyFilePath);
       config.store.set('winscpFilePath',this.winscpFilePath);
       config.store.set('persistentDesktop',this.persistentDesktop);
+      config.store.set('desktopGroupByCategory',this.desktopGroupByCategory);
       if( ! this.persistentDesktop ) {
         config.clearDesktop();
       }
@@ -105,6 +107,8 @@ module.exports = {
     this.puttyFilePath = config.store.get('puttyFilePath');
     this.winscpFilePath = config.store.get('winscpFilePath');
     this.persistentDesktop = config.store.get('persistentDesktop');
+    this.desktopGroupByCategory = config.store.get('desktopGroupByCategory');
+
 
     Mousetrap.bind('esc', this.goBack, 'keyup');
   }

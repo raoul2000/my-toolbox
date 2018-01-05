@@ -134,6 +134,18 @@ module.exports = `
     </div>
     <!-- // END - persistent desktop -->
 
+    <!-- // BEGIN - desktop group by category -->
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-9">
+        <div class="checkbox">
+          <label>
+            <input v-model="desktopGroupByCategory" type="checkbox"> Group desktop items by category
+          </label>
+        </div>
+      </div>
+    </div>
+    <!-- // END - desktop group by category -->
+
       <hr/>
       <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
