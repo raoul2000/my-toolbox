@@ -3,6 +3,15 @@
 #app[v-cloak] > *  { display:none; }
 .loading  { display:none; }
 
+.about-content {
+  min-height: 200px;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-top: 1em;
+}
+.about-content h2 {
+  padding-bottom: 0.4em;
+}
 
 .webapp-filter {
   padding: 4px;

@@ -3,14 +3,22 @@ module.exports = `
 modal
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">About My Toolbox</h4>
-      </div>
       <div class="modal-body">
-        <img src="./assets/image/toolbox.jpg" alt="my-toolbox" class="img-responsive center-block"/>
-        <p>This is my toolbox and this is a <b>work in progress</b> so use it at your own risk...
-        or just don't use it at all !</p>
+        <table>
+          <tr>
+            <td>
+              <img src="./assets/image/if_toolbox_86483.png" alt="my-toolbox" class="img-responsive center-block"/>
+            </td>
+            <td>
+              <div class="about-content">
+                <h2 class="modal-title">About My Toolbox</h2>
+                <p>This is my toolbox and this is a <b>work in progress</b> so use it at your own risk...
+                or just don't use it at all !</p>
+              </div>
+            </td>
+          </tr>
+        </table>
+
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
