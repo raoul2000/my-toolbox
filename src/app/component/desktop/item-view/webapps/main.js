@@ -2,6 +2,9 @@ const store     = require('../../../../service/store/store'); // TODO : nod need
 const helper    = require('../../../../lib/lib').helper;
 var persistence = require('../../../../lib/lib').persistence;
 
+const VIEW_WEBAPP = "view-webapp";
+const VIEW_SCAN   = "view-scan";
+
 module.exports = {
   store,
   components : {
@@ -17,7 +20,8 @@ module.exports = {
       expandWebapp  : true,
       // filter : passed to the tomcat component to be applied on
       // webapps
-      filterText    : ""
+      filterText    : "",
+      view          : VIEW_WEBAPP
     };
   },
   template: require('./main.html'),
@@ -31,7 +35,18 @@ module.exports = {
       }
     }
   },
+  computed : {
+    isViewWebapp : function() {
+      return this.view === VIEW_WEBAPP;
+    },
+    isViewScan : function() {
+      return this.view === VIEW_SCAN;
+    }
+  },
   methods : {
+    scanTomcat : function() {
+      this.view = VIEW_SCAN;
+    },
     viewTomcatClass : function() {
       return this.expandTomcat
         ? ["glyphicon", "glyphicon-eye-close"]
