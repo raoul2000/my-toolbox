@@ -48,6 +48,9 @@ module.exports = new Vuex.Store({
     modules          : [],
     tasks            : []
   },
+  modules: {
+    tcScan: require('./module/tc-scan')
+  },
   getters: {
     // TODO : remove this method when not used anymore
     desktopItemByIndex : function(state, getters) {
