@@ -13,9 +13,25 @@ module.exports = Vue.component('modal-tc-scan',  {
   computed : {
     task : function() {
       return  this.$store.getters['tcScan/taskById'](this.taskId);
+    },
+    tomcatSelectedCount : function() {
+      return this.task.tomcats
+      .filter( tomcat => tomcat.selected)
+      .length;
     }
   },
   methods : {
+    scanSelectedTomcats : function() {
+      this.task.tomcats
+      .filter( tomcat => tomcat.selected);
+
+    },
+    toggleTomcatSelection : function(tcid) {
+      this.$store.commit('tcScan/toggleTomcatSelection', {
+        "id"     : tcid,
+        "taskId" : this.taskId
+      });
+    },
     cancel : function(){
       this.$store.commit('tcScan/deleteTask', this.task);
     },
@@ -32,31 +48,45 @@ module.exports = Vue.component('modal-tc-scan',  {
       });
       let self = this;
       let ssh = new NodeSSH();
-      ssh.connect(this.item.data.ssh)
+      //ssh.connect(this.item.data.ssh)
+      Promise.resolve(true)
       .then( () => {
+        return {
+          value : ["A", "B", "C"]
+        };
+        /*
         return smartCommand.run(ssh,{
           "command"    : `. .bash_profile; set -o pipefail; cat $HOME/cfg/eomvar.dtd | grep TOMCAT_ | cut -d ' ' -f 2 | cut -d '_' -f 2 | sort > $TMPDIR/$$.tmp && uniq $TMPDIR/$$.tmp && rm $TMPDIR/$$.tmp`,
           "resultType" : "list"
-        });
+        });*/
       })
-      .then( tcIds => {
+      .then( result => {
         self.$store.commit('tcScan/updateTask', {
-          "id" :self.taskId,
+          "id" : self.taskId,
           "updateWith" : {
             "status" : "SUCCESS",
-            "result" : tcIds
+            "result" : result,
+            "tomcats": result.value.map( id => {
+              return {
+                "id"       : id,
+                "selected" : false
+              };
+            })
           }
         });
-        console.log('tcIds',tcIds);
+        console.log('result',result);
+        ssh.dispose();
       })
       .catch(err => {
         self.$store.commit('tcScan/updateTask', {
           "id" :self.taskId,
           "updateWith" : {
-            "status" : "ERROR",
-            "error"  : err.message
+            "status"       : "ERROR",
+            "errorMessage" : err.message,
+            "error"        : err
           }
         });
+        ssh.dispose();
       });
     }
   },
@@ -66,9 +96,12 @@ module.exports = Vue.component('modal-tc-scan',  {
     let theTask = this.$store.getters['tcScan/taskById'](this.taskId);
     if( ! theTask ) {
       this.$store.commit('tcScan/addTask',{
-        "id" : this.taskId,
-        "step" : "INIT",
-        "status" : "IDLE"
+        "id"     : this.taskId,
+        "step"   : "INIT",
+        "status" : "IDLE",
+        "result" : null,
+        "tomcats": [],
+        "errorMessage" : ""
       });
     }
   }

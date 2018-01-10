@@ -9,6 +9,12 @@
  *    "message" : ""
  *   },
  *   "result" : {}
+ *   "tomcats" : [
+ *    {
+ *      "id" : CORE,
+ *      "selected" : true
+ *    }
+ *   ]
  *
  *  },
  *  "step" : [] // get tc Id, explore webapp
@@ -29,6 +35,15 @@ module.exports = {
     }
   },
   mutations: {
+    toggleTomcatSelection : function(state, options) {
+      let task = state.tasks.find( task => task.id === options.taskId);
+      if( task ) {
+        let tomcat = task.tomcats.find( tomcat => tomcat.id === options.id);
+        if (tomcat ) {
+            tomcat.selected = ! tomcat.selected;
+        }
+      }
+    },
     addTask : function(state,tcScanTask) {
       state.tasks.push(tcScanTask);
     },

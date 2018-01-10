@@ -18,11 +18,29 @@ module.exports = `
         <div v-else-if="task.status == 'ERROR'">
           <p>something went wrong ! </p>
           <pre>
-            {{task.error.message}}
+            {{task.errorMessage}}
           </pre>
         </div>
         <div v-else-if="task.status == 'SUCCESS'">
-          <p>Ids extracted : </p>
+          <p>Ids extracted <em>({{tomcatSelectedCount}})</em> selected: </p>
+          <table class="table">
+            <tr v-for="(tomcat, index) in task.tomcats" :key="index">
+              <td>
+                <input
+                  type="checkbox"
+                  :value="tomcat.id"
+                  v-on:click="toggleTomcatSelection(tomcat.id)"
+                  :checked="tomcat.selected">
+              </td>
+              <td width="100%">
+                 {{tomcat.id}}
+              </td>
+              <td></td>
+            </tr>
+          </table>
+          <button
+            :disabled="tomcatSelectedCount == 0"
+            v-on:click="scanSelectedTomcats()">Scan Selected</button>
         </div>
         <div v-else>
          {{task.status}}
