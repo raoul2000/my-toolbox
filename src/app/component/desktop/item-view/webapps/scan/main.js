@@ -1,5 +1,4 @@
 'use strict';
-
 var smartCommand = require('../../../../../lib/lib').smartCommand;
 const NodeSSH = require('node-ssh');
 
@@ -7,23 +6,18 @@ module.exports = Vue.component('modal-tc-scan',  {
   props : ['item'],
   data : function(){
     return {
-      taskId : null,
-      task   : null
+      taskId : null
     };
   },
   template: require('./main.html'),
   computed : {
-    status: function() {
-      return this.task.status;
-    },
-    step: function() {
-      return this.task.step;
+    task : function() {
+      return  this.$store.getters['tcScan/taskById'](this.taskId);
     }
   },
   methods : {
     cancel : function(){
       this.$store.commit('tcScan/deleteTask', this.task);
-      this.task = null;
     },
     getTaskId : function(){
       return `${this.item.data.ssh.username}@${this.item.data.ssh.host}`;
@@ -69,13 +63,13 @@ module.exports = Vue.component('modal-tc-scan',  {
   // life cycle hook
   mounted : function(){
     this.taskId = this.getTaskId();
-    this.task = this.$store.getters['tcScan/taskById'](this.taskId);
-    if( ! this.task ) {
+    let theTask = this.$store.getters['tcScan/taskById'](this.taskId);
+    if( ! theTask ) {
       this.$store.commit('tcScan/addTask',{
         "id" : this.taskId,
-        "step" : "INIT"
+        "step" : "INIT",
+        "status" : "IDLE"
       });
-      this.task = this.$store.getters['tcScan/taskById'](this.taskId);
     }
   }
 });
