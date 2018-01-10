@@ -2,11 +2,6 @@ module.exports = `
 <div id="webapps-panel" v-if="item != null ">
   <div class="row">
 
-    <div v-if="openScanModal">
-      <modal-tc-scan
-        :item="item"
-        v-on:close="openScanModal = false"></modal-tc-scan>
-    </div>
 
     <div class="col-lg-12">
 
@@ -18,6 +13,14 @@ module.exports = `
           <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Scan Tomcat
         </button>
       </div>
+
+
+      <div v-if="openScanModal">
+        <modal-tc-scan
+          :item="item"
+          v-on:close="openScanModal = false"></modal-tc-scan>
+      </div>
+
 
 
       <div

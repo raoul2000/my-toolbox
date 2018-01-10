@@ -1,6 +1,4 @@
 
-
-
 // Generic object to access desktop items, tomcats and webapps. Returns
 // the obejct instance or the array index.
 let find = {
@@ -49,7 +47,9 @@ module.exports = new Vuex.Store({
     tasks            : []
   },
   modules: {
-    tcScan: require('./module/tc-scan')
+    tcScan: require('./module/tc-scan') //require('./module/tc-scan')
+    // store.getters['tcScan/taskById']('33')
+    // store.state.tcScan.someProp
   },
   getters: {
     // TODO : remove this method when not used anymore

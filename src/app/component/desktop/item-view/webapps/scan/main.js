@@ -1,23 +1,81 @@
-const store     = require('../../../../../service/store/store');
+'use strict';
+
+var smartCommand = require('../../../../../lib/lib').smartCommand;
+const NodeSSH = require('node-ssh');
 
 module.exports = Vue.component('modal-tc-scan',  {
   props : ['item'],
   data : function(){
     return {
-      message : "message from list",
-      step    : ""
+      taskId : null,
+      task   : null
     };
   },
   template: require('./main.html'),
+  computed : {
+    status: function() {
+      return this.task.status;
+    },
+    step: function() {
+      return this.task.step;
+    }
+  },
+  methods : {
+    cancel : function(){
+      this.$store.commit('tcScan/deleteTask', this.task);
+      this.task = null;
+    },
+    getTaskId : function(){
+      return `${this.item.data.ssh.username}@${this.item.data.ssh.host}`;
+    },
+    startSearchTCId : function() {
+      this.$store.commit('tcScan/updateTask', {
+        "id" : this.taskId,
+        "updateWith" : {
+          "step"   : "SCAN_TC_ID",
+          "status" : "BUSY"
+        }
+      });
+      let self = this;
+      let ssh = new NodeSSH();
+      ssh.connect(this.item.data.ssh)
+      .then( () => {
+        return smartCommand.run(ssh,{
+          "command"    : `. .bash_profile; set -o pipefail; cat $HOME/cfg/eomvar.dtd | grep TOMCAT_ | cut -d ' ' -f 2 | cut -d '_' -f 2 | sort > $TMPDIR/$$.tmp && uniq $TMPDIR/$$.tmp && rm $TMPDIR/$$.tmp`,
+          "resultType" : "list"
+        });
+      })
+      .then( tcIds => {
+        self.$store.commit('tcScan/updateTask', {
+          "id" :self.taskId,
+          "updateWith" : {
+            "status" : "SUCCESS",
+            "result" : tcIds
+          }
+        });
+        console.log('tcIds',tcIds);
+      })
+      .catch(err => {
+        self.$store.commit('tcScan/updateTask', {
+          "id" :self.taskId,
+          "updateWith" : {
+            "status" : "ERROR",
+            "error"  : err.message
+          }
+        });
+      });
+    }
+  },
   // life cycle hook
   mounted : function(){
-    var self = this;
-    //this.$store
-    store.tcScan.getters.taskById(this.item.data._id);
-    //this.task =
-    // trigger modal display attaching event handler to close
-    $('#modal-scan-tomcat').modal("show").one('hidden.bs.modal', function (e) {
-      self.$emit('close');
-    });
+    this.taskId = this.getTaskId();
+    this.task = this.$store.getters['tcScan/taskById'](this.taskId);
+    if( ! this.task ) {
+      this.$store.commit('tcScan/addTask',{
+        "id" : this.taskId,
+        "step" : "INIT"
+      });
+      this.task = this.$store.getters['tcScan/taskById'](this.taskId);
+    }
   }
 });

@@ -1,30 +1,51 @@
 'use strict';
 /**
  * task : {
- *  "_id" : "11233654",
+ *  "id" : "username@127.2.3.4",
  *  "step" : "INIT",
- *  "status" : {
- *      "name" : "status_name",
- *      ["progress" : 50]
+ *  "status" :  "BUSY", // IDLE | BUSY | SUCCESS | ERROR
+ *   "progress" : 50, // optionnal
+ *   "error" : {
+ *    "message" : ""
+ *   },
+ *   "result" : {}
+ *
  *  },
  *  "step" : [] // get tc Id, explore webapp
  * }
  * @type {"_id""}
  */
 
-exports = {
+module.exports = {
   namespaced: true,
   state: {
-    "someProp" : 1
+    "tasks" : []
   },
   getters: {
     taskById : function(state, getters) {
-      return function(webappId) {
-        console.log('taskById');
-        return {};
+      return function(taskId) {
+        return state.tasks.find( item => item.id === taskId);
       };
-    },
-
+    }
   },
-  mutations: {},
+  mutations: {
+    addTask : function(state,tcScanTask) {
+      state.tasks.push(tcScanTask);
+    },
+    deleteTask(state, taskToDelete) {
+      let idx = state.tasks.findIndex( task => task.id === taskToDelete.id);
+      if( idx !== -1) {
+        state.tasks.splice(idx, 1);
+      }
+    },
+    updateTask(state, options) {
+      try {
+        let task   = state.tasks.find(task => task.id === options.id);
+        Object.assign(task, options.updateWith);
+        console.log('done uodating tc scan task');
+      }catch(e) {
+        console.error("failed to tcScan Task",options, e);
+      }
+    }
+  },
 };
