@@ -47,9 +47,10 @@ module.exports = new Vuex.Store({
     tasks            : []
   },
   modules: {
-    tcScan: require('./module/tc-scan') //require('./module/tc-scan')
+    tcScan: require('./module/tc-scan'), //require('./module/tc-scan')
     // store.getters['tcScan/taskById']('33')
     // store.state.tcScan.someProp
+    view: require('./module/view') //require('./module/tc-scan')
   },
   getters: {
     // TODO : remove this method when not used anymore
