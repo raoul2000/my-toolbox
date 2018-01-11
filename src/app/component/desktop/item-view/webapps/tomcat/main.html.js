@@ -1,7 +1,7 @@
 module.exports = `
 <div>
   <table class="header-tomcat">
-    <tr>
+    <tr style="background-color: #f7f7f7;color: grey;">
       <td style="padding-right:4px">
         <span
           v-on:click="toggleWebappView"
