@@ -14,18 +14,39 @@ module.exports = Vue.component('modal-tc-scan',  {
     task : function() {
       return  this.$store.getters['tcScan/taskById'](this.taskId);
     },
+    /*
     tomcatSelectedCount : function() {
       return this.task.tomcats
       .filter( tomcat => tomcat.selected)
       .length;
-    }
+    }*/
   },
   methods : {
+    /**
+     * User starts scan for the selected tomcats
+     */
     scanSelectedTomcats : function() {
-      this.task.tomcats
+      let tomcatIdsToScan = this.task.tomcats
       .filter( tomcat => tomcat.selected);
 
+      if( tomcatIdsToScan.length === 0) {
+        notify('Please select one or more Tomcat to scan','warning','No selection');
+      } else {
+        console.log('start scan',tomcatIdsToScan);
+        this.$store.commit('tcScan/updateTask', {
+          "id" : this.taskId,
+          "updateWith" : {
+            "step"   : "SCAN_WEBAPP",
+            "status" : "BUSY"
+          }
+        });
+      }
+
     },
+    /**
+     * User selects a tomcat id for to be scanned
+     * @param  {string} tcid the tomcat id value
+     */
     toggleTomcatSelection : function(tcid) {
       this.$store.commit('tcScan/toggleTomcatSelection', {
         "id"     : tcid,
@@ -93,8 +114,7 @@ module.exports = Vue.component('modal-tc-scan',  {
   // life cycle hook
   mounted : function(){
     this.taskId = this.getTaskId();
-    let theTask = this.$store.getters['tcScan/taskById'](this.taskId);
-    if( ! theTask ) {
+    if( ! this.task ) { // this.task : computed property
       this.$store.commit('tcScan/addTask',{
         "id"     : this.taskId,
         "step"   : "INIT",

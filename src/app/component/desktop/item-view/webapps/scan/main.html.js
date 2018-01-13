@@ -39,15 +39,36 @@ module.exports = `
             </tr>
           </table>
           <button
-            :disabled="tomcatSelectedCount == 0"
             v-on:click="scanSelectedTomcats()">Scan Selected</button>
         </div>
         <div v-else>
          {{task.status}}
         </div>
       </div>
+
       <div v-else-if="task.step == 'SCAN_WEBAPP'">
+        <p v-if="task.status == 'BUSY'">scan in progress...</p>
+        <div v-else>
+          <table class="table">
+            <tr v-for="(tomcat, index) in task.tomcats" :key="index">
+              <td>
+                <input
+                  type="checkbox"
+                  :value="tomcat.id"
+                  v-on:click="toggleTomcatSelection(tomcat.id)"
+                  :checked="tomcat.selected">
+              </td>
+              <td width="100%">
+                 {{tomcat.id}}
+              </td>
+              <td>
+              </td>
+              <td></td>
+            </tr>
+          </table>
+        </div>
       </div>
+
       <hr/>
       <button v-on:click="cancel()">Cancel</button>
     </div><!-- /.modal-content -->
