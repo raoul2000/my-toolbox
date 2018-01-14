@@ -1,5 +1,5 @@
 module.exports = `
-<div >
+<div>
 
     <div v-if="task != null" class="">
       <h2>Scanner</h2>

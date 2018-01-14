@@ -13,13 +13,7 @@ module.exports = Vue.component('modal-tc-scan',  {
   computed : {
     task : function() {
       return  this.$store.getters['tcScan/taskById'](this.taskId);
-    },
-    /*
-    tomcatSelectedCount : function() {
-      return this.task.tomcats
-      .filter( tomcat => tomcat.selected)
-      .length;
-    }*/
+    }
   },
   methods : {
     /**
