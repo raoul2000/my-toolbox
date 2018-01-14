@@ -55,6 +55,7 @@ module.exports = Vue.component('modal-tc-scan',  {
     },
     cancel : function(){
       this.$store.commit('tcScan/deleteTask', this.task);
+      this.$emit('close');
     },
     getTaskId : function(){
       return `${this.item.data.ssh.username}@${this.item.data.ssh.host}`;

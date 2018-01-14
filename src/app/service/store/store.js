@@ -47,9 +47,13 @@ module.exports = new Vuex.Store({
     tasks            : []
   },
   modules: {
-    tcScan: require('./module/tc-scan'), //require('./module/tc-scan')
     // store.getters['tcScan/taskById']('33')
     // store.state.tcScan.someProp
+    tcScan: require('./module/tc-scan'), //require('./module/tc-scan'),
+
+    // store.getters['view/findById']('33')
+    // store.getters['view/add']({...})
+    // store.state.view.someProp
     view: require('./module/view') //require('./module/tc-scan')
   },
   getters: {
