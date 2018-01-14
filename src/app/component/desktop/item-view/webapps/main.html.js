@@ -1,9 +1,7 @@
 module.exports = `
 <div id="webapps-panel" v-if="item != null ">
-  {{view.childViewId}}
+
   <div class="row">
-
-
     <div v-if="view.childViewId == 'TOMCAT_LIST'" class="col-lg-12">
 
       <div class="btn-group btn-group-sm secondary-toolbar" role="group" >

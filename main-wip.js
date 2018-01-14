@@ -61,7 +61,7 @@ function createWindow () {
     frame: false,
     alwaysOnTop: false
   });
-  //splash.loadURL(`file://${__dirname}/splash.html`);
+  //splash.loadURL(`file://${__dirname}/splash-2.html`);
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
