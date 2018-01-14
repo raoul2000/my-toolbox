@@ -7,6 +7,8 @@ const store     = require('../../../service/store/store'); // TODO : nod needed 
 const config    = require('../../../service/config');
 const notify    = require('../../../service/notification');
 
+const VIEW_ID = "item-view";
+
 module.exports = {
   store,
   data : function(){
@@ -20,9 +22,8 @@ module.exports = {
   },
   template: require('./main.html'),
   computed : {
-    // TODO : filter webapp display on user input
-    filtered : function() {
-      return 1;
+    view : function() {
+      return this.$store.getters['view/findById'](VIEW_ID);
     }
   },
   methods : {
@@ -83,14 +84,23 @@ module.exports = {
         notify('No IP address or hostname provided','error','Error');
       }
     },
+    /**
+     * User click on webapp tab
+     */
     "openTabWebapp" : function() {
       this.activeTab = "webapps";
       this.$router.push('webapps');
     },
+    /**
+     * User click on 'settings' tab
+     */
     "openTabHome" : function() {
       this.activeTab = "settings";
       this.$router.push('settings');
     },
+    /**
+     * User click on 'component' tab
+     */
     "openTabComponents" : function() {
       this.activeTab = "components";
       this.$router.push('components');
@@ -99,7 +109,6 @@ module.exports = {
      * Create the HTML page header out of the desktop item relative file path.
      */
     buildPageHeader : function() {
-
       let subtitle = "";
       if( this.item.path.length > 0 ) {
         subtitle = this.item.path.map( (aPath, index) => {
@@ -132,7 +141,6 @@ module.exports = {
    * index is passed as a route query param
    */
   mounted : function(){
-    console.log('mounted');
     // get the desktop item index from the route query param
     let itemId = this.$route.params.id;
     // find the desktop item in the store
@@ -144,5 +152,16 @@ module.exports = {
       this.name = this.item.name;
       this.buildPageHeader();
     }
+
+    // persistent view state ////////////////////////////////////////////////
+    //
+    if( this.view ) {
+      this.$store.commit('view/delete',{
+        "id": VIEW_ID
+      });
+    }
+    this.$store.commit('view/add',{
+      "id" : VIEW_ID
+    });
   }
 };

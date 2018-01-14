@@ -41,7 +41,6 @@ module.exports = {
   },
   methods : {
     closeScannerView : function() {
-      console.log("closeScannerView");
       this.$store.commit('view/update', {
         "id" : VIEW_ID,
         "updateWith" : {

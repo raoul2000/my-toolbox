@@ -33,9 +33,8 @@ module.exports = `
 
   <div class="row">
     <div class="col-lg-12">
-    <router-view>
-    </router-view>
-
+      <router-view>
+      </router-view>
     </div>
   </div><!--// row -->
 
