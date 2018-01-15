@@ -1,5 +1,5 @@
 module.exports = `
-<div >
+<div>
 
     <div v-if="task != null" class="">
       <h2>Scanner</h2>
@@ -39,17 +39,18 @@ module.exports = `
             </tr>
           </table>
           <button
-            :disabled="tomcatSelectedCount == 0"
             v-on:click="scanSelectedTomcats()">Scan Selected</button>
         </div>
         <div v-else>
          {{task.status}}
         </div>
       </div>
+
       <div v-else-if="task.step == 'SCAN_WEBAPP'">
 
 
       </div>
+
       <hr/>
       <button v-on:click="cancel()">Cancel</button>
     </div><!-- /.modal-content -->

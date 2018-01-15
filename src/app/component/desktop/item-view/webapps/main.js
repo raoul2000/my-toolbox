@@ -2,6 +2,7 @@ const store     = require('../../../../service/store/store'); // TODO : nod need
 const helper    = require('../../../../lib/lib').helper;
 var persistence = require('../../../../lib/lib').persistence;
 
+const VIEW_ID = "webapp-tab";
 
 module.exports = {
   store,
@@ -14,9 +15,6 @@ module.exports = {
       item          : null,
       disableAction : false,
       expandAll     : true,
-      // manage view display,
-      expandTomcat  : true,
-      expandWebapp  : true,
       // filter : passed to the tomcat component to be applied on
       // webapps
       filterText    : "",
@@ -24,32 +22,65 @@ module.exports = {
     };
   },
   template: require('./main.html'),
+  computed : {
+    view : function() {
+      return this.$store.getters['view/findById'](VIEW_ID);
+    }
+  },
   watch : {
     filterText : function() {
       if(this.filterText.trim().length !== 0) {
-        // TODO : this will not trigger expan/collapse because the
+        // TODO : this will not trigger expand/collapse because the
         // details view may already be expanded : in this case there is no
         // change .. no redraw :(
-        this.expandTomcat = true;
+        if( this.view.expandTomcat === false) {
+          this.toggleTomcatView();
+        }
       }
     }
   },
   methods : {
+    closeScannerView : function() {
+      this.$store.commit('view/update', {
+        "id" : VIEW_ID,
+        "updateWith" : {
+          "childViewId"   : "TOMCAT_LIST"
+        }
+      });
+    },
+    openScannerView : function() {
+      this.$store.commit('view/update', {
+        "id" : VIEW_ID,
+        "updateWith" : {
+          "childViewId"   : "SCANNER"
+        }
+      });
+    },
     viewTomcatClass : function() {
-      return this.expandTomcat
+      return this.view.expandTomcat
         ? ["glyphicon", "glyphicon-eye-close"]
         : ["glyphicon", "glyphicon-eye-open"];
     },
     viewWebappClass : function() {
-      return this.expandWebapp
+      return this.view.expandWebapp
         ? ["glyphicon", "glyphicon-eye-close"]
         : ["glyphicon", "glyphicon-eye-open"];
     },
     toggleWebappView : function() {
-      this.expandWebapp = ! this.expandWebapp;
+      this.$store.commit('view/update', {
+        "id" : VIEW_ID,
+        "updateWith" : {
+          "expandWebapp"   : ! this.view.expandWebapp
+        }
+      });
     },
     toggleTomcatView : function() {
-      this.expandTomcat = ! this.expandTomcat;
+      this.$store.commit('view/update', {
+        "id" : VIEW_ID,
+        "updateWith" : {
+          "expandTomcat"   : ! this.view.expandTomcat
+        }
+      });
     },
     addTomcat : function() {
       console.log('addTomcat');
@@ -72,5 +103,13 @@ module.exports = {
    mounted : function(){
      // find the desktop item in the store
      this.item = this.$store.getters.desktopItemById(this.$route.params.id);
+     if( ! this.view ) {
+       this.$store.commit('view/add',{
+         "id"          : VIEW_ID,
+         "childViewId" : "TOMCAT_LIST",
+         "expandTomcat": true,
+         "expandWebapp": true
+       });
+     }
    }
 };

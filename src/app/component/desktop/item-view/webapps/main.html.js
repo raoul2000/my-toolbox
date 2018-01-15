@@ -1,27 +1,17 @@
 module.exports = `
 <div id="webapps-panel" v-if="item != null ">
+
   <div class="row">
-
-
-    <div class="col-lg-12">
+    <div v-if="view.childViewId == 'TOMCAT_LIST'" class="col-lg-12">
 
       <div class="btn-group btn-group-sm secondary-toolbar" role="group" >
         <button title="Add Tomcat" v-on:click="addTomcat()" type="button" class="btn btn-default btn-xs">
           <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Tomcat
         </button>
-        <button title="Scan Tomcat" v-on:click="openScanModal = true" type="button" class="btn btn-default btn-xs">
+        <button title="Scan Tomcat" v-on:click="openScannerView()" type="button" class="btn btn-default btn-xs">
           <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Scan Tomcat
         </button>
       </div>
-
-
-      <div v-if="openScanModal">
-        <modal-tc-scan
-          :item="item"
-          v-on:close="openScanModal = false"></modal-tc-scan>
-      </div>
-
-
 
       <div
         v-if="item.data.tomcats.length !== 0"
@@ -60,8 +50,8 @@ module.exports = `
           :id="tomcat._id">
           <tomcat
             :item="item"
-            :expandTomcat="expandTomcat"
-            :expandWebapp="expandWebapp"
+            :expandTomcat="view.expandTomcat"
+            :expandWebapp="view.expandWebapp"
             :filter="filterText"
             :tomcat="tomcat"/>
         </div>
@@ -71,6 +61,13 @@ module.exports = `
       </div>
 
     </div><!-- col-lg-12 -->
+
+    <div v-if="view.childViewId == 'SCANNER'" class="col-lg-12">
+      <modal-tc-scan
+        :item="item"
+        v-on:close="closeScannerView()"></modal-tc-scan>
+    </div><!-- col-lg-12 -->
+
   </div>
 </div>
 `;
