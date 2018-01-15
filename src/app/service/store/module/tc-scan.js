@@ -12,7 +12,13 @@
  *   "tomcats" : [
  *    {
  *      "id" : CORE,
- *      "selected" : true
+ *      "selected" : true,
+ *      "port" : 0,
+ *      "webapp" : [
+ *        {
+ *          //
+ *        }
+ *      ]
  *    }
  *   ]
  *

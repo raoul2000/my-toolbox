@@ -2,7 +2,7 @@ module.exports = `
 <div>
   <table class="header-tomcat">
     <tr style="background-color: #f7f7f7;color: grey;">
-      <td style="padding-right:4px">
+      <td style="padding-right:4px;padding-left: 8px;">
         <span
           v-on:click="toggleWebappView"
           v-bind:class="toggleButtonClass()"
@@ -40,7 +40,7 @@ module.exports = `
       <td style="white-space:nowrap;text-align:center; padding-right:10px;">
         <a :href="tomcatManagerURL" :title="tomcatManagerURL">manager</a>
       </td>
-      <td>
+      <td style="padding-right: 10px;">
           <span
             v-on:click="deleteTomcat()"
             title="Delete Tomcat"

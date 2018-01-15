@@ -47,6 +47,8 @@ module.exports = `
         </div>
       </div>
       <div v-else-if="task.step == 'SCAN_WEBAPP'">
+
+
       </div>
       <hr/>
       <button v-on:click="cancel()">Cancel</button>

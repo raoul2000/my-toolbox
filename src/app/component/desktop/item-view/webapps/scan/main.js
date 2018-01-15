@@ -22,8 +22,19 @@ module.exports = Vue.component('modal-tc-scan',  {
   },
   methods : {
     scanSelectedTomcats : function() {
-      this.task.tomcats
-      .filter( tomcat => tomcat.selected);
+      /*
+      scanTomcats(
+        this.item.data.ssh,
+        this.task.tomcats
+          .filter( tomcat => tomcat.selected)
+      )
+      .then( (result) => {
+        console.log(result);
+      })
+      .catch( err => {
+        console.error(err);
+      });
+      */
 
     },
     toggleTomcatSelection : function(tcid) {

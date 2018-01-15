@@ -6,7 +6,7 @@
  *
  * This function assumes that the following convention applies :
  * being given a string (the tomcat id), the folder where the tomcat is installed
- * patches the patern '*tomcat-[tomcat ID]'.
+ * matches the patern '*tomcat-[tomcat ID]'.
  *
  * returns : {
  *  "id" : "tc id",
