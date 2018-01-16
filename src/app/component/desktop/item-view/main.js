@@ -113,7 +113,7 @@ module.exports = {
       if( this.item.path.length > 0 ) {
         subtitle = this.item.path.map( (aPath, index) => {
           if( index === 0 ) {
-            return `<b>${aPath}</b>`;
+            return `<span class="label label-default" style="font-size: 100%;font-weight: 0;">${aPath}</span>`;
           } else {
             return aPath;
           }

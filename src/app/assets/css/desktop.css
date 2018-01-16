@@ -25,9 +25,9 @@
   font-size: 19px;
   color: inherit;
   margin-top: 4px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   white-space: nowrap;
-  overflow: hidden;
+  /*overflow: hidden;*/
   text-overflow: ellipsis;
 
 }

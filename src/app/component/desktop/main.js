@@ -65,8 +65,12 @@ module.exports = {
       let name = item.name;
       let extraInfo = item.path.length > 1 ? item.path.filter( (token, index) => index > 0).join(' - ') : "";
 
-      let html = `<div class="card-title" title="${title}">${title}</div>
+      let html =
+      `<div class="card-title" title="${title}">
+        <span class="label label-default">${title}</span>
+      </div>
       <div class="card-name">${name}</div>`;
+
       if( extraInfo.length > 0) {
         html = html.concat(`<div class="card-extra">${extraInfo}</div>`);
       }
