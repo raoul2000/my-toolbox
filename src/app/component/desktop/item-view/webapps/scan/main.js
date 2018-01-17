@@ -1,5 +1,7 @@
 'use strict';
 var smartCommand = require('../../../../../lib/lib').smartCommand;
+var tomcatScanner = require('../../../../../lib/lib').tomcatScanner;
+
 const NodeSSH = require('node-ssh');
 
 module.exports = Vue.component('modal-tc-scan',  {
@@ -33,6 +35,16 @@ module.exports = Vue.component('modal-tc-scan',  {
             "step"   : "SCAN_WEBAPP",
             "status" : "BUSY"
           }
+        });
+        tomcatScanner.run({
+          ssh : this.item.data.ssh,
+          tomcats : [ { id : "ID1"}, { id : "CORE"}, { id : "ID2"}]
+        })
+        .then( result => {
+          console.log(result);
+        })
+        .catch(err => {
+          console.log(err);
         });
       }
 

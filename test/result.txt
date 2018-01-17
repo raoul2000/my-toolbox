@@ -1,0 +1,1052 @@
+
+
+  tomcat scanner
+extractInstallDir : options =  { ssh: 
+   SSH {
+     connection: 
+      Client {
+        domain: null,
+        _events: [Object],
+        _eventsCount: 2,
+        _maxListeners: undefined,
+        config: [Object],
+        _readyTimeout: [Object],
+        _channels: {},
+        _callbacks: [],
+        _forwarding: {},
+        _forwardingUnix: {},
+        _acceptX11: 0,
+        _agentFwdEnabled: false,
+        _curChan: 0,
+        _remoteVer: 'OpenSSH_5.3',
+        _sshstream: [Object],
+        _sock: [Object],
+        _resetKA: [Function: resetKA] } },
+  tomcat: { id: 'ID1' } }
+{ code: 2,
+  signal: undefined,
+  stdout: '',
+  stderr: 'ls: cannot access /methode/meth01/*tomcat-id1: No such file or directory' }
+extractInstallDir : options =  { ssh: 
+   SSH {
+     connection: 
+      Client {
+        domain: null,
+        _events: [Object],
+        _eventsCount: 2,
+        _maxListeners: undefined,
+        config: [Object],
+        _readyTimeout: [Object],
+        _channels: {},
+        _callbacks: [],
+        _forwarding: {},
+        _forwardingUnix: {},
+        _acceptX11: 0,
+        _agentFwdEnabled: false,
+        _curChan: 1,
+        _remoteVer: 'OpenSSH_5.3',
+        _sshstream: [Object],
+        _sock: [Object],
+        _resetKA: [Function: resetKA] } },
+  tomcat: { id: 'CORE' } }
+{ code: 0,
+  signal: undefined,
+  stdout: '/methode/meth01/tomcat-core',
+  stderr: '' }
+extractInstallDir : options =  { ssh: 
+   SSH {
+     connection: 
+      Client {
+        domain: null,
+        _events: [Object],
+        _eventsCount: 2,
+        _maxListeners: undefined,
+        config: [Object],
+        _readyTimeout: [Object],
+        _channels: {},
+        _callbacks: [],
+        _forwarding: {},
+        _forwardingUnix: {},
+        _acceptX11: 0,
+        _agentFwdEnabled: false,
+        _curChan: 2,
+        _remoteVer: 'OpenSSH_5.3',
+        _sshstream: [Object],
+        _sock: [Object],
+        _resetKA: [Function: resetKA] } },
+  tomcat: { id: 'ID2' } }
+{ code: 2,
+  signal: undefined,
+  stdout: '',
+  stderr: 'ls: cannot access /methode/meth01/*tomcat-id2: No such file or directory' }
+[ { value: { id: 'ID1', error: [Object] },
+    error: null,
+    resolved: true },
+  { value: { id: 'CORE', installDir: '/methode/meth01/tomcat-core' },
+    error: null,
+    resolved: true },
+  { value: { id: 'ID2', error: [Object] },
+    error: null,
+    resolved: true } ]
+==== /methode/meth01/tomcat-core
+{ code: 0,
+  signal: undefined,
+  stdout: '<?xml version=\'1.0\' encoding=\'utf-8\'?>\n<!DOCTYPE EOMVAR SYSTEM "../../cfg/eomvar.dtd">\n<Server port="&TOMCAT_CORE_SHUTDOWN_PORT;" shutdown="SHUTDOWN">\n\t<Listener className="org.apache.catalina.startup.VersionLoggerListener" />\n\t<!-- <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" /> -->\n\t<!-- Prevent memory leaks due to use of particular java/javax APIs-->\n\t<Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />\n\t<Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />\n\t<Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />\n\t<GlobalNamingResources>\n\t\t<Resource name="UserDatabase" auth="Container"\n\t              type="org.apache.catalina.UserDatabase"\n\t              description="User database that can be updated and saved"\n\t              factory="org.apache.catalina.users.MemoryUserDatabaseFactory"\n\t              pathname="conf/tomcat-users.xml" />\n\t</GlobalNamingResources>\n\t<Service name="Catalina">\n\t\t<Connector port="&TOMCAT_CORE_PORT;"\n\t               protocol="HTTP/1.1"\n\t               connectionTimeout="20000"\n\t               URIEncoding="UTF-8"\n\t               maxHttpHeaderSize="8192"\n\t               maxThreads="1000"\n\t               acceptCount="100"\n\t               compression="off" \n\t               noCompressionUserAgents="gozilla, traviata"\n\t               compressableMimeType ="text/html,text/xml,text/plain,text/css,text/javascript" />\n\n\t\t<!-- Define a SSL/TLS HTTP/1.1 Connector on port 8443\n\t\t\tThis connector uses the NIO implementation that requires the JSSE\n\t\t\tstyle configuration. When using the APR/native implementation, the\n\t\t\tOpenSSL style configuration is required as described in the APR/native\n\t\t\tdocumentation -->\n\t\t<!--\n\t\t<Connector port="&TOMCAT_CORE_SSL_PORT;" protocol="org.apache.coyote.http11.Http11NioProtocol"\n\t\t\tcompression="off"\n\t\t\tnoCompressionUserAgents="gozilla, traviata" \n\t\t\tcompressableMimeType ="text/html,text/xml,text/plain,text/css,text/javascript"\n\t\t\tmaxThreads="1000" acceptCount="100" SSLEnabled="true" scheme="https" secure="true"\n\t\t\tkeystoreFile="conf/tomcat.keystore" keystorePass="em.tomcat"\n\t\t\tclientAuth="false" sslProtocol="TLS" />\n\t\t\t<?ignore\n\t\t\t<SSLHostConfig certificateVerification="false" sslProtocol="TLS">\n\t\t           <Certificate certificateKeystoreFile="${catalina.home}/conf/tomcat.keystore"\n\t\t                        certificateKeystorePassword="em.tomcat" />\n\t\t       </SSLHostConfig>\n\t\t</Connector>\n\t\t       ?>\n\t\t-->\n\n\t\t<Engine name="Catalina" defaultHost="localhost">\n\t\t\t<Realm className="org.apache.catalina.realm.LockOutRealm">\n\t\t\t\t<Realm className="org.apache.catalina.realm.UserDatabaseRealm"\n\t\t\t               resourceName="UserDatabase"/>\n\t\t\t</Realm>\n\t\t\t<Host name="localhost" appBase="webapps" unpackWARs="false" autoDeploy="false" workDir="&HOME;/work/${T_NAME}/work">\n\t\t\t\t<!--\n\t\t\t        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="&HOME;/logfiles/${T_NAME}"\n\t\t\t               prefix="localhost_access_log" suffix=".txt"\n\t\t\t               pattern="%h %l %u %t &quot;%r&quot; %s %b" />\n\t\t\t\t-->\n\t\t\t</Host>\n\t\t</Engine>\n\t</Service>\n</Server>',
+  stderr: '' }
+getContextsFromDOM Document {
+  implementation: { _features: {} },
+  childNodes: 
+   { '0': 
+      ProcessingInstruction {
+        ownerDocument: [Circular],
+        target: 'xml',
+        tagName: 'xml',
+        data: 'version=\'1.0\' encoding=\'utf-8\'',
+        nodeValue: 'version=\'1.0\' encoding=\'utf-8\'',
+        previousSibling: null,
+        nextSibling: [Object],
+        parentNode: [Circular] },
+     '1': 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Object],
+        nextSibling: [Object],
+        parentNode: [Circular] },
+     '2': 
+      DocumentType {
+        name: 'EOMVAR',
+        nodeName: 'EOMVAR',
+        publicId: false,
+        systemId: '>',
+        previousSibling: [Object],
+        nextSibling: [Object],
+        parentNode: [Circular],
+        ownerDocument: [Circular] },
+     '3': 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Object],
+        nextSibling: [Object],
+        parentNode: [Circular] },
+     '4': 
+      Element {
+        _nsMap: {},
+        attributes: [Object],
+        childNodes: [Object],
+        ownerDocument: [Circular],
+        nodeName: 'Server',
+        tagName: 'Server',
+        namespaceURI: undefined,
+        localName: 'Server',
+        previousSibling: [Object],
+        nextSibling: null,
+        parentNode: [Circular],
+        firstChild: [Object],
+        lastChild: [Object] },
+     length: 5 },
+  doctype: null,
+  firstChild: 
+   ProcessingInstruction {
+     ownerDocument: [Circular],
+     target: 'xml',
+     tagName: 'xml',
+     data: 'version=\'1.0\' encoding=\'utf-8\'',
+     nodeValue: 'version=\'1.0\' encoding=\'utf-8\'',
+     previousSibling: null,
+     nextSibling: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Circular],
+        nextSibling: [Object],
+        parentNode: [Circular] },
+     parentNode: [Circular] },
+  lastChild: 
+   Element {
+     _nsMap: {},
+     attributes: 
+      { '0': [Object],
+        '1': [Object],
+        _ownerElement: [Circular],
+        length: 2 },
+     childNodes: 
+      { '0': [Object],
+        '1': [Object],
+        '2': [Object],
+        '3': [Object],
+        '4': [Object],
+        '5': [Object],
+        '6': [Object],
+        '7': [Object],
+        '8': [Object],
+        '9': [Object],
+        '10': [Object],
+        '11': [Object],
+        '12': [Object],
+        '13': [Object],
+        '14': [Object],
+        '15': [Object],
+        '16': [Object],
+        length: 17 },
+     ownerDocument: [Circular],
+     nodeName: 'Server',
+     tagName: 'Server',
+     namespaceURI: undefined,
+     localName: 'Server',
+     previousSibling: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Object],
+        nextSibling: [Circular],
+        parentNode: [Circular] },
+     nextSibling: null,
+     parentNode: [Circular],
+     firstChild: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n\t',
+        nodeValue: '\n\t',
+        length: 2,
+        parentNode: [Circular],
+        previousSibling: null,
+        nextSibling: [Object] },
+     lastChild: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        parentNode: [Circular],
+        previousSibling: [Object],
+        nextSibling: null } },
+  _inc: 79,
+  documentElement: 
+   Element {
+     _nsMap: {},
+     attributes: 
+      { '0': [Object],
+        '1': [Object],
+        _ownerElement: [Circular],
+        length: 2 },
+     childNodes: 
+      { '0': [Object],
+        '1': [Object],
+        '2': [Object],
+        '3': [Object],
+        '4': [Object],
+        '5': [Object],
+        '6': [Object],
+        '7': [Object],
+        '8': [Object],
+        '9': [Object],
+        '10': [Object],
+        '11': [Object],
+        '12': [Object],
+        '13': [Object],
+        '14': [Object],
+        '15': [Object],
+        '16': [Object],
+        length: 17 },
+     ownerDocument: [Circular],
+     nodeName: 'Server',
+     tagName: 'Server',
+     namespaceURI: undefined,
+     localName: 'Server',
+     previousSibling: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Object],
+        nextSibling: [Circular],
+        parentNode: [Circular] },
+     nextSibling: null,
+     parentNode: [Circular],
+     firstChild: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n\t',
+        nodeValue: '\n\t',
+        length: 2,
+        parentNode: [Circular],
+        previousSibling: null,
+        nextSibling: [Object] },
+     lastChild: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        parentNode: [Circular],
+        previousSibling: [Object],
+        nextSibling: null } } }
+getContextsFromDOM []
+getContextsFromFolder { code: 0,
+  signal: undefined,
+  stdout: '/methode/meth01/tomcat-core/conf/Catalina/localhost/checkin.xml\n/methode/meth01/tomcat-core/conf/Catalina/localhost/formats.xml\n/methode/meth01/tomcat-core/conf/Catalina/localhost/rhelper.xml\n/methode/meth01/tomcat-core/conf/Catalina/localhost/ROOT.xml',
+  stderr: '' }
+getContextsFromFolder /methode/meth01/tomcat-core/conf/Catalina/localhost/checkin.xml
+getContextsFromFile /methode/meth01/tomcat-core/conf/Catalina/localhost/checkin.xml
+getContextsFromFile { code: 0,
+  signal: undefined,
+  stdout: '<?xml version=\'1.0\' encoding=\'utf-8\'?>\n<!DOCTYPE EOMVAR SYSTEM "file:../cfg/eomvar.dtd">\n<Context path="/checkin" docBase="&HOME;/methode-servlets/checkin" reloadable="false" xmlBlockExternal="false">\n        <Parameter name="SERVLET_PACKAGE" value="checkin.CheckinServlet" override="false"/>\n\t<Resources className="org.apache.catalina.webresources.StandardRoot">\n\t\t<PostResources className="org.apache.catalina.webresources.DirResourceSet" base="&HOME;/methode-servlets/lib/checkin" webAppMount="/WEB-INF/lib" />\n\t\t<PostResources className="org.apache.catalina.webresources.DirResourceSet" base="&HOME;/methode-servlets/conf/checkin/xsl" webAppMount="/xsl" />\n\t</Resources>\n</Context>',
+  stderr: '' }
+getContextsFromDOM Document {
+  implementation: { _features: {} },
+  childNodes: 
+   { '0': 
+      ProcessingInstruction {
+        ownerDocument: [Circular],
+        target: 'xml',
+        tagName: 'xml',
+        data: 'version=\'1.0\' encoding=\'utf-8\'',
+        nodeValue: 'version=\'1.0\' encoding=\'utf-8\'',
+        previousSibling: null,
+        nextSibling: [Object],
+        parentNode: [Circular] },
+     '1': 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Object],
+        nextSibling: [Object],
+        parentNode: [Circular] },
+     '2': 
+      DocumentType {
+        name: 'EOMVAR',
+        nodeName: 'EOMVAR',
+        publicId: false,
+        systemId: '>',
+        previousSibling: [Object],
+        nextSibling: [Object],
+        parentNode: [Circular],
+        ownerDocument: [Circular] },
+     '3': 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Object],
+        nextSibling: [Object],
+        parentNode: [Circular] },
+     '4': 
+      Element {
+        _nsMap: {},
+        attributes: [Object],
+        childNodes: [Object],
+        ownerDocument: [Circular],
+        nodeName: 'Context',
+        tagName: 'Context',
+        namespaceURI: undefined,
+        localName: 'Context',
+        previousSibling: [Object],
+        nextSibling: null,
+        parentNode: [Circular],
+        firstChild: [Object],
+        lastChild: [Object] },
+     length: 5 },
+  doctype: null,
+  firstChild: 
+   ProcessingInstruction {
+     ownerDocument: [Circular],
+     target: 'xml',
+     tagName: 'xml',
+     data: 'version=\'1.0\' encoding=\'utf-8\'',
+     nodeValue: 'version=\'1.0\' encoding=\'utf-8\'',
+     previousSibling: null,
+     nextSibling: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Circular],
+        nextSibling: [Object],
+        parentNode: [Circular] },
+     parentNode: [Circular] },
+  lastChild: 
+   Element {
+     _nsMap: {},
+     attributes: 
+      { '0': [Object],
+        '1': [Object],
+        '2': [Object],
+        '3': [Object],
+        _ownerElement: [Circular],
+        length: 4 },
+     childNodes: 
+      { '0': [Object],
+        '1': [Object],
+        '2': [Object],
+        '3': [Object],
+        '4': [Object],
+        length: 5 },
+     ownerDocument: [Circular],
+     nodeName: 'Context',
+     tagName: 'Context',
+     namespaceURI: undefined,
+     localName: 'Context',
+     previousSibling: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Object],
+        nextSibling: [Circular],
+        parentNode: [Circular] },
+     nextSibling: null,
+     parentNode: [Circular],
+     firstChild: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n        ',
+        nodeValue: '\n        ',
+        length: 9,
+        parentNode: [Circular],
+        previousSibling: null,
+        nextSibling: [Object] },
+     lastChild: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        parentNode: [Circular],
+        previousSibling: [Object],
+        nextSibling: null } },
+  _inc: 30,
+  documentElement: 
+   Element {
+     _nsMap: {},
+     attributes: 
+      { '0': [Object],
+        '1': [Object],
+        '2': [Object],
+        '3': [Object],
+        _ownerElement: [Circular],
+        length: 4 },
+     childNodes: 
+      { '0': [Object],
+        '1': [Object],
+        '2': [Object],
+        '3': [Object],
+        '4': [Object],
+        length: 5 },
+     ownerDocument: [Circular],
+     nodeName: 'Context',
+     tagName: 'Context',
+     namespaceURI: undefined,
+     localName: 'Context',
+     previousSibling: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Object],
+        nextSibling: [Circular],
+        parentNode: [Circular] },
+     nextSibling: null,
+     parentNode: [Circular],
+     firstChild: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n        ',
+        nodeValue: '\n        ',
+        length: 9,
+        parentNode: [Circular],
+        previousSibling: null,
+        nextSibling: [Object] },
+     lastChild: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        parentNode: [Circular],
+        previousSibling: [Object],
+        nextSibling: null } } }
+getContextsFromDOM [ { path: '/checkin',
+    docBase: '/methode/meth01/methode-servlets/checkin' } ]
+getContextsFromFolder /methode/meth01/tomcat-core/conf/Catalina/localhost/formats.xml
+getContextsFromFile /methode/meth01/tomcat-core/conf/Catalina/localhost/formats.xml
+getContextsFromFile { code: 0,
+  signal: undefined,
+  stdout: '<?xml version=\'1.0\' encoding=\'utf-8\'?>\n<!DOCTYPE EOMVAR SYSTEM "file:../cfg/eomvar.dtd">\n<Context path="/formats" docBase="&HOME;/methode-servlets/formats" reloadable="false" xmlBlockExternal="false">\n        <Parameter name="SERVLET_PACKAGE" value="formats.CreateFormats" override="false"/>\n\t<Resources className="org.apache.catalina.webresources.StandardRoot">\n\t\t<PostResources className="org.apache.catalina.webresources.DirResourceSet" base="&HOME;/methode-servlets/lib/formats" webAppMount="/WEB-INF/lib" />\n\t</Resources>\n</Context>',
+  stderr: '' }
+getContextsFromDOM Document {
+  implementation: { _features: {} },
+  childNodes: 
+   { '0': 
+      ProcessingInstruction {
+        ownerDocument: [Circular],
+        target: 'xml',
+        tagName: 'xml',
+        data: 'version=\'1.0\' encoding=\'utf-8\'',
+        nodeValue: 'version=\'1.0\' encoding=\'utf-8\'',
+        previousSibling: null,
+        nextSibling: [Object],
+        parentNode: [Circular] },
+     '1': 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Object],
+        nextSibling: [Object],
+        parentNode: [Circular] },
+     '2': 
+      DocumentType {
+        name: 'EOMVAR',
+        nodeName: 'EOMVAR',
+        publicId: false,
+        systemId: '>',
+        previousSibling: [Object],
+        nextSibling: [Object],
+        parentNode: [Circular],
+        ownerDocument: [Circular] },
+     '3': 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Object],
+        nextSibling: [Object],
+        parentNode: [Circular] },
+     '4': 
+      Element {
+        _nsMap: {},
+        attributes: [Object],
+        childNodes: [Object],
+        ownerDocument: [Circular],
+        nodeName: 'Context',
+        tagName: 'Context',
+        namespaceURI: undefined,
+        localName: 'Context',
+        previousSibling: [Object],
+        nextSibling: null,
+        parentNode: [Circular],
+        firstChild: [Object],
+        lastChild: [Object] },
+     length: 5 },
+  doctype: null,
+  firstChild: 
+   ProcessingInstruction {
+     ownerDocument: [Circular],
+     target: 'xml',
+     tagName: 'xml',
+     data: 'version=\'1.0\' encoding=\'utf-8\'',
+     nodeValue: 'version=\'1.0\' encoding=\'utf-8\'',
+     previousSibling: null,
+     nextSibling: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Circular],
+        nextSibling: [Object],
+        parentNode: [Circular] },
+     parentNode: [Circular] },
+  lastChild: 
+   Element {
+     _nsMap: {},
+     attributes: 
+      { '0': [Object],
+        '1': [Object],
+        '2': [Object],
+        '3': [Object],
+        _ownerElement: [Circular],
+        length: 4 },
+     childNodes: 
+      { '0': [Object],
+        '1': [Object],
+        '2': [Object],
+        '3': [Object],
+        '4': [Object],
+        length: 5 },
+     ownerDocument: [Circular],
+     nodeName: 'Context',
+     tagName: 'Context',
+     namespaceURI: undefined,
+     localName: 'Context',
+     previousSibling: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Object],
+        nextSibling: [Circular],
+        parentNode: [Circular] },
+     nextSibling: null,
+     parentNode: [Circular],
+     firstChild: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n        ',
+        nodeValue: '\n        ',
+        length: 9,
+        parentNode: [Circular],
+        previousSibling: null,
+        nextSibling: [Object] },
+     lastChild: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        parentNode: [Circular],
+        previousSibling: [Object],
+        nextSibling: null } },
+  _inc: 25,
+  documentElement: 
+   Element {
+     _nsMap: {},
+     attributes: 
+      { '0': [Object],
+        '1': [Object],
+        '2': [Object],
+        '3': [Object],
+        _ownerElement: [Circular],
+        length: 4 },
+     childNodes: 
+      { '0': [Object],
+        '1': [Object],
+        '2': [Object],
+        '3': [Object],
+        '4': [Object],
+        length: 5 },
+     ownerDocument: [Circular],
+     nodeName: 'Context',
+     tagName: 'Context',
+     namespaceURI: undefined,
+     localName: 'Context',
+     previousSibling: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Object],
+        nextSibling: [Circular],
+        parentNode: [Circular] },
+     nextSibling: null,
+     parentNode: [Circular],
+     firstChild: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n        ',
+        nodeValue: '\n        ',
+        length: 9,
+        parentNode: [Circular],
+        previousSibling: null,
+        nextSibling: [Object] },
+     lastChild: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        parentNode: [Circular],
+        previousSibling: [Object],
+        nextSibling: null } } }
+getContextsFromDOM [ { path: '/formats',
+    docBase: '/methode/meth01/methode-servlets/formats' } ]
+getContextsFromFolder /methode/meth01/tomcat-core/conf/Catalina/localhost/rhelper.xml
+getContextsFromFile /methode/meth01/tomcat-core/conf/Catalina/localhost/rhelper.xml
+getContextsFromFile { code: 0,
+  signal: undefined,
+  stdout: '<?xml version=\'1.0\' encoding=\'utf-8\'?>\n<!DOCTYPE EOMVAR SYSTEM "file:../cfg/eomvar.dtd">\n<Context path="/rhelper"  docBase="&HOME;/methode-servlets/rhelper" reloadable="false" xmlBlockExternal="false">\n        <Parameter name="SERVLET_PACKAGE" value="rhelper.Servlet" override="false"/>\n\t<Resources className="org.apache.catalina.webresources.StandardRoot">\n\t\t<PostResources className="org.apache.catalina.webresources.DirResourceSet" base="&HOME;/methode-servlets/lib/rhelper" webAppMount="/WEB-INF/lib" />\n\t</Resources>\n</Context>',
+  stderr: '' }
+getContextsFromDOM Document {
+  implementation: { _features: {} },
+  childNodes: 
+   { '0': 
+      ProcessingInstruction {
+        ownerDocument: [Circular],
+        target: 'xml',
+        tagName: 'xml',
+        data: 'version=\'1.0\' encoding=\'utf-8\'',
+        nodeValue: 'version=\'1.0\' encoding=\'utf-8\'',
+        previousSibling: null,
+        nextSibling: [Object],
+        parentNode: [Circular] },
+     '1': 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Object],
+        nextSibling: [Object],
+        parentNode: [Circular] },
+     '2': 
+      DocumentType {
+        name: 'EOMVAR',
+        nodeName: 'EOMVAR',
+        publicId: false,
+        systemId: '>',
+        previousSibling: [Object],
+        nextSibling: [Object],
+        parentNode: [Circular],
+        ownerDocument: [Circular] },
+     '3': 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Object],
+        nextSibling: [Object],
+        parentNode: [Circular] },
+     '4': 
+      Element {
+        _nsMap: {},
+        attributes: [Object],
+        childNodes: [Object],
+        ownerDocument: [Circular],
+        nodeName: 'Context',
+        tagName: 'Context',
+        namespaceURI: undefined,
+        localName: 'Context',
+        previousSibling: [Object],
+        nextSibling: null,
+        parentNode: [Circular],
+        firstChild: [Object],
+        lastChild: [Object] },
+     length: 5 },
+  doctype: null,
+  firstChild: 
+   ProcessingInstruction {
+     ownerDocument: [Circular],
+     target: 'xml',
+     tagName: 'xml',
+     data: 'version=\'1.0\' encoding=\'utf-8\'',
+     nodeValue: 'version=\'1.0\' encoding=\'utf-8\'',
+     previousSibling: null,
+     nextSibling: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Circular],
+        nextSibling: [Object],
+        parentNode: [Circular] },
+     parentNode: [Circular] },
+  lastChild: 
+   Element {
+     _nsMap: {},
+     attributes: 
+      { '0': [Object],
+        '1': [Object],
+        '2': [Object],
+        '3': [Object],
+        _ownerElement: [Circular],
+        length: 4 },
+     childNodes: 
+      { '0': [Object],
+        '1': [Object],
+        '2': [Object],
+        '3': [Object],
+        '4': [Object],
+        length: 5 },
+     ownerDocument: [Circular],
+     nodeName: 'Context',
+     tagName: 'Context',
+     namespaceURI: undefined,
+     localName: 'Context',
+     previousSibling: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Object],
+        nextSibling: [Circular],
+        parentNode: [Circular] },
+     nextSibling: null,
+     parentNode: [Circular],
+     firstChild: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n        ',
+        nodeValue: '\n        ',
+        length: 9,
+        parentNode: [Circular],
+        previousSibling: null,
+        nextSibling: [Object] },
+     lastChild: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        parentNode: [Circular],
+        previousSibling: [Object],
+        nextSibling: null } },
+  _inc: 25,
+  documentElement: 
+   Element {
+     _nsMap: {},
+     attributes: 
+      { '0': [Object],
+        '1': [Object],
+        '2': [Object],
+        '3': [Object],
+        _ownerElement: [Circular],
+        length: 4 },
+     childNodes: 
+      { '0': [Object],
+        '1': [Object],
+        '2': [Object],
+        '3': [Object],
+        '4': [Object],
+        length: 5 },
+     ownerDocument: [Circular],
+     nodeName: 'Context',
+     tagName: 'Context',
+     namespaceURI: undefined,
+     localName: 'Context',
+     previousSibling: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Object],
+        nextSibling: [Circular],
+        parentNode: [Circular] },
+     nextSibling: null,
+     parentNode: [Circular],
+     firstChild: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n        ',
+        nodeValue: '\n        ',
+        length: 9,
+        parentNode: [Circular],
+        previousSibling: null,
+        nextSibling: [Object] },
+     lastChild: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        parentNode: [Circular],
+        previousSibling: [Object],
+        nextSibling: null } } }
+getContextsFromDOM [ { path: '/rhelper',
+    docBase: '/methode/meth01/methode-servlets/rhelper' } ]
+getContextsFromFolder /methode/meth01/tomcat-core/conf/Catalina/localhost/ROOT.xml
+getContextsFromFile /methode/meth01/tomcat-core/conf/Catalina/localhost/ROOT.xml
+getContextsFromFile { code: 0,
+  signal: undefined,
+  stdout: '<?xml version=\'1.0\' encoding=\'utf-8\'?>\n<!DOCTYPE EOMVAR SYSTEM "file:../cfg/eomvar.dtd">\n<Context path="" docBase="&HOME;/methode-servlets/preview" xmlBlockExternal="false" reloadable="false">\n        <Parameter name="SERVLET_PACKAGE" value="web.Dav" override="false"/>\n\t<Resources className="org.apache.catalina.webresources.StandardRoot" allowLinking="true">\n\t\t<PostResources className="org.apache.catalina.webresources.DirResourceSet" base="&HOME;/methode-servlets/lib/preview" webAppMount="/WEB-INF/lib" />\n\t\t<PostResources className="org.apache.catalina.webresources.DirResourceSet" base="&HOME;/methode-servlets/conf/preview" webAppMount="/WEB-INF/classes" />\n\t\t<PostResources className="org.apache.catalina.webresources.DirResourceSet" base="&HOME;/methode-servlets/conf/preview/customviews" webAppMount="/customviews" />\n\t\t<PostResources className="org.apache.catalina.webresources.DirResourceSet" base="&HOME;/methode-servlets/conf/preview/quickmetadata" webAppMount="/quickmetadata" />\n\t\t<PostResources className="org.apache.catalina.webresources.DirResourceSet" base="&HOME;/methode-servlets/conf/preview/preview-jsp" webAppMount="/preview-jsp" />\n\t</Resources>\n</Context>',
+  stderr: '' }
+getContextsFromDOM Document {
+  implementation: { _features: {} },
+  childNodes: 
+   { '0': 
+      ProcessingInstruction {
+        ownerDocument: [Circular],
+        target: 'xml',
+        tagName: 'xml',
+        data: 'version=\'1.0\' encoding=\'utf-8\'',
+        nodeValue: 'version=\'1.0\' encoding=\'utf-8\'',
+        previousSibling: null,
+        nextSibling: [Object],
+        parentNode: [Circular] },
+     '1': 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Object],
+        nextSibling: [Object],
+        parentNode: [Circular] },
+     '2': 
+      DocumentType {
+        name: 'EOMVAR',
+        nodeName: 'EOMVAR',
+        publicId: false,
+        systemId: '>',
+        previousSibling: [Object],
+        nextSibling: [Object],
+        parentNode: [Circular],
+        ownerDocument: [Circular] },
+     '3': 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Object],
+        nextSibling: [Object],
+        parentNode: [Circular] },
+     '4': 
+      Element {
+        _nsMap: {},
+        attributes: [Object],
+        childNodes: [Object],
+        ownerDocument: [Circular],
+        nodeName: 'Context',
+        tagName: 'Context',
+        namespaceURI: undefined,
+        localName: 'Context',
+        previousSibling: [Object],
+        nextSibling: null,
+        parentNode: [Circular],
+        firstChild: [Object],
+        lastChild: [Object] },
+     length: 5 },
+  doctype: null,
+  firstChild: 
+   ProcessingInstruction {
+     ownerDocument: [Circular],
+     target: 'xml',
+     tagName: 'xml',
+     data: 'version=\'1.0\' encoding=\'utf-8\'',
+     nodeValue: 'version=\'1.0\' encoding=\'utf-8\'',
+     previousSibling: null,
+     nextSibling: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Circular],
+        nextSibling: [Object],
+        parentNode: [Circular] },
+     parentNode: [Circular] },
+  lastChild: 
+   Element {
+     _nsMap: {},
+     attributes: 
+      { '0': [Object],
+        '1': [Object],
+        '2': [Object],
+        '3': [Object],
+        _ownerElement: [Circular],
+        length: 4 },
+     childNodes: 
+      { '0': [Object],
+        '1': [Object],
+        '2': [Object],
+        '3': [Object],
+        '4': [Object],
+        length: 5 },
+     ownerDocument: [Circular],
+     nodeName: 'Context',
+     tagName: 'Context',
+     namespaceURI: undefined,
+     localName: 'Context',
+     previousSibling: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Object],
+        nextSibling: [Circular],
+        parentNode: [Circular] },
+     nextSibling: null,
+     parentNode: [Circular],
+     firstChild: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n        ',
+        nodeValue: '\n        ',
+        length: 9,
+        parentNode: [Circular],
+        previousSibling: null,
+        nextSibling: [Object] },
+     lastChild: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        parentNode: [Circular],
+        previousSibling: [Object],
+        nextSibling: null } },
+  _inc: 46,
+  documentElement: 
+   Element {
+     _nsMap: {},
+     attributes: 
+      { '0': [Object],
+        '1': [Object],
+        '2': [Object],
+        '3': [Object],
+        _ownerElement: [Circular],
+        length: 4 },
+     childNodes: 
+      { '0': [Object],
+        '1': [Object],
+        '2': [Object],
+        '3': [Object],
+        '4': [Object],
+        length: 5 },
+     ownerDocument: [Circular],
+     nodeName: 'Context',
+     tagName: 'Context',
+     namespaceURI: undefined,
+     localName: 'Context',
+     previousSibling: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        previousSibling: [Object],
+        nextSibling: [Circular],
+        parentNode: [Circular] },
+     nextSibling: null,
+     parentNode: [Circular],
+     firstChild: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n        ',
+        nodeValue: '\n        ',
+        length: 9,
+        parentNode: [Circular],
+        previousSibling: null,
+        nextSibling: [Object] },
+     lastChild: 
+      Text {
+        ownerDocument: [Circular],
+        data: '\n',
+        nodeValue: '\n',
+        length: 1,
+        parentNode: [Circular],
+        previousSibling: [Object],
+        nextSibling: null } } }
+getContextsFromDOM [ { path: '',
+    docBase: '/methode/meth01/methode-servlets/preview' } ]
+    √ scan tomcats (10414ms)
+
+
+  1 passing (10s)
+
