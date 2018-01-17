@@ -38,7 +38,8 @@ module.exports = Vue.component('modal-tc-scan',  {
         });
         tomcatScanner.run({
           ssh : this.item.data.ssh,
-          tomcats : [ { id : "ID1"}, { id : "CORE"}, { id : "ID2"}]
+          //tomcats : [ { id : "ID1"}, { id : "CORE"}, { id : "ID2"}]
+          tomcats : [  { id : "CORE"}, { id : "INOUT"}]
         })
         .then( result => {
           console.log(result);

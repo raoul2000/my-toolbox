@@ -2,19 +2,20 @@
 var xmlParser = require('../xml/parser');
 /**
  * Extract context informations from a tomcat web descriptor provided as a DOM.
- * Returns an object where the key is the servlet name and value are servlet class and url-pattern
- * Example :
+ *
+ * Returns = [
  *  {
- *    "servlet name": {
- *      "url-pattern": "/findleaks",
- *      "class": "org.apache.catalina.manager.ManagerServlet"
- *    },
- *    etc.
- *  }
+ *    "name" : "the servlet Name",
+ *    "class" : "servlet.main.class.name",
+ *    "urlPattern" : [
+ *      "pattern1", "pattern2", etc...
+ *    ]
+ *  },
+ *  { ... }
+ * ]
  *
  * @param  {dom} Document
- * @return {object}      hash where the key is the servlet name and value are
- * servlet class and url-pattern
+ * @return {object}      see comments
  */
 function extractDescriptorInfo(dom) {
 
@@ -60,8 +61,33 @@ function extractDescriptorInfo(dom) {
   return result;
 }
 
-
-//function getAllServlet(ssh, filePath, entities) {
+/**
+ * options = {
+ *  "ssh" : Object, // NodeSSH valide and connected
+ *  "descriptorPath" : "/path/to/web.xml",
+ *  "entities" : object // key/value pair
+ *
+ * }
+ *
+ * Result = {
+ *  "descriptorPath" : "/path/to/the/web.xml",
+ *  "servlets"       : [
+ *    {
+ *      "class"      : "the.web.app.class",
+ *      "name"       : "the web app name",
+ *      "urlPattern" : [
+ *        "pattern1", "pattern2", etc...
+ *      ]
+ *    },
+ *    { .... }
+ *  ]
+ * }
+ *
+ * [
+ * ]
+ * @param  {Object} options options
+ * @return {Promise}
+ */
 function getAllServlet(options) {
   let ssh = options.ssh;
   let filePath = options.descriptorPath;
@@ -75,8 +101,11 @@ function getAllServlet(options) {
   })
   .then( dom => {
     console.log(dom);
-    return extractDescriptorInfo(dom);
-  }  );
+    return {
+      "descriptorPath" : options.descriptorPath,
+      "servlets"       : extractDescriptorInfo(dom)
+    };
+  });
 }
 
 exports.getAllServlet = getAllServlet;
