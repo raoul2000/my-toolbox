@@ -5,6 +5,7 @@ const persistence = require('../../../../../../lib/lib').persistence;
 module.exports = {
   props: ['item', 'tomcat', 'webapp', 'expandWebapp'],
   components: {
+    "servlet"      : require('./servlet/main'),
     "inlineInput2": require('../../../../../../lib/component/inline-input-2')
   },
   data: function() {

@@ -32,36 +32,31 @@ module.exports = `
     </tr>
   </table>
 
-  <table v-if="expanded" class="info-webapp">
-    <tr>
-      <td class="field-label-right">
-        path :
-      </td>
-      <td width="100%">
-        <inlineInput2
-          :value="webapp.path"
-          :valid="validation.path"
-          inputType="text"
-          valueName="path"
-          emptyValue="<em class='text-muted'>home page path</em>"
-          v-on:changeValue="changeValue"/>
-      </td>
-      <td class="field-label-right">
-        ID :
-      </td>
-      <td width="100%">
-        <select
-          v-model="referenceWebappSelection">
-          <option :value="null" selected="selected">** Custom Webapp **</option>
-          <option
-            v-for="option in webappDefinitionOptions"
-            v-bind:value="option.id">
-            {{ option.name }}
-          </option>
-        </select>
 
-      </td>
-    </tr>
-  </table>
+
+  <div v-if="expanded" class="info-webapp">
+  <div>
+    <select
+      v-model="referenceWebappSelection">
+      <option :value="null" selected="selected">** Custom Webapp **</option>
+      <option
+        v-for="option in webappDefinitionOptions"
+        v-bind:value="option.id">
+        {{ option.name }}
+      </option>
+    </select>
+  </div>  
+    <div
+      class="single-webapp-container"
+      v-for="servlet in webapp.servlets" :key="servlet._id">
+      <servlet
+        :item="item"
+        :tomcat="tomcat"
+        :webapp="webapp"
+        :servlet="servlet"
+      />
+    </div>
+  </div>
+
 </div>
 `;
