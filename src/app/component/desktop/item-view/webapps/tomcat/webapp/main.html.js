@@ -35,17 +35,34 @@ module.exports = `
 
 
   <div v-if="expanded" class="info-webapp">
-  <div>
-    <select
-      v-model="referenceWebappSelection">
-      <option :value="null" selected="selected">** Custom Webapp **</option>
-      <option
-        v-for="option in webappDefinitionOptions"
-        v-bind:value="option.id">
-        {{ option.name }}
-      </option>
-    </select>
-  </div>  
+    <table class="table">
+      <tr>
+        <td width="70px">
+          context :
+        </td>
+        <td>
+          <inlineInput2
+            :value="webapp.context"
+            :valid="validation.context"
+            inputType="text"
+            emptyValue=""
+            valueName="context"
+            v-on:changeValue="changeValue"/>
+        </td>
+        <td width="50%">
+          <select
+            v-model="referenceWebappSelection">
+            <option :value="null" selected="selected">** Custom Webapp **</option>
+            <option
+              v-for="option in webappDefinitionOptions"
+              v-bind:value="option.id">
+              {{ option.name }}
+            </option>
+          </select>
+        </td>
+      </tr>
+    </table>
+
     <div
       class="single-webapp-container"
       v-for="servlet in webapp.servlets" :key="servlet._id">
@@ -56,7 +73,6 @@ module.exports = `
         :servlet="servlet"
       />
     </div>
-  </div>
-
+    </div>
 </div>
 `;

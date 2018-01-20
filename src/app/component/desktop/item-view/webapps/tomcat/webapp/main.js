@@ -6,13 +6,13 @@ module.exports = {
   props: ['item', 'tomcat', 'webapp', 'expandWebapp'],
   components: {
     "servlet"      : require('./servlet/main'),
-    "inlineInput2": require('../../../../../../lib/component/inline-input-2')
+    "inlineInput2" : require('../../../../../../lib/component/inline-input-2')
   },
   data: function() {
     return {
       validation: {
         "name": true,
-        "path": true
+        "context": true
       },
       expanded : this.expandWebapp,
       referenceWebappSelection : this.webapp.refId
@@ -21,7 +21,7 @@ module.exports = {
   template: require('./main.html'),
   computed: {
     webappURL: function() {
-      return `http://${this.item.data.ssh.host}:${this.tomcat.port}${this.webapp.path}`;
+      return `http://${this.item.data.ssh.host}:${this.tomcat.port}${this.webapp.context}`;
     },
     webappDefinitionOptions : function() {
       return this.$store.state.webappDefinition.map( module => {
@@ -55,18 +55,20 @@ module.exports = {
             }
           });
 
-          // Use the input change flow to update name and path
+          // Use the input change flow to update name and context
 
           this.changeValue({
             "name"  : "name",
             "value" : selectedModule.name
           });
-          if(selectedModule.path ) {
-            this.changeValue({
-              "name"  : "path",
-              "value" : selectedModule.path
-            });
-          }
+
+          // by CONVENTOIN set the webapp context to the same value
+          // as the module ID (this maybe incorrect in the future)
+          // 
+          this.changeValue({
+            "name"  : "context",
+            "value" : "/" + selectedModule.id
+          });
         }
       }
     }
@@ -108,18 +110,18 @@ module.exports = {
       });
     },
     changeValue: function(arg) {
-      if (arg.name === "path") {
+      if (arg.name === "context") {
         if (validate.isEmpty(arg.value)) {
-          this.validation.path = false;
+          this.validation.context = false;
         } else {
-          // check duplicate path
-          let existingWebapp = this.tomcat.webapps.find(webapp => webapp.path === arg.value);
+          // check duplicate context
+          let existingWebapp = this.tomcat.webapps.find(webapp => webapp.context === arg.value);
           if (existingWebapp) {
-            notify(`The path <b>${arg.value}</b> is already in
+            notify(`The context <b>${arg.value}</b> is already in
               use by web app <b>${existingWebapp.name}</b>`, 'warning', 'warning');
-            this.validation.path = false;
+            this.validation.context = false;
           } else {
-            this.validation.path = true;
+            this.validation.context = true;
           }
         }
       }
