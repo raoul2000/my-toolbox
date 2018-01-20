@@ -64,7 +64,7 @@ module.exports = {
 
           // by CONVENTOIN set the webapp context to the same value
           // as the module ID (this maybe incorrect in the future)
-          // 
+
           this.changeValue({
             "name"  : "context",
             "value" : "/" + selectedModule.id
@@ -134,6 +134,8 @@ module.exports = {
       };
       updateInfo.updateWith[arg.name] = arg.value;
       this.$store.commit('updateWebapp', updateInfo);
+      // FIXME : in some case (to define) the JSON saved by next line is INVALID
+      // with additional closing brackets or some other characters
       persistence.saveDesktopnItemToFile(this.item);
     }
   }

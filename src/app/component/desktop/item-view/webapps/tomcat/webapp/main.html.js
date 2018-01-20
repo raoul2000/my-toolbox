@@ -35,7 +35,7 @@ module.exports = `
 
 
   <div v-if="expanded" class="info-webapp">
-    <table class="table">
+    <table class="table info-webapp">
       <tr>
         <td width="70px">
           context :
