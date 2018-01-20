@@ -1,0 +1,50 @@
+module.exports = `
+<div class="servlet-container">
+
+  <table class="table info-servlet">
+    <tr>
+      <td width="150px">
+        Name
+      </td>
+      <td>
+        <inlineInput2
+          :value="servlet.name"
+          :valid="validation.name"
+          inputType="text"
+          valueName="name"
+          emptyValue="<em class='text-muted'>servlet name</em>"
+          v-on:changeValue="changeValue"/>
+      </td>
+    </tr>
+    <tr>
+      <td width="150px">
+        Class
+      </td>
+      <td>
+        <inlineInput2
+          :value="servlet.class"
+          :valid="validation.class"
+          inputType="text"
+          valueName="class"
+          emptyValue=""
+          v-on:changeValue="changeValue"/>
+      </td>
+    </tr>
+    <tr>
+      <td width="150px">
+        Url Pattern
+      </td>
+      <td>
+        <inlineInput2
+          :value="servlet.urlPattern"
+          :valid="validation.urlPattern"
+          inputType="text"
+          valueName="urlPattern"
+          emptyValue=""
+          v-on:changeValue="changeValue"/>
+      </td>
+    </tr>
+
+  </table>
+</div>
+`;

@@ -49,7 +49,7 @@ module.exports = `
             valueName="context"
             v-on:changeValue="changeValue"/>
         </td>
-        <td width="50%">
+        <td width="50%" colspan="3">
           <select
             v-model="referenceWebappSelection">
             <option :value="null" selected="selected">** Custom Webapp **</option>
@@ -61,18 +61,28 @@ module.exports = `
           </select>
         </td>
       </tr>
-    </table>
+      <tr
+        v-if="webapp.servlets.length != 0"
+        style="border-bottom: 1px solid #555;"
+      >
+        <td>servlets</td>
+        <td>Name</td>
+        <td>url pattern</td>
+        <td>class</td>
+        <td></td>
+      </tr>
+      <template
+        class="single-webapp-container"
+        v-for="servlet in webapp.servlets" :key="servlet._id">
+        <servlet
+          :item="item"
+          :tomcat="tomcat"
+          :webapp="webapp"
+          :servlet="servlet"
+        />
+      </template>
 
-    <div
-      class="single-webapp-container"
-      v-for="servlet in webapp.servlets" :key="servlet._id">
-      <servlet
-        :item="item"
-        :tomcat="tomcat"
-        :webapp="webapp"
-        :servlet="servlet"
-      />
-    </div>
-    </div>
+    </table>
+  </div>
 </div>
 `;

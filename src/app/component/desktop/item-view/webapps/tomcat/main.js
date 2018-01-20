@@ -57,13 +57,12 @@ module.exports = {
         "item"   : this.item,
         "tomcat" : this.tomcat,
         "webapp" : {
-          "_id"    : helper.generateUUID(),
-          "name"   : "",
-          "path"   : "/",
-          "context": "/",
-          "refId"  : null, // refer to a webapp in the definition list
-          "servlets" : [
-          ]
+          "_id"      : helper.generateUUID(),
+          "name"     : "",
+          "path"     : "/",
+          "context"  : "/",
+          "refId"    : null, // refer to a webapp in the definition list
+          "servlets" : []
         }
       });
       persistence.saveDesktopnItemToFile(this.item);
