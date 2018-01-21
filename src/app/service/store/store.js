@@ -12,6 +12,9 @@ let find = {
     webappById : function(webapps, id) {
       return webapps.find( webapp => webapp._id === id);
     },
+    servletById : function(servlets, id) {
+      return servlets.find( servlet => servlet._id === id);
+    },
     componentById : function(components, id) {
       return components.find( component => component._id === id);
     }
@@ -25,6 +28,9 @@ let find = {
     },
     webappById : function(webapps, id) {
       return webapps.findIndex( webapp => webapp._id === id);
+    },
+    servletById : function(servlets, id) {
+      return servlets.findIndex( servlet => servlet._id === id);
     },
     componentById : function(components, id) {
       return components.findIndex( component => component._id === id);
@@ -166,6 +172,7 @@ module.exports = new Vuex.Store({
         console.error("failed to deleteTomcat",e);
       }
     },
+    // WEBAPP ///////////////////////////////////////////////////////////////////
     addWebapp(state, options) {
       try {
         let item   = find.object.itemById(state.desktop, options.item.data._id);
@@ -195,6 +202,40 @@ module.exports = new Vuex.Store({
         console.error("failed to deleteWebapp",e);
       }
     },
+    // SERVLET ///////////////////////////////////////////////////////////////////
+    addServlet(state, options) {
+      try {
+        let item   = find.object.itemById(state.desktop, options.item.data._id);
+        let tomcat = find.object.tomcatById(item.data.tomcats, options.tomcat._id);
+        let webapp = find.object.webappById(tomcat.webapps, options.webapp._id);
+        webapp.servlets = [options.servlet].concat(webapp.servlets);
+      }catch(e) {
+        console.error("failed to add servlet",options, e);
+      }
+    },
+    updateServlet(state, options) {
+      try {
+        let item   = find.object.itemById(state.desktop, options.item.data._id);
+        let tomcat = find.object.tomcatById(item.data.tomcats, options.tomcat._id);
+        let webapp = find.object.webappById(tomcat.webapps, options.webapp._id);
+        let servlet= find.object.servletById(webapp.servlets, options.servlet._id);
+        Object.assign(servlet, options.updateWith);
+      }catch(e) {
+        console.error("failed to update servlet",e);
+      }
+    },
+    deleteServlet(state, options) {
+      try {
+        let item   = find.object.itemById(state.desktop, options.item.data._id);
+        let tomcat = find.object.tomcatById(item.data.tomcats, options.tomcat._id);
+        let webapp = find.object.webappById(tomcat.webapps, options.webapp._id);
+        let servletIndex = find.index.servletById(webapp.servlets, options.servlet._id);
+        webapp.servlets.splice(servletIndex, 1);
+      }catch(e) {
+        console.error("failed to delete servlet",e);
+      }
+    },
+    // COMPONENT ////////////////////////////////////////////////////////////////
     addComponent(state, options) {
       console.log('addComponent');
       try {

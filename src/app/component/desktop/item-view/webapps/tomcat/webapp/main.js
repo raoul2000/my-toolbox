@@ -1,6 +1,7 @@
 const validate    = require('validator');
 const notify      = require('../../../../../../service/notification');
 const persistence = require('../../../../../../lib/lib').persistence;
+const helper      = require('../../../../../../lib/lib').helper;
 
 module.exports = {
   props: ['item', 'tomcat', 'webapp', 'expandWebapp'],
@@ -74,6 +75,24 @@ module.exports = {
     }
   },
   methods: {
+    /**
+     * Add a servlet to the current webapp
+     */
+    addServlet : function() {
+      this.$store.commit('addServlet', {
+        "item"    : this.item,
+        "tomcat"  : this.tomcat,
+        "webapp"  : this.webapp,
+        "servlet" : {
+          "_id"        : helper.generateUUID(),
+          "name"       : "",
+          "class"      : "",
+          "urlPattern" : ""
+        }
+      });
+      persistence.saveDesktopnItemToFile(this.item);
+    },
+
     toggleDetailView : function() {
       this.expanded = ! this.expanded;
     },

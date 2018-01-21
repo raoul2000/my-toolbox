@@ -64,26 +64,38 @@ module.exports = `
     </table>
 
 
-    <table class="table info-webapp">
-      <tr
-        style="border-bottom: 1px solid #555;"
+    <table class="table tabme-condensed info-servlet">
+      <thead>
+        <tr>
+          <th>
+            servlets
+            <button
+              title="Add Servlet"
+              v-on:click="addServlet()"
+              class="btn btn-default btn-xs"
+            >
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </button>
+          </th>
+          <th>Name</th>
+          <th>class</th>
+          <th>url pattern</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody
+        v-if="webapp.servlets && webapp.servlets.length != 0"
       >
-        <td>servlets</td>
-        <td>Name</td>
-        <td>url pattern</td>
-        <td>class</td>
-        <td></td>
-      </tr>
-      <tr
-        v-if="webapp.servlets"
-        is="servlet"
-        v-for="servlet in webapp.servlets" :key="servlet._id"
-        :item="item"
-        :tomcat="tomcat"
-        :webapp="webapp"
-        :servlet="servlet"
-      >
-      </tr>
+        <tr
+          is="servlet"
+          v-for="servlet in webapp.servlets" :key="servlet._id"
+          :item="item"
+          :tomcat="tomcat"
+          :webapp="webapp"
+          :servlet="servlet"
+        >
+        </tr>
+      </tbody>
     </table>
   </div>
 </div>

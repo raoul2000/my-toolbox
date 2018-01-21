@@ -26,9 +26,13 @@
 .collapse-webapp-info .info-webapp {
   display:none;
 }
-
+table.info-servlet {
+  color: #adadad;
+  font-size: 0.9em;
+}
 table.info-webapp {
-  color : #b5b5b5;
+  color: #848484;
+  margin-top: 1em;
 }
 table.info-webapp select {
   border: 0px;

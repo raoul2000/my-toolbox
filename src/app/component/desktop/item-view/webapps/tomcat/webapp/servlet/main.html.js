@@ -1,6 +1,6 @@
 module.exports = `
 <tr>
-  <td>.....</td>
+  <td></td>
   <td>
     <inlineInput2
       :value="servlet.name"
@@ -28,6 +28,12 @@ module.exports = `
       emptyValue=""
       v-on:changeValue="changeValue"/>
   </td>
-  <td>....</td>
+  <td>
+    <a :href="servletURL" :title="servletURL">open</a>
+    <span
+      title="Delete this Servlet" v-on:click="deleteServlet()"
+      style="cursor:pointer; color:#fba8a8;"
+      class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+  </td>
 </tr>
 `;
