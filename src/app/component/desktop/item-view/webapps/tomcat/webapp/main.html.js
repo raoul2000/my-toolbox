@@ -61,8 +61,11 @@ module.exports = `
           </select>
         </td>
       </tr>
+    </table>
+
+
+    <table class="table info-webapp">
       <tr
-        v-if="webapp.servlets.length != 0"
         style="border-bottom: 1px solid #555;"
       >
         <td>servlets</td>
@@ -71,17 +74,16 @@ module.exports = `
         <td>class</td>
         <td></td>
       </tr>
-      <template
-        class="single-webapp-container"
-        v-for="servlet in webapp.servlets" :key="servlet._id">
-        <servlet
-          :item="item"
-          :tomcat="tomcat"
-          :webapp="webapp"
-          :servlet="servlet"
-        />
-      </template>
-
+      <tr
+        v-if="webapp.servlets"
+        is="servlet"
+        v-for="servlet in webapp.servlets" :key="servlet._id"
+        :item="item"
+        :tomcat="tomcat"
+        :webapp="webapp"
+        :servlet="servlet"
+      >
+      </tr>
     </table>
   </div>
 </div>

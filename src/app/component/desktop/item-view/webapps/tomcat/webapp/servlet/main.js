@@ -19,6 +19,19 @@ module.exports = {
   template: require('./main.html'),
   methods: {
     changeValue: function(arg) {
+      let updateInfo = {
+        "item"      : this.item,
+        "tomcat"    : this.tomcat,
+        "webapp"    : this.webapp,
+        "servlet"   : this.servlet,
+        "updateWith": {}
+      };
+      updateInfo.updateWith[arg.name] = arg.value;
+      this.$store.commit('updateServlet', updateInfo);
+      // FIXME : in some case (to define) the JSON saved by next line is INVALID
+      // with additional closing brackets or some other characters
+      persistence.saveDesktopnItemToFile(this.item);
+
     }
   }
 };
