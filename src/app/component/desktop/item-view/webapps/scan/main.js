@@ -1,6 +1,8 @@
 'use strict';
-var smartCommand = require('../../../../../lib/lib').smartCommand;
-var tomcatScanner = require('../../../../../lib/lib').tomcatScanner;
+const smartCommand  = require('../../../../../lib/lib').smartCommand;
+const tomcatScanner = require('../../../../../lib/lib').tomcatScanner;
+const helper        = require('../../../../../lib/lib').helper;
+const persistence   = require('../../../../../lib/lib').persistence;
 
 const NodeSSH = require('node-ssh');
 
@@ -29,6 +31,8 @@ module.exports = Vue.component('modal-tc-scan',  {
         notify('Please select one or more Tomcat to scan','warning','No selection');
       } else {
         console.log('start scan',tomcatIdsToScan);
+        let self = this;
+
         this.$store.commit('tcScan/updateTask', {
           "id" : this.taskId,
           "updateWith" : {
@@ -41,8 +45,63 @@ module.exports = Vue.component('modal-tc-scan',  {
           //tomcats : [ { id : "ID1"}, { id : "CORE"}, { id : "ID2"}]
           tomcats : [  { id : "CORE"}, { id : "INOUT"}]
         })
-        .then( result => {
-          console.log(result);
+        .then( results => {
+          // there is ont result per tomcat
+          console.log(results);
+          results.filter(result => result.resolved && ! result.error )
+          .forEach( result => {
+            let tomcatId = result.value.id;
+            let tomcatIdx = self.item.data.tomcats.findIndex(tomcat => tomcat.id === result.value.id);
+            if( tomcatIdx === -1) {
+              // this is a new tomcat instance
+              // We must modify the result so it matches with expected object structure
+              let newWebapps = result.value.webapps.map( webapp => {
+                let webappName = "";
+                let newWebapp = {
+                  "_id"                : helper.generateUUID(),
+                  "contextPath"        : webapp.contextPath,
+                  "descriptorFilePath" : webapp.descriptorFilePath,
+                  "refid"              : null,
+                  "name"               : "NO NAME",
+                  "servlets"           : webapp.servlets
+                };
+
+                webapp.servlets.find(servlet => {
+                  // FIXME : should use a getter function instead of direct access !!
+                  return self.$store.getters.webappDefinition.find(webappDef => {
+                    let reference =  webappDef.class.find( aClass => aClass === servlet.class);
+                    if( reference ) {
+                      newWebapp.refid = webappDef.id;
+                      newWebapp.name = webappDef.name;
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  });
+                });
+                /*
+                webapp.servlets.forEach(servlet => {
+                  self.$store.getters.webappDefinition.forEach(webappDef => {
+                    let reference =  webappDef.class.find( aClass => aClass === servlet.class);
+                    newWebapp.refid = webappDef.id;
+                    newWebapp.name = webappDef.name;
+                  });
+                });*/
+                return newWebapp;
+              });
+
+              this.$store.commit('addTomcat', {
+                "item" : self.item,
+                "tomcat" : {
+                  "_id"     : helper.generateUUID(),
+                  "id"      : result.value.id,
+                  "port"    : result.value.port,
+                  "webapps" : newWebapps
+                }
+              });
+            }
+          });
+          persistence.saveDesktopnItemToFile(this.item);
         })
         .catch(err => {
           console.log(err);
