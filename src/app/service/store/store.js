@@ -63,6 +63,9 @@ module.exports = new Vuex.Store({
     view: require('./module/view') //require('./module/tc-scan')
   },
   getters: {
+    getWebappDefinitions : function(state, getters) {
+      return state.webappDefinition;
+    },
     // TODO : remove this method when not used anymore
     desktopItemByIndex : function(state, getters) {
       return function(index) {

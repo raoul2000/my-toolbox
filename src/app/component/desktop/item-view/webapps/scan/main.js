@@ -3,8 +3,8 @@ const smartCommand  = require('../../../../../lib/lib').smartCommand;
 const tomcatScanner = require('../../../../../lib/lib').tomcatScanner;
 const helper        = require('../../../../../lib/lib').helper;
 const persistence   = require('../../../../../lib/lib').persistence;
-
 const NodeSSH = require('node-ssh');
+const fs         = require('fs');
 
 module.exports = Vue.component('modal-tc-scan',  {
   props : ['item'],
@@ -40,13 +40,28 @@ module.exports = Vue.component('modal-tc-scan',  {
             "status" : "BUSY"
           }
         });
+        /*
         tomcatScanner.run({
           ssh : this.item.data.ssh,
-          //tomcats : [ { id : "ID1"}, { id : "CORE"}, { id : "ID2"}]
           tomcats : [  { id : "CORE"}, { id : "INOUT"}]
-        })
+        })*/
+
+        var obj = JSON.parse(fs.readFileSync(__dirname + '/result.json', 'utf8'));
+
+        Promise.resolve(obj.results)
         .then( results => {
           // there is ont result per tomcat
+          // debug
+          /*fs.writeFile(__dirname + '/result.json', JSON.stringify({ "results" : results}, null, 2) , 'utf-8', (err) => {
+            if(err) {
+              console.error(err);
+            }
+          });
+          */
+
+
+          // debug
+
           console.log(results);
           results.filter(result => result.resolved && ! result.error )
           .forEach( result => {
@@ -67,8 +82,7 @@ module.exports = Vue.component('modal-tc-scan',  {
                 };
 
                 webapp.servlets.find(servlet => {
-                  // FIXME : should use a getter function instead of direct access !!
-                  return self.$store.getters.webappDefinition.find(webappDef => {
+                  return self.$store.state.webappDefinition.find(webappDef => {
                     let reference =  webappDef.class.find( aClass => aClass === servlet.class);
                     if( reference ) {
                       newWebapp.refid = webappDef.id;
@@ -79,14 +93,6 @@ module.exports = Vue.component('modal-tc-scan',  {
                     }
                   });
                 });
-                /*
-                webapp.servlets.forEach(servlet => {
-                  self.$store.getters.webappDefinition.forEach(webappDef => {
-                    let reference =  webappDef.class.find( aClass => aClass === servlet.class);
-                    newWebapp.refid = webappDef.id;
-                    newWebapp.name = webappDef.name;
-                  });
-                });*/
                 return newWebapp;
               });
 
