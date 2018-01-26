@@ -84,10 +84,10 @@ module.exports = {
         "tomcat"  : this.tomcat,
         "webapp"  : this.webapp,
         "servlet" : {
-          "_id"        : helper.generateUUID(),
-          "name"       : "",
-          "class"      : "",
-          "urlPattern" : ""
+          "_id"         : helper.generateUUID(),
+          "name"        : "",
+          "class"       : "",
+          "urlPatterns" : []
         }
       });
       persistence.saveDesktopnItemToFile(this.item);

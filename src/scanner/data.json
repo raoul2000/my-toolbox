@@ -269,14 +269,14 @@
                 "servlet": [
                   {
                     "name": "Jersey Web Application",
-                    "urlPattern": [
+                    "urlPatterns": [
                       "/service/*"
                     ],
                     "class": "org.glassfish.jersey.servlet.ServletContainer"
                   },
                   {
                     "name": "checkin",
-                    "urlPattern": [
+                    "urlPatterns": [
                       "/servlet/checkin/*"
                     ],
                     "class": "checkin.CheckinServlet",
@@ -295,14 +295,14 @@
                 "servlet": [
                   {
                     "name": "Jersey Web Application",
-                    "urlPattern": [
+                    "urlPatterns": [
                       "/service/*"
                     ],
                     "class": "org.glassfish.jersey.servlet.ServletContainer"
                   },
                   {
                     "name": "formats",
-                    "urlPattern": [
+                    "urlPatterns": [
                       "/servlet/formats"
                     ],
                     "class": "formats.CreateFormats"
@@ -320,14 +320,14 @@
                 "servlet": [
                   {
                     "name": "Jersey Web Application",
-                    "urlPattern": [
+                    "urlPatterns": [
                       "/service/*"
                     ],
                     "class": "org.glassfish.jersey.servlet.ServletContainer"
                   },
                   {
                     "name": "rhelper",
-                    "urlPattern": [
+                    "urlPatterns": [
                       ""
                     ],
                     "class": "rhelper.Servlet"
@@ -345,21 +345,21 @@
                 "servlet": [
                   {
                     "name": "dav",
-                    "urlPattern": [
+                    "urlPatterns": [
                       "/"
                     ],
                     "class": "web.Dav"
                   },
                   {
                     "name": "admin-servlet",
-                    "urlPattern": [
+                    "urlPatterns": [
                       "/as"
                     ],
                     "class": "AdminServlet"
                   },
                   {
                     "name": "session-control",
-                    "urlPattern": [
+                    "urlPatterns": [
                       "/servlet/SessionControl"
                     ],
                     "class": "SessionControl"
@@ -423,14 +423,14 @@
                 "servlet": [
                   {
                     "name": "Jersey Web Application",
-                    "urlPattern": [
+                    "urlPatterns": [
                       "/service/*"
                     ],
                     "class": "org.glassfish.jersey.servlet.ServletContainer"
                   },
                   {
                     "name": "adorder",
-                    "urlPattern": [
+                    "urlPatterns": [
                       "/servlet/adorder/*"
                     ],
                     "class": "adorder.AdorderServlet"
@@ -448,14 +448,14 @@
                 "servlet": [
                   {
                     "name": "Jersey Web Application",
-                    "urlPattern": [
+                    "urlPatterns": [
                       "/service/*"
                     ],
                     "class": "org.glassfish.jersey.servlet.ServletContainer"
                   },
                   {
                     "name": "imgserv",
-                    "urlPattern": [
+                    "urlPatterns": [
                       ""
                     ],
                     "class": "imgserv.ImgservServlet"
@@ -473,21 +473,21 @@
                 "servlet": [
                   {
                     "name": "Jersey Web Application",
-                    "urlPattern": [
+                    "urlPatterns": [
                       "/service/*"
                     ],
                     "class": "org.glassfish.jersey.servlet.ServletContainer"
                   },
                   {
                     "name": "H2Console",
-                    "urlPattern": [
+                    "urlPatterns": [
                       "/h2console/*"
                     ],
                     "class": "org.h2.server.web.WebServlet"
                   },
                   {
                     "name": "import",
-                    "urlPattern": [
+                    "urlPatterns": [
                       "/servlet/import/*"
                     ],
                     "class": "com.eidosmedia.mis.Import"
@@ -505,7 +505,7 @@
                 "servlet": [
                   {
                     "name": "Syndication",
-                    "urlPattern": [
+                    "urlPatterns": [
                       "/servlet/mss",
                       "/mss"
                     ],
@@ -513,12 +513,12 @@
                   },
                   {
                     "name": "ConfiguratorAdmin",
-                    "urlPattern": [],
+                    "urlPatterns": [],
                     "class": "com.eidosmedia.mss.configurator.AdminServlet"
                   },
                   {
                     "name": "Jersey Web Application",
-                    "urlPattern": [
+                    "urlPatterns": [
                       "/service/*"
                     ],
                     "class": "org.glassfish.jersey.servlet.ServletContainer"

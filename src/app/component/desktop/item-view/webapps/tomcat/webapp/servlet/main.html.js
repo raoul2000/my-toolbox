@@ -21,10 +21,10 @@ module.exports = `
   </td>
   <td>
     <inlineInput2
-      :value="servlet.urlPattern"
-      :valid="validation.urlPattern"
+      :value="displayUrlPatterns"
+      :valid="validation.urlPatterns"
       inputType="text"
-      valueName="urlPattern"
+      valueName="urlPatterns"
       emptyValue=""
       v-on:changeValue="changeValue"/>
   </td>

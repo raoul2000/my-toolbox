@@ -7,7 +7,7 @@ var xmlParser = require('../xml/parser');
  *  {
  *    "name" : "the servlet Name",
  *    "class" : "servlet.main.class.name",
- *    "urlPattern" : [
+ *    "urlPatterns" : [
  *      "pattern1", "pattern2", etc...
  *    ]
  *  },
@@ -32,7 +32,7 @@ function extractDescriptorInfo(dom) {
 
     servletItem = {
       "name"        : servletName,
-      "urlPattern"  : [],
+      "urlPatterns"  : [],
       "class"       : null  // not all servlet have a servlet-class
     };
     try {
@@ -47,9 +47,9 @@ function extractDescriptorInfo(dom) {
         if( servletName === servletMappingTagList[j].getElementsByTagName('servlet-name').item(0).firstChild.nodeValue) {
           var pattern = servletMappingTagList[j].getElementsByTagName('url-pattern').item(0);
           if(pattern.firstChild) {
-            servletItem.urlPattern.push(pattern.firstChild.nodeValue);
+            servletItem.urlPatterns.push(pattern.firstChild.nodeValue);
           } else {
-            servletItem.urlPattern.push("");
+            servletItem.urlPatterns.push("");
           }
         }
       }
@@ -75,7 +75,7 @@ function extractDescriptorInfo(dom) {
  *    {
  *      "class"      : "the.web.app.class",
  *      "name"       : "the web app name",
- *      "urlPattern" : [
+ *      "urlPatterns" : [
  *        "pattern1", "pattern2", etc...
  *      ]
  *    },

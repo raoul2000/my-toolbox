@@ -31,7 +31,7 @@ function extractDescriptorInfo(dom) {
 
     servletItem = {
       "name"        : servletName,
-      "urlPattern"  : [],
+      "urlPatterns"  : [],
       "class"       : null  // not all servlet have a servlet-class
     };
     try {
@@ -46,9 +46,9 @@ function extractDescriptorInfo(dom) {
         if( servletName === servletMappingTagList[j].getElementsByTagName('servlet-name').item(0).firstChild.nodeValue) {
           var pattern = servletMappingTagList[j].getElementsByTagName('url-pattern').item(0);
           if(pattern.firstChild) {
-            servletItem.urlPattern.push(pattern.firstChild.nodeValue);
+            servletItem.urlPatterns.push(pattern.firstChild.nodeValue);
           } else {
-            servletItem.urlPattern.push("");
+            servletItem.urlPatterns.push("");
           }
         }
       }

@@ -10,17 +10,20 @@ module.exports = {
   data: function() {
     return {
       validation: {
-        "name"       : true,
-        "class"      : true,
-        "urlPattern" : true
+        "name"        : true,
+        "class"       : true,
+        "urlPatterns" : true
       }
     };
   },
   template: require('./main.html'),
   computed : {
     servletURL: function() {
-      return `http://${this.item.data.ssh.host}:${this.tomcat.port}${this.webapp.context}${this.servlet.urlPattern}`;
+      return `http://${this.item.data.ssh.host}:${this.tomcat.port}${this.webapp.context}${this.servlet.urlPatterns[0]}`;
     },
+    displayUrlPatterns : function() {
+      return this.servlet.urlPatterns.join(' ');
+    }
   },
   methods: {
     deleteServlet : function() {
@@ -52,6 +55,10 @@ module.exports = {
       });
     },
     changeValue: function(arg) {
+      let actualValue = arg.value;
+      if( arg.name === "urlPatterns" ) {
+        actualValue = arg.value.split(' ');
+      }
       let updateInfo = {
         "item"      : this.item,
         "tomcat"    : this.tomcat,
@@ -59,7 +66,7 @@ module.exports = {
         "servlet"   : this.servlet,
         "updateWith": {}
       };
-      updateInfo.updateWith[arg.name] = arg.value;
+      updateInfo.updateWith[arg.name] = actualValue;
       this.$store.commit('updateServlet', updateInfo);
       // FIXME : in some case (to define) the JSON saved by next line is INVALID
       // with additional closing brackets or some other characters

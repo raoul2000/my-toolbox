@@ -103,7 +103,7 @@ module.exports = `
                         <b>{{ servlet.ref.name}}</b>
                       </li>
                       <li>class : <code>{{ servlet.class}}</code></li>
-                      <li>url patterns : {{ servlet.urlPattern.join(',')}}<br/>&nbsp;</li>
+                      <li>url patterns : {{ servlet.urlPatterns.join(',')}}<br/>&nbsp;</li>
                     </ul>
                   </div>
                 </li>

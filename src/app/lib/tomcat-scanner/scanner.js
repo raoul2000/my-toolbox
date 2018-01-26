@@ -24,7 +24,8 @@ const PromiseUtil = require('../promise-utils');
  * @return {Promise}         Resolved when the scan is done. Rejected on connection failure
  */
 exports.run = function(options) {
-
+  // TODO : using xmllint (when available) it could be possible to resolve entities on server side
+  //xmllint --loaddtd --noent --dropdtd ./conf/server.xml
     let entities = {};
     let ssh = new NodeSSH();
     return ssh.connect(options.ssh)
@@ -97,7 +98,7 @@ exports.run = function(options) {
            * servlet = {
            *  "class" : "com.my.namespace.Classe",
            *  "name" : "my Name",
-           *  "urlPattern" : [  "/url/*", "/serlet/url/*" ]
+           *  "urlPatterns" : [  "/url/*", "/serlet/url/*" ]
            * }
            */
         });
