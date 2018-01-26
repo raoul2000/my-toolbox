@@ -19,7 +19,7 @@ module.exports = {
   template: require('./main.html'),
   computed : {
     servletURL: function() {
-      return `http://${this.item.data.ssh.host}:${this.tomcat.port}${this.webapp.context}${this.servlet.urlPatterns[0]}`;
+      return `http://${this.item.data.ssh.host}:${this.tomcat.port}${this.webapp.contextPath}${this.servlet.urlPatterns[0]}`;
     },
     displayUrlPatterns : function() {
       return this.servlet.urlPatterns.join(' ');

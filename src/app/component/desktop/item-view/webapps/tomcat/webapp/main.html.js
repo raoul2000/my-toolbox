@@ -42,11 +42,11 @@ module.exports = `
         </td>
         <td>
           <inlineInput2
-            :value="webapp.context"
-            :valid="validation.context"
+            :value="webapp.contextPath"
+            :valid="validation.contextPath"
             inputType="text"
             emptyValue=""
-            valueName="context"
+            valueName="contextPath"
             v-on:changeValue="changeValue"/>
         </td>
         <td width="50%" colspan="3">

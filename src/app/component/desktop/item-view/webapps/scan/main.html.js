@@ -22,7 +22,7 @@ module.exports = `
           </pre>
         </div>
         <div v-else-if="task.status == 'SUCCESS'">
-          <p>Ids extracted <em>({{tomcatSelectedCount}})</em> selected: </p>
+          <p>Ids extracted <em>({{task.tomcats.length}})</em> selected: </p>
           <table class="table">
             <tr v-for="(tomcat, index) in task.tomcats" :key="index">
               <td>

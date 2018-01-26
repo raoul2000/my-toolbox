@@ -40,24 +40,23 @@ module.exports = Vue.component('modal-tc-scan',  {
             "status" : "BUSY"
           }
         });
-        /*
+/*
         tomcatScanner.run({
           ssh : this.item.data.ssh,
           tomcats : [  { id : "CORE"}, { id : "INOUT"}]
-        })*/
-
+        })
+        */
         var obj = JSON.parse(fs.readFileSync(__dirname + '/result.json', 'utf8'));
-
         Promise.resolve(obj.results)
         .then( results => {
           // there is ont result per tomcat
           // debug
-          /*fs.writeFile(__dirname + '/result.json', JSON.stringify({ "results" : results}, null, 2) , 'utf-8', (err) => {
+          fs.writeFile(__dirname + '/result.json', JSON.stringify({ "results" : results}, null, 2) , 'utf-8', (err) => {
             if(err) {
               console.error(err);
             }
           });
-          */
+
 
 
           // debug
@@ -76,7 +75,7 @@ module.exports = Vue.component('modal-tc-scan',  {
                   "_id"                : helper.generateUUID(),
                   "contextPath"        : webapp.contextPath,
                   "descriptorFilePath" : webapp.descriptorFilePath,
-                  "refid"              : null,
+                  "refId"              : null,
                   "name"               : "NO NAME",
                   "servlets"           : webapp.servlets
                 };
@@ -85,7 +84,7 @@ module.exports = Vue.component('modal-tc-scan',  {
                   return self.$store.state.webappDefinition.find(webappDef => {
                     let reference =  webappDef.class.find( aClass => aClass === servlet.class);
                     if( reference ) {
-                      newWebapp.refid = webappDef.id;
+                      newWebapp.refId = webappDef.id;
                       newWebapp.name = webappDef.name;
                       return true;
                     } else {

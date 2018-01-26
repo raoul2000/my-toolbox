@@ -1,0 +1,206 @@
+{
+  "results": [
+    {
+      "value": {
+        "id": "CORE",
+        "installFolderPath": "/methode/meth01/tomcat-core",
+        "port": "3400",
+        "webapps": [
+          {
+            "contextPath": "/checkin",
+            "descriptorFilePath": "/methode/meth01/methode-servlets/checkin/WEB-INF/web.xml",
+            "servlets": [
+              {
+                "name": "Jersey Web Application",
+                "urlPatterns": [
+                  "/service/*"
+                ],
+                "class": "org.glassfish.jersey.servlet.ServletContainer"
+              },
+              {
+                "name": "checkin",
+                "urlPatterns": [
+                  "/servlet/checkin/*"
+                ],
+                "class": "checkin.CheckinServlet"
+              }
+            ]
+          },
+          {
+            "contextPath": "/formats",
+            "descriptorFilePath": "/methode/meth01/methode-servlets/formats/WEB-INF/web.xml",
+            "servlets": [
+              {
+                "name": "Jersey Web Application",
+                "urlPatterns": [
+                  "/service/*"
+                ],
+                "class": "org.glassfish.jersey.servlet.ServletContainer"
+              },
+              {
+                "name": "formats",
+                "urlPatterns": [
+                  "/servlet/formats"
+                ],
+                "class": "formats.CreateFormats"
+              }
+            ]
+          },
+          {
+            "contextPath": "/rhelper",
+            "descriptorFilePath": "/methode/meth01/methode-servlets/rhelper/WEB-INF/web.xml",
+            "servlets": [
+              {
+                "name": "Jersey Web Application",
+                "urlPatterns": [
+                  "/service/*"
+                ],
+                "class": "org.glassfish.jersey.servlet.ServletContainer"
+              },
+              {
+                "name": "rhelper",
+                "urlPatterns": [
+                  ""
+                ],
+                "class": "rhelper.Servlet"
+              }
+            ]
+          },
+          {
+            "contextPath": "",
+            "descriptorFilePath": "/methode/meth01/methode-servlets/preview/WEB-INF/web.xml",
+            "servlets": [
+              {
+                "name": "dav",
+                "urlPatterns": [
+                  "/"
+                ],
+                "class": "web.Dav"
+              },
+              {
+                "name": "admin-servlet",
+                "urlPatterns": [
+                  "/as"
+                ],
+                "class": "AdminServlet"
+              },
+              {
+                "name": "session-control",
+                "urlPatterns": [
+                  "/servlet/SessionControl"
+                ],
+                "class": "SessionControl"
+              }
+            ]
+          }
+        ]
+      },
+      "error": null,
+      "resolved": true
+    },
+    {
+      "value": {
+        "id": "INOUT",
+        "installFolderPath": "/methode/meth01/tomcat-inout",
+        "port": "3410",
+        "webapps": [
+          {
+            "contextPath": "/adorder",
+            "descriptorFilePath": "/methode/meth01/methode-servlets/adorder/WEB-INF/web.xml",
+            "servlets": [
+              {
+                "name": "Jersey Web Application",
+                "urlPatterns": [
+                  "/service/*"
+                ],
+                "class": "org.glassfish.jersey.servlet.ServletContainer"
+              },
+              {
+                "name": "adorder",
+                "urlPatterns": [
+                  "/servlet/adorder/*"
+                ],
+                "class": "adorder.AdorderServlet"
+              }
+            ]
+          },
+          {
+            "contextPath": "/imgserv",
+            "descriptorFilePath": "/methode/meth01/methode-servlets/imgserv/WEB-INF/web.xml",
+            "servlets": [
+              {
+                "name": "Jersey Web Application",
+                "urlPatterns": [
+                  "/service/*"
+                ],
+                "class": "org.glassfish.jersey.servlet.ServletContainer"
+              },
+              {
+                "name": "imgserv",
+                "urlPatterns": [
+                  ""
+                ],
+                "class": "imgserv.ImgservServlet"
+              }
+            ]
+          },
+          {
+            "contextPath": "/mis",
+            "descriptorFilePath": "/methode/meth01/methode-servlets/mis/WEB-INF/web.xml",
+            "servlets": [
+              {
+                "name": "Jersey Web Application",
+                "urlPatterns": [
+                  "/service/*"
+                ],
+                "class": "org.glassfish.jersey.servlet.ServletContainer"
+              },
+              {
+                "name": "H2Console",
+                "urlPatterns": [
+                  "/h2console/*"
+                ],
+                "class": "org.h2.server.web.WebServlet"
+              },
+              {
+                "name": "import",
+                "urlPatterns": [
+                  "/servlet/import/*"
+                ],
+                "class": "com.eidosmedia.mis.Import"
+              }
+            ]
+          },
+          {
+            "contextPath": "/mss",
+            "descriptorFilePath": "/methode/meth01/methode-servlets/mss/WEB-INF/web.xml",
+            "servlets": [
+              {
+                "name": "Syndication",
+                "urlPatterns": [
+                  "/servlet/mss",
+                  "/mss"
+                ],
+                "class": "com.eidosmedia.mss.Syndication"
+              },
+              {
+                "name": "ConfiguratorAdmin",
+                "urlPatterns": [],
+                "class": "com.eidosmedia.mss.configurator.AdminServlet"
+              },
+              {
+                "name": "Jersey Web Application",
+                "urlPatterns": [
+                  "/service/*"
+                ],
+                "class": "org.glassfish.jersey.servlet.ServletContainer"
+              }
+            ]
+          }
+        ]
+      },
+      "error": null,
+      "resolved": true
+    }
+  ]
+}

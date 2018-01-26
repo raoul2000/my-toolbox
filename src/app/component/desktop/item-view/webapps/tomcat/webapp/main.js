@@ -13,7 +13,7 @@ module.exports = {
     return {
       validation: {
         "name": true,
-        "context": true
+        "contextPath": true
       },
       expanded : this.expandWebapp,
       referenceWebappSelection : this.webapp.refId
@@ -22,7 +22,7 @@ module.exports = {
   template: require('./main.html'),
   computed: {
     webappURL: function() {
-      return `http://${this.item.data.ssh.host}:${this.tomcat.port}${this.webapp.context}`;
+      return `http://${this.item.data.ssh.host}:${this.tomcat.port}${this.webapp.contextPath}`;
     },
     webappDefinitionOptions : function() {
       return this.$store.state.webappDefinition.map( module => {
@@ -56,18 +56,18 @@ module.exports = {
             }
           });
 
-          // Use the input change flow to update name and context
+          // Use the input change flow to update name and contextPath
 
           this.changeValue({
             "name"  : "name",
             "value" : selectedModule.name
           });
 
-          // by CONVENTOIN set the webapp context to the same value
+          // by CONVENTOIN set the webapp contextPath to the same value
           // as the module ID (this maybe incorrect in the future)
 
           this.changeValue({
-            "name"  : "context",
+            "name"  : "contextPath",
             "value" : "/" + selectedModule.id
           });
         }
@@ -129,18 +129,18 @@ module.exports = {
       });
     },
     changeValue: function(arg) {
-      if (arg.name === "context") {
+      if (arg.name === "contextPath") {
         if (validate.isEmpty(arg.value)) {
-          this.validation.context = false;
+          this.validation.contextPath = false;
         } else {
-          // check duplicate context
-          let existingWebapp = this.tomcat.webapps.find(webapp => webapp.context === arg.value);
+          // check duplicate contextPath
+          let existingWebapp = this.tomcat.webapps.find(webapp => webapp.contextPath === arg.value);
           if (existingWebapp) {
-            notify(`The context <b>${arg.value}</b> is already in
+            notify(`The contextPath <b>${arg.value}</b> is already in
               use by web app <b>${existingWebapp.name}</b>`, 'warning', 'warning');
-            this.validation.context = false;
+            this.validation.contextPath = false;
           } else {
-            this.validation.context = true;
+            this.validation.contextPath = true;
           }
         }
       }
