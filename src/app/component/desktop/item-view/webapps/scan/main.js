@@ -51,11 +51,13 @@ module.exports = Vue.component('modal-tc-scan',  {
         .then( results => {
           // there is ont result per tomcat
           // debug
+          //
+          /*
           fs.writeFile(__dirname + '/result.json', JSON.stringify({ "results" : results}, null, 2) , 'utf-8', (err) => {
             if(err) {
               console.error(err);
             }
-          });
+          });*/
 
 
 
