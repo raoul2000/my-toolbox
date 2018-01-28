@@ -60,7 +60,12 @@ module.exports = new Vuex.Store({
     // store.getters['view/findById']('33')
     // store.getters['view/add']({...})
     // store.state.view.someProp
-    view: require('./module/view') //require('./module/tc-scan')
+    view: require('./module/view'), //require('./module/tc-scan'),
+
+    // store.getters['server/findById']('33')
+    // store.getters['server/add']({...})
+    // store.state.server.someProp
+    "server" : require('./module/server') //require('./module/server')
   },
   getters: {
     getWebappDefinitions : function(state, getters) {
@@ -96,7 +101,7 @@ module.exports = new Vuex.Store({
       return function(taskId) {
         return state.tasks.find( task => task.id === taskId);
       };
-    },
+    }
 
   },
   mutations: {
