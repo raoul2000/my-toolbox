@@ -40,28 +40,30 @@ module.exports = Vue.component('modal-tc-scan',  {
             "status" : "BUSY"
           }
         });
-/*
-        tomcatScanner.run({
-          ssh : this.item.data.ssh,
-          tomcats : [  { id : "CORE"}, { id : "INOUT"}]
-        })
-        */
-        var obj = JSON.parse(fs.readFileSync(__dirname + '/result.json', 'utf8'));
-        Promise.resolve(obj.results)
+        let modeDev = false;
+        let scanResultPromise = null;
+        if( modeDev === true) {
+          // in dev mode, do not perform actual scan but load a previously saved JSON file
+          // and use its content as scan result
+          var obj = JSON.parse(fs.readFileSync(__dirname + '/result.json', 'utf8'));
+          scanResultPromise = Promise.resolve(obj.results);
+        } else {
+          // in prod mode, perform actual scan
+          scanResultPromise = tomcatScanner.run({
+            ssh : this.item.data.ssh,
+            tomcats : [  { id : "CORE"}, { id : "INOUT"}]
+          });
+        }
+
+        scanResultPromise
         .then( results => {
-          // there is ont result per tomcat
-          // debug
-          //
-          /*
-          fs.writeFile(__dirname + '/result.json', JSON.stringify({ "results" : results}, null, 2) , 'utf-8', (err) => {
-            if(err) {
-              console.error(err);
-            }
-          });*/
-
-
-
-          // debug
+          if( modeDev === true) {
+            fs.writeFile(__dirname + '/result.json', JSON.stringify({ "results" : results}, null, 2) , 'utf-8', (err) => {
+              if(err) {
+                console.error(err);
+              }
+            });
+          }
 
           console.log(results);
           results.filter(result => result.resolved && ! result.error )
