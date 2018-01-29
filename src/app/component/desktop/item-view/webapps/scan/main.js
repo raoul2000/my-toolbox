@@ -25,7 +25,7 @@ module.exports = Vue.component('modal-tc-scan',  {
      */
     scanSelectedTomcats : function() {
       let tomcatIdsToScan = this.task.tomcats
-      .filter( tomcat => tomcat.selected);
+        .filter( tomcat => tomcat.selected);
 
       if( tomcatIdsToScan.length === 0) {
         notify('Please select one or more Tomcat to scan','warning','No selection');
@@ -192,11 +192,11 @@ module.exports = Vue.component('modal-tc-scan',  {
     this.taskId = this.getTaskId();
     if( ! this.task ) { // this.task : computed property
       this.$store.commit('tcScan/addTask',{
-        "id"     : this.taskId,
-        "step"   : "INIT",
-        "status" : "IDLE",
-        "result" : null,
-        "tomcats": [],
+        "id"           : this.taskId,
+        "step"         : "INIT",
+        "status"       : "IDLE",
+        "result"       : null,
+        "tomcats"      : [],
         "errorMessage" : ""
       });
     }

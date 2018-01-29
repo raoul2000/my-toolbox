@@ -7,13 +7,14 @@ module.exports = `
       {{task.step}} - {{ task.status}}
       <div v-if="task.step == 'INIT'">
         <p>
-          search for installed Apache Tomcat instances
+          First step is to find installed Apache Tomcat instances.
         </p>
-        <button v-on:click="startSearchTCId()">Start</button>
+        <i class="fa fa-cog fa-spin fa-fw"></i> searching tomcat instances ...
+        <button v-on:click="startSearchTCId()" class="btn btn-primary">Start</button>
       </div>
       <div v-else-if="task.step == 'SCAN_TC_ID'">
         <div v-if="task.status == 'BUSY'">
-          scanning tomcat Ids ...
+          <i class="fa fa-cog fa-spin fa-fw"></i> searching tomcat instances ...
         </div>
         <div v-else-if="task.status == 'ERROR'">
           <p>something went wrong ! </p>
@@ -22,24 +23,40 @@ module.exports = `
           </pre>
         </div>
         <div v-else-if="task.status == 'SUCCESS'">
-          <p>Ids extracted <em>({{task.tomcats.length}})</em> selected: </p>
-          <table class="table">
-            <tr v-for="(tomcat, index) in task.tomcats" :key="index">
-              <td>
+          <div
+            v-if="task.tomcats.length != 0"
+          >
+            <p>{{task.tomcats.length}} Tomcat Id(s) could be found on this server. Select the one(s) you want to scan :  </p>
+            <div
+              v-for="(tomcat, index) in task.tomcats"
+              :key="index"
+              class="checkbox"
+            >
+              <label>
                 <input
                   type="checkbox"
                   :value="tomcat.id"
                   v-on:click="toggleTomcatSelection(tomcat.id)"
-                  :checked="tomcat.selected">
-              </td>
-              <td width="100%">
-                 {{tomcat.id}}
-              </td>
-              <td></td>
-            </tr>
-          </table>
-          <button
-            v-on:click="scanSelectedTomcats()">Scan Selected</button>
+                  :checked="tomcat.selected"
+                />
+                  Tomcat <b>{{tomcat.id}}</b>
+              </label>
+            </div>
+            
+            <hr/>
+            <!-- button bar -->
+            <button
+              v-on:click="scanSelectedTomcats()"
+              class="btn btn-primary">Scan Selected</button>
+            <button
+              class="btn btn-default"
+              v-on:click="cancel()">Cancel</button>
+            <!-- button bar -->
+
+          </div>
+          <div v-else>
+            <p>No tomcat Id could be found on this server !</p>
+          </div>
         </div>
         <div v-else>
          {{task.status}}
@@ -47,12 +64,17 @@ module.exports = `
       </div>
 
       <div v-else-if="task.step == 'SCAN_WEBAPP'">
-
+      <div v-if="task.status == 'BUSY'">
+        <i class="fa fa-cog fa-spin fa-fw"></i> analyzing Tomcats instances ...
+      </div>
+      <div v-else-if="task.status == 'ERROR'">
+      </div>
+      <div v-else-if="task.status == 'SUCCESS'">
+      </div>
 
       </div>
 
-      <hr/>
-      <button v-on:click="cancel()">Cancel</button>
+
     </div><!-- /.modal-content -->
 
 </div><!-- /.modal -->
