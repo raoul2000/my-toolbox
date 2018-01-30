@@ -4,9 +4,10 @@ const ipcRenderer = electron.ipcRenderer;
 const path     = require('path');
 const fs       = require('fs');
 
-const Desktop  = require('./component/desktop/main');
-const Settings = require('./component/settings/main');
-const About    = require('./component/about/main');
+const Desktop   = require('./component/desktop/main');
+const Settings  = require('./component/settings/main');
+const About     = require('./component/about/main');
+const TCScanner = require('./component/tc-scan/main');
 
 const DbNav    = require('./component/db-explorer/main');
 const Create   = require('./component/create/main');
@@ -45,6 +46,7 @@ const router = new VueRouter({
     { path: '/settings',         component: Settings,         name : 'settings'},
     { path: '/create',           component: Create,           name : 'create'},
     { path: '/view',             component: View,             name : 'view'},
+    { path: '/tc-scan/:id',      component: TCScanner,        name : 'tc-scan'},
     { path: '/item-view/:id',    component: ItemView,
       children : [
       {
@@ -90,7 +92,7 @@ const app = new Vue({
      * Hides/shows the main top toolbar depending on the current route
      */
     showToolbar : function() {
-      return ['settings'].findIndex( routePath => routePath === this.$route.name) === -1;
+      return ['settings','tc-scan'].findIndex( routePath => routePath === this.$route.name) === -1;
     },
     /**
      * Check current configuration and load the webapp definition file

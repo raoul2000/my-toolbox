@@ -4,7 +4,7 @@ module.exports = `
   <div class="row">
     <div class="col-lg-12">
       <div v-html="pageHeader"></div>
-      <h1>{{name}}</h1>
+      <h1>{{item.name}}</h1>
       <hr/>
 
       <div class="btn-group" role="group" style="margin-bottom:1em;">
@@ -17,13 +17,13 @@ module.exports = `
       </div>
 
       <ul class="nav nav-tabs">
-        <li role="presentation" v-bind:class="{active : activeTab == 'settings'}">
+        <li role="presentation" v-bind:class="{active : currentTabName == 'server-settings'}">
           <a v-on:click.stop.prevent="openTabHome()" href="#">General</a>
         </li>
-        <li role="presentation"  v-bind:class="{active : activeTab == 'webapps'}">
+        <li role="presentation"  v-bind:class="{active : currentTabName == 'server-webapps'}">
           <a v-on:click.stop.prevent="openTabWebapp()" href="#">Web Apps</a>
         </li>
-        <li role="presentation"  v-bind:class="{active : activeTab == 'components'}">
+        <li role="presentation"  v-bind:class="{active : currentTabName == 'server-components'}">
           <a v-on:click.stop.prevent="openTabComponents()" href="#">Components</a>
         </li>
       </ul>

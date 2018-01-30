@@ -13,15 +13,15 @@ module.exports = {
   store,
   data : function(){
     return {
-      filename   : null,
       pageHeader : '',
-      name       : '',
-      activeTab  : 'settings',
       item       : null
     };
   },
-  template: require('./main.html'),
+  template : require('./main.html'),
   computed : {
+    currentTabName : function() {
+      return this.$route.name;
+    },
     view : function() {
       return this.$store.getters['view/findById'](VIEW_ID);
     }
@@ -88,21 +88,18 @@ module.exports = {
      * User click on webapp tab
      */
     "openTabWebapp" : function() {
-      this.activeTab = "webapps";
       this.$router.push('webapps');
     },
     /**
      * User click on 'settings' tab
      */
     "openTabHome" : function() {
-      this.activeTab = "settings";
       this.$router.push('settings');
     },
     /**
      * User click on 'component' tab
      */
     "openTabComponents" : function() {
-      this.activeTab = "components";
       this.$router.push('components');
     },
     /**
@@ -140,7 +137,7 @@ module.exports = {
    * Build the summary view for the selected desktop item. The dekstop item
    * index is passed as a route query param
    */
-  mounted : function(){
+  beforeMount : function(){
     // get the desktop item index from the route query param
     let itemId = this.$route.params.id;
     // find the desktop item in the store
@@ -148,8 +145,6 @@ module.exports = {
     if( ! this.item ) {
       console.warn('failed to load item : id = '+itemId);
     } else {
-      this.filename = this.item.filename;
-      this.name = this.item.name;
       this.buildPageHeader();
     }
 

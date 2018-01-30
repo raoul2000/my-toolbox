@@ -49,12 +49,14 @@ module.exports = {
       });
     },
     openScannerView : function() {
+      this.$router.push({ path: `/tc-scan/${this.item.data._id}`});
+      /*
       this.$store.commit('view/update', {
         "id" : VIEW_ID,
         "updateWith" : {
           "childViewId"   : "SCANNER"
         }
-      });
+      });*/
     },
     viewTomcatClass : function() {
       return this.view.expandTomcat
