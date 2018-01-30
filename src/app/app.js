@@ -25,8 +25,10 @@ const config   = require('./service/config');
 const notify   = require('./service/notification');
 
 let shell = require('electron').shell;
+
 // listen to all click events on an anchor having an 'http' href and opens
 // an external browser on the URL
+
 document.addEventListener('click', function (event) {
   if (event.target.tagName === 'A' && event.target.href.startsWith('http')) {
     event.preventDefault();
@@ -37,26 +39,30 @@ document.addEventListener('click', function (event) {
 // register routes
 const router = new VueRouter({
   routes :[
-    { path: '/desktop',      component: Desktop,  name : 'desktop' },
-    { path: '/settings',      component: Settings, name : 'settings'},
-    { path: '/create',        component: Create,   name : 'create'},
-    { path: '/view',          component: View,     name : 'view'},
-    { path: '/item-view/:id', component: ItemView,     children : [
+    { path: '/deploy',           component: Deploy,           name : 'deploy'},
+    { path: '/maven-download',   component: MavenDownload,    name : 'maven-download'},
+    { path: '/desktop',          component: Desktop,          name : 'desktop' },
+    { path: '/settings',         component: Settings,         name : 'settings'},
+    { path: '/create',           component: Create,           name : 'create'},
+    { path: '/view',             component: View,             name : 'view'},
+    { path: '/item-view/:id',    component: ItemView,
+      children : [
       {
         path: 'settings',
+        name : 'server-settings',
         component: ItemViewSettings
       },
       {
         path: 'webapps',
+        name : 'server-webapps',
         component: ItemViewWebapps
       },
       {
         path: 'components',
+        name : 'server-components',
         component: ItemViewComponents
       }
-    ]},
-    { path: '/deploy',   component: Deploy,   name : 'deploy'},
-    { path: '/maven-download',   component: MavenDownload,   name : 'maven-download'}
+    ]}
   ]
 });
 
@@ -66,7 +72,6 @@ const app = new Vue({
   data : function() {
     return {
       loading       : true,
-      currentRoute  : null,
       showAbout     : false
     };
   },
@@ -75,13 +80,17 @@ const app = new Vue({
      * Store the current route name
      */
     '$route' (to, from) {
-      this.currentRoute = this.$route.name;
+      // TODO : this may not be useful as any component should have access to the current route
+      // using this.$route
       store.commit('setCurrentRoute',this.$route.name);
     }
   },
   methods : {
+    /**
+     * Hides/shows the main top toolbar depending on the current route
+     */
     showToolbar : function() {
-      return this.currentRoute !== 'settings';
+      return ['settings'].findIndex( routePath => routePath === this.$route.name) === -1;
     },
     /**
      * Check current configuration and load the webapp definition file
@@ -89,6 +98,7 @@ const app = new Vue({
     initApplication : function() {
 
       // CTDB Path /////////////////////////////////////////////////////////////
+
       if(config.store.has('ctdbFolderPath') === false ) {
         notify('CTDB folder not defined','error', 'error');
         return;
@@ -105,6 +115,7 @@ const app = new Vue({
       }
 
       // webappCatalogFilePath /////////////////////////////////////////////////////
+
       if(config.store.has('webappCatalogFilePath') === false ) {
         notify('Web-App Catalog file path not configured','error', 'error');
         return;
