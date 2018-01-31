@@ -71,6 +71,13 @@ module.exports = new Vuex.Store({
     getWebappDefinitions : function(state, getters) {
       return state.webappDefinition;
     },
+    findWebappDefinitionByClassname : function(state, getters) {
+      return function(classname) {
+        return state.webappDefinition.find( webappDef => {
+          return webappDef.class.find(classDef => classDef === classname);
+        });
+      };
+    },
     // TODO : remove this method when not used anymore
     desktopItemByIndex : function(state, getters) {
       return function(index) {

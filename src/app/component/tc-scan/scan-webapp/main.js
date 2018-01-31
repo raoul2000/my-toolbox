@@ -94,46 +94,39 @@ module.exports = {
           });
         }
         console.log(results);
-        results
-        .filter(result => result.resolved && ! result.error )
-        .forEach( result => {
-          let tomcatId = result.value.id;
-          let newWebapps = result.value.webapps.map( webapp => {
-            let webappName = "";
-            let newWebapp = {
-              "_id"                : helper.generateUUID(),
-              "contextPath"        : webapp.contextPath,
-              "descriptorFilePath" : webapp.descriptorFilePath,
-              "refId"              : null,
-              "name"               : "NO NAME",
-              "servlets"           : webapp.servlets
-            };
 
+        let tomcatResults = results
+        .filter(  result => result.resolved && ! result.error )
+        .map( result => {
+          let tomcatId  = result.value.id;
+          let webappDef = null;
+          let completedWebapps = result.value.webapps.map( webapp => {
             webapp.servlets.find(servlet => {
-              return self.$store.state.webappDefinition.find(webappDef => {
-                let reference =  webappDef.class.find( aClass => aClass === servlet.class);
-                if( reference ) {
-                  newWebapp.refId = webappDef.id;
-                  newWebapp.name = webappDef.name;
-                  return true;
-                } else {
-                  return false;
-                }
-              });
+              webappDef = this.$store.getters.findWebappDefinitionByClassname(servlet.class);
+              return webappDef ? true : false;
             });
-            return newWebapp;
+            return Object.assign(webapp, {
+              "_id"   : helper.generateUUID(),
+              "refId" : ( webappDef ? webappDef.id   : null),
+              "name"  : ( webappDef ? webappDef.name : "NO NAME")
+            });
           });
-          // TODO : implement task/addTomcat
-          this.$store.commit('tcScan/updateTomcat', {
-            "taskId"     : self.taskId,
-            "tomcatId"   : tomcatId,
-            "updateWith" : {
-              "_id"     : helper.generateUUID(),
-              "port"    : result.value.port,
-              "webapps" : newWebapps
-            }
+          return Object.assign(result.value, {
+            "_id"     : helper.generateUUID(),
+            "webapps" : completedWebapps
           });
         });
+
+        debugger;
+        this.$store.commit('tcScan/updateTask', {
+          "id"     : self.taskId,
+          "updateWith" : {
+            "result" : {
+              "tomcats" : tomcatResults
+            }
+          }
+        });
+
         this.$emit("tc-scan-success");
         //persistence.saveDesktopnItemToFile(this.item);
       })
