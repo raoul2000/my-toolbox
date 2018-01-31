@@ -24,16 +24,26 @@ module.exports = `
           <table class="table">
             <tbody>
               <tr>
-                <td>Name</td>
-                <td>{{item.name}}</td>
+                <td class="field-label-right">Name</td>
+                <td>
+                  <b>{{item.name}}</b>
+                </td>
               </tr>
               <tr>
-                <td>host</td>
+                <td class="field-label-right">Catégorie</td>
+                <td>{{ item.path.join(' / ')}}</td>
+              </tr>
+              <tr>
+                <td class="field-label-right">host</td>
                 <td>{{item.data.ssh.hostname}}</td>
               </tr>
               <tr>
-                <td>username</td>
+                <td class="field-label-right">username</td>
                 <td>{{item.data.ssh.username}}</td>
+              </tr>
+              <tr>
+                <td class="field-label-right">Tomcat</td>
+                <td>{{item.data.tomcats.length}}</td>
               </tr>
             </tbody>
           </table>
@@ -47,7 +57,11 @@ module.exports = `
               v-on:tcid-list-success="onTcIdListSuccess"/>
           </div>
           <div v-else-if="task.step == 'SCAN_WEBAPP'">
-            <scan-webapp :item="item" :taskId="taskId" />
+            <scan-webapp :item="item" :taskId="taskId"
+            v-on:tc-scan-success="onTcScanSuccess"/>
+          </div>
+          <div v-else-if="task.step == 'IMPORT_RESULT'">
+            <import-result :item="item" :taskId="taskId" />
           </div>
         </div>
         <hr/>

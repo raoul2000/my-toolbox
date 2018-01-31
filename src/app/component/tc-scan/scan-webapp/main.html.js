@@ -2,8 +2,8 @@ module.exports = `
 <div>
   <h3>Scan For Web Applications</h3>
   <p>
-    I have found {{ task.tomcats.length}} Tomcat instance(s) on this server.
-    Please select the ones you want to scan and press "Start" to proceed :
+    I have detected {{ task.tomcats.length}} possible Tomcat instance(s) on this server.
+    Please select the one(s) you want to scan and press "Start" to proceed :
   </p>
 
   <div

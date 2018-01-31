@@ -69,7 +69,7 @@ module.exports = {
         }
       });
 
-      let modeDev = false;
+      let modeDev = true;
       let scanResultPromise = null;
       if( modeDev ) {
         // in dev mode, do not perform actual scan but load a previously saved JSON file
@@ -126,7 +126,7 @@ module.exports = {
               });
               return newWebapp;
             });
-
+            // TODO : implement task/addTomcat
             this.$store.commit('addTomcat', {
               "item" : self.item,
               "tomcat" : {
@@ -138,7 +138,8 @@ module.exports = {
             });
           }
         });
-        persistence.saveDesktopnItemToFile(this.item);
+        this.$emit("tc-scan-success");
+        //persistence.saveDesktopnItemToFile(this.item);
       })
       .catch(err => {
         console.log(err);
