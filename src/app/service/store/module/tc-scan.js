@@ -67,6 +67,16 @@ module.exports = {
       }catch(e) {
         console.error("failed to tcScan Task",options, e);
       }
+    },
+    updateTomcat(state, options) {
+      try {
+        let task   = state.tasks.find(task => task.id === options.taskId);
+        let tomcat = task.tomcats.find( tomcat => tomcat.id === options.tomcatId);
+        Object.assign(tomcat, options.updateWith);
+        console.log('done uodating tomcat tc scan task');
+      }catch(e) {
+        console.error("failed to update tomcat tcScan Task",options, e);
+      }
     }
   },
 };

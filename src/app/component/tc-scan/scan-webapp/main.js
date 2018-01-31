@@ -86,7 +86,7 @@ module.exports = {
 
       scanResultPromise
       .then( results => {
-        if( modeDev === true) {
+        if( modeDev === false) {
           fs.writeFile(__dirname + '/result.json', JSON.stringify({ "results" : results}, null, 2) , 'utf-8', (err) => {
             if(err) {
               console.error(err);
@@ -94,49 +94,45 @@ module.exports = {
           });
         }
         console.log(results);
-        results.filter(result => result.resolved && ! result.error )
+        results
+        .filter(result => result.resolved && ! result.error )
         .forEach( result => {
           let tomcatId = result.value.id;
-          let tomcatIdx = self.item.data.tomcats.findIndex(tomcat => tomcat.id === result.value.id);
-          if( tomcatIdx === -1) {
-            // this is a new tomcat instance
-            // We must modify the result so it matches with expected object structure
-            let newWebapps = result.value.webapps.map( webapp => {
-              let webappName = "";
-              let newWebapp = {
-                "_id"                : helper.generateUUID(),
-                "contextPath"        : webapp.contextPath,
-                "descriptorFilePath" : webapp.descriptorFilePath,
-                "refId"              : null,
-                "name"               : "NO NAME",
-                "servlets"           : webapp.servlets
-              };
+          let newWebapps = result.value.webapps.map( webapp => {
+            let webappName = "";
+            let newWebapp = {
+              "_id"                : helper.generateUUID(),
+              "contextPath"        : webapp.contextPath,
+              "descriptorFilePath" : webapp.descriptorFilePath,
+              "refId"              : null,
+              "name"               : "NO NAME",
+              "servlets"           : webapp.servlets
+            };
 
-              webapp.servlets.find(servlet => {
-                return self.$store.state.webappDefinition.find(webappDef => {
-                  let reference =  webappDef.class.find( aClass => aClass === servlet.class);
-                  if( reference ) {
-                    newWebapp.refId = webappDef.id;
-                    newWebapp.name = webappDef.name;
-                    return true;
-                  } else {
-                    return false;
-                  }
-                });
+            webapp.servlets.find(servlet => {
+              return self.$store.state.webappDefinition.find(webappDef => {
+                let reference =  webappDef.class.find( aClass => aClass === servlet.class);
+                if( reference ) {
+                  newWebapp.refId = webappDef.id;
+                  newWebapp.name = webappDef.name;
+                  return true;
+                } else {
+                  return false;
+                }
               });
-              return newWebapp;
             });
-            // TODO : implement task/addTomcat
-            this.$store.commit('addTomcat', {
-              "item" : self.item,
-              "tomcat" : {
-                "_id"     : helper.generateUUID(),
-                "id"      : result.value.id,
-                "port"    : result.value.port,
-                "webapps" : newWebapps
-              }
-            });
-          }
+            return newWebapp;
+          });
+          // TODO : implement task/addTomcat
+          this.$store.commit('tcScan/updateTomcat', {
+            "taskId"     : self.taskId,
+            "tomcatId"   : tomcatId,
+            "updateWith" : {
+              "_id"     : helper.generateUUID(),
+              "port"    : result.value.port,
+              "webapps" : newWebapps
+            }
+          });
         });
         this.$emit("tc-scan-success");
         //persistence.saveDesktopnItemToFile(this.item);
