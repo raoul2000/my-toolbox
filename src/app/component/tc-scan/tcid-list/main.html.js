@@ -1,11 +1,12 @@
 module.exports = `
 <div>
-  <h2>Find Installed Tomcat Instances</h2>
+  <h3>Find Installed Tomcat Instances</h3>
   <p>
     First step is to find installed Apache Tomcat instances.
   </p>
   {{task.status}}
-  <button v-on:click="startSearchTCId()" class="btn btn-primary">
+  <button v-on:click="startSearchTCId()" class="btn btn-primary"
+    :disabled="task.status == 'BUSY'">
     <span v-if="task.status == 'IDLE'">
       Start
     </span>

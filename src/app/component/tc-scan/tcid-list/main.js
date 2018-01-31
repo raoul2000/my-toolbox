@@ -24,7 +24,6 @@ module.exports = {
   },
   methods : {
     scanTomcatIdsDev : function() {
-
       return new Promise( (resolve, reject) => {
         setTimeout(function(){
           resolve({
@@ -34,7 +33,6 @@ module.exports = {
       });
     },
     scanTomcatIds : function(ssh) {
-
       return ssh.connect(this.item.data.ssh)
       .then( () => {
         return smartCommand.run(ssh,{
