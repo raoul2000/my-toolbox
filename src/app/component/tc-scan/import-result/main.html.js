@@ -37,5 +37,7 @@ module.exports = `
       </template>
     </tbody>
   </table>
+  <button v-on:click="importResult()" class="btn btn-danger"
+    :disabled="task.status == 'BUSY'">Import This Result</button>
 </div>
 `;

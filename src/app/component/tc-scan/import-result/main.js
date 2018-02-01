@@ -3,6 +3,7 @@
 const smartCommand  = require('../../../lib/lib').smartCommand;
 const NodeSSH       = require('node-ssh');
 const store         = require('../../../service/store/store');
+var persistence     = require('../../../lib/lib').persistence;
 
 module.exports = {
   store,
@@ -23,8 +24,16 @@ module.exports = {
     }
   },
   methods : {
-    scanTomcatIdsDev : function() {
-      console.log('foo');
+    addTomcat : function(tomcat) {
+      this.$store.commit('addTomcat', {
+        "item" : this.item,
+        "tomcat" : tomcat
+      });
+    },
+    importResult : function() {
+      this.task.result.tomcats.forEach( this.addTomcat );
+      persistence.saveDesktopnItemToFile(this.item);
+      this.$router.go(-1);
     }
   }
 };

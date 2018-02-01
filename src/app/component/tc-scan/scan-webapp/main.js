@@ -96,7 +96,7 @@ module.exports = {
         }
       });
 
-      let modeDev = true;
+      let modeDev = false;
       let scanResultPromise = null;
       if( modeDev ) {
         // in dev mode, do not perform actual scan but load a previously saved JSON file
