@@ -37,9 +37,5 @@ module.exports = `
       </template>
     </tbody>
   </table>
-
-  <p>
-    First step is to find installed Apache Tomcat instances.
-  </p>
 </div>
 `;

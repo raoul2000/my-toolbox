@@ -29,7 +29,7 @@ module.exports = {
   },
   methods : {
     /**
-     * User check/uncheck a tomcat id to be scanned
+     * User check/uncheck a tomcat id to be scanned : update the store
      * @param  {string} tcid the tomcat id value
      */
     toggleTomcatSelection : function(tcid) {
@@ -54,6 +54,33 @@ module.exports = {
       } else {
         this.scanTomcats(tomcatIdsToScan);
       }
+    },
+    /**
+     * Perform following normalisation :
+     * - add technical identifiers (_id)
+     * - link each webapp with a webapp definition (when possible)
+     *
+     * @param  {object} tomcatResult one resolved result of tomcat scan
+     * @return {object}              normalized tomcat result
+     */
+    normalizeTomcatResult : function(tomcatResult) {
+      let tomcatId  = tomcatResult.id;
+      let webappDef = null;
+      let completedWebapps = tomcatResult.webapps.map( webapp => {
+        webapp.servlets.find(servlet => {
+          webappDef = this.$store.getters.findWebappDefinitionByClassname(servlet.class);
+          return webappDef ? true : false;
+        });
+        return Object.assign(webapp, {
+          "_id"   : helper.generateUUID(),
+          "refId" : ( webappDef ? webappDef.id   : null),
+          "name"  : ( webappDef ? webappDef.name : "NO NAME")
+        });
+      });
+      return Object.assign(tomcatResult, {
+        "_id"     : helper.generateUUID(),
+        "webapps" : completedWebapps
+      });
     },
     /**
      * Actually perform the tomcat scan operation on the tomcat list
@@ -96,28 +123,9 @@ module.exports = {
         console.log(results);
 
         let tomcatResults = results
-        .filter(  result => result.resolved && ! result.error )
-        .map( result => {
-          let tomcatId  = result.value.id;
-          let webappDef = null;
-          let completedWebapps = result.value.webapps.map( webapp => {
-            webapp.servlets.find(servlet => {
-              webappDef = this.$store.getters.findWebappDefinitionByClassname(servlet.class);
-              return webappDef ? true : false;
-            });
-            return Object.assign(webapp, {
-              "_id"   : helper.generateUUID(),
-              "refId" : ( webappDef ? webappDef.id   : null),
-              "name"  : ( webappDef ? webappDef.name : "NO NAME")
-            });
-          });
-          return Object.assign(result.value, {
-            "_id"     : helper.generateUUID(),
-            "webapps" : completedWebapps
-          });
-        });
+          .filter(  result => result.resolved && ! result.error )
+          .map( result => this.normalizeTomcatResult(result.value));
 
-        debugger;
         this.$store.commit('tcScan/updateTask', {
           "id"     : self.taskId,
           "updateWith" : {

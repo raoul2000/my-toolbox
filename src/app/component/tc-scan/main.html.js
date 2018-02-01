@@ -1,6 +1,12 @@
 module.exports = `
 <div class="row">
   <div class="col-lg-12">
+    <div class="pull-right">
+    <button
+      class="btn btn-default"
+      v-on:click="cancel()"
+      :disabled="task.status == 'BUSY'">Cancel</button>
+    </div>
     <h1>Web Application Scanner</h1>
     <hr/>
     <div class="alert alert-warning" role="alert">
