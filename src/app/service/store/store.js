@@ -164,15 +164,21 @@ module.exports = new Vuex.Store({
     addTomcat(state, options) {
       try {
         let item   = find.object.itemById(state.desktop, options.item.data._id);
+        if(  !item ) {
+          throw new Error(`item not found - id : ${options.item.data._id}`);
+        }
         item.data.tomcats = [options.tomcat].concat(item.data.tomcats);
-      }catch(e) {
-        console.error("failed to addTomcat",options, e);
+      }catch(ex) {
+        console.error("failed to addTomcat",ex, options);
       }
     },
     updateTomcat(state, options ) {
       try {
         let item   = find.object.itemById(state.desktop, options.item.data._id);
         let tomcat = find.object.tomcatById(item.data.tomcats, options.tomcat._id);
+        if(  !tomcat ) {
+          throw new Error(`tomcat not found - id : ${options.tomcat._id}`);
+        }
         Object.assign(tomcat, options.updateWith);
       }catch(e) {
         console.error("failed to updateTomcat",options, e);
@@ -182,6 +188,9 @@ module.exports = new Vuex.Store({
       try {
         let item   = find.object.itemById(state.desktop, options.item.data._id);
         let tomcatIndex = find.index.tomcatById(item.data.tomcats, options.tomcat._id);
+        if(  tomcatIndex === -1 ) {
+          throw new Error(`tomcat index not found - id : ${options.tomcat._id}`);
+        }
         item.data.tomcats.splice(tomcatIndex, 1);
       }catch(e) {
         console.error("failed to deleteTomcat",e);

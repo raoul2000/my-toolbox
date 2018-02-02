@@ -25,6 +25,16 @@ module.exports = {
   },
   methods : {
     addTomcat : function(tomcat) {
+      //debugger;
+      let existingTomcat = this.item.data.tomcats.find(tomcat => tomcat.id.toUpperCase() === tomcat.id.toUpperCase());
+      if ( existingTomcat ) {
+        console.log("delete tomcat id : "+tomcat.id);
+        this.$store.commit('deleteTomcat', {
+          "item"   : this.item,
+          "tomcat" : existingTomcat
+        });
+      }
+      console.log("adding tomcat id : "+tomcat.id);
       this.$store.commit('addTomcat', {
         "item" : this.item,
         "tomcat" : tomcat

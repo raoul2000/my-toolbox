@@ -51,8 +51,8 @@ module.exports = {
       let self = this;
       let ssh = new NodeSSH();
 
-      //this.scanTomcatIdsDev()
-      this.scanTomcatIds(ssh)
+      //this.scanTomcatIds(ssh)
+      this.scanTomcatIdsDev()
       .then( result => {
         self.$store.commit('tcScan/updateTask', {
           "id" : self.task.id,
