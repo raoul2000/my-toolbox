@@ -28,14 +28,15 @@ function throwExceptionOnError( result ) {
 function scanTomcat(options) {
   console.log("starting scan for :", options.tomcatId);
   let finalResult = {
-    "id" : options.tomcatId,
+    "id"                : options.tomcatId,
     "installFolderPath" : null,
-    "port" : null,
-    "webapps" : []
+    "port"              : null,
+    "webapps"           : []
   };
+
   return extractInstallDir({
     "ssh"    : options.ssh, // opened ssh connection
-    "tomcat" : { "id" : options.tomcatId}
+    "tomcat" : { "id" : options.tomcatId }
   })
   .then( result => {
     console.log("extractInstallDir returned",result);

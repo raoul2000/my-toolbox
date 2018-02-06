@@ -65,7 +65,7 @@ module.exports = {
           "servlets" : []
         }
       });
-      persistence.saveDesktopnItemToFile(this.item);
+      persistence.saveDesktopItemToFile(this.item);
     },
     deleteTomcat : function(){
       let self = this;
@@ -90,7 +90,7 @@ module.exports = {
           "item"   : self.item,
           "tomcat" : self.tomcat
         });
-        persistence.saveDesktopnItemToFile(self.item);
+        persistence.saveDesktopItemToFile(self.item);
       });
     },
     isUniqueTomcatId : function(id) {
@@ -128,7 +128,7 @@ module.exports = {
       };
       updateInfo.updateWith[arg.name] = arg.value;
       this.$store.commit('updateTomcat',updateInfo );
-      persistence.saveDesktopnItemToFile(this.item);
+      persistence.saveDesktopItemToFile(this.item);
     }
   }
 };

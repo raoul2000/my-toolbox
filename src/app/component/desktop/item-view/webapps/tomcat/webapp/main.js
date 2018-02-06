@@ -90,7 +90,7 @@ module.exports = {
           "urlPatterns" : []
         }
       });
-      persistence.saveDesktopnItemToFile(this.item);
+      persistence.saveDesktopItemToFile(this.item);
     },
 
     toggleDetailView : function() {
@@ -125,7 +125,7 @@ module.exports = {
           "tomcat"    : self.tomcat,
           "webapp"    : self.webapp
         });
-        persistence.saveDesktopnItemToFile(self.item);
+        persistence.saveDesktopItemToFile(self.item);
       });
     },
     changeValue: function(arg) {
@@ -155,7 +155,7 @@ module.exports = {
       this.$store.commit('updateWebapp', updateInfo);
       // FIXME : in some case (to define) the JSON saved by next line is INVALID
       // with additional closing brackets or some other characters
-      persistence.saveDesktopnItemToFile(this.item);
+      persistence.saveDesktopItemToFile(this.item);
     }
   }
 };

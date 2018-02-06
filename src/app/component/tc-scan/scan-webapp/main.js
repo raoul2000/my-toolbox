@@ -22,6 +22,10 @@ module.exports = {
   },
   template: require('./main.html'),
   computed : {
+    /**
+     * The current task related to this component through the taskId property
+     * passed by parent component.
+     */    
     task : function() {
       console.log('computed task');
       return  this.$store.getters['tcScan/taskById'](this.taskId);
@@ -57,7 +61,7 @@ module.exports = {
     },
     /**
      * Perform following normalisation :
-     * - add technical identifiers (_id)
+     * - add technical identifiers (_id) to servlets and webapps
      * - link each webapp with a webapp definition (when possible)
      *
      * @param  {object} tomcatResult one resolved result of tomcat scan
@@ -96,7 +100,7 @@ module.exports = {
         }
       });
 
-      let modeDev = true;
+      let modeDev = false;
       let scanResultPromise = null;
       if( modeDev ) {
         // in dev mode, do not perform actual scan but load a previously saved JSON file
@@ -136,7 +140,7 @@ module.exports = {
         });
 
         this.$emit("tc-scan-success");
-        //persistence.saveDesktopnItemToFile(this.item);
+        //persistence.saveDesktopItemToFile(this.item);
       })
       .catch(err => {
         console.log(err);

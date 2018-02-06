@@ -18,6 +18,10 @@ module.exports = {
   },
   template: require('./main.html'),
   computed : {
+    /**
+     * The current task related to this component through the taskId property
+     * passed by parent component.
+     */    
     task : function() {
       return  this.$store.getters['tcScan/taskById'](this.taskId);
     }
@@ -51,8 +55,8 @@ module.exports = {
       let self = this;
       let ssh = new NodeSSH();
 
-      //this.scanTomcatIds(ssh)
-      this.scanTomcatIdsDev()
+      //this.scanTomcatIdsDev()
+      this.scanTomcatIds(ssh)
       .then( result => {
         self.$store.commit('tcScan/updateTask', {
           "id" : self.task.id,

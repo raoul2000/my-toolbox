@@ -95,7 +95,7 @@ module.exports = {
           "webapps" : []
         }
       });
-      persistence.saveDesktopnItemToFile(this.item);
+      persistence.saveDesktopItemToFile(this.item);
     }
   },
   /**

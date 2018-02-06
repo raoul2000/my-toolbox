@@ -31,7 +31,7 @@ module.exports = {
           "version" : ""
         }
       });
-      persistence.saveDesktopnItemToFile(this.item);
+      persistence.saveDesktopItemToFile(this.item);
     }
   },
   /**

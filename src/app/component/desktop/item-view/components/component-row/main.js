@@ -42,7 +42,7 @@ module.exports = {
           "item"      : self.item,
           "component" : self.component
         });
-        persistence.saveDesktopnItemToFile(self.item);
+        persistence.saveDesktopItemToFile(self.item);
       });
 
     },
@@ -62,7 +62,7 @@ module.exports = {
       };
       updateInfo.updateWith[arg.name] = arg.value;
       this.$store.commit('updateComponent', updateInfo);
-      persistence.saveDesktopnItemToFile(this.item);
+      persistence.saveDesktopItemToFile(this.item);
     }
   }
 };

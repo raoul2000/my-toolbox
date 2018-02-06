@@ -110,7 +110,7 @@ module.exports = Vue.component('modal-tc-scan',  {
               });
             }
           });
-          persistence.saveDesktopnItemToFile(this.item);
+          persistence.saveDesktopItemToFile(this.item);
         })
         .catch(err => {
           console.log(err);

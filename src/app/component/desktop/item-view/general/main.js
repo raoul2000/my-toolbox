@@ -69,7 +69,7 @@ module.exports = {
           notes  : arg.value
         }
       });
-      persistence.saveDesktopnItemToFile(this.item);
+      persistence.saveDesktopItemToFile(this.item);
     },
     /**
      * Handle SSH settings update : update the store and the file.
@@ -93,7 +93,7 @@ module.exports = {
       };
       updateData.updateWith[arg.name] = arg.value;
       store.commit('updateDesktopItem',updateData);
-      persistence.saveDesktopnItemToFile(this.item);
+      persistence.saveDesktopItemToFile(this.item);
     }
   },
 

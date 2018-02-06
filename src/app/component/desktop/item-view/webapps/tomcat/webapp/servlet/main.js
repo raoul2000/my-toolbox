@@ -51,7 +51,7 @@ module.exports = {
           "webapp"    : self.webapp,
           "servlet"   : self.servlet
         });
-        persistence.saveDesktopnItemToFile(self.item);
+        persistence.saveDesktopItemToFile(self.item);
       });
     },
     changeValue: function(arg) {
@@ -70,7 +70,7 @@ module.exports = {
       this.$store.commit('updateServlet', updateInfo);
       // FIXME : in some case (to define) the JSON saved by next line is INVALID
       // with additional closing brackets or some other characters
-      persistence.saveDesktopnItemToFile(this.item);
+      persistence.saveDesktopItemToFile(this.item);
     }
   }
 };
