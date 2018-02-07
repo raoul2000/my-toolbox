@@ -50,6 +50,12 @@ module.exports = {
         }
       }
     },
+    changeAllTomcatSelection : function(state, options) {
+      let task = state.tasks.find( task => task.id === options.taskId);
+      if( task ) {
+        task.tomcats.forEach( tomcat => tomcat.selected = options.select);
+      }
+    },
     addTask : function(state,tcScanTask) {
       state.tasks.push(tcScanTask);
     },

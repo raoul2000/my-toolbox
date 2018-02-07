@@ -3,6 +3,10 @@
 #app[v-cloak] > *  { display:none; }
 .loading  { display:none; }
 
+.selected-tcid {
+  background-color: #fcf8e3;
+}
+
 .about-content {
   min-height: 200px;
   padding-left: 2em;

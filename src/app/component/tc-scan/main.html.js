@@ -2,10 +2,12 @@ module.exports = `
 <div class="row">
   <div class="col-lg-12">
     <div class="pull-right">
-    <button
-      class="btn btn-default"
-      v-on:click="cancel()"
-      :disabled="task.status == 'BUSY'">Cancel</button>
+      <button
+        class="btn btn-default btn-lg"
+        v-on:click="cancel()"
+        :disabled="task.status == 'BUSY'">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel
+      </button>
     </div>
     <h1>Web Application Scanner</h1>
     <hr/>
@@ -41,7 +43,7 @@ module.exports = `
               </tr>
               <tr>
                 <td class="field-label-right">host</td>
-                <td>{{item.data.ssh.hostname}}</td>
+                <td>{{item.data.ssh.host}}</td>
               </tr>
               <tr>
                 <td class="field-label-right">username</td>
@@ -71,15 +73,8 @@ module.exports = `
           </div>
         </div>
         <hr/>
-        <button
-          class="btn btn-default"
-          v-on:click="cancel()">Cancel</button>
       </div><!-- // col-xs-9 -->
-      {{task.step}} - {{ task.status}}
     </div><!-- // row -->
-
-
-
   </div>
 </div>
 `;

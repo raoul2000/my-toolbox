@@ -2,123 +2,33 @@
   "results": [
     {
       "value": {
-        "id": "ADOBE",
-        "installFolderPath": "/methode/meth01/tomcat-adobe",
-        "port": "3458",
+        "id": "CORE",
+        "installFolderPath": "/methode/meth01/tomcat-core",
+        "port": "3700",
         "webapps": [
           {
-            "contextPath": "/eomjnc_adobe/events",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/eomjnc_adobe/WEB-INF/web.xml",
-            "servlets": []
-          },
-          {
-            "contextPath": "/mras_adobe",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/mras_adobe/WEB-INF/web.xml",
+            "contextPath": "/checkin",
+            "descriptorFilePath": "/methode/meth01/methode-servlets/checkin/WEB-INF/web.xml",
             "servlets": [
               {
-                "name": "JerseyWebApplication",
+                "name": "Jersey Web Application",
                 "urlPatterns": [
-                  "/rest/*",
-                  "/services/*"
+                  "/service/*"
                 ],
                 "class": "org.glassfish.jersey.servlet.ServletContainer"
               },
               {
-                "name": "UploadServlet",
+                "name": "checkin",
                 "urlPatterns": [
-                  "/rest/upload/uploader"
+                  "/servlet/checkin/*"
                 ],
-                "class": "com.eidosmedia.restserver.webresources.uploader.UploadServlet"
-              },
-              {
-                "name": "UploadExecuteServlet",
-                "urlPatterns": [
-                  "/rest/upload/uploadExecuter"
-                ],
-                "class": "com.eidosmedia.restserver.webresources.uploader.UploadExecuteServlet"
-              },
-              {
-                "name": "com.eidosmedia.restserver.filesystemresources.ApplicationResourceConfig",
-                "urlPatterns": [
-                  "/webapi/*"
-                ],
-                "class": ""
-              }
-            ]
-          }
-        ]
-      },
-      "error": null,
-      "resolved": true
-    },
-    {
-      "value": {
-        "id": "ANALYTICS",
-        "installFolderPath": "/methode/meth01/tomcat-analytics",
-        "port": "3452",
-        "webapps": [
-          {
-            "contextPath": "/analytics",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/analytics/WEB-INF/web.xml",
-            "servlets": [
-              {
-                "name": "com.eidosmedia.portal.analytics.webresources.AnalyticsResourceConfig",
-                "urlPatterns": [
-                  "/rest/*"
-                ],
-                "class": ""
+                "class": "checkin.CheckinServlet"
               }
             ]
           },
           {
-            "contextPath": "/mras_analytics",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/mras_analytics/WEB-INF/web.xml",
-            "servlets": [
-              {
-                "name": "JerseyWebApplication",
-                "urlPatterns": [
-                  "/rest/*",
-                  "/services/*"
-                ],
-                "class": "org.glassfish.jersey.servlet.ServletContainer"
-              },
-              {
-                "name": "UploadServlet",
-                "urlPatterns": [
-                  "/rest/upload/uploader"
-                ],
-                "class": "com.eidosmedia.restserver.webresources.uploader.UploadServlet"
-              },
-              {
-                "name": "UploadExecuteServlet",
-                "urlPatterns": [
-                  "/rest/upload/uploadExecuter"
-                ],
-                "class": "com.eidosmedia.restserver.webresources.uploader.UploadExecuteServlet"
-              },
-              {
-                "name": "com.eidosmedia.restserver.filesystemresources.ApplicationResourceConfig",
-                "urlPatterns": [
-                  "/webapi/*"
-                ],
-                "class": ""
-              }
-            ]
-          }
-        ]
-      },
-      "error": null,
-      "resolved": true
-    },
-    {
-      "value": {
-        "id": "MMS",
-        "installFolderPath": "/methode/meth01/tomcat-mms",
-        "port": "3416",
-        "webapps": [
-          {
-            "contextPath": "/mms",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/mms/WEB-INF/web.xml",
+            "contextPath": "/formats",
+            "descriptorFilePath": "/methode/meth01/methode-servlets/formats/WEB-INF/web.xml",
             "servlets": [
               {
                 "name": "Jersey Web Application",
@@ -128,187 +38,17 @@
                 "class": "org.glassfish.jersey.servlet.ServletContainer"
               },
               {
-                "name": "MMS",
+                "name": "formats",
                 "urlPatterns": [
-                  "/servlet/mms"
+                  "/servlet/formats"
                 ],
-                "class": "com.eidosmedia.mms.MMS"
-              }
-            ]
-          }
-        ]
-      },
-      "error": null,
-      "resolved": true
-    },
-    {
-      "value": {
-        "id": "OUTPUT",
-        "installFolderPath": "/methode/meth01/tomcat-output",
-        "port": "3428",
-        "webapps": [
-          {
-            "contextPath": "/om",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/om/WEB-INF/web.xml",
-            "servlets": [
-              {
-                "name": "Jersey Web Application",
-                "urlPatterns": [
-                  "/service/*"
-                ],
-                "class": "org.glassfish.jersey.servlet.ServletContainer"
-              },
-              {
-                "name": "Faces Servlet",
-                "urlPatterns": [
-                  "*.jsf"
-                ],
-                "class": "javax.faces.webapp.FacesServlet"
-              },
-              {
-                "name": "om",
-                "urlPatterns": [
-                  "/om"
-                ],
-                "class": "com.eidosmedia.om.OmServlet"
-              },
-              {
-                "name": "query",
-                "urlPatterns": [
-                  "/query/*"
-                ],
-                "class": "com.eidosmedia.om.web.QueryServlet"
-              },
-              {
-                "name": "ContentServlet",
-                "urlPatterns": [
-                  "/content/*",
-                  "/config/*"
-                ],
-                "class": "com.eidosmedia.om.web.ContentServlet"
-              },
-              {
-                "name": "ShowLogServlet",
-                "urlPatterns": [
-                  "/showlog/*"
-                ],
-                "class": "com.eidosmedia.om.web.ShowLogServlet"
-              },
-              {
-                "name": "TemplateIndex",
-                "urlPatterns": [
-                  "/web-app-template/*"
-                ],
-                "class": ""
-              }
-            ]
-          }
-        ]
-      },
-      "error": null,
-      "resolved": true
-    },
-    {
-      "value": {
-        "id": "PUB",
-        "installFolderPath": "/methode/meth01/tomcat-pub",
-        "port": "3434",
-        "webapps": [
-          {
-            "contextPath": "/htmlpub",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/htmlpub/WEB-INF/web.xml",
-            "servlets": [
-              {
-                "name": "Jersey Web Application",
-                "urlPatterns": [
-                  "/service/*"
-                ],
-                "class": "org.glassfish.jersey.servlet.ServletContainer"
-              },
-              {
-                "name": "htmlpub",
-                "urlPatterns": [
-                  "/servlet/htmlpub/*"
-                ],
-                "class": "htmlpub.PublishServlet"
-              }
-            ]
-          }
-        ]
-      },
-      "error": null,
-      "resolved": true
-    },
-    {
-      "value": {
-        "id": "SOCIAL",
-        "installFolderPath": "/methode/meth01/tomcat-social",
-        "port": "3446",
-        "webapps": [
-          {
-            "contextPath": "/social",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/social/WEB-INF/web.xml",
-            "servlets": [
-              {
-                "name": "Jersey Web Application",
-                "urlPatterns": [
-                  "/rest/*"
-                ],
-                "class": "org.glassfish.jersey.servlet.ServletContainer"
-              },
-              {
-                "name": "JerseyJaxrsConfig",
-                "urlPatterns": [],
-                "class": "com.wordnik.swagger.jersey.config.JerseyJaxrsConfig"
-              },
-              {
-                "name": "customSocialFiles",
-                "urlPatterns": [
-                  "/custom/*"
-                ],
-                "class": "com.eidosmedia.methodesocial.servlets.CustomFilesServlet"
-              },
-              {
-                "name": "localizationSocialFiles",
-                "urlPatterns": [
-                  "/L10n/*"
-                ],
-                "class": "com.eidosmedia.methodesocial.servlets.CustomFilesServlet"
-              }
-            ]
-          }
-        ]
-      },
-      "error": null,
-      "resolved": true
-    },
-    {
-      "value": {
-        "id": "TOOLS",
-        "installFolderPath": "/methode/meth01/tomcat-tools",
-        "port": "3422",
-        "webapps": [
-          {
-            "contextPath": "/dma",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/dma/WEB-INF/web.xml",
-            "servlets": [
-              {
-                "name": "emDMA",
-                "urlPatterns": [],
-                "class": "com.eidosmedia.dma.core.DMA"
-              },
-              {
-                "name": "Jersey Web Application",
-                "urlPatterns": [
-                  "/service/*"
-                ],
-                "class": "org.glassfish.jersey.servlet.ServletContainer"
+                "class": "formats.CreateFormats"
               }
             ]
           },
           {
-            "contextPath": "/dsm",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/dsm/WEB-INF/web.xml",
+            "contextPath": "/rhelper",
+            "descriptorFilePath": "/methode/meth01/methode-servlets/rhelper/WEB-INF/web.xml",
             "servlets": [
               {
                 "name": "Jersey Web Application",
@@ -318,269 +58,38 @@
                 "class": "org.glassfish.jersey.servlet.ServletContainer"
               },
               {
-                "name": "dsm",
+                "name": "rhelper",
                 "urlPatterns": [
                   ""
                 ],
-                "class": "com.eidosmedia.datasource.server.DSMServlet"
+                "class": "rhelper.Servlet"
               }
             ]
           },
           {
-            "contextPath": "/emWebServiceUtils",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/emWebServiceUtils/WEB-INF/web.xml",
+            "contextPath": "",
+            "descriptorFilePath": "/methode/meth01/methode-servlets/preview/WEB-INF/web.xml",
             "servlets": [
               {
-                "name": "emWebServiceUtils",
-                "urlPatterns": [],
-                "class": "com.eidosmedia.wsu.core.WebServiceUtils"
-              }
-            ]
-          },
-          {
-            "contextPath": "/mfm",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/mfm/WEB-INF/web.xml",
-            "servlets": [
-              {
-                "name": "Jersey Web Application",
+                "name": "dav",
                 "urlPatterns": [
-                  "/service/*"
+                  "/"
                 ],
-                "class": "org.glassfish.jersey.servlet.ServletContainer"
+                "class": "web.Dav"
               },
               {
-                "name": "mfm",
+                "name": "admin-servlet",
                 "urlPatterns": [
-                  "/servlet/mfm"
-                ],
-                "class": "com.eidosmedia.folders.FolderManager"
-              }
-            ]
-          },
-          {
-            "contextPath": "/mls",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/mls/WEB-INF/web.xml",
-            "servlets": [
-              {
-                "name": "Jersey Web Application",
-                "urlPatterns": [
-                  "/service/*"
-                ],
-                "class": "org.glassfish.jersey.servlet.ServletContainer"
-              },
-              {
-                "name": "mls",
-                "urlPatterns": [
-                  "/servlet/mls"
-                ],
-                "class": "com.eidosmedia.mls.MLS"
-              }
-            ]
-          },
-          {
-            "contextPath": "/mws",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/mws/WEB-INF/web.xml",
-            "servlets": [
-              {
-                "name": "Jersey Web Application",
-                "urlPatterns": [
-                  "/service/*"
-                ],
-                "class": "org.glassfish.jersey.servlet.ServletContainer"
-              },
-              {
-                "name": "mws",
-                "urlPatterns": [
-                  "/servlet/mws"
-                ],
-                "class": "com.eidosmedia.mws.MWS"
-              }
-            ]
-          },
-          {
-            "contextPath": "/piccontroller",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/piccontroller/WEB-INF/web.xml",
-            "servlets": [
-              {
-                "name": "Jersey Web Application",
-                "urlPatterns": [
-                  "/service/*"
-                ],
-                "class": "org.glassfish.jersey.servlet.ServletContainer"
-              },
-              {
-                "name": "PicControllerServlet",
-                "urlPatterns": [
-                  "/PicController"
-                ],
-                "class": "com.eidosmedia.servlets.picture.controller.PicControllerServlet"
-              }
-            ]
-          },
-          {
-            "contextPath": "/prodarch_eligible",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/prodarch_eligible/WEB-INF/web.xml",
-            "servlets": [
-              {
-                "name": "Jersey Web Application",
-                "urlPatterns": [
-                  "/service/*"
-                ],
-                "class": "org.glassfish.jersey.servlet.ServletContainer"
-              },
-              {
-                "name": "prodarch",
-                "urlPatterns": [
-                  "/servlet/prodarch/*"
-                ],
-                "class": "prodarch.ProdarchServlet"
-              }
-            ]
-          },
-          {
-            "contextPath": "/prodarch-web",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/prodarch-web/WEB-INF/web.xml",
-            "servlets": [
-              {
-                "name": "Jersey Web Application",
-                "urlPatterns": [
-                  "/service/*"
-                ],
-                "class": "org.glassfish.jersey.servlet.ServletContainer"
-              },
-              {
-                "name": "prodarch",
-                "urlPatterns": [
-                  "/servlet/prodarch/*"
-                ],
-                "class": "prodarch.ProdarchServlet"
-              }
-            ]
-          },
-          {
-            "contextPath": "/prodarch",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/prodarch/WEB-INF/web.xml",
-            "servlets": [
-              {
-                "name": "Jersey Web Application",
-                "urlPatterns": [
-                  "/service/*"
-                ],
-                "class": "org.glassfish.jersey.servlet.ServletContainer"
-              },
-              {
-                "name": "prodarch",
-                "urlPatterns": [
-                  "/servlet/prodarch/*"
-                ],
-                "class": "prodarch.ProdarchServlet"
-              }
-            ]
-          }
-        ]
-      },
-      "error": null,
-      "resolved": true
-    },
-    {
-      "value": {
-        "id": "WEB",
-        "installFolderPath": "/methode/meth01/tomcat-web",
-        "port": "3440",
-        "webapps": [
-          {
-            "contextPath": "/events",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/eomjnc/WEB-INF/web.xml",
-            "servlets": []
-          },
-          {
-            "contextPath": "/mras_web",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/mras_web/WEB-INF/web.xml",
-            "servlets": [
-              {
-                "name": "JerseyWebApplication",
-                "urlPatterns": [
-                  "/rest/*",
-                  "/services/*"
-                ],
-                "class": "org.glassfish.jersey.servlet.ServletContainer"
-              },
-              {
-                "name": "UploadServlet",
-                "urlPatterns": [
-                  "/rest/upload/uploader"
-                ],
-                "class": "com.eidosmedia.restserver.webresources.uploader.UploadServlet"
-              },
-              {
-                "name": "UploadExecuteServlet",
-                "urlPatterns": [
-                  "/rest/upload/uploadExecuter"
-                ],
-                "class": "com.eidosmedia.restserver.webresources.uploader.UploadExecuteServlet"
-              },
-              {
-                "name": "com.eidosmedia.restserver.filesystemresources.ApplicationResourceConfig",
-                "urlPatterns": [
-                  "/webapi/*"
-                ],
-                "class": ""
-              }
-            ]
-          },
-          {
-            "contextPath": "/WebClient",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/WebClient/WEB-INF/web.xml",
-            "servlets": [
-              {
-                "name": "WebClientAdminServlet",
-                "urlPatterns": [
-                  "/WebClientCtx/admin/Admin"
-                ],
-                "class": "com.eidosmedia.clientweb.admin.WebClientAdminServlet"
-              },
-              {
-                "name": "WebClientLogServlet",
-                "urlPatterns": [
-                  "/WebClientCtx/admin/Log"
-                ],
-                "class": "com.eidosmedia.clientweb.admin.WebClientLogServlet"
-              },
-              {
-                "name": "WebClientLogConfServlet",
-                "urlPatterns": [
-                  "/WebClientCtx/admin/LogConf"
-                ],
-                "class": "com.eidosmedia.clientweb.admin.WebClientLogConfServlet"
-              },
-              {
-                "name": "ActionDispatcher",
-                "urlPatterns": [
-                  "*.do",
-                  "*.jsdo"
-                ],
-                "class": "com.eidosmedia.web.framework.ActionDispatcher"
-              },
-              {
-                "name": "AdminServlet",
-                "urlPatterns": [
-                  "/servlet/AdminServlet"
+                  "/as"
                 ],
                 "class": "AdminServlet"
               },
               {
-                "name": "SessionControl",
+                "name": "session-control",
                 "urlPatterns": [
                   "/servlet/SessionControl"
                 ],
                 "class": "SessionControl"
-              },
-              {
-                "name": "PortalEditorServlet",
-                "urlPatterns": [
-                  "/Portal"
-                ],
-                "class": "com.eidosmedia.portaleditor.PortalEditorServlet"
               }
             ]
           }

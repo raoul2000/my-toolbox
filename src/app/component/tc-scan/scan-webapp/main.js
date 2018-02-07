@@ -25,22 +25,36 @@ module.exports = {
     /**
      * The current task related to this component through the taskId property
      * passed by parent component.
-     */    
+     */
     task : function() {
       console.log('computed task');
       return  this.$store.getters['tcScan/taskById'](this.taskId);
+    },
+    selectedCount : function(){
+      return this.task.tomcats
+        .filter( tomcat => tomcat.selected)
+        .reduce( (acc,cur) => acc + 1, 0);
     }
   },
   methods : {
+    selectAll : function(select) {
+      this.$store.commit('tcScan/changeAllTomcatSelection', {
+        "taskId" : this.taskId,
+        "select" : select
+      });
+    },
     /**
      * User check/uncheck a tomcat id to be scanned : update the store
      * @param  {string} tcid the tomcat id value
      */
-    toggleTomcatSelection : function(tcid) {
-      this.$store.commit('tcScan/toggleTomcatSelection', {
-        "id"     : tcid,
-        "taskId" : this.taskId
-      });
+    toggleTomcatSelection : function(tomcat) {
+      if( this.task.status !== 'BUSY') {
+        this.$store.commit('tcScan/toggleTomcatSelection', {
+          "id"     : tomcat.id,
+          "taskId" : this.taskId
+        });
+
+      }
     },
     /**
      * User clicks Start : start tomcat scan process on the selected
