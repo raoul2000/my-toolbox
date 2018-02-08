@@ -1,10 +1,17 @@
 module.exports = `
 <transition
   name="custom-classes-transition"
-  enter-active-class="animated slideInRight"
+  enter-active-class="animated fadeIn"
 >
 <div class="row">
   <div class="col-lg-12">
+    <div class="pull-right">
+      <button
+        class="btn btn-default btn-lg"
+        v-on:click="onCancel()">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel
+      </button>
+    </div>
     <h1>Settings</h1>
     <hr/>
     <form class="form-horizontal">
@@ -149,8 +156,7 @@ module.exports = `
       <hr/>
       <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
-        <button type="button" class="btn btn-primary" @click="onSave()">Save</button>
-          <button type="button" class="btn btn-default" @click="onCancel()">Cancel</button>
+        <button type="button" class="btn btn-primary" @click="onSave()">Save Changes</button>
         </div>
       </div>
     </form>

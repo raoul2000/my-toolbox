@@ -6,10 +6,10 @@ module.exports = `
 
       <div class="btn-group btn-group-sm secondary-toolbar" role="group" >
         <button title="Add Tomcat" v-on:click="addTomcat()" type="button" class="btn btn-default btn-xs">
-          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Tomcat
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Tomcat
         </button>
-        <button title="Scan Tomcat" v-on:click="openScannerView()" type="button" class="btn btn-default btn-xs">
-          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Scan Tomcat
+        <button title="Scan Server for Tomcat instances ..." v-on:click="openScannerView()" type="button" class="btn btn-default btn-xs">
+          <span class="glyphicon glyphicon-record" aria-hidden="true"></span> Scan ...
         </button>
       </div>
 
@@ -23,7 +23,7 @@ module.exports = `
         >
           <span
             v-bind:class="viewTomcatClass()"
-            aria-hidden="true"></span> s/h Tomcat
+            aria-hidden="true"></span>Tomcat
         </button>
         <button
           title="Expand/collapse Webapp Details"
@@ -33,7 +33,7 @@ module.exports = `
           <span
             v-bind:class="viewWebappClass()"
             class="glyphicon glyphicon-eye-open"
-            aria-hidden="true"></span> s/h Webapp
+            aria-hidden="true"></span>Webapp
         </button>
       </div><!-- end toolbar expand/collapse -->
 
@@ -57,7 +57,17 @@ module.exports = `
         </div>
       </div>
       <div v-else>
-        <h1>No Tomcat</h1>
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3">
+            <div class="alert alert-info" role="alert">
+              <p>
+                <b>No tomcat</b> on this server.<br/>
+                You can add Tomcat manually, or try your luck with the scanner stuff ...
+              </p>
+            </div>
+          </div>
+        </div>
+
       </div>
 
     </div><!-- col-lg-12 -->

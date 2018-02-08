@@ -76,5 +76,8 @@ module.exports = Vue.component('tc-scan',  {
         "errorMessage" : ""
       });
     }
+  },
+  mounted : function() {
+    Mousetrap.bind('esc', this.cancel, 'keyup');
   }
 });

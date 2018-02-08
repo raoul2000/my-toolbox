@@ -11,7 +11,7 @@ module.exports = `
           aria-hidden="true"></span>
       </td>
       <td class="header-tomcat-text">
-        Tomcat
+        <span style="color:#c3c3c3;">Tomcat</span>
       </td>
       <td class="header-tomcat-text" width="100%">
         <inlineInput
@@ -54,9 +54,9 @@ module.exports = `
     class="webapps-container"
     v-if="expanded">
 
-    <div class="btn-group btn-group-sm secondary-toolbar" role="group">
+    <div class="btn-group btn-group-sm secondary-toolbar" role="group" style="margin-left: 1.8em;">
       <button title="Add Webapp" v-on:click="addWebapp()" type="button" class="btn btn-default btn-xs">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> webapp
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add webapp
       </button>
     </div>
 

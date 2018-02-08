@@ -115,7 +115,7 @@ module.exports = {
             return aPath;
           }
         })
-        .join(' - ');
+        .join(' / ');
       }
       // compute the container class
       let validEnv = {

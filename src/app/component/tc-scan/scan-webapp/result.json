@@ -4,7 +4,7 @@
       "value": {
         "id": "CORE",
         "installFolderPath": "/methode/meth01/tomcat-core",
-        "port": "3700",
+        "port": "3400",
         "webapps": [
           {
             "contextPath": "/checkin",
