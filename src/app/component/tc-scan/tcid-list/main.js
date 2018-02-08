@@ -21,9 +21,16 @@ module.exports = {
     /**
      * The current task related to this component through the taskId property
      * passed by parent component.
-     */    
+     */
     task : function() {
       return  this.$store.getters['tcScan/taskById'](this.taskId);
+    },
+    hasValidSSHCredentials : function() {
+      let ssh = this.item.data.ssh;
+      return ssh.host.length   !== 0 &&
+             ssh.host.username !== 0 &&
+             ssh.host.password !== 0 &&
+             ssh.host.port     !== 0;
     }
   },
   methods : {

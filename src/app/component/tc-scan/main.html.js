@@ -36,25 +36,25 @@ module.exports = `
             <table class="table">
               <tbody>
                 <tr>
-                  <td class="field-label-right">Name</td>
+                  <td class="field-label-right">Name:</td>
                   <td>
                     <b>{{item.name}}</b>
                   </td>
                 </tr>
                 <tr>
-                  <td class="field-label-right">Catégorie</td>
+                  <td class="field-label-right">Catégorie:</td>
                   <td>{{ item.path.join(' / ')}}</td>
                 </tr>
                 <tr>
-                  <td class="field-label-right">host</td>
+                  <td class="field-label-right">host:</td>
                   <td>{{item.data.ssh.host}}</td>
                 </tr>
                 <tr>
-                  <td class="field-label-right">username</td>
+                  <td class="field-label-right">username:</td>
                   <td>{{item.data.ssh.username}}</td>
                 </tr>
                 <tr>
-                  <td class="field-label-right">Tomcat</td>
+                  <td class="field-label-right">Tomcat:</td>
                   <td>{{item.data.tomcats.length}}</td>
                 </tr>
               </tbody>
@@ -76,7 +76,6 @@ module.exports = `
               <import-result :item="item" :taskId="taskId" />
             </div>
           </div>
-          <hr/>
         </div><!-- // col-xs-9 -->
       </div><!-- // row -->
     </div>
