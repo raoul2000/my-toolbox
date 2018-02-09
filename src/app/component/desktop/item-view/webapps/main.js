@@ -92,6 +92,7 @@ module.exports = {
           "_id"     : helper.generateUUID(),
           "id"      : "",
           "port"    : 0,
+          "version" : "",
           "webapps" : []
         }
       });

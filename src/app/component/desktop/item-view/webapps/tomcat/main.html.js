@@ -25,6 +25,14 @@ module.exports = `
       <td>
         <table>
           <tr>
+            <td title="current version" class="eetomcat-version" style="font-size: 1.5em;white-space:nowrap; min-width:60px; padding-right:5px;">              
+              <inlineInput
+                :initialValue="tomcat.version"
+                :valid="validation.version"
+                inputType="text"
+                valueName="version"
+                v-on:changeValue="changeValue"/>
+            </td>
             <td style="white-space:nowrap; text-align:right">port : </td>
             <td style="white-space:nowrap; min-width:60px; padding-right:5px;">
               <inlineInput

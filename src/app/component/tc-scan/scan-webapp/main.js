@@ -97,6 +97,7 @@ module.exports = {
       });
       return Object.assign(tomcatResult, {
         "_id"     : helper.generateUUID(),
+        "version" : "",
         "webapps" : completedWebapps
       });
     },

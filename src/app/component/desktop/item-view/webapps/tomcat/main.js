@@ -13,7 +13,8 @@ module.exports = {
     return {
       validation : {
         "id"     : true,
-        "port"   : true
+        "port"   : true,
+        "version": true
       },
       expanded : this.expandTomcat
     };
