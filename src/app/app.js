@@ -6,7 +6,6 @@ const fs       = require('fs');
 
 const Desktop   = require('./component/desktop/main');
 const Settings  = require('./component/settings/main');
-const About     = require('./component/about/main');
 const TCScanner = require('./component/tc-scan/main');
 
 const DbNav    = require('./component/db-explorer/main');
@@ -73,8 +72,7 @@ const app = new Vue({
   router,
   data : function() {
     return {
-      loading       : true,
-      showAbout     : false
+      loading       : true
     };
   },
   watch: {
@@ -89,7 +87,16 @@ const app = new Vue({
   },
   methods : {
     /**
-     * Hides/shows the main top toolbar depending on the current route
+     * Displays the about modal dialog box
+     */
+    showAbout : function() {
+      var self = this;
+      $('#modal').modal("show").one('hidden.bs.modal', function (e) {
+        self.$emit('close');
+      });
+    },
+    /**
+     * Hides/shows the main top toolbar depending on the current route name
      */
     showToolbar : function() {
       return ['settings','tc-scan'].findIndex( routePath => routePath === this.$route.name) === -1;
@@ -144,6 +151,7 @@ const app = new Vue({
   mounted : function() {
     this.initApplication();
     this.loading = false;
+
     // the 'app-loaded' event causes the splash screen to hide and the main
     // app view to show
     ipcRenderer.send('app-loaded');
