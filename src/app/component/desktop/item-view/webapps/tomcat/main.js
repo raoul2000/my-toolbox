@@ -94,7 +94,8 @@ module.exports = {
       });
     },
     isUniqueTomcatId : function(id) {
-      return this.item.data.tomcats.findIndex( tc => tc.id === id) === -1 ;
+      let lcId = id.toLowerCase();
+      return this.item.data.tomcats.findIndex( tc => tc.id.toLowerCase() === lcId) === -1 ;
     },
     isUniqueTomcatPort : function(port) {
       return this.item.data.tomcats.findIndex( tc => tc.port === parseInt(port)) === -1 ;
