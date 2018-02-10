@@ -38,7 +38,7 @@ module.exports = `
     <table class="table info-webapp">
       <tr>
         <td width="70px">
-          context :
+          Context :
         </td>
         <td>
           <inlineInput2
