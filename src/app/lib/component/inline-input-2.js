@@ -17,7 +17,6 @@ module.exports = {
     </span>
 
     <span
-      v-if="! editing"
       v-on:click="startEdit"
       title="edit"
       style="float:right"

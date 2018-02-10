@@ -104,7 +104,8 @@ td.header-webapp-text {
 }
 .inline-textarea:hover .glyphicon-pencil,
 .inline-input:hover .glyphicon-pencil {
-  display:inline;
+  /*display:inline;*/
+  visibility: visible;
   cursor: pointer;
 }
 
@@ -112,7 +113,8 @@ td.header-webapp-text {
 .inline-input.inline-editing .glyphicon-pencil,
 .inline-textarea .glyphicon-pencil,
 .inline-input .glyphicon-pencil {
-  display:none;
+  visibility: hidden;
+  /*display:none;*/
 }
 
 .inline-textarea textarea {
