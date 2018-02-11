@@ -1,6 +1,7 @@
 const store     = require('../../../../service/store/store'); // TODO : nod needed as already injected by parent (to check)
 const helper    = require('../../../../lib/lib').helper;
 var persistence = require('../../../../lib/lib').persistence;
+const config   = require('../../../../service/config');
 
 const VIEW_ID = "webapp-tab";
 
@@ -14,7 +15,7 @@ module.exports = {
     return {
       item          : null,
       disableAction : false,
-      expandAll     : true,
+      expandAll     : false,
       // filter : passed to the tomcat component to be applied on
       // webapps
       filterText    : "",
@@ -110,8 +111,8 @@ module.exports = {
        this.$store.commit('view/add',{
          "id"          : VIEW_ID,
          "childViewId" : "TOMCAT_LIST",
-         "expandTomcat": true,
-         "expandWebapp": true
+         "expandTomcat": config.store.get("expandTomcatView"),
+         "expandWebapp": config.store.get("expandWebappView")
        });
      }
    }

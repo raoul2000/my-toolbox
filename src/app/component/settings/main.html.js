@@ -153,6 +153,30 @@ module.exports = `
     </div>
     <!-- // END - desktop group by category -->
 
+    <!-- // BEGIN - expand Tomcat View -->
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-9">
+        <div class="checkbox">
+          <label>
+            <input v-model="expandTomcatView" type="checkbox"> Expand Tomcat View
+          </label>
+        </div>
+      </div>
+    </div>
+    <!-- // END - expand Tomcat View  -->
+
+    <!-- // BEGIN - expand Webapp View -->
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-9">
+        <div class="checkbox">
+          <label>
+            <input v-model="expandWebappView" type="checkbox"> Expand Webapp View
+          </label>
+        </div>
+      </div>
+    </div>
+    <!-- // END - expand Webapp View  -->
+
       <hr/>
       <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">

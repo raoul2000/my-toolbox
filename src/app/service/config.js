@@ -26,6 +26,8 @@ const store = new Store({
     "winscpFilePath"        :'winscp.exe',
     "persistentDesktop"     : true,
     "desktopGroupByCategory": false,
+    "expandTomcatView"      : false,
+    "expandWebappView"      : false,
     "recent" : {
       // "ctdbPath" : '/path/to/latest'
     },

@@ -12,7 +12,9 @@ module.exports = {
       puttyFilePath          : '',
       winscpFilePath         : '',
       persistentDesktop      : true,
-      desktopGroupByCategory : false
+      desktopGroupByCategory : false,
+      expandTomcatView       : false,
+      expandWebappView       : false,
     };
   },
   template: require('./main.html'),
@@ -94,6 +96,8 @@ module.exports = {
       config.store.set('winscpFilePath',this.winscpFilePath);
       config.store.set('persistentDesktop',this.persistentDesktop);
       config.store.set('desktopGroupByCategory',this.desktopGroupByCategory);
+      config.store.set('expandTomcatView',this.expandTomcatView);
+      config.store.set('expandWebappView',this.expandWebappView);
       if( ! this.persistentDesktop ) {
         config.clearDesktop();
       }
@@ -109,6 +113,8 @@ module.exports = {
     this.persistentDesktop = config.store.get('persistentDesktop');
     this.desktopGroupByCategory = config.store.get('desktopGroupByCategory');
 
+    this.expandTomcatView = config.store.get('expandTomcatView');
+    this.expandWebappView = config.store.get('expandWebappView');
 
     Mousetrap.bind('esc', this.goBack, 'keyup');
   }
