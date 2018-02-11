@@ -7,6 +7,7 @@ const fs       = require('fs');
 const Desktop   = require('./component/desktop/main');
 const Settings  = require('./component/settings/main');
 const TCScanner = require('./component/tc-scan/main');
+const TestPage  = require('./component/test-page/main');
 
 const DbNav    = require('./component/db-explorer/main');
 const Create   = require('./component/create/main');
@@ -39,6 +40,7 @@ document.addEventListener('click', function (event) {
 // register routes
 const router = new VueRouter({
   routes :[
+    { path: '/test',             component: TestPage,         name : 'test'},
     { path: '/deploy',           component: Deploy,           name : 'deploy'},
     { path: '/maven-download',   component: MavenDownload,    name : 'maven-download'},
     { path: '/desktop',          component: Desktop,          name : 'desktop' },
