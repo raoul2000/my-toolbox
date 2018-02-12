@@ -90,9 +90,10 @@ module.exports = {
           return webappDef ? true : false;
         });
         return Object.assign(webapp, {
-          "_id"   : helper.generateUUID(),
-          "refId" : ( webappDef ? webappDef.id   : null),
-          "name"  : ( webappDef ? webappDef.name : "NO NAME")
+          "_id"     : helper.generateUUID(),
+          "refId"   : ( webappDef ? webappDef.id   : null),
+          "name"    : ( webappDef ? webappDef.name : "NO NAME"),
+          "version" : ""
         });
       });
       return Object.assign(tomcatResult, {

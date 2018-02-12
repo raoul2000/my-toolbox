@@ -4,12 +4,17 @@
 .loading  { display:none; }
 
 
+td.webapp-version {
+  white-space: nowrap;
+  min-width: 230px;
+  padding-right: 10px;
+
+}
 td.tomcat-version {
   white-space: nowrap;
-  text-align: center;
-  font-size: 1.5em;
-  padding-right: 27px;
-  padding-left: 10px;
+  font-weight: bold;
+  min-width: 100px;
+  padding-right: 10px;
 }
 .selected-tcid {
   background-color: #fcf8e3;

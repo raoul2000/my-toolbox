@@ -13,7 +13,8 @@ module.exports = {
     return {
       validation: {
         "name": true,
-        "contextPath": true
+        "contextPath": true,
+        "version": "??"
       },
       expanded : this.expandWebapp,
       referenceWebappSelection : this.webapp.refId

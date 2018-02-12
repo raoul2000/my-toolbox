@@ -61,6 +61,7 @@ module.exports = {
           "_id"          : helper.generateUUID(),
           "name"         : "",
           "contextPath"  : "/",
+          "version"      : "",
           "refId"        : null, // refer to a webapp in the definition list
           "servlets"     : []
         }

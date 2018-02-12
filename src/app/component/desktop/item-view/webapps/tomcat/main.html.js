@@ -22,29 +22,28 @@ module.exports = `
           emptyValue="<em class='text-muted'>ENTER ID HERE ...</em>"
           v-on:changeValue="changeValue"/>
       </td>
-      <td>
-        <table>
-          <tr>
-            <td title="current version" class="eetomcat-version" style="font-size: 1.5em;white-space:nowrap; min-width:60px; padding-right:5px;">              
-              <inlineInput
-                :initialValue="tomcat.version"
-                :valid="validation.version"
-                inputType="text"
-                valueName="version"
-                v-on:changeValue="changeValue"/>
-            </td>
-            <td style="white-space:nowrap; text-align:right">port : </td>
-            <td style="white-space:nowrap; min-width:60px; padding-right:5px;">
-              <inlineInput
-                :initialValue="tomcat.port"
-                :valid="validation.port"
-                inputType="text"
-                valueName="port"
-                v-on:changeValue="changeValue"/>
-            </td>
-          </tr>
-        </table>
+
+
+      <td title="current version" class="tomcat-version">
+        <inlineInput
+          :initialValue="tomcat.version"
+          :valid="validation.version"
+          inputType="text"
+          valueName="version"
+          emptyValue="<em class='text-muted'>??</em>"
+          v-on:changeValue="changeValue"/>
       </td>
+      <td style="white-space:nowrap; text-align:right">port : </td>
+      <td style="white-space:nowrap; min-width:60px; padding-right:5px;">
+        <inlineInput
+          :initialValue="tomcat.port"
+          :valid="validation.port"
+          inputType="text"
+          valueName="port"
+          v-on:changeValue="changeValue"/>
+      </td>
+
+
       <td style="white-space:nowrap;text-align:center; padding-right:10px;">
         <a :href="tomcatManagerURL" :title="tomcatManagerURL">manager</a>
       </td>

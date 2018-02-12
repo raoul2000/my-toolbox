@@ -20,6 +20,15 @@ module.exports = `
         valueName="name"
         v-on:changeValue="changeValue"/>
     </td>
+    <td class="webapp-version">
+      <inlineInput2
+        :value="webapp.version"
+        :valid="validation.version"
+        inputType="text"
+        emptyValue="<em class='text-muted'>version</em>"
+        valueName="version"
+        v-on:changeValue="changeValue"/>
+    </td>
     <td style="white-space:nowrap;text-align:center; padding-right:10px;">
       <a :href="webappURL" :title="webappURL">open</a>
     </td>
