@@ -70,15 +70,16 @@ table.header-tomcat {
   border-bottom : 5px solid #efebeb;
 }
 td.header-tomcat-text {
-  font-size : 1.8em;
+  font-size : 1.4em;
   padding-right: 0.4em;
+  color: black;
 }
 
 table.header-webapp {
   /*border-bottom : 2px solid #eeeeee; */
 }
 td.header-webapp-text {
-  font-size : 1.4em;
+  font-size : 1.2em;
   padding-right: 0.4em;
 }
 
