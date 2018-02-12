@@ -6,6 +6,7 @@ var app = require('electron').remote.app;
 // see https://github.com/sindresorhus/electron-store
 const Store = require('electron-store');
 const path = require('path');
+const fs = require('fs');
 
 let defaultValue = {
   'appDataPath'    : app.getPath('userData'),
@@ -45,12 +46,15 @@ console.log("userData ", app.getPath('userData'));
 module.exports = {
   "store" : store,
   /**
-   * Returns the recent CTDB folder path.
+   * Returns the recent CTDB folder path as stored in the configuration file.
+   * If no recent folder is found or if it is found but doesn't exist, the default
+   * ctdb folder path is returned
+   *
    * @return {string} absolute folder path
    */
   "getRecentCTDBPath" : function() {
     let result = ( store.has('recent.ctdbPath') ? store.get('recent.ctdbPath') : store.get('ctdbFolderPath'));
-    if( result.replace(store.get('ctdbFolderPath'),'') === result) {
+    if( fs.existsSync( result ) === false) {
       result = store.get('ctdbFolderPath');
     }
     return result;
