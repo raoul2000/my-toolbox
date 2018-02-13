@@ -4,6 +4,12 @@ module.exports = `
 
   <h2>Download</h2>
   <hr/>
+
+  <input
+    v-if="modules.length !== 0"
+    class="module-filter"
+    v-model="filterText" type="text" placeholder="enter filter ..."/>
+
   <table
     v-if="modules.length != 0"
     class="table table-striped table-hover table-condensed">
@@ -20,7 +26,7 @@ module.exports = `
     </thead>
     <tbody>
       <tr is="module-row"
-        v-for="module in modules"
+        v-for="module in filteredModules"
         v-bind:module="module"
         v-bind:key="module.id">
       </tr>

@@ -10,9 +10,24 @@ Vue.component('module-row', require('./module-row/main'));
 
 module.exports = {
   data : function(){
-    return { "modules" : store.state.webappDefinition };
-    },
+    return {
+      "modules"    : store.state.webappDefinition,
+      "filterText" : ""
+    };
+  },
   template: require('./main.html'),
+  computed : {
+    filteredModules : function() {
+      if( this.filterText.trim().length === 0) {
+        return this.modules;
+      } else {
+        let normalizedFilter = this.filterText.toLowerCase();
+        return this.modules.filter( module => {
+          return module.name.concat(module.id).toLowerCase().match(normalizedFilter);
+        });
+      }
+    }
+  },
   methods : {
     refresh : function() {
 

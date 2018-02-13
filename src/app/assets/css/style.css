@@ -3,6 +3,13 @@
 #app[v-cloak] > *  { display:none; }
 .loading  { display:none; }
 
+
+.module-filter {
+  width: 100%;
+  margin-bottom: 1em;
+  margin-top: 1em;
+  padding-left: 0.4em;
+}
 td.tc-actions {
   white-space: nowrap;
   padding-right: 4px;
