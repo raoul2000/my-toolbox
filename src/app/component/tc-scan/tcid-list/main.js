@@ -44,10 +44,12 @@ module.exports = {
       });
     },
     scanTomcatIds : function(ssh) {
+      let cmdByFolderName = `set -o pipefail; ls -d -- tomcat-*/ |  cut -d '-' -f 2 |  cut -d '/' -f 1  | tr '[:lower:]' '[:upper:]'`;
+      let cmdByEntityName =  `. .bash_profile; set -o pipefail; cat $HOME/cfg/eomvar.dtd | grep TOMCAT_ | cut -d ' ' -f 2 | cut -d '_' -f 2 | sort > $TMPDIR/$$.tmp && uniq $TMPDIR/$$.tmp && rm $TMPDIR/$$.tmp`;
       return ssh.connect(this.item.data.ssh)
       .then( () => {
         return smartCommand.run(ssh,{
-          "command"    : `. .bash_profile; set -o pipefail; cat $HOME/cfg/eomvar.dtd | grep TOMCAT_ | cut -d ' ' -f 2 | cut -d '_' -f 2 | sort > $TMPDIR/$$.tmp && uniq $TMPDIR/$$.tmp && rm $TMPDIR/$$.tmp`,
+          "command"    : cmdByFolderName,
           "resultType" : "list"
         });
       });
@@ -56,7 +58,8 @@ module.exports = {
       this.$store.commit('tcScan/updateTask', {
         "id" : this.task.id,
         "updateWith" : {
-          "status" : "BUSY"
+          "status" : "BUSY",
+          "tomcats" : []
         }
       });
       let self = this;
