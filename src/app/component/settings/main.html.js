@@ -177,6 +177,25 @@ module.exports = `
     </div>
     <!-- // END - expand Webapp View  -->
 
+    <!-- // BEGIN - theme -->
+    <div class="form-group" style="display:none">
+      <label for="theme-name" class="col-sm-3 control-label">Theme</label>
+      <div class="col-sm-9">
+        <select
+          v-model="themeName"
+          id="theme-name"
+        >
+          <option value="null" selected="selected">default</option>
+          <option value="cerulean">Cerulean</option>
+          <option value="flatly">Flatly</option>
+        </select>
+        <span id="helpThemeName" class="help-block">
+          User interface theme
+        </span>
+      </div>
+    </div>
+    <!-- // END - theme  -->
+
       <hr/>
       <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">

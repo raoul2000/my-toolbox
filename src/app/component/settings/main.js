@@ -15,9 +15,18 @@ module.exports = {
       desktopGroupByCategory : false,
       expandTomcatView       : false,
       expandWebappView       : false,
+      themeName              : ""
     };
   },
   template: require('./main.html'),
+  watch : {
+    themeName : function() {
+      if( this.themeName) {
+        console.log('theme : '+this.themeName);
+        debugger;
+      }
+    }
+  },
   methods : {
     /**
      * Generic single folder selection diialog box
