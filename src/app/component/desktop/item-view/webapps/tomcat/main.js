@@ -2,6 +2,7 @@ const validate = require('validator');
 const notify   = require('../../../../../service/notification');
 const helper   = require('../../../../../lib/lib').helper;
 var persistence = require('../../../../../lib/lib').persistence;
+const shell = require('electron').shell;
 
 module.exports = {
   props : ['item', 'tomcat', 'expandTomcat', 'expandWebapp', 'filter'],
@@ -33,6 +34,9 @@ module.exports = {
     },
     tomcatManagerURL : function() {
         return `http://${this.item.data.ssh.host}:${this.tomcat.port}/manager/html`;
+    },
+    btTitleOpenManager : function() {
+      return "open Manager at ".concat(this.tomcatManagerURL);
     }
   },
   watch : {
@@ -45,6 +49,12 @@ module.exports = {
     }
   },
   methods : {
+    refreshVersion : function(){
+
+    },
+    openTomcatManager : function(url) {
+      shell.openExternal(this.tomcatManagerURL);
+    },
     toggleButtonClass : function() {
       return this.expanded
         ? ["glyphicon", "glyphicon-menu-down"]

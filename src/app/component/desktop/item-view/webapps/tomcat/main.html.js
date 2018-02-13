@@ -43,16 +43,19 @@ module.exports = `
           v-on:changeValue="changeValue"/>
       </td>
 
-
-      <td style="white-space:nowrap;text-align:center; padding-right:10px;">
-        <a :href="tomcatManagerURL" :title="tomcatManagerURL">manager</a>
-      </td>
-      <td style="padding-right: 10px;">
-          <span
-            v-on:click="deleteTomcat()"
-            title="Delete Tomcat"
-            style="cursor:pointer; color: #fba8a8;"
-            class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+      <td class="tc-actions">
+        <span
+          v-on:click="openTomcatManager"
+          :title="btTitleOpenManager"
+          class="glyphicon glyphicon-link" aria-hidden="true"/>
+        <span
+          v-on:click="refreshVersion"
+          title="refresh version"
+          class="glyphicon glyphicon-refresh" aria-hidden="true"/>
+        <span
+          v-on:click="deleteTomcat()"
+          title="delete"
+          class="glyphicon glyphicon-remove" aria-hidden="true"/>
       </td>
     </tr>
   </table>

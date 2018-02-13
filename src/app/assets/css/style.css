@@ -3,6 +3,30 @@
 #app[v-cloak] > *  { display:none; }
 .loading  { display:none; }
 
+td.tc-actions {
+  white-space: nowrap;
+  padding-right: 4px;
+}
+td.tc-actions .glyphicon {
+  padding:1em;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+td.tc-actions .glyphicon:hover {
+  cursor: pointer;
+  color:blue;
+}
+td.tc-actions .glyphicon-remove:hover {
+  color:red;
+}
+
+table.info-servlet>thead>tr>th.servlet-name,
+table.info-servlet>thead>tr>th.servlet-class,
+table.info-servlet>thead>tr>th.servlet-url-pattern {
+  border-bottom-style: dotted;
+  border-bottom-color: aliceblue;
+  border-bottom-width: 2px;
+}
 
 td.webapp-version {
   white-space: nowrap;

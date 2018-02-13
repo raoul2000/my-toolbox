@@ -12,7 +12,7 @@ module.exports = `
           <i class="fa fa-terminal" aria-hidden="true"></i> ssh
         </button>
         <button title="open WinSCP session" v-on:click="openWinscpSession()" type="button" class="btn btn-default">
-          <i class="fa fa-exchange" aria-hidden="true"></i> sFtp
+          <span class="glyphicon glyphicon-transfer" aria-hidden="true"/> sFtp
         </button>
       </div>
 

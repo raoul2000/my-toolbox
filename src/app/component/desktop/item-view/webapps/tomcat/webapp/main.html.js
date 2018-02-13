@@ -29,15 +29,23 @@ module.exports = `
         valueName="version"
         v-on:changeValue="changeValue"/>
     </td>
-    <td style="white-space:nowrap;text-align:center; padding-right:10px;">
-      <a :href="webappURL" :title="webappURL">open</a>
-    </td>
-    <td>
+
+    <td class="tc-actions">
       <span
-        title="Delete this Webapp" v-on:click="deleteWebapp()"
-        style="cursor:pointer; color:#fba8a8;"
-      class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        v-on:click="openWebappContext"
+        :title="btTitleOpenContext"
+        class="glyphicon glyphicon-link" aria-hidden="true"/>
+      <span
+        v-on:click="refreshVersion"
+        title="refresh version"
+        class="glyphicon glyphicon-refresh" aria-hidden="true"/>
+      <span
+        v-on:click="deleteWebapp()"
+        title="delete"
+        class="glyphicon glyphicon-remove" aria-hidden="true"/>
     </td>
+
+
     </tr>
   </table>
 
@@ -73,7 +81,7 @@ module.exports = `
     </table>
 
 
-    <table class="table tabme-condensed info-servlet">
+    <table class="table table-condensed info-servlet">
       <thead>
         <tr>
           <th>
@@ -86,9 +94,9 @@ module.exports = `
               <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             </button>
           </th>
-          <th>Name</th>
-          <th>class</th>
-          <th>url pattern</th>
+          <th class="servlet-name">Name</th>
+          <th class="servlet-class">class</th>
+          <th class="servlet-url-pattern">url pattern</th>
           <th></th>
         </tr>
       </thead>

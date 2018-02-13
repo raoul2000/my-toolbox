@@ -1,6 +1,7 @@
 const validate    = require('validator');
 const notify      = require('../../../../../../../service/notification');
 const persistence = require('../../../../../../../lib/lib').persistence;
+const shell       = require('electron').shell;
 
 module.exports = {
   props: ['item', 'tomcat', 'webapp','servlet'],
@@ -23,9 +24,15 @@ module.exports = {
     },
     displayUrlPatterns : function() {
       return this.servlet.urlPatterns.join(' ');
+    },
+    btTitleOpenServletURL : function() {
+      return "Open ".concat(this.servletURL);
     }
   },
   methods: {
+    openServletURL : function() {
+      shell.openExternal(this.servletURL);
+    },
     deleteServlet : function() {
       let self = this;
       (new PNotify({

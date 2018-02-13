@@ -23,7 +23,7 @@ module.exports = `
         >
           <span
             v-bind:class="viewTomcatClass()"
-            aria-hidden="true"></span>Tomcat
+            aria-hidden="true"></span> Tomcat
         </button>
         <button
           title="Expand/collapse Webapp Details"
@@ -33,7 +33,7 @@ module.exports = `
           <span
             v-bind:class="viewWebappClass()"
             class="glyphicon glyphicon-eye-open"
-            aria-hidden="true"></span>Webapp
+            aria-hidden="true"></span> Webapp
         </button>
       </div><!-- end toolbar expand/collapse -->
 

@@ -28,12 +28,16 @@ module.exports = `
       emptyValue=""
       v-on:changeValue="changeValue"/>
   </td>
-  <td>
-    <a :href="servletURL" :title="servletURL">open</a>
+  <td class="tc-actions">
     <span
-      title="Delete this Servlet" v-on:click="deleteServlet()"
-      style="cursor:pointer; color:#fba8a8;"
-      class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+      v-on:click="openServletURL"
+      :title="btTitleOpenServletURL"
+      class="glyphicon glyphicon-link" aria-hidden="true"/>
+    <span
+      v-on:click="deleteServlet()"
+      title="delete"
+      class="glyphicon glyphicon-remove" aria-hidden="true"/>
   </td>
+
 </tr>
 `;

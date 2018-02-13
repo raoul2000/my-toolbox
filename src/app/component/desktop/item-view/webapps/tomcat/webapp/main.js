@@ -2,6 +2,7 @@ const validate    = require('validator');
 const notify      = require('../../../../../../service/notification');
 const persistence = require('../../../../../../lib/lib').persistence;
 const helper      = require('../../../../../../lib/lib').helper;
+const shell       = require('electron').shell;
 
 module.exports = {
   props: ['item', 'tomcat', 'webapp', 'expandWebapp'],
@@ -32,6 +33,9 @@ module.exports = {
           "name" : `${module.id} - ${module.name}`
         };
       });
+    },
+    btTitleOpenContext : function() {
+      return "open ".concat(this.webappURL);
     }
   },
   watch : {
@@ -76,6 +80,12 @@ module.exports = {
     }
   },
   methods: {
+    refreshVersion : function() {
+
+    },
+    openWebappContext : function() {
+      shell.openExternal(this.webappURL);
+    },
     /**
      * Add a servlet to the current webapp
      */
