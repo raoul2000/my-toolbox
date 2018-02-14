@@ -37,6 +37,20 @@ module.exports = {
     },
     btTitleOpenManager : function() {
       return "open Manager at ".concat(this.tomcatManagerURL);
+    },
+    /**
+     * Returns the current version update task, or 'undefined' of no such
+     * task exists in the store
+     */
+    updateVersionTask : function(){
+      console.log('computed task');
+      return  this.$store.getters['tmptask/taskById'](this.updateVersionTaskId);
+    },
+    /**
+     * Build the id for the task in charge of updating tomcat version
+     */
+    updateVersionTaskId : function() {
+      return `tc-version-${this.tomcat._id}`;
     }
   },
   watch : {
@@ -49,9 +63,59 @@ module.exports = {
     }
   },
   methods : {
+    /**
+     * Start the Tomcat version update task
+     */
     refreshVersion : function(){
+      if( ! this.updateVersionTask) {
+        this.$store.commit('tmptask/addTask',{
+          "id"           : this.updateVersionTaskId,
+          "step"         : "UPDATE",
+          "status"       : "PROGRESS",
+          "result"       : null,
+          "errorMessage" : ""
+        });
+      }
+      let self = this;
+      let fakeVersionUpdater = new Promise( (resolve, reject)=> {
+        setTimeout( () => {
+          resolve("1.0.0");
+        },1000);
+      });
+      fakeVersionUpdater
+      .then( version => {
+        // update the tomcat 'version' property
+        //
+        // NOTE : the fact to update to stored tomcat.version will cause
+        // a refresh and as this property is bound to the inline-input 'initialValue'
+        // and the inline-input component will perform a foreceUpdate. The validation of
+        // the version value that was obtained is done by this component (just like for a
+        // user modification)
 
+        self.$store.commit('updateTomcat',{
+          "item"       : self.item,
+          "tomcat"     : self.tomcat,
+          "updateWith" : {
+            "version" : version
+          }
+        });
+        // save updated item to file
+        persistence.saveDesktopItemToFile(self.item);
+        // delete the update version task
+        self.$store.commit('tmptask/deleteTask',{
+          "id" : self.updateVersionTaskId
+        });
+      })
+      .catch(error => {
+        // delete the update version task
+        this.$store.commit('tmptask/deleteTask',{
+          "id" : this.updateVersionTaskId
+        });
+      });
     },
+    /**
+     * Open the browser at the address of thiss tomcat manager
+     */
     openTomcatManager : function(url) {
       shell.openExternal(this.tomcatManagerURL);
     },
@@ -131,6 +195,8 @@ module.exports = {
           this.validation.port = true;
           arg.value = parseInt(arg.value);
         }
+      } else if( arg.name === 'version') {
+        this.validation.version = true;
       }
       // always update even if not valid !
       let updateInfo = {

@@ -2,6 +2,7 @@ module.exports = `
 <div>
   <table class="header-tomcat">
     <tr style="background-color: #f7f7f7;color: grey;">
+
       <td style="padding-right:4px;padding-left: 8px;">
         <span
           v-on:click="toggleWebappView"
@@ -10,9 +11,11 @@ module.exports = `
           title="expand/collapse"
           aria-hidden="true"></span>
       </td>
+
       <td class="header-tomcat-text">
         <span style="color:#c3c3c3;">Tomcat</span>
       </td>
+
       <td class="header-tomcat-text" width="100%">
         <inlineInput
           :initialValue="tomcat.id"
@@ -23,7 +26,6 @@ module.exports = `
           v-on:changeValue="changeValue"/>
       </td>
 
-
       <td title="current version" class="tomcat-version">
         <inlineInput
           :initialValue="tomcat.version"
@@ -33,7 +35,9 @@ module.exports = `
           emptyValue="<em class='text-muted'>??</em>"
           v-on:changeValue="changeValue"/>
       </td>
+
       <td style="white-space:nowrap; text-align:right">port : </td>
+
       <td style="white-space:nowrap; min-width:60px; padding-right:5px;">
         <inlineInput
           :initialValue="tomcat.port"
@@ -49,14 +53,21 @@ module.exports = `
           :title="btTitleOpenManager"
           class="glyphicon glyphicon-link" aria-hidden="true"/>
         <span
+          v-if="! updateVersionTask || updateVersionTask.progress == 'IDLE'"
           v-on:click="refreshVersion"
           title="refresh version"
-          class="glyphicon glyphicon-refresh" aria-hidden="true"/>
+          class="glyphicon glyphicon-refresh update-version-button" aria-hidden="true"/>
+        <span
+          v-else="updateVersionTask.progress != 'BUSY'"
+          title="version update in progress ..."
+          class="glyphicon glyphicon-refresh glyphicon-refresh-animate"
+          aria-hidden="true" />
         <span
           v-on:click="deleteTomcat()"
           title="delete"
           class="glyphicon glyphicon-remove" aria-hidden="true"/>
       </td>
+
     </tr>
   </table>
 

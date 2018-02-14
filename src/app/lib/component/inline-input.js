@@ -42,8 +42,12 @@ module.exports = {
     };
   },
   watch : {
+    /**
+     * On initialValue Change, force Update
+     */
     initialValue : function() {
       console.log('initialValue changed : ',this.initialValue);
+      this.forceUpdate(this.initialValue);
     }
   },
   computed : {
@@ -57,6 +61,21 @@ module.exports = {
     }
   },
   methods : {
+    /**
+     * Handle value update not triggered by user input, but by parent
+     * component.
+     */
+    forceUpdate : function(value) {
+      this.currentVal =  value;
+      this.$emit('changeValue',{
+        "name"  : this.valueName,
+        "value" : value
+      });
+    },
+    /**
+     * User is starting edition : the input element is
+     * displayed
+     */
     startEdit : function() {
       this.editing = true;
       this.currentVal = this.currentVal.trim();
@@ -67,6 +86,13 @@ module.exports = {
         self.fieldElement.focus();
       });
     },
+     /**
+      * Edit is done : user ends input
+      * Send a custom event to parent component in order to update the value.
+      * Note that this.value is NEVER updated by this component, and must be updated
+      * by the parent component.
+      */
+
     stopEdit : function() {
       this.editing = false;
       let newValue = this.fieldElement.value.trim();

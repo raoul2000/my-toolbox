@@ -65,7 +65,14 @@ module.exports = new Vuex.Store({
     // store.getters['server/findById']('33')
     // store.getters['server/add']({...})
     // store.state.server.someProp
-    "server" : require('./module/server') //require('./module/server')
+    "server" : require('./module/server'), //require('./module/server')
+
+    // store.getters['task/findById']('33')
+    // store.getters['task/add']({...})
+    // store.state.task.someProp
+    "tmptask" : require('./module/task') //require('./module/task')
+    // TODO : rename this tmptask into task and use only this module
+    // => remove the task at root level
   },
   getters: {
     getWebappDefinitions : function(state, getters) {
