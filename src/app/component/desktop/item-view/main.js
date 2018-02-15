@@ -158,5 +158,13 @@ module.exports = {
     this.$store.commit('view/add',{
       "id" : VIEW_ID
     });
+  },
+  mounted : function(){
+    let self = this;
+    // use the 'ESC' key to go back to desktop
+    Mousetrap.bind('esc', function(){
+      Mousetrap.unbind('esc', 'keyup');
+      self.$router.push('/desktop');
+    }, 'keyup');
   }
 };
