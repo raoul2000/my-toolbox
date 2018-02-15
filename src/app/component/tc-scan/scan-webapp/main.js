@@ -5,7 +5,7 @@ const NodeSSH       = require('node-ssh');
 const store         = require('../../../service/store/store');
 const tomcatScanner = require('../../../lib/lib').tomcatScanner;
 const helper        = require('../../../lib/lib').helper;
-const persistence   = require('../../../lib/lib').persistence;
+const persistence   = require('../../../service/persistence');
 const fs            = require('fs');
 
 module.exports = {

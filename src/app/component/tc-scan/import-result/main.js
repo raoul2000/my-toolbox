@@ -3,7 +3,7 @@
 const smartCommand  = require('../../../lib/lib').smartCommand;
 const NodeSSH       = require('node-ssh');
 const store         = require('../../../service/store/store');
-var persistence     = require('../../../lib/lib').persistence;
+var persistence     = require('../../../service/persistence');
 
 module.exports = {
   store,

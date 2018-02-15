@@ -1,6 +1,6 @@
 const store     = require('../../../../service/store/store'); // TODO : nod needed as already injected by parent (to check)
 const helper    = require('../../../../lib/lib').helper;
-var persistence = require('../../../../lib/lib').persistence;
+var persistence = require('../../../../service/persistence');
 const config   = require('../../../../service/config');
 
 const VIEW_ID = "webapp-tab";

@@ -5,7 +5,7 @@ var fs                 = require('fs');
 var path               = require('path');
 const config           = require('../../../../service/config');
 var checkSSHConnection = require('../../../../lib/ssh/check-connection').checkConnection;
-var persistence        = require('../../../../lib/lib').persistence;
+var persistence        = require('../../../../service/persistence');
 
 module.exports = {
   components : {
@@ -34,7 +34,7 @@ module.exports = {
         { city: 'Kolkata', state: 'West Bengal' },
         { city: 'Mumbai', state: 'Maharashtra' }
       ]
-          
+
     };
   },
   computed : {

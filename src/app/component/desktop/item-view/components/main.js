@@ -4,7 +4,7 @@ const validate         = require('validator');
 var fs                 = require('fs');
 var path               = require('path');
 const config           = require('../../../../service/config');
-var persistence        = require('../../../../lib/lib').persistence;
+var persistence        = require('../../../../service/persistence');
 const helper           = require('../../../../lib/lib').helper;
 
 module.exports = {

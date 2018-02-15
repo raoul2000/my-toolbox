@@ -1,7 +1,7 @@
 const validate = require('validator');
 const notify   = require('../../../../../service/notification');
 const helper   = require('../../../../../lib/lib').helper;
-var persistence = require('../../../../../lib/lib').persistence;
+var persistence = require('../../../../../service/persistence');
 const shell = require('electron').shell;
 
 module.exports = {

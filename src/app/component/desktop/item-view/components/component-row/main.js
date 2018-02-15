@@ -1,5 +1,5 @@
 const store     = require('../../../../../service/store/store'); // TODO : nod needed as already injected by parent (to check)
-var persistence = require('../../../../../lib/lib').persistence;
+var persistence = require('../../../../../service/persistence');
 const validate  = require('validator');
 const notify    = require('../../../../../service/notification');
 
