@@ -2,12 +2,6 @@
 
 var request = require('request-promise-native');
 
-exports.extractor = {
-  "service_ui_info" : require('./extractor/service-ui-info'),
-  "rest_api"        : require('./extractor/service-ui-info'),
-  "html_page"       : require('./extractor/service-ui-info')
-};
-
 /**
  * If not versionExtractor is provided, returns the response body.
  *

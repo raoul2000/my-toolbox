@@ -2,13 +2,14 @@
 
 const DOMParser  = require('xmldom').DOMParser;
 /**
- * Extract version umber from XML document.
+ * Extract version number from XML document.
  * Returns the text value of the first 'version' element
+ * 
  * @param  {string} data XML string
  * @return {string}      the extracted version number
  */
 exports.extract = function(data) {
-  
+
   var parseErrors = {
     "warning" : [],
     "error"   : [],
