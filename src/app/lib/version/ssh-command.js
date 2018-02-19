@@ -18,6 +18,7 @@ var request = require('request-promise-native');
 exports.getVersion = function(options) {
   return options.nodessh.execCommand(options.command,[],{stream: 'stdout'})
   .then(( commandResult ) => {
-    return options.versionExtractor ? options.versionExtractor(commandResult.value) : commandResult.value;
+    console.log(commandResult);
+    return options.versionExtractor ? options.versionExtractor(commandResult.stdout) : commandResult.stdout;
   });
 };

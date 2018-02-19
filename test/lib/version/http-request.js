@@ -7,7 +7,7 @@ const fs = require('fs'),
 
 var config = {};
 
-describe('Version extractor', function(done) {
+describe('Version extractor using HTTP Requests', function(done) {
   this.timeout(50000);
 
   it('performs a Request', function(done) {

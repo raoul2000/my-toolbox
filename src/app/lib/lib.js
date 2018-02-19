@@ -15,5 +15,6 @@ exports.version = {
     "service_ui_info" : require('./version/extractor/service-ui-info'),
     "rest_api"        : require('./version/extractor/rest-api'),
     "regex"           : require('./version/extractor/regex')
-  }
+  },
+  "tomcat" : require('./version/tomcat')
 };
