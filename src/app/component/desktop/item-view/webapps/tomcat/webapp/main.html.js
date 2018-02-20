@@ -35,10 +35,18 @@ module.exports = `
         v-on:click="openWebappContext"
         :title="btTitleOpenContext"
         class="glyphicon glyphicon-link" aria-hidden="true"/>
+
       <span
+        v-if="! updateVersionTask || updateVersionTask.progress == 'IDLE'"
         v-on:click="refreshVersion"
         title="refresh version"
-        class="glyphicon glyphicon-refresh" aria-hidden="true"/>
+        class="glyphicon glyphicon-refresh update-version-button" aria-hidden="true"/>
+      <span
+        v-else="updateVersionTask.progress != 'BUSY'"
+        title="version update in progress ..."
+        class="glyphicon glyphicon-refresh glyphicon-refresh-animate"
+        aria-hidden="true" />
+
       <span
         v-on:click="deleteWebapp()"
         title="delete"

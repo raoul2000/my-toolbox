@@ -36,7 +36,22 @@ module.exports = {
     },
     btTitleOpenContext : function() {
       return "open ".concat(this.webappURL);
+    },
+    /**
+     * Returns the current version update task, or 'undefined' of no such
+     * task exists in the store
+     */
+    updateVersionTask : function(){
+      console.log('computed task');
+      return  this.$store.getters['tmptask/taskById'](this.updateVersionTaskId);
+    },
+    /**
+     * Build the id for the task in charge of updating webapp version
+     */
+    updateVersionTaskId : function() {
+      return `webapp-version-${this.webapp._id}`;
     }
+
   },
   watch : {
     /**
@@ -80,9 +95,53 @@ module.exports = {
     }
   },
   methods: {
-    refreshVersion : function() {
-
+    /**
+     * Start the webapp version update task
+     */
+    refreshVersion : function(){
+      if( ! this.updateVersionTask) {
+        this.$store.commit('tmptask/addTask',{
+          "id"           : this.updateVersionTaskId,
+          "step"         : "UPDATE",
+          "status"       : "PROGRESS",
+          "result"       : null,
+          "errorMessage" : ""
+        });
+      }
+      let self = this;
+      let fakeVersionUpdater = new Promise( (resolve, reject)=> {
+        setTimeout( () => {
+          resolve("1.0.0");
+        },1000);
+      });
+      fakeVersionUpdater
+      .then( version => {
+        // see same method in ../main.js
+        self.$store.commit('updateWebapp',{
+          "item"       : self.item,
+          "tomcat"     : self.tomcat,
+          "webapp"     : self.webapp,
+          "updateWith" : {
+            "version" : version
+          }
+        });
+        // save updated item to file
+        persistence.saveDesktopItemToFile(self.item);
+        // delete the update version task
+        self.$store.commit('tmptask/deleteTask',{
+          "id" : self.updateVersionTaskId
+        });
+      })
+      .catch(error => {
+        // delete the update version task
+        this.$store.commit('tmptask/deleteTask',{
+          "id" : this.updateVersionTaskId
+        });
+      });
     },
+    /**
+     * Open the url of this webapp context into an external browser
+     */
     openWebappContext : function() {
       shell.openExternal(this.webappURL);
     },
