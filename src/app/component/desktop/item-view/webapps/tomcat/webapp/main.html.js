@@ -89,7 +89,7 @@ module.exports = `
     </table>
 
 
-    <table class="table table-condensed info-servlet">
+    <table class="info-servlet">
       <thead>
         <tr>
           <th>

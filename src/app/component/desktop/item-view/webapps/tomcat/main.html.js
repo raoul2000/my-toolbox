@@ -1,7 +1,7 @@
 module.exports = `
 <div>
   <table class="header-tomcat">
-    <tr style="background-color: #f7f7f7;color: grey;">
+    <tr ssstyle="background-color: #f7f7f7;color: grey;">
 
       <td style="padding-right:4px;padding-left: 8px;">
         <span

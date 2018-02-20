@@ -26,7 +26,9 @@ td.tc-actions .glyphicon:hover {
 td.tc-actions .glyphicon-remove:hover {
   color:red;
 }
-
+table.info-servlet {
+  width:100%;
+}
 table.info-servlet>thead>tr>th.servlet-name,
 table.info-servlet>thead>tr>th.servlet-class,
 table.info-servlet>thead>tr>th.servlet-url-pattern {
@@ -105,14 +107,24 @@ table.info-webapp select {
 table.header-tomcat {
   border-bottom : 5px solid #efebeb;
 }
+table.header-tomcat tr {
+  background-color: rgb(247, 247, 247);
+  color: grey;
+}
+table.header-tomcat tr:hover {
+  background-color: white;
+}
 td.header-tomcat-text {
   font-size : 1.4em;
   padding-right: 0.4em;
   color: black;
 }
 
-table.header-webapp {
-  /*border-bottom : 2px solid #eeeeee; */
+table.header-webapp tr {
+}
+
+table.header-webapp tr:hover {
+  background-color: rgb(247, 247, 247);
 }
 td.header-webapp-text {
   font-size : 1.2em;
