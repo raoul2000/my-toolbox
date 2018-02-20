@@ -11,6 +11,7 @@ const helper   = require('../../lib/lib').helper;
  * From there, the user can perform actions on desktop items.
  */
 module.exports = {
+  store,
   template: require('./main.html'),
   computed : {
     items : function(){
@@ -39,6 +40,33 @@ module.exports = {
     }*/
   },
   methods : {
+    /**
+     * Remove All items from the desktop and save the new desktop state (empty)
+     * in the current config.
+     */
+    clearDesktop : function(){
+      let self = this;
+      (new PNotify({
+          title: 'Confirmation Needed',
+          text: "Are you sure you want to clear your desktop ?",
+          icon: 'glyphicon glyphicon-question-sign',
+          hide: false,
+          confirm: {
+              confirm: true
+          },
+          buttons: {
+              closer: false,
+              sticker: false
+          },
+          history: {
+              history: false
+          },
+          stack: {"dir1": "down", "dir2": "left", "modal": true, "overlay_close": true}
+      })).get().on('pnotify.confirm', function() {
+        self.$store.commit('removeAllItems');
+        config.clearDesktop();
+      });
+    },
     itemsByCategory : function(category) {
       console.log("itemsByCategory",category);
       return store.state.desktop.filter( item => {

@@ -15,6 +15,13 @@ module.exports = `
           type="button" class="btn btn-default">
           <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         </button>
+        <button
+          @click="clearDesktop"
+          title="clear desktop"
+          :disabled="items.length == 0"
+          type="button" class="btn btn-default">
+          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+        </button>
       </div> <!-- toolbar end -->
     </div>
   </div>

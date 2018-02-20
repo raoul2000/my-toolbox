@@ -73,6 +73,12 @@ module.exports = {
     }
   },
   /**
+   * Remove all desktop items
+   */
+  "clearDesktop" : function(){
+    store.set("desktop",[]);
+  },
+  /**
    * Remove a item from the persistent config.
    * @param  {string} filepath desktop item filepath
    */

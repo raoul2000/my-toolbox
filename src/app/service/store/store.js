@@ -148,6 +148,10 @@ module.exports = new Vuex.Store({
       }
     },
 
+    removeAllItems (state) {
+        state.desktop = [];
+    },
+
     updateDesktopItem ( state, args) {
       let itemToUpdate = find.object.itemById(state.desktop, args.id);
       if( itemToUpdate ) {
