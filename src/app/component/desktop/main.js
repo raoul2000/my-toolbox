@@ -45,6 +45,9 @@ module.exports = {
      * in the current config.
      */
     clearDesktop : function(){
+      if( store.state.desktop.length === 0) {
+        return;
+      }
       let self = this;
       (new PNotify({
           title: 'Confirmation Needed',
@@ -302,5 +305,22 @@ module.exports = {
       }
       store.commit('desktopLoaded');
     }
+
+    let self = this;
+    Mousetrap.bind(['command+o', 'ctrl+o'], function() {
+        self.openDesktopItems();
+        return false;
+    });
+
+    Mousetrap.bind(['command+n', 'ctrl+n'], function() {
+        self.createItem();
+        return false;
+    });
+
+    Mousetrap.bind(['command+w', 'ctrl+w'], function() {
+        self.clearDesktop();
+        return false;
+    });
+
   }
 };

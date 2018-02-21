@@ -165,6 +165,7 @@ module.exports = {
     Mousetrap.bind('esc', function(){
       Mousetrap.unbind('esc', 'keyup');
       self.$router.push('/desktop');
+      return false; // prevent default ans bubbling
     }, 'keyup');
   }
 };
