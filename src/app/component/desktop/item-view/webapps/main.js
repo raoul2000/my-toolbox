@@ -1,6 +1,7 @@
 const store     = require('../../../../service/store/store'); // TODO : nod needed as already injected by parent (to check)
 const helper    = require('../../../../lib/lib').helper;
 var persistence = require('../../../../service/persistence');
+var tomcatVersion = require('../../../../service/version/tomcat');
 const config   = require('../../../../service/config');
 
 const VIEW_ID = "webapp-tab";
@@ -41,6 +42,10 @@ module.exports = {
     }
   },
   methods : {
+    updateAllTomcatVersion : function() {
+      //alert("not implemented ... yet");
+      tomcatVersion.updateAll(this.item.data);
+    },
     closeScannerView : function() {
       this.$store.commit('view/update', {
         "id" : VIEW_ID,

@@ -35,6 +35,16 @@ module.exports = `
             class="glyphicon glyphicon-eye-open"
             aria-hidden="true"></span> Webapp
         </button>
+
+        <button
+          title="update Tomcat version"
+          v-on:click="updateAllTomcatVersion()"
+          type="button" class="btn btn-default btn-xs"
+        >
+          <span
+            class="glyphicon glyphicon-refresh"
+            aria-hidden="true"></span>
+        </button>
       </div><!-- end toolbar expand/collapse -->
 
       <input
