@@ -83,20 +83,16 @@
   min-height: 150px;
   height: auto;
   position: relative;
+  background: #fff;
+  border: 1px solid #ddd;
+  margin: 10px 0;
+  overflow: hidden;
 }
 
 .project:hover {
   cursor: pointer;
-  background-color: #eee;
-  border-color: #fff;
-}
-
-.project {
-  background: #fff;
-  border: 1px solid #ddd;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  margin: 10px 0;
-  overflow: hidden;
+  transition: 0.2s;
 }
 
 .project-radius {
