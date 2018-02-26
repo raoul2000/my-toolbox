@@ -37,12 +37,12 @@ module.exports = `
         class="glyphicon glyphicon-link" aria-hidden="true"/>
 
       <span
-        v-if="! updateVersionTask || updateVersionTask.progress == 'IDLE'"
+        v-if="! updateVersionTask || updateVersionTask.progress != 'BUSY'"
         v-on:click="refreshVersion"
         title="refresh version"
         class="glyphicon glyphicon-refresh update-version-button" aria-hidden="true"/>
       <span
-        v-else="updateVersionTask.progress != 'BUSY'"
+        v-else
         title="version update in progress ..."
         class="glyphicon glyphicon-refresh glyphicon-refresh-animate"
         aria-hidden="true" />

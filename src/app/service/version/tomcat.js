@@ -56,9 +56,9 @@ function acquireTask(taskId) {
   }
 }
 
-function createTomcatVersionTaskId(tomcat) {
+exports.createTomcatVersionTaskId = function(tomcat) {
   return `tc-version-${tomcat._id}`;
-}
+};
 
 
 exports.upddateTomcats = function(itemData, tomcatIds, nodessh) {
@@ -101,7 +101,7 @@ exports.updateTomcat = function(itemData, tomcatId, nodessh) {
       return Promise.reject(`tomcat not found : id = ${tomcatId}`);
     }
     // create the update version task id
-    let taskId = createTomcatVersionTaskId(tomcat);
+    let taskId = exports.createTomcatVersionTaskId(tomcat);
 
     // create or read a task
     let task = acquireTask(taskId);
@@ -112,16 +112,15 @@ exports.updateTomcat = function(itemData, tomcatId, nodessh) {
     // stop if task already exists
     startTask(taskId);
 
-    // try to create a SSH connection wrapper if not obtained from arguments
+    // if no ssh connection object is provided, try to acquire one now
     let usePrivateSSH = false;
     if( ! nodessh ) {
-        nodessh = new NodeSSH(itemData.ssh);
+        nodessh = new NodeSSH();
         usePrivateSSH = true;
     }
 
     // start the version extraction
-    return
-    nodessh.connect()
+    return nodessh.connect(itemData.ssh)
     .then( result => {
       return lib.version.tomcat.getVersion({
         "nodessh" : nodessh,
@@ -142,6 +141,7 @@ exports.updateTomcat = function(itemData, tomcatId, nodessh) {
       return results;
     })
     .catch(err => {
+      console.error(err);
       if( nodessh && usePrivateSSH) {
         nodessh.dispose();
       }

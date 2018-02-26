@@ -2,6 +2,8 @@ const validate = require('validator');
 const notify   = require('../../../../../service/notification');
 const helper   = require('../../../../../lib/lib').helper;
 var persistence = require('../../../../../service/persistence');
+const version = require('../../../../../service/version/tomcat');
+
 const shell = require('electron').shell;
 
 module.exports = {
@@ -17,7 +19,8 @@ module.exports = {
         "port"   : true,
         "version": true
       },
-      expanded : this.expandTomcat
+      expanded : this.expandTomcat,
+      updateVersionTaskId : null
     };
   },
   template: require('./main.html'),
@@ -49,8 +52,9 @@ module.exports = {
     /**
      * Build the id for the task in charge of updating tomcat version
      */
-    updateVersionTaskId : function() {
-      return `tc-version-${this.tomcat._id}`;
+    updateVersionTaskId_toDelete : function() {
+      return version.createTomcatVersionTaskId(this.tomcat);
+      //return `tc-version-${this.tomcat._id}`;
     }
   },
   watch : {
@@ -63,10 +67,24 @@ module.exports = {
     }
   },
   methods : {
+    refreshVersion : function() {
+      version.updateTomcat(this.item.data,this.tomcat._id)
+      .then( results => {
+        // TODO : handle results as multiple values
+        this.$store.commit('updateTomcat',{
+          "item"       : this.item,
+          "tomcat"     : this.tomcat,
+          "updateWith" : {
+            "version" : results[0].value
+          }
+        } );
+        persistence.saveDesktopItemToFile(this.item);
+      });
+    },
     /**
      * Start the Tomcat version update task
      */
-    refreshVersion : function(){
+    refreshVersion_fake : function(){
       if( ! this.updateVersionTask) {
         this.$store.commit('tmptask/addTask',{
           "id"           : this.updateVersionTaskId,
@@ -208,5 +226,8 @@ module.exports = {
       this.$store.commit('updateTomcat',updateInfo );
       persistence.saveDesktopItemToFile(this.item);
     }
+  },
+  mounted : function() {
+    this.updateVersionTaskId = version.createTomcatVersionTaskId(this.tomcat);
   }
 };

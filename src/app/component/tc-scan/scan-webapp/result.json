@@ -2,13 +2,40 @@
   "results": [
     {
       "value": {
-        "id": "OUTPUT",
-        "installFolderPath": "/methode/meth01/tomcat-output",
-        "port": "3428",
+        "id": "CORE",
+        "installFolderPath": "/methode/meth01/tomcat-core",
+        "port": "3700",
         "webapps": [
           {
-            "contextPath": "/om",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/om/WEB-INF/web.xml",
+            "contextPath": "",
+            "descriptorFilePath": "/methode/meth01/methode-servlets/preview/WEB-INF/web.xml",
+            "servlets": [
+              {
+                "name": "dav",
+                "urlPatterns": [
+                  "/"
+                ],
+                "class": "web.Dav"
+              },
+              {
+                "name": "admin-servlet",
+                "urlPatterns": [
+                  "/as"
+                ],
+                "class": "AdminServlet"
+              },
+              {
+                "name": "session-control",
+                "urlPatterns": [
+                  "/servlet/SessionControl"
+                ],
+                "class": "SessionControl"
+              }
+            ]
+          },
+          {
+            "contextPath": "/checkin",
+            "descriptorFilePath": "/methode/meth01/methode-servlets/checkin/WEB-INF/web.xml",
             "servlets": [
               {
                 "name": "Jersey Web Application",
@@ -18,49 +45,51 @@
                 "class": "org.glassfish.jersey.servlet.ServletContainer"
               },
               {
-                "name": "Faces Servlet",
+                "name": "checkin",
                 "urlPatterns": [
-                  "*.jsf",
-                  "*.xhtml"
+                  "/servlet/checkin/*"
                 ],
-                "class": "javax.faces.webapp.FacesServlet"
+                "class": "checkin.CheckinServlet"
+              }
+            ]
+          },
+          {
+            "contextPath": "/formats",
+            "descriptorFilePath": "/methode/meth01/methode-servlets/formats/WEB-INF/web.xml",
+            "servlets": [
+              {
+                "name": "Jersey Web Application",
+                "urlPatterns": [
+                  "/service/*"
+                ],
+                "class": "org.glassfish.jersey.servlet.ServletContainer"
               },
               {
-                "name": "om",
+                "name": "formats",
                 "urlPatterns": [
-                  "/om",
-                  "/om/*"
+                  "/servlet/formats"
                 ],
-                "class": "com.eidosmedia.om.OmServlet"
+                "class": "formats.CreateFormats"
+              }
+            ]
+          },
+          {
+            "contextPath": "/rhelper",
+            "descriptorFilePath": "/methode/meth01/methode-servlets/rhelper/WEB-INF/web.xml",
+            "servlets": [
+              {
+                "name": "Jersey Web Application",
+                "urlPatterns": [
+                  "/service/*"
+                ],
+                "class": "org.glassfish.jersey.servlet.ServletContainer"
               },
               {
-                "name": "query",
+                "name": "rhelper",
                 "urlPatterns": [
-                  "/query/*"
+                  ""
                 ],
-                "class": "com.eidosmedia.om.web.QueryServlet"
-              },
-              {
-                "name": "ContentServlet",
-                "urlPatterns": [
-                  "/content/*",
-                  "/config/*"
-                ],
-                "class": "com.eidosmedia.om.web.ContentServlet"
-              },
-              {
-                "name": "ShowLogServlet",
-                "urlPatterns": [
-                  "/showlog/*"
-                ],
-                "class": "com.eidosmedia.om.web.ShowLogServlet"
-              },
-              {
-                "name": "TemplateIndex",
-                "urlPatterns": [
-                  "/web-app-template/*"
-                ],
-                "class": ""
+                "class": "rhelper.Servlet"
               }
             ]
           }
