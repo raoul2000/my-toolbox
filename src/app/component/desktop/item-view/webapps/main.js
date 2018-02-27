@@ -43,8 +43,34 @@ module.exports = {
   },
   methods : {
     updateAllTomcatVersion : function() {
-      //alert("not implemented ... yet");
-      tomcatVersion.updateAll(this.item.data);
+
+      tomcatVersion
+        .upddateTomcats(
+          this.item.data,
+          this.item.data.tomcats.map( tomcat => tomcat._id)
+        )
+        .then(results => {
+          console.log(results);
+
+          results
+            .filter( result => result.resolved )
+            .map( result => result.value)
+            .forEach( result => {
+              let tomcat = this.item.data.tomcats.find( tomcat => tomcat._id === result._id);
+              if( tomcat ) {
+                let finalVersion = tomcatVersion.chooseBestResultValue(result.values);
+                this.$store.commit('updateTomcat',{
+                  "item"       : this.item,
+                  "tomcat"     : tomcat,
+                  "updateWith" : {
+                    "version" : finalVersion.value
+                  }
+                });
+              } else {
+                console.warn("tomcat not found : id = "+result._id);
+              }
+            });
+        });
     },
     closeScannerView : function() {
       this.$store.commit('view/update', {

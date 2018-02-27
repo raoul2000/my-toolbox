@@ -69,17 +69,18 @@ module.exports = {
   methods : {
     refreshVersion : function() {
       version.updateTomcat(this.item.data,this.tomcat._id)
-      .then( results => {
-        // TODO : handle results as multiple values
+      .then( result => {
+        let finalVersion = version.chooseBestResultValue(result.values);
         this.$store.commit('updateTomcat',{
           "item"       : this.item,
           "tomcat"     : this.tomcat,
           "updateWith" : {
-            "version" : results[0].value
+            "version" : finalVersion.value
           }
-        } );
+        });
         persistence.saveDesktopItemToFile(this.item);
       });
+
     },
     /**
      * Start the Tomcat version update task

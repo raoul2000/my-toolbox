@@ -2,13 +2,147 @@
   "results": [
     {
       "value": {
-        "id": "CORE",
-        "installFolderPath": "/methode/meth01/tomcat-core",
-        "port": "3700",
+        "id": "MEMO",
+        "installFolderPath": "/methode/methdig/tomcat-memo",
+        "port": "8313",
         "webapps": [
           {
-            "contextPath": "",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/preview/WEB-INF/web.xml",
+            "contextPath": "/memo/RestServer",
+            "descriptorFilePath": "/methode/methdig/methode-servlets/memo/com.eidosmedia.mras.mras-core/WEB-INF/web.xml",
+            "servlets": [
+              {
+                "name": "JerseyWebApplication",
+                "urlPatterns": [
+                  "/rest/*",
+                  "/services/*"
+                ],
+                "class": "org.glassfish.jersey.servlet.ServletContainer"
+              },
+              {
+                "name": "UploadServlet",
+                "urlPatterns": [
+                  "/rest/upload/uploader"
+                ],
+                "class": "com.eidosmedia.restserver.webresources.uploader.UploadServlet"
+              },
+              {
+                "name": "UploadExecuteServlet",
+                "urlPatterns": [
+                  "/rest/upload/uploadExecuter"
+                ],
+                "class": "com.eidosmedia.restserver.webresources.uploader.UploadExecuteServlet"
+              },
+              {
+                "name": "com.eidosmedia.restserver.filesystemresources.ApplicationResourceConfig",
+                "urlPatterns": [
+                  "/webapi/*"
+                ],
+                "class": ""
+              }
+            ]
+          },
+          {
+            "contextPath": "/memo/events",
+            "descriptorFilePath": "/methode/methdig/methode-servlets/memo/com.eidosmedia.server.eomjnc/WEB-INF/web.xml",
+            "servlets": []
+          },
+          {
+            "contextPath": "/memo/notification",
+            "descriptorFilePath": "/methode/methdig/methode-servlets/memo/com.eidosmedia.webapp.EMPushNotificationService/WEB-INF/web.xml",
+            "servlets": [
+              {
+                "name": "QuartzInitializer",
+                "urlPatterns": [],
+                "class": "org.quartz.ee.servlet.QuartzInitializerServlet"
+              },
+              {
+                "name": "PSN",
+                "urlPatterns": [],
+                "class": "com.eidosmedia.pns.PnsServlet"
+              },
+              {
+                "name": "EmPSNRest",
+                "urlPatterns": [
+                  "/push/*"
+                ],
+                "class": "org.glassfish.jersey.servlet.ServletContainer"
+              }
+            ]
+          },
+          {
+            "contextPath": "/memo/preview",
+            "descriptorFilePath": "/methode/methdig/methode-servlets/memo/com.eidosmedia.swing.preview/WEB-INF/web.xml",
+            "servlets": [
+              {
+                "name": "dav",
+                "urlPatterns": [
+                  "/"
+                ],
+                "class": "web.Dav"
+              },
+              {
+                "name": "admin-servlet",
+                "urlPatterns": [
+                  "/as"
+                ],
+                "class": "AdminServlet"
+              },
+              {
+                "name": "session-control",
+                "urlPatterns": [
+                  "/servlet/SessionControl"
+                ],
+                "class": "SessionControl"
+              }
+            ]
+          }
+        ]
+      },
+      "error": null,
+      "resolved": true
+    },
+    {
+      "value": {
+        "id": "SWINGAPP",
+        "installFolderPath": "/methode/methdig/tomcat-swingapp",
+        "port": "8307",
+        "webapps": [
+          {
+            "contextPath": "/swing-app-3.5.0/notification",
+            "descriptorFilePath": "/methode/methdig/methode-servlets/swingapp/com.eidosmedia.webapp.empushnotificationservice/WEB-INF/web.xml",
+            "servlets": [
+              {
+                "name": "QuartzInitializer",
+                "urlPatterns": [],
+                "class": "org.quartz.ee.servlet.QuartzInitializerServlet"
+              },
+              {
+                "name": "PSN",
+                "urlPatterns": [],
+                "class": "com.eidosmedia.pns.PnsServlet"
+              },
+              {
+                "name": "EmPSNRest",
+                "urlPatterns": [
+                  "/push/*"
+                ],
+                "class": "org.glassfish.jersey.servlet.ServletContainer"
+              }
+            ]
+          },
+          {
+            "contextPath": "/swing-app-3.5.0/api",
+            "descriptorFilePath": "/methode/methdig/methode-servlets/swingapp/com.eidosmedia.mras.mras-core/WEB-INF/web.xml",
+            "servlets": []
+          },
+          {
+            "contextPath": "/swing-app-3.5.0/events",
+            "descriptorFilePath": "/methode/methdig/methode-servlets/swingapp/com.eidosmedia.server.eomjnc/WEB-INF/web.xml",
+            "servlets": []
+          },
+          {
+            "contextPath": "/swing-app-3.5.0/preview",
+            "descriptorFilePath": "/methode/methdig/methode-servlets/swingapp/com.eidosmedia.swing.preview/WEB-INF/web.xml",
             "servlets": [
               {
                 "name": "dav",
@@ -34,62 +168,85 @@
             ]
           },
           {
-            "contextPath": "/checkin",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/checkin/WEB-INF/web.xml",
+            "contextPath": "/swing-app-3.5.0",
+            "descriptorFilePath": "/methode/methdig/methode-servlets/swingapp/com.eidosmedia.swing.web-app/WEB-INF/web.xml",
             "servlets": [
               {
-                "name": "Jersey Web Application",
+                "name": "PluginsJavascriptAggregator",
                 "urlPatterns": [
-                  "/service/*"
+                  "/app/plugins.js"
                 ],
-                "class": "org.glassfish.jersey.servlet.ServletContainer"
+                "class": "com.eidosmedia.webclient.app.AggregatorServlet"
               },
               {
-                "name": "checkin",
+                "name": "LibsJavascriptAggregator",
                 "urlPatterns": [
-                  "/servlet/checkin/*"
+                  "/app/libs.js"
                 ],
-                "class": "checkin.CheckinServlet"
-              }
-            ]
-          },
-          {
-            "contextPath": "/formats",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/formats/WEB-INF/web.xml",
-            "servlets": [
-              {
-                "name": "Jersey Web Application",
-                "urlPatterns": [
-                  "/service/*"
-                ],
-                "class": "org.glassfish.jersey.servlet.ServletContainer"
+                "class": "com.eidosmedia.webclient.app.AggregatorServlet"
               },
               {
-                "name": "formats",
+                "name": "CSSAggregator",
                 "urlPatterns": [
-                  "/servlet/formats"
+                  "/app/assets.css"
                 ],
-                "class": "formats.CreateFormats"
-              }
-            ]
-          },
-          {
-            "contextPath": "/rhelper",
-            "descriptorFilePath": "/methode/meth01/methode-servlets/rhelper/WEB-INF/web.xml",
-            "servlets": [
-              {
-                "name": "Jersey Web Application",
-                "urlPatterns": [
-                  "/service/*"
-                ],
-                "class": "org.glassfish.jersey.servlet.ServletContainer"
+                "class": "com.eidosmedia.webclient.app.AggregatorServlet"
               },
               {
-                "name": "rhelper",
+                "name": "TemplatesAggregator",
                 "urlPatterns": [
-                  ""
+                  "/app/swing_templates.js"
                 ],
-                "class": "rhelper.Servlet"
+                "class": "com.eidosmedia.webclient.app.TemplateAggregatorServlet"
+              },
+              {
+                "name": "BindersJavascriptAggregator",
+                "urlPatterns": [
+                  "/app/customBinderPanels.js"
+                ],
+                "class": "com.eidosmedia.webclient.app.AggregatorServlet"
+              },
+              {
+                "name": "InsertinfoJavascriptAggregator",
+                "urlPatterns": [
+                  "/app/customInsertinfo.js"
+                ],
+                "class": "com.eidosmedia.webclient.app.AggregatorServlet"
+              },
+              {
+                "name": "TopicListJavascriptAggregator",
+                "urlPatterns": [
+                  "/app/topiclistFilters.js"
+                ],
+                "class": "com.eidosmedia.webclient.app.AggregatorServlet"
+              },
+              {
+                "name": "ObjecPanelsJavascriptAggregator",
+                "urlPatterns": [
+                  "/app/objectpanels.js"
+                ],
+                "class": "com.eidosmedia.webclient.app.AggregatorServlet"
+              },
+              {
+                "name": "SearchFiltersJavascriptAggregator",
+                "urlPatterns": [
+                  "/app/searchfilters.js"
+                ],
+                "class": "com.eidosmedia.webclient.app.AggregatorServlet"
+              },
+              {
+                "name": "SwingMobileJavascriptAggregator",
+                "urlPatterns": [
+                  "/app/libs/swing-mobile.js"
+                ],
+                "class": "com.eidosmedia.webclient.app.AggregatorServlet"
+              },
+              {
+                "name": "SwingDesktopJavascriptAggregator",
+                "urlPatterns": [
+                  "/app/libs/swing-desktop.js"
+                ],
+                "class": "com.eidosmedia.webclient.app.AggregatorServlet"
               }
             ]
           }

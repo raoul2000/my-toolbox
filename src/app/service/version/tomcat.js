@@ -56,10 +56,32 @@ function acquireTask(taskId) {
   }
 }
 
+/**
+ * Choose the best result among a list of results.
+ * The winner is the value that has more occurencies in the passed array. Note that
+ * unresolved results are ignored.
+ *
+ * results = [
+ *  {
+ *    "error" : Error | null,
+ *    "resolved" : boolean,
+ *    "value" : string
+ *   },
+ *   etc ...
+ * ]
+ * @param  {[promiseUtilResult]} results [description]
+ * @return {[type]}         [description]
+ */
+exports.chooseBestResultValue = function( results ) {
+  let resultValues = results
+    .filter(result => result.resolved)
+    .map( result   => result.value);
+  return lib.helper.maxOccurenceCountValue(resultValues);
+};
+
 exports.createTomcatVersionTaskId = function(tomcat) {
   return `tc-version-${tomcat._id}`;
 };
-
 
 exports.upddateTomcats = function(itemData, tomcatIds, nodessh) {
 
@@ -78,7 +100,7 @@ exports.upddateTomcats = function(itemData, tomcatIds, nodessh) {
   }));
 
   // start to work
-  return promiseUtil.serial(optionList, function(options) {
+  return promiseUtil.parallel(optionList, function(options) {
     return exports.updateTomcat(options.itemData, options.tomcatId, options.nodessh);
   }).
   then( results => {
@@ -136,9 +158,12 @@ exports.updateTomcat = function(itemData, tomcatId, nodessh) {
       if( nodessh && usePrivateSSH) {
         nodessh.dispose();
       }
-      // TODO : process results and update the tomcat instance in the store
       stopTask(taskId, true, results);
-      return results;
+      return {
+        "_id"     : tomcatId,
+        "taskId"  : taskId,
+        "values"  : results
+      };
     })
     .catch(err => {
       console.error(err);

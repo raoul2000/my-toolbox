@@ -24,3 +24,34 @@ exports.groupBy = function groupBy(list, keyGetter) {
     });
     return map;
 };
+
+exports.maxOccurenceCountValue = function(values) {
+  let winner = {
+    "value" : null,
+    "count"   : 0
+  };
+
+  const valueSet = new Set(values);// remove duplicates
+  if( valueSet.size === 1) {
+    winner.value = valueSet.values().next().value;
+    winner.count = 1;
+  } else {
+    let valueOccurence = new Map();
+    values.forEach(value => {
+      if( valueOccurence.has(value)) {
+        valueOccurence.set(value, valueOccurence.get(value) + 1);
+      } else {
+        valueOccurence.set(value, 1);
+      }
+    });
+
+    valueOccurence.forEach( (count, value ) => {
+      if( count > winner.count) {
+        winner.value = value;
+        winner.count = count;
+      }
+    });
+  }
+  console.log("value winner : ",winner);
+  return winner;
+};
