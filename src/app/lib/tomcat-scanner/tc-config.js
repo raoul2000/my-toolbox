@@ -1,7 +1,7 @@
 "use strict";
 
-var xmlParser = require('../xml/parser');
-var    waterfall = require("promise-waterfall");
+const xmlParser    = require('../xml/parser');
+const promiseUtils = require('../promise-utils');
 
 /**
  * Parse an remote XML file into a DOM.
@@ -62,7 +62,7 @@ function getContextsFromDOM(dom) {
     });
   }
   console.log("getContextsFromDOM", contexts);
-  return Promise.resolve(contexts);
+  return contexts;
 }
 exports.getContextsFromDOM = getContextsFromDOM;
 
@@ -93,7 +93,10 @@ function getContextsFromFile(ssh, filePath, xmlEntities) {
     console.log("getContextsFromFile", result);
     return xmlParser.parse(result.stdout, xmlEntities);
   })
-  .then( ctxDOM => getContextsFromDOM(ctxDOM) );
+  .then( ctxDOM => ({
+    "filePath" : filePath,
+    "context"  : getContextsFromDOM(ctxDOM)
+  }));
 }
 exports.getContextsFromFile = getContextsFromFile;
 
@@ -102,6 +105,18 @@ exports.getContextsFromFile = getContextsFromFile;
  * Returns an Array containing extracted contexts for each file in the folder.
  * (see getContextsFromFile)
  *
+ * example : [
+ *  {
+ *    "filePath" : "/path/to/context.xml",
+ *    "context" : [
+ *      {'path':'/path, 'docBase' : '/doc/base/path'},
+ *      {'path':'/path, 'docBase' : '/doc/base/path'},
+ *      {'path':'/path, 'docBase' : '/doc/base/path'}
+ *    ]
+ * },
+ * {...}
+ * ]
+ *
  * @param  {object} conn        connection settings
  * @param  {string} filePath    absolute path to the file to analyze
  * @param  {object} xmlEntities hash where keys  are entities names and value are entity values
@@ -109,32 +124,35 @@ exports.getContextsFromFile = getContextsFromFile;
  */
 function getContextsFromFolder(ssh, folderPath, xmlEntities) {
 
-  var cmd = `ls ${folderPath}/*.xml`;
+
+  //let cmd = `ls ${folderPath}/*.xml`; // exit code !=0 is folder empty
+  let cmd = `find "${folderPath}" -type f  -name "*.xml" -print`;
   var ctx = [];
 
   return ssh.execCommand(cmd, { stream : 'stdout'})
   .then( result => {
     console.log("getContextsFromFolder", result);
-    return waterfall(
-      result.stdout
+    if( result.code !== 0 ) {
+      console.error(`failed to list context files - command : ${cmd} - error : ${result.stderr}`);
+      return ctx;
+    }
+    // create one task option per filePath listed
+    let filePathList = result.stdout
       .split('\n')
       .filter(function(filePath){
-        return filePath && filePath.length !== 0;
-      })
-      .map( filePath => {
-        return function() {
-          console.log("getContextsFromFolder", filePath);
-          return getContextsFromFile(ssh, filePath, xmlEntities)
-          .then( result => {
-            ctx.push({
-              "filePath" : filePath,
-              "context" : result
-            });
-          });
-        };
-      })
-    )
-    .then( () => ctx);
+        return filePath && filePath.length !== 0; // skip empty lines
+      });
+
+    return promiseUtils.serial(filePathList, filePath => getContextsFromFile(ssh, filePath, xmlEntities))
+      .then( results => {
+        let finalResult = results
+          .filter(result => result.resolved)
+          .map( result => ({
+            "filepath" : result.value.filePath,
+            "context"  : result.value.context
+          }));
+        return finalResult;
+      });
   });
 }
 exports.getContextsFromFolder = getContextsFromFolder;
@@ -176,8 +194,9 @@ function getConfig(options) {
     contextList : []
   };
   var contextList = [];
+  let serverConfigFilePath = `${tomcatInstallDir}/conf/server.xml`;
 
-  return parseRemoteFile(ssh, tomcatInstallDir + '/conf/server.xml', xmlEntities)
+  return parseRemoteFile(ssh, serverConfigFilePath, xmlEntities)
   .then( domConfig => {
 
     ////////////////////////////////////////////////////////////////////////////
@@ -187,20 +206,23 @@ function getConfig(options) {
 
     tcConf.connector = {
       "protocol" : "HTTP/1.1",
-      "port" : getPortNumberByProtocol(domConfig, "HTTP/1.1")
+      "port"     : getPortNumberByProtocol(domConfig, "HTTP/1.1")
     };
-    return getContextsFromDOM(domConfig)  // get conetxts from server.xml
-    .then( result => {
-      if( result && result.length !== 0) {
-        tcConf.contextList.push(result);
-      } // else : no context found in server.xml
-      return true;
-    });
+    let contexts = getContextsFromDOM(domConfig); // get conetxts from server.xml
+    if(contexts && contexts.length !== 0) {
+      tcConf.contextList.push({
+        "filePath" : serverConfigFilePath,
+        "context" : contexts
+      });
+    } // else : no context found in server.xml (sad)
+    return true;
   })
   .then( () =>  getContextsFromFolder(ssh, tomcatInstallDir +  '/conf/Catalina/localhost', xmlEntities))
-  .then(function(result){
-    //console.log( "getContextsFromTomcatDir", result);
-    tcConf.contextList = tcConf.contextList.concat(result);
+  .then(function(results){
+    if( results.length !== 0 ) {
+      let finalContextList = tcConf.contextList.concat(results);
+      tcConf.contextList = finalContextList;
+    }
     return tcConf;
   });
 }
