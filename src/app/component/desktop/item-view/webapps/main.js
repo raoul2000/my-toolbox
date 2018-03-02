@@ -27,7 +27,18 @@ module.exports = {
   computed : {
     view : function() {
       return this.$store.getters['view/findById'](VIEW_ID);
-    }
+    },
+    filteredTomcats : function() {
+      if( this.filterText.trim().length === 0) {
+        return this.item.data.tomcats;
+      } else {
+        let normalizedFilter = this.filterText.toLowerCase();
+        return this.item.data.tomcats.filter( tomcat => {
+          return tomcat.webapps
+            .some( webapp => webapp.name.concat(webapp.refId).toLowerCase().match(normalizedFilter));
+        });
+      }
+    },
   },
   watch : {
     filterText : function() {
@@ -146,5 +157,13 @@ module.exports = {
          "expandWebapp": config.store.get("expandWebappView")
        });
      }
+
+     // keyboard shortcut to set the focus on webapp filter
+     let self = this;
+     Mousetrap.bind(['command+f', 'ctrl+f'], function() {
+         self.$refs.inputWebappFilter.focus();
+         return false;
+     });
+
    }
 };

@@ -49,13 +49,15 @@ module.exports = `
 
       <input
         v-if="item.data.tomcats.length !== 0"
+        ref="inputWebappFilter"
+        title="(ctrl+f) filter webapp"
         class="webapp-filter"
         v-model="filterText" type="text" placeholder="enter filter ..."/>
 
       <div v-if="item.data.tomcats.length !== 0 ">
         <div
           class="tomcat-container"
-          v-for="tomcat in item.data.tomcats"
+          v-for="tomcat in filteredTomcats"
           :key="tomcat._id"
           :id="tomcat._id">
           <tomcat
