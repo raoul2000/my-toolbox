@@ -3,8 +3,8 @@ module.exports = `
 
   <div class="row">
     <div class="col-lg-12">
-      
-      <h1>{{item.name}} <small v-html="pageHeader"></small></h1>
+
+      <h1 v-html="htmlHeader"></h1>
       <hr/>
 
       <div class="btn-group" role="group" style="margin-bottom:1em;">

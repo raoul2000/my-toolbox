@@ -13,7 +13,7 @@ module.exports = {
   store,
   data : function(){
     return {
-      pageHeader : '',
+      htmlHeader : '',
       item       : null
     };
   },
@@ -105,8 +105,8 @@ module.exports = {
     /**
      * Create the HTML sub header out of the desktop item relative file path.
      */
-    buildHTMLSubtitle : function() {
-      let htmlResult = "";
+    buildHTMLHeader : function() {
+      let pathParts = [];
       // compute the container class
       let validEnv = {
         'dev'  : "bg-success",
@@ -115,18 +115,15 @@ module.exports = {
       };
       let validEnvKeys = Object.keys(validEnv);
       if( this.item.path.length > 0 ) {
-        htmlResult = this.item.path
+        pathParts = this.item.path
         .map( path => path.trim().toLowerCase())
         .map( path => {
-          if(validEnv.hasOwnProperty(path)) {
-            return `<span class="label ${validEnv[path]}">${path.toUpperCase()}</span>`;
-          } else {
-            return path;
-          }
-        })
-        .join(' / ');
+          return validEnv.hasOwnProperty(path)
+            ? `<span class="label ${validEnv[path]}">${path.toUpperCase()}</span>`
+            : path;
+        });
       }
-      this.pageHeader = htmlResult;
+      this.htmlHeader = pathParts.concat([`<b>${this.item.name}</b>`]).join(' / ');
     }
   },
   /**
@@ -141,7 +138,7 @@ module.exports = {
     if( ! this.item ) {
       console.warn('failed to load item : id = '+itemId);
     } else {
-      this.buildHTMLSubtitle();
+      this.buildHTMLHeader();
     }
 
     // persistent view state ////////////////////////////////////////////////
