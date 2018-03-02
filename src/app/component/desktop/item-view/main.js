@@ -103,20 +103,10 @@ module.exports = {
       this.$router.push('components');
     },
     /**
-     * Create the HTML page header out of the desktop item relative file path.
+     * Create the HTML sub header out of the desktop item relative file path.
      */
-    buildPageHeader : function() {
-      let subtitle = "";
-      if( this.item.path.length > 0 ) {
-        subtitle = this.item.path.map( (aPath, index) => {
-          if( index === 0 ) {
-            return `<span class="label label-default" style="font-size: 100%;font-weight: 0;">${aPath}</span>`;
-          } else {
-            return aPath;
-          }
-        })
-        .join(' / ');
-      }
+    buildHTMLSubtitle : function() {
+      let htmlResult = "";
       // compute the container class
       let validEnv = {
         'dev'  : "bg-success",
@@ -124,13 +114,19 @@ module.exports = {
         'prod' : "bg-danger"
       };
       let validEnvKeys = Object.keys(validEnv);
-      let classes = [ "project"];
-      let thisEnv = this.item.path
-        .filter( token => validEnvKeys.indexOf(token.toLowerCase()) > -1 )
-        .map( token => token.toLowerCase());
-      let subtitleClass = thisEnv.length === 0 ? "bg-default" : validEnv[thisEnv[0]];
-
-      this.pageHeader = `<div class="sub-title ${subtitleClass}">${subtitle}</div>`;
+      if( this.item.path.length > 0 ) {
+        htmlResult = this.item.path
+        .map( path => path.trim().toLowerCase())
+        .map( path => {
+          if(validEnv.hasOwnProperty(path)) {
+            return `<span class="label ${validEnv[path]}">${path.toUpperCase()}</span>`;
+          } else {
+            return path;
+          }
+        })
+        .join(' / ');
+      }
+      this.pageHeader = htmlResult;
     }
   },
   /**
@@ -145,7 +141,7 @@ module.exports = {
     if( ! this.item ) {
       console.warn('failed to load item : id = '+itemId);
     } else {
-      this.buildPageHeader();
+      this.buildHTMLSubtitle();
     }
 
     // persistent view state ////////////////////////////////////////////////
