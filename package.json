@@ -24,7 +24,7 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "devtron": "^1.4.0",
-    "electron": "^1.4.1",
+    "electron": "^1.8.2",
     "vue-devtools": "^3.1.6"
   },
   "dependencies": {

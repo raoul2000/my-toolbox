@@ -11,6 +11,8 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 const url  = require('url');
 
+const ENABLE_SPLASH_SCREEN = true;
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -51,35 +53,36 @@ function createWindow () {
   mainWindow = new BrowserWindow({
       width: 800,
       height: 600,
-      show: true
+      show: ENABLE_SPLASH_SCREEN ? false : true
     });
 
-  splash = new BrowserWindow({
-    width: 810,
-    height: 610,
-    transparent: true,
-    frame: false,
-    alwaysOnTop: false
-  });
-  //splash.loadURL(`file://${__dirname}/splash-2.html`);
+  // splash screen initialization
+  if(ENABLE_SPLASH_SCREEN) {
+    splash = new BrowserWindow({
+      width: 810,
+      height: 610,
+      transparent: true,
+      frame: false,
+      alwaysOnTop: true
+    });
+    splash.loadURL(`file://${__dirname}/splash-2.html`);
+    ipcMain.on('app-loaded', () => {
+      splash.destroy();
+      mainWindow.show();
+    });
+  }
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
-  //  pathname: path.join(__dirname, 'src/scanner/index.html'),
     pathname: path.join(__dirname, 'src/app/index.html'),
-    //pathname: path.join(__dirname, '/index.html'),
     protocol: 'file:',
     slashes: true
   }));
-  // app-loaded
-  mainWindow.once('ready-to-show', () => {
-    //splash.destroy();
-    //mainWindow.show();
-  });
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
   require('vue-devtools').install();
+  require('devtron').install();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -89,10 +92,7 @@ function createWindow () {
     mainWindow = null;
   });
 }
-ipcMain.on('app-loaded', () => {
-  splash.destroy();
-  mainWindow.show();
-});
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
