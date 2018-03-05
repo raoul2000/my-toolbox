@@ -40,7 +40,12 @@ function stopTask(taskId, success, valueOrError) {
     }
   });
 }
-
+/**
+ * Returns an update version task with a given Id.
+ * If the task doesn't exist it is created
+ * @param  {string} taskId the task id
+ * @return {object}        the task object
+ */
 function acquireTask(taskId) {
   let task = getTask(taskId);
 
@@ -55,6 +60,26 @@ function acquireTask(taskId) {
     return getTask(taskId);
   }
 }
+/**
+ * Delete the update version task for this tomcat.
+ * If the task doesn't exist this function as no effect
+ * @param  {object} tomcat the tomcat object
+ * @return {boolean}        TRUE if the taks could be deleted, FALSE otherwise
+ */
+exports.deleteTask = function(tomcat) {
+  let taskDeleted = false;
+  // create the update version task id
+  let taskId = exports.createTomcatVersionTaskId(tomcat);
+  // get the task
+  let task = getTask(taskId);
+  if(task !== undefined ) {
+    store.commit('tmptask/deleteTask',task);
+    taskDeleted = true;
+  } else {
+    console.warn(`deleteTask failed : no task found with id ${taskId}`);
+  }
+  return taskDeleted;
+};
 
 /**
  * Choose the best result among a list of results.
@@ -79,6 +104,11 @@ exports.chooseBestResultValue = function( results ) {
   return lib.helper.maxOccurenceCountValue(resultValues);
 };
 
+/**
+ * create a unique task id for a given tomcat and for an version update task
+ * @param  {object} tomcat The tomcat object to update version to
+ * @return {string}        the unique task id
+ */
 exports.createTomcatVersionTaskId = function(tomcat) {
   return `tc-version-${tomcat._id}`;
 };
@@ -116,6 +146,14 @@ exports.upddateTomcats = function(itemData, tomcatIds, nodessh) {
   });
 };
 
+/**
+ * Entry point to update version of a tomcat instance.
+ *
+ * @param  {object} itemData a desktop item data instance
+ * @param  {string} tomcatId the id of the tomcat to update
+ * @param  {object} nodessh  an optional nodessh instance
+ * @return {Promise}
+ */
 exports.updateTomcat = function(itemData, tomcatId, nodessh) {
     // find the tomcat object intance
     let tomcat = itemData.tomcats.find( tomcat => tomcat._id === tomcatId);

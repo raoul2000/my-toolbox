@@ -67,6 +67,9 @@ module.exports = {
     }
   },
   methods : {
+    /**
+     * Updates the version of the tomcat displayed by this component
+     */
     refreshVersion : function() {
       version.updateTomcat(this.item.data,this.tomcat._id)
       .then( result => {
@@ -78,7 +81,9 @@ module.exports = {
             "version" : finalVersion.value
           }
         });
-        persistence.saveDesktopItemToFile(this.item);
+        // NOTE : it is not needed to update the file here because this will be done by a change
+        // of the version value (see change() below)
+        version.deleteTask(this.tomcat);
       });
 
     },
