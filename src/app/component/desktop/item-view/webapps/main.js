@@ -53,8 +53,11 @@ module.exports = {
     }
   },
   methods : {
+    /**
+     * Update version of all tomcat owner by this component.
+     *
+     */
     updateAllTomcatVersion : function() {
-
       tomcatVersion
         .upddateTomcats(
           this.item.data,
@@ -70,6 +73,8 @@ module.exports = {
               let tomcat = this.item.data.tomcats.find( tomcat => tomcat._id === result._id);
               if( tomcat ) {
                 let finalVersion = tomcatVersion.chooseBestResultValue(result.values);
+                // TODO : updating tomcat version will cause a saveToFile FOR EACH tomcat !
+                // There should be a way to update all tomcats version and then save to file only once
                 this.$store.commit('updateTomcat',{
                   "item"       : this.item,
                   "tomcat"     : tomcat,
@@ -94,13 +99,6 @@ module.exports = {
     },
     openScannerView : function() {
       this.$router.push({ path: `/tc-scan/${this.item.data._id}`});
-      /*
-      this.$store.commit('view/update', {
-        "id" : VIEW_ID,
-        "updateWith" : {
-          "childViewId"   : "SCANNER"
-        }
-      });*/
     },
     viewTomcatClass : function() {
       return this.view.expandTomcat
