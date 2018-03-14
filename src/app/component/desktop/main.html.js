@@ -35,10 +35,14 @@ module.exports = `
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title pull-left">
-            <span class="glyphicon glyphicon-th" aria-hidden="true"></span>{{category}}
+            <span class="glyphicon glyphicon-th" aria-hidden="true"></span> {{category}}
           </h3>
-          <div class="pull-right">
-            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+          <div class="pull-right category-panel-icon">
+            <span
+              title="remove from desktop"
+              @click.stop.prevent="removeGroupFromDesktop(category)"
+              class="glyphicon glyphicon-trash"
+              aria-hidden="true"></span>
           </div>
           <div class="clearfix"></div>
         </div>

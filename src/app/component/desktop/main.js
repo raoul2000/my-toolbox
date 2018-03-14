@@ -30,14 +30,6 @@ module.exports = {
       }).keys();
       return Array.from(keys);
     }
-    /*
-    groupedItems : function() {
-      return [];
-      helper.groupBy(store.state.desktop, item => {
-        try { return item.path[0];}
-        catch (ex) { return "default";}
-      });
-    }*/
   },
   methods : {
     /**
@@ -210,6 +202,38 @@ module.exports = {
         this.$router.push({ path: `/item-view/${item.data._id}/settings`});
         event.stopPropagation();
       }
+    },
+    /**
+     * Remove all desktop items grouped in a category
+     * @param  {[type]} category [description]
+     * @return {[type]}          [description]
+     */
+    removeGroupFromDesktop : function(category) {
+      let self = this;
+      (new PNotify({
+          title: 'Confirmation Needed',
+          text: "Are you sure you want to remove this group from your desktop ?",
+          icon: 'glyphicon glyphicon-question-sign',
+          hide: false,
+          confirm: {
+              confirm: true
+          },
+          buttons: {
+              closer: false,
+              sticker: false
+          },
+          history: {
+              history: false
+          },
+          stack: {"dir1": "down", "dir2": "left", "modal": true, "overlay_close": true}
+      })).get().on('pnotify.confirm', function() {
+        store.state.desktop
+          .filter(item => (item.path.length > 0 && item.path[0] === category) || (item.path.length === 0 && category === "NO CATEGORY"))
+          .forEach(item => {
+            self.removeFromDesktop(item);
+          });
+      });
+
     },
     /**
      * Remove an item from the desktopn

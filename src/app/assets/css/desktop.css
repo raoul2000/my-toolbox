@@ -1,3 +1,13 @@
+.category-panel-icon {
+  margin-left: 4px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.category-panel-icon:hover {
+  color: red;
+}
+
 .left-corner-icon {
   margin-left: 4px;
   margin-top: 5px;
