@@ -26,6 +26,7 @@ module.exports = {
         "port"     : true,
         "notes"    : true
       },
+      allowEdit    : true,
       selection: '',
       suggestions: [
         { city: 'Bangalore', state: 'Karnataka' },
@@ -47,16 +48,20 @@ module.exports = {
   },
   methods : {
     testConnection : function() {
+      let self = this;
+      this.allowEdit = false;
       this.action = "test-connection";
       this.connectionOk = null;
       checkSSHConnection(this.item.data.ssh)
       .then( success => {
         this.connectionOk = true;
-        this.action = null;
+        this.action       = null;
+        self.allowEdit    = true;
       })
       .catch(error => {
-        this.action = null;
+        this.action       = null;
         this.connectionOk = false;
+        self.allowEdit    = true;
       });
     },
     /**

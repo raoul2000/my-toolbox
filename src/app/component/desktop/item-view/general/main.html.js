@@ -24,6 +24,7 @@ module.exports = `
                 <inlineInput
                   :initialValue="item.data.ssh.host"
                   :valid="validation.host"
+                  :allowEdit="allowEdit"
                   inputType="text"
                   valueName="host"
                   emptyValue="<em class='text-muted'>xxx.xxx.xxx.xxx</em>"
@@ -36,6 +37,7 @@ module.exports = `
                 <inlineInput
                   :initialValue="item.data.ssh.username"
                   :valid="validation.username"
+                  :allowEdit="allowEdit"
                   inputType="text"
                   valueName="username"
                   emptyValue="<em class='text-muted'>...</em>"
@@ -48,6 +50,7 @@ module.exports = `
                 <inlineInput
                   :initialValue="item.data.ssh.password"
                   :valid="validation.password"
+                  :allowEdit="allowEdit"
                   inputType="password"
                   valueName="password"
                   v-on:changeValue="changeSSHValue"/>
@@ -59,6 +62,7 @@ module.exports = `
                 <inlineInput
                   :initialValue="item.data.ssh.port"
                   :valid="validation.port"
+                  :allowEdit="allowEdit"
                   inputType="text"
                   valueName="port"
                   v-on:changeValue="changeSSHValue"/>

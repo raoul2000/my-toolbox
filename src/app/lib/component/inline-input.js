@@ -8,16 +8,32 @@ module.exports = {
     v-bind:class="{ 'inline-editing' : editing, 'inline-validation-error' : !valid}">
 
     <span v-if="inputType == 'text'" class="inline-ctrl-text">
-      <span v-if="!editing" class="current-value" v-html="displayValue"></span>
-      <input v-else type="text" v-on:blur="stopEdit" v-on:keyup.enter="stopEdit"/>
+      <span v-if="!editing"
+        class="current-value"
+        v-html="displayValue"
+        tabindex="0"
+        v-on:keyup.enter="startEdit"></span>
+      <input v-else
+        type="text"
+        v-on:blur="stopEdit"
+        v-on:keyup.esc="cancelEdit"
+        v-on:keyup.enter="stopEdit"/>
     </span>
+
     <span v-else-if="inputType == 'password'" class="inline-ctrl-password">
-      <span v-if="!editing" class="current-value">{{hiddenPassword}}</span>
-      <input v-else type="password" v-on:blur="stopEdit" v-on:keyup.enter="stopEdit"/>
+      <span v-if="!editing"
+        class="current-value"
+        tabindex="0"
+        v-on:keyup.enter="startEdit">{{hiddenPassword}}</span>
+      <input v-else
+        type="password"
+        v-on:blur="stopEdit"
+        v-on:keyup.esc="cancelEdit"
+        v-on:keyup.enter="stopEdit"/>
     </span>
 
     <span
-      v-if="! editing"
+      v-if="! editing && allowEdit "
       v-on:click="startEdit"
       title="edit"
       style="float:right"
@@ -26,19 +42,25 @@ module.exports = {
       v-if="! valid"
       title="invalid input"
       class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red"></span>
+
   </div>`,
   props : {
     "initialValue" : [String, Number],
     "valueName"    : [String, Number],
     "valid"        : [Boolean],
     "inputType"    : [String], // text, password
-    "emptyValue"   : [String]
+    "emptyValue"   : [String],
+    "allowEdit"    : {
+      "type"    : Boolean,
+      "default" : true
+    }
   },
   data : function() {
     return {
-      "editing"      : false,
-      "currentVal"   : "".concat(this.initialValue),
-      "fieldElement" : null
+      "editing"        : false,
+      "currentVal"     : "".concat(this.initialValue),
+      "fieldElement"   : null,
+      "isCancelEdit"   : false  // handle edition cancel on ESC key press
     };
   },
   watch : {
@@ -46,7 +68,6 @@ module.exports = {
      * On initialValue Change, force Update
      */
     initialValue : function() {
-      console.log('initialValue changed : ',this.initialValue);
       this.forceUpdate(this.initialValue);
     }
   },
@@ -62,8 +83,7 @@ module.exports = {
   },
   methods : {
     /**
-     * Handle value update not triggered by user input, but by parent
-     * component.
+     * Handle value update not triggered by user input, but by parent component.
      */
     forceUpdate : function(value) {
       this.currentVal =  value;
@@ -73,11 +93,14 @@ module.exports = {
       });
     },
     /**
-     * User is starting edition : the input element is
-     * displayed
+     * User is starting edition : the input element is displayed if edition is allowed
      */
     startEdit : function() {
+      if( ! this.allowEdit ) {
+        return;
+      }
       this.editing = true;
+      this.isCancelEdit = false;
       this.currentVal = this.currentVal.trim();
       var self = this;
       Vue.nextTick(function() {
@@ -92,8 +115,10 @@ module.exports = {
       * Note that this.value is NEVER updated by this component, and must be updated
       * by the parent component.
       */
-
     stopEdit : function() {
+      if( this.isCancelEdit || ! this.allowEdit ) {
+        return;
+      }
       this.editing = false;
       let newValue = this.fieldElement.value.trim();
       if( newValue !== this.currentVal ) {
@@ -103,6 +128,17 @@ module.exports = {
           "value" : newValue
         });
       }
+    },
+    /**
+     * User canceled edition.
+     * Restore the current value and close the eidtion mode
+     */
+    cancelEdit : function() {
+      if( ! this.allowEdit ) {
+        return;
+      }
+      this.isCancelEdit = true; // disable the call to this.stopEdit
+      this.editing      = false;
     }
   }
 };

@@ -14,13 +14,14 @@ module.exports = {
   },
   data : function(){
     return {
-      validation : {
+      validation           : {
         "id"     : true,
         "port"   : true,
         "version": true
       },
-      expanded : this.expandTomcat,
-      updateVersionTaskId : null
+      expanded             : this.expandTomcat,
+      updateVersionTaskId  : null,
+      allowEdit            : true
     };
   },
   template: require('./main.html'),
@@ -71,6 +72,8 @@ module.exports = {
      * Updates the version of the tomcat displayed by this component
      */
     refreshVersion : function() {
+      let self = this;
+      this.allowEdit = false;
       version.updateTomcat(this.item.data,this.tomcat._id)
       .then( result => {
         let finalVersion = version.chooseBestResultValue(result.values);
@@ -84,6 +87,7 @@ module.exports = {
         // NOTE : it is not needed to update the file here because this will be done by a change
         // of the version value (see change() below)
         version.deleteTask(this.tomcat);
+        self.allowEdit = true;
       });
 
     },

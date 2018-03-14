@@ -20,6 +20,7 @@ module.exports = `
         <inlineInput
           :initialValue="tomcat.id"
           :valid="validation.id"
+          :allowEdit="allowEdit"
           inputType="text"
           valueName="id"
           emptyValue="<em class='text-muted'>ENTER ID HERE ...</em>"
@@ -30,6 +31,7 @@ module.exports = `
         <inlineInput
           :initialValue="tomcat.version"
           :valid="validation.version"
+          :allowEdit="allowEdit"
           inputType="text"
           valueName="version"
           emptyValue="<em class='text-muted'>??</em>"
@@ -42,6 +44,7 @@ module.exports = `
         <inlineInput
           :initialValue="tomcat.port"
           :valid="validation.port"
+          :allowEdit="allowEdit"
           inputType="text"
           valueName="port"
           v-on:changeValue="changeValue"/>
