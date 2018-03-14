@@ -12,13 +12,15 @@ const helper   = require('../../lib/lib').helper;
  */
 module.exports = {
   store,
+  data : function(){
+    return {
+      groupByCategory : config.store.get("desktopGroupByCategory")
+    };
+  },
   template: require('./main.html'),
   computed : {
     items : function(){
       return store.state.desktop;
-    },
-    groupByCategory : function() {
-      return config.store.get("desktopGroupByCategory");
     },
     topLevelCategories : function() {
       let keys = helper.groupBy(store.state.desktop, item => {
@@ -46,16 +48,9 @@ module.exports = {
           text: "Are you sure you want to clear your desktop ?",
           icon: 'glyphicon glyphicon-question-sign',
           hide: false,
-          confirm: {
-              confirm: true
-          },
-          buttons: {
-              closer: false,
-              sticker: false
-          },
-          history: {
-              history: false
-          },
+          confirm: { confirm: true},
+          buttons: { closer: false,  sticker: false  },
+          history: { history: false },
           stack: {"dir1": "down", "dir2": "left", "modal": true, "overlay_close": true}
       })).get().on('pnotify.confirm', function() {
         self.$store.commit('removeAllItems');
@@ -188,7 +183,14 @@ module.exports = {
           }
         }
       );
-
+    },
+    /**
+     * Toggle grouping desktop items by category.
+     * The category is the first item of the path array (ie the root folder name)
+     */
+    toggleGroup : function(){
+      this.groupByCategory = ! this.groupByCategory;
+      config.store.set('desktopGroupByCategory', this.groupByCategory);
     },
     /**
      * Opens a view for a specific item.
@@ -215,16 +217,9 @@ module.exports = {
           text: "Are you sure you want to remove this group from your desktop ?",
           icon: 'glyphicon glyphicon-question-sign',
           hide: false,
-          confirm: {
-              confirm: true
-          },
-          buttons: {
-              closer: false,
-              sticker: false
-          },
-          history: {
-              history: false
-          },
+          confirm: { confirm: true},
+          buttons: { closer: false,  sticker: false  },
+          history: { history: false },
           stack: {"dir1": "down", "dir2": "left", "modal": true, "overlay_close": true}
       })).get().on('pnotify.confirm', function() {
         store.state.desktop
@@ -319,6 +314,9 @@ module.exports = {
     }
   },
   mounted : function () {
+
+    // Desktop initialization //////////////////////////////////////////////////
+
     if( config.store.get('persistentDesktop')
         && store.state.desktopLoadedOnInit === false )
     {
@@ -329,6 +327,8 @@ module.exports = {
       }
       store.commit('desktopLoaded');
     }
+
+    // register key shortcut ///////////////////////////////////////////////////
 
     let self = this;
     Mousetrap.bind(['command+o', 'ctrl+o'], function() {

@@ -22,6 +22,13 @@ module.exports = `
           type="button" class="btn btn-default">
           <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
         </button>
+        <button
+          @click="toggleGroup"
+          title="toggle group"
+          :disabled="items.length == 0"
+          type="button" class="btn btn-default">
+          <span class="glyphicon glyphicon-modal-window" aria-hidden="true"></span>
+        </button>
       </div> <!-- toolbar end -->
     </div>
   </div>
