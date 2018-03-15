@@ -27,7 +27,13 @@
   margin-left: 0.5em;
   margin-right: 0.5em;
 }
+h3.panel-title {
+  font-weight: bold;
+}
 
+.panel-body .card-title {
+  visibility: hidden;
+}
 .card-title {
   font-family: inherit;
   font-weight: 500;
