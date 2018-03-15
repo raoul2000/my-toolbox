@@ -67,6 +67,12 @@ module.exports = new Vuex.Store({
     // store.state.server.someProp
     "server" : require('./module/server'), //require('./module/server')
 
+
+    // store.getters['command/findById']('33')
+    // store.getters['command/add']({...})
+    // store.state.command.someProp
+    "command" : require('./module/command'),
+
     // store.getters['task/findById']('33')
     // store.getters['task/add']({...})
     // store.state.task.someProp
@@ -271,6 +277,7 @@ module.exports = new Vuex.Store({
       }
     },
     // COMPONENT ////////////////////////////////////////////////////////////////
+    //
     addComponent(state, options) {
       console.log('addComponent');
       try {
@@ -298,6 +305,38 @@ module.exports = new Vuex.Store({
         console.error("failed to deleteComponent",e);
       }
     },
+
+    // COMMAND ////////////////////////////////////////////////////////////////
+    //
+    addCommand(state, options) {
+
+      try {
+        let item   = find.object.itemById(state.desktop, options.item.data._id);
+        item.data.commands = [options.command].concat(item.data.commands);
+      }catch(e) {
+        console.error("failed to addComponent",options, e);
+      }
+    },
+    updateCommand(state, options) {
+      try {
+        let item   = find.object.itemById(state.desktop, options.item.data._id);
+        let command = find.object.componentById(item.data.commands, options.command._id);
+        Object.assign(command, options.updateWith);
+      }catch(e) {
+        console.error("failed to updateCommand",e);
+      }
+    },
+    deleteCommand(state, options) {
+      try {
+        let item   = find.object.itemById(state.desktop, options.item.data._id);
+        let commandIndex = find.index.componentById(item.data.commands, options.command._id);
+        item.data.commands.splice(commandIndex, 1);
+      }catch(e) {
+        console.error("failed to deleteCommand",e);
+      }
+    },
+
+
     ////////////////////////////////////////////////////////////////////////////
     // MODULE
 

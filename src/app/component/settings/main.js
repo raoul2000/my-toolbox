@@ -9,6 +9,7 @@ module.exports = {
       deployFolderPath       : '',
       ctdbFolderPath         : '',
       webappCatalogFilePath  : '',
+      commandLibraryFilePath : '',
       puttyFilePath          : '',
       winscpFilePath         : '',
       persistentDesktop      : true,
@@ -89,6 +90,15 @@ module.exports = {
         "properties"  : [ 'openFile']
       }, value => self.webappCatalogFilePath=value );
     },
+
+    selectCommandLibraryFilePath : function() {
+      var self = this;
+      this.selectSingleFolder({
+        "title"       : "Select the Command Library file",
+        "defaultPath" : self.commandLibraryFilePath,
+        "properties"  : [ 'openFile']
+      }, value => self.commandLibraryFilePath=value );
+    },
     goBack : function() {
       Mousetrap.unbind('esc', 'keyup');
       this.$router.go(-1);
@@ -107,6 +117,8 @@ module.exports = {
       config.store.set('desktopGroupByCategory',this.desktopGroupByCategory);
       config.store.set('expandTomcatView',this.expandTomcatView);
       config.store.set('expandWebappView',this.expandWebappView);
+      config.store.set('commandLibraryFilePath',this.commandLibraryFilePath);
+
       if( ! this.persistentDesktop ) {
         config.clearDesktop();
       }
@@ -114,16 +126,17 @@ module.exports = {
     }
   },
   mounted : function() {
-    this.deployFolderPath = config.store.get('deployFolderPath');
-    this.ctdbFolderPath = config.store.get('ctdbFolderPath');
-    this.webappCatalogFilePath = config.store.get('webappCatalogFilePath');
-    this.puttyFilePath = config.store.get('puttyFilePath');
-    this.winscpFilePath = config.store.get('winscpFilePath');
-    this.persistentDesktop = config.store.get('persistentDesktop');
+    this.deployFolderPath       = config.store.get('deployFolderPath');
+    this.ctdbFolderPath         = config.store.get('ctdbFolderPath');
+    this.webappCatalogFilePath  = config.store.get('webappCatalogFilePath');
+    this.puttyFilePath          = config.store.get('puttyFilePath');
+    this.winscpFilePath         = config.store.get('winscpFilePath');
+    this.persistentDesktop      = config.store.get('persistentDesktop');
     this.desktopGroupByCategory = config.store.get('desktopGroupByCategory');
 
-    this.expandTomcatView = config.store.get('expandTomcatView');
-    this.expandWebappView = config.store.get('expandWebappView');
+    this.expandTomcatView       = config.store.get('expandTomcatView');
+    this.expandWebappView       = config.store.get('expandWebappView');
+    this.commandLibraryFilePath = config.store.get('commandLibraryFilePath');
 
     Mousetrap.bind('esc', this.goBack, 'keyup');
   }

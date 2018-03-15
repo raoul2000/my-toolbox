@@ -26,6 +26,9 @@ module.exports = `
         <li role="presentation"  v-bind:class="{active : currentTabName == 'server-components'}">
           <a v-on:click.stop.prevent="openTabComponents()" href="#">Components</a>
         </li>
+        <li role="presentation"  v-bind:class="{active : currentTabName == 'server-commands'}">
+          <a v-on:click.stop.prevent="openTabCommands()" href="#">Commands</a>
+        </li>
       </ul>
     </div>
   </div>

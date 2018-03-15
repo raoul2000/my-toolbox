@@ -135,7 +135,8 @@ module.exports = {
         },
         "entities"   : [],
         "tomcats"    : [],
-        "components" : []
+        "components" : [],
+        "commands"   : []
       };
 
       var defaultFilename = path.join(
@@ -282,6 +283,9 @@ module.exports = {
                  },100);
                }
              } else {
+               if( ! newItemData.commands ) {
+                 newItemData.commands = [];
+               }
               store.commit('addToDesktop',{
                 "filename" : relativeFilePath,
                 "data"     : newItemData,

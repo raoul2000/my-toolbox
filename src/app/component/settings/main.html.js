@@ -83,6 +83,29 @@ module.exports = `
     </div>
     <!--// END webapp Catalog File Path -->
 
+    <!--// BEGIN Command Library File Path-->
+    <div class="form-group">
+      <label for="cmdlib-file-path" class="col-sm-3 control-label">Command Library</label>
+      <div class="col-sm-9">
+        <div class="input-group">
+          <input id="cmdlib-file-path" v-model="commandLibraryFilePath"  type="text" class="form-control" placeholder="">
+          <span class="input-group-btn">
+            <button
+              @click="selectCommandLibraryFilePath()"
+              title="select a new file"
+              class="btn btn-default" type="button">
+              <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+            </button>
+          </span>
+        </div>
+        <span id="helpBlock" class="help-block">
+          Command LibraryFile path
+        </span>
+      </div>
+    </div>
+    <!--// END Command Library File Path -->
+
+
     <!--// BEGIN putty File Path-->
     <div class="form-group">
       <label for="puttyfile-path" class="col-sm-3 control-label">Putty</label>

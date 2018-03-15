@@ -17,8 +17,9 @@ const ItemView            = require('./component/desktop/item-view/main');
 const ItemViewSettings    = require('./component/desktop/item-view/general/main');
 const ItemViewWebapps     = require('./component/desktop/item-view/webapps/main');
 const ItemViewComponents  = require('./component/desktop/item-view/components/main');
+const ItemViewCommands    = require('./component/desktop/item-view/commands/main');
 
-const Deploy   = require('./component/deploy/main');
+const Deploy          = require('./component/deploy/main');
 const MavenDownload   = require('./component/maven-download/main');
 
 const store    = require('./service/store/store');
@@ -51,19 +52,24 @@ const router = new VueRouter({
     { path: '/item-view/:id',    component: ItemView,
       children : [
       {
-        path: 'settings',
-        name : 'server-settings',
-        component: ItemViewSettings
+        path      : 'settings',
+        name      : 'server-settings',
+        component : ItemViewSettings
       },
       {
-        path: 'webapps',
-        name : 'server-webapps',
-        component: ItemViewWebapps
+        path      : 'webapps',
+        name      : 'server-webapps',
+        component : ItemViewWebapps
       },
       {
-        path: 'components',
-        name : 'server-components',
-        component: ItemViewComponents
+        path      : 'components',
+        name      : 'server-components',
+        component : ItemViewComponents
+      },
+      {
+        path      : 'commands',
+        name      : 'server-commands',
+        component : ItemViewCommands
       }
     ]}
   ]
@@ -142,6 +148,23 @@ const app = new Vue({
         'setWebAppDefinition',
         Object.keys(obj).map( k => obj[k])
       );
+
+      // commandLibrary /////////////////////////////////////////////////////
+      // 
+      if(config.store.has('commandLibraryFilePath') === false ) {
+        notify('Command Library file path not configured','error', 'error');
+        return;
+      }
+      var commandLibraryFilePath = config.store.get('commandLibraryFilePath');
+      if ( fs.existsSync(commandLibraryFilePath) === false ) {
+        notify(`Configured Command Library file path Not Found : <b>${commandLibraryFilePath}</b>`,'error', 'error');
+        return;
+      }
+      // load webapp Catalog
+      var cmdLib = JSON.parse(fs.readFileSync(commandLibraryFilePath, 'utf8'));
+      cmdLib.forEach(cmd => {
+        store.commit('command/add',cmd);
+      });
     }
   },
   /**

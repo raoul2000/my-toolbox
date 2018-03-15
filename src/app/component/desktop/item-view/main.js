@@ -103,6 +103,12 @@ module.exports = {
       this.$router.push('components');
     },
     /**
+     * User click on 'commands' tab
+     */
+    "openTabCommands" : function() {
+      this.$router.push('commands');
+    },
+    /**
      * Create the HTML sub header out of the desktop item relative file path.
      */
     buildHTMLHeader : function() {
