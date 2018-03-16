@@ -60,7 +60,7 @@ module.exports = `
           v-if="! updateVersionTask || updateVersionTask.status != 'BUSY'"
           v-on:click="refreshVersion"
           title="refresh version"
-          class="glyphicon glyphicon-refresh update-version-button" aria-hidden="true"/>
+          class="glyphicon glyphicon-play update-version-button" aria-hidden="true"/>
         <span
           v-else
           title="version update in progress ..."
