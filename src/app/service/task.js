@@ -1,11 +1,8 @@
 'user strict';
 
-const store = require('../store/store');
-const lib = require('../../lib/lib');
-const promiseUtil = require('../../lib/promise-utils');
-const NodeSSH = require('node-ssh');
+const store = require('./store/store');
 
-function addTask(taskId) {
+exports.addTask = function(taskId) {
   store.commit('tmptask/addTask',{
     "id"           : taskId,
     "step"         : "UPDATE",
@@ -13,13 +10,13 @@ function addTask(taskId) {
     "result"       : null,
     "errorMessage" : ""
   });
-}
+};
 
-function getTask(taskId){
+exports.getTask = function(taskId){
     return store.getters['tmptask/taskById'](taskId);
-}
+};
 
-function startTask(taskId) {
+exports.startTask = function(taskId){
   store.commit('tmptask/updateTask',{
     "id"           : taskId,
     "updateWith"   : {
@@ -28,9 +25,9 @@ function startTask(taskId) {
       "errorMessage" : ""
     }
   });
-}
+};
 
-function stopTask(taskId, success, valueOrError) {
+exports.stopTask = function(taskId, success, valueOrError) {
   store.commit('tmptask/updateTask',{
     "id"           : taskId,
     "updateWith"   : {
@@ -39,7 +36,7 @@ function stopTask(taskId, success, valueOrError) {
       "errorMessage" : success ? null         : valueOrError,
     }
   });
-}
+};
 
 /**
  * Returns an update version task with a given Id.
@@ -47,8 +44,8 @@ function stopTask(taskId, success, valueOrError) {
  * @param  {string} taskId the task id
  * @return {object}        the task object
  */
-function acquireTask(taskId) {
-  let task = getTask(taskId);
+exports.acquireTask = function(taskId) {
+  let task = exports.getTask(taskId);
 
   if( task !== undefined) {
     if( task.status === 'BUSY') {
@@ -57,10 +54,10 @@ function acquireTask(taskId) {
       return task;
     }
   } else {
-    addTask(taskId);
-    return getTask(taskId);
+    exports.addTask(taskId);
+    return exports.getTask(taskId);
   }
-}
+};
 
 /**
  * Delete the update version task for this tomcat.
@@ -70,9 +67,9 @@ function acquireTask(taskId) {
  */
 exports.deleteTask = function(taskId) {
   let taskDeleted = false;
-  
+
   // get the task
-  let task = getTask(taskId);
+  let task = exports.getTask(taskId);
   if(task !== undefined ) {
     store.commit('tmptask/deleteTask',task);
     taskDeleted = true;

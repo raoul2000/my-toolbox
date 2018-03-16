@@ -86,7 +86,7 @@ module.exports = {
         });
         // NOTE : it is not needed to update the file here because this will be done by a change
         // of the version value (see change() below)
-        version.deleteTask(this.tomcat);
+        version.finalize(self.tomcat);
         self.allowEdit = true;
       });
 

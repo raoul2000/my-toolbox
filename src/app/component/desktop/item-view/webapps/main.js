@@ -82,7 +82,7 @@ module.exports = {
                     "version" : finalVersion.value
                   }
                 });
-                tomcatVersion.deleteTask(tomcat);
+                tomcatVersion.finalize(tomcat);
               } else {
                 console.warn("tomcat not found : id = "+result._id);
               }
