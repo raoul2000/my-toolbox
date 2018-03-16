@@ -2,10 +2,10 @@
 
 const store = require('./store/store');
 
-exports.addTask = function(taskId) {
+exports.addTask = function(taskId, step) {
   store.commit('tmptask/addTask',{
     "id"           : taskId,
-    "step"         : "UPDATE",
+    "step"         : step || "UPDATE",
     "status"       : "IDLE",
     "result"       : null,
     "errorMessage" : ""
@@ -46,7 +46,6 @@ exports.stopTask = function(taskId, success, valueOrError) {
  */
 exports.acquireTask = function(taskId) {
   let task = exports.getTask(taskId);
-
   if( task !== undefined) {
     if( task.status === 'BUSY') {
       return false;

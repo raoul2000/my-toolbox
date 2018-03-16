@@ -2,6 +2,7 @@ const store     = require('../../../../../service/store/store'); // TODO : nod n
 var persistence = require('../../../../../service/persistence');
 const validate  = require('validator');
 const notify    = require('../../../../../service/notification');
+const service   = require('../../../../../service/service').service;
 
 module.exports = {
   props: ['item', 'command'],
@@ -16,36 +17,29 @@ module.exports = {
         "name"   : true,
         "source" : true
       },
-      runCmdTaskId : ""
+      runCmdTaskId : "",
+      allowEdit    : true,
+      cmdResult    : null
     };
   },
   template: require('./main.html'),
   computed : {
     runCmdTask : function(){
-      return  this.$store.getters['tmptask/taskById'](this.updateVersionTaskId);
+      return  this.$store.getters['tmptask/taskById'](this.runCmdTaskId);
     },
   },
   methods : {
     runCommand : function() {
-      /**
       let self = this;
       this.allowEdit = false;
-      version.updateTomcat(this.item.data,this.tomcat._id)
+      service.command.runCommand(this.item.data,this.command._id)
       .then( result => {
-        let finalVersion = version.chooseBestResultValue(result.values);
-        this.$store.commit('updateTomcat',{
-          "item"       : this.item,
-          "tomcat"     : this.tomcat,
-          "updateWith" : {
-            "version" : finalVersion.value
-          }
-        });
-        // NOTE : it is not needed to update the file here because this will be done by a change
-        // of the version value (see change() below)
-        version.deleteTask(this.tomcat);
+        debugger;
+        self.cmdResult = result;
+        service.command.finalize(this.command);
         self.allowEdit = true;
       });
-*/
+
     },
     deleteCommand : function() {
       let self = this;
@@ -94,6 +88,6 @@ module.exports = {
     }
   },
   mounted : function() {
-    this.runCmdTaskId = `runCmd-${this.command._id}`;
+    this.runCmdTaskId = service.command.buildTaskId(this.command);
   }
 };

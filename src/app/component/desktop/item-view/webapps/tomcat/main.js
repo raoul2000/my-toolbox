@@ -54,8 +54,7 @@ module.exports = {
      * Build the id for the task in charge of updating tomcat version
      */
     updateVersionTaskId_toDelete : function() {
-      return version.createTomcatVersionTaskId(this.tomcat);
-      //return `tc-version-${this.tomcat._id}`;
+      return version.buildTaskId(this.tomcat);
     }
   },
   watch : {
@@ -238,6 +237,6 @@ module.exports = {
     }
   },
   mounted : function() {
-    this.updateVersionTaskId = version.createTomcatVersionTaskId(this.tomcat);
+    this.updateVersionTaskId = version.buildTaskId(this.tomcat);
   }
 };

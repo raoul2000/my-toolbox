@@ -1,9 +1,8 @@
 'user strict';
 
-const store = require('../store/store');
-const lib = require('../../lib/lib');
+const lib         = require('../../lib/lib');
 const promiseUtil = require('../../lib/promise-utils');
-const NodeSSH = require('node-ssh');
+const NodeSSH     = require('node-ssh');
 const taskService = require('../task');
 
 
@@ -12,7 +11,7 @@ const taskService = require('../task');
  * @param  {object} tomcat the tomcat instance
  */
 exports.finalize = function(tomcat) {
-  taskService.deleteTask(exports.createTomcatVersionTaskId(tomcat));
+  taskService.deleteTask(exports.buildTaskId(tomcat));
 };
 
 /**
@@ -43,7 +42,7 @@ exports.chooseBestResultValue = function( results ) {
  * @param  {object} tomcat The tomcat object to update version to
  * @return {string}        the unique task id
  */
-exports.createTomcatVersionTaskId = function(tomcat) {
+exports.buildTaskId = function(tomcat) {
   return `tc-version-${tomcat._id}`;
 };
 
@@ -95,7 +94,7 @@ exports.updateTomcat = function(itemData, tomcatId, nodessh) {
       return Promise.reject(`tomcat not found : id = ${tomcatId}`);
     }
     // create the update version task id
-    let taskId = exports.createTomcatVersionTaskId(tomcat);
+    let taskId = exports.buildTaskId(tomcat);
 
     // create or read a task
     let task = taskService.acquireTask(taskId);
