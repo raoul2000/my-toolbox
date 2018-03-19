@@ -3,6 +3,7 @@ var remote     = require('electron').remote;
 var fs         = require('fs');
 var path         = require('path');
 const store    = require('../../service/store/store');
+const service  = require('../../service/service').service;
 const config   = require('../../service/config');
 const moduleModel   = require('./lib/module');
 const deploySSH   = require('./lib/deploy-ssh');
@@ -39,7 +40,9 @@ module.exports = {
         && module.busy === false
       );
       if( modulesToDeploy.length === 0 ) {
-        notify('No module selected, or selected module not ready','warning', 'warning');
+        service.notification.warning(
+          'Warning', 'No module selected, or selected module not ready'
+        );
       } else {
         $('#modal-deploy-ssh').modal("show");
       }
@@ -76,8 +79,6 @@ module.exports = {
           }
         };
       });
-      console.log(tasks);
-
       promiseUtils.parallel(tasks,deploySSH.run)
       .then( result => {
         console.log(result);
@@ -117,32 +118,22 @@ module.exports = {
       );
       console.log(modulesToDelete);
       if(modulesToDelete.length === 0 ) {
-        notify('No module selected or selected module not ready','warning', 'warning');
+        service.notification.warning(
+          'Warning',
+          'No module selected or selected module not ready'
+        );
       } else {
         let deployFolderPath = this.deployFolderPath;
         let self = this;
-        (new PNotify({
-            title: 'Confirmation Needed',
-            text: `Are you sure you want to delete ${modulesToDelete.length} modules ?`,
-            icon: 'glyphicon glyphicon-question-sign',
-            hide: false,
-            confirm: {
-                confirm: true
-            },
-            buttons: {
-                closer: false,
-                sticker: false
-            },
-            history: {
-                history: false
-            },
-            stack: {"dir1": "down", "dir2": "left", "modal": true, "overlay_close": true}
-        })).get().on('pnotify.confirm', function() {
-            console.log("deleting",modulesToDelete );
-            modulesToDelete.forEach(module => {
-              // TODO : call fs.unlinkSync() sur data and meta filename
-              store.commit("deleteModule",module);
-            });
+        service.notification.confirm(
+          'Confirmation Needed',
+          `Are you sure you want to delete ${modulesToDelete.length} modules ?`
+        )
+        .on('confirm', ()=> {
+          modulesToDelete.forEach(module => {
+            // TODO : call fs.unlinkSync() sur data and meta filename
+            store.commit("deleteModule",module);
+          });
         });
       }
     }
@@ -150,12 +141,16 @@ module.exports = {
   mounted : function(){
     var self = this;
     if(config.store.has('deployFolderPath') === false ) {
-      notify('No deploy folder configured','error', 'error');
+      service.notification.error(
+        'Error', 'No deploy folder configured'
+      );
       return;
     }
     var deployFolderPath = config.store.get('deployFolderPath');
     if ( fs.existsSync(deployFolderPath) === false ) {
-      notify(`Configured Deploy Folder Not Found : <b>${deployFolderPath}</b>`,'error', 'error');
+      service.notification.error(
+        'Error', `Configured Deploy Folder Not Found : <b>${deployFolderPath}</b>`
+      ); 
       return;
     }
     console.log("deployFolderPath = ",deployFolderPath);

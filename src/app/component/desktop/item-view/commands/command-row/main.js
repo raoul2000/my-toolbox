@@ -13,7 +13,7 @@ module.exports = {
   data : function(){
     return {
       disableAction : false,
-      validation: {
+      validation    : {
         "name"   : true,
         "source" : true
       },
@@ -43,30 +43,17 @@ module.exports = {
     },
     deleteCommand : function() {
       let self = this;
-      (new PNotify({
-          title: 'Confirmation Needed',
-          text: `Are you sure you want to delete the command <code>${self.command.name}</code>?`,
-          icon: 'glyphicon glyphicon-question-sign',
-          hide: false,
-          confirm: {
-              confirm: true
-          },
-          buttons: {
-              closer: false,
-              sticker: false
-          },
-          history: {
-              history: false
-          },
-          stack: {"dir1": "down", "dir2": "left", "modal": true, "overlay_close": true}
-      })).get().on('pnotify.confirm', function() {
+      service.notification.confirm(
+        'Confirmation Needed',
+        `Are you sure you want to delete the command <code>${self.command.name}</code>?`
+      )
+      .on('confirm', ()=> {
         self.$store.commit('deleteCommand', {
           "item"      : self.item,
           "command" : self.command
         });
         persistence.saveDesktopItemToFile(self.item);
       });
-
     },
     changeValue: function(arg) {
       if (arg.name === "name") {

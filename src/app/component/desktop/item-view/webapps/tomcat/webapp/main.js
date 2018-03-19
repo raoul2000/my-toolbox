@@ -1,6 +1,7 @@
 const validate    = require('validator');
 const notify      = require('../../../../../../service/notification');
 const persistence = require('../../../../../../service/persistence');
+const service     = require('../../../../../../service/service').service;
 const helper      = require('../../../../../../lib/lib').helper;
 const shell       = require('electron').shell;
 
@@ -173,23 +174,11 @@ module.exports = {
     },
     deleteWebapp : function() {
       let self = this;
-      (new PNotify({
-          title: 'Confirmation Needed',
-          text: `Are you sure you want to delete the webapp <code>${self.webapp.name}</code>?`,
-          icon: 'glyphicon glyphicon-question-sign',
-          hide: false,
-          confirm: {
-              confirm: true
-          },
-          buttons: {
-              closer: false,
-              sticker: false
-          },
-          history: {
-              history: false
-          },
-          stack: {"dir1": "down", "dir2": "left", "modal": true, "overlay_close": true}
-      })).get().on('pnotify.confirm', function() {
+      service.notification.confirm(
+        'Confirmation Needed',
+        `Are you sure you want to delete the webapp <code>${self.webapp.name}</code>?`
+      )
+      .on('confirm', ()=> {
         self.$store.commit('deleteWebapp', {
           "item"      : self.item,
           "tomcat"    : self.tomcat,
@@ -206,8 +195,10 @@ module.exports = {
           // check duplicate contextPath
           let existingWebapp = this.tomcat.webapps.find(webapp => webapp.contextPath === arg.value);
           if (existingWebapp) {
-            notify(`The contextPath <b>${arg.value}</b> is already in
-              use by web app <b>${existingWebapp.name}</b>`, 'warning', 'warning');
+            service.notification.warning(
+              'Warning',
+              `The contextPath <b>${arg.value}</b> is already in use by web app <b>${existingWebapp.name}</b>`
+            );
             this.validation.contextPath = false;
           } else {
             this.validation.contextPath = true;

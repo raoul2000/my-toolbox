@@ -3,6 +3,7 @@ const smartCommand  = require('../../../../../lib/lib').smartCommand;
 const tomcatScanner = require('../../../../../lib/lib').tomcatScanner;
 const helper        = require('../../../../../lib/lib').helper;
 const persistence   = require('../../../../../service/persistence');
+const service       = require('../../../../../service/service').service;
 const NodeSSH = require('node-ssh');
 const fs         = require('fs');
 
@@ -28,7 +29,9 @@ module.exports = Vue.component('modal-tc-scan',  {
         .filter( tomcat => tomcat.selected);
 
       if( tomcatIdsToScan.length === 0) {
-        notify('Please select one or more Tomcat to scan','warning','No selection');
+        service.notification.warning(
+          'Error','Please select one or more Tomcat to scan'
+        );
       } else {
         console.log('start scan',tomcatIdsToScan);
         let self = this;

@@ -6,6 +6,8 @@ const notify   = require('../../service/notification');
 const config   = require('../../service/config');
 const helper   = require('../../lib/lib').helper;
 
+const service   = require('../../service/service').service;
+
 /**
  * The Desktop view allows the user to load one more items from the ctdb folder path into the main view
  * From there, the user can perform actions on desktop items.
@@ -43,16 +45,11 @@ module.exports = {
         return;
       }
       let self = this;
-      (new PNotify({
-          title: 'Confirmation Needed',
-          text: "Are you sure you want to clear your desktop ?",
-          icon: 'glyphicon glyphicon-question-sign',
-          hide: false,
-          confirm: { confirm: true},
-          buttons: { closer: false,  sticker: false  },
-          history: { history: false },
-          stack: {"dir1": "down", "dir2": "left", "modal": true, "overlay_close": true}
-      })).get().on('pnotify.confirm', function() {
+      service.notification.confirm(
+        'Confirmation Needed',
+        "Are you sure you want to clear your desktop ?"
+      )
+      .on('confirm', ()=> {
         self.$store.commit('removeAllItems');
         config.clearDesktop();
       });
@@ -159,11 +156,19 @@ module.exports = {
             var relativeFilePath = filename.replace(ctdbBasePath,'');
             if(relativeFilePath === filename) {
               // TODO : wee how to highlight the existing item (css animate ?)
-              notify('It is not permitted to save an item out of the base folder','error','Error');
+              service.notification.error(
+                '',
+                "It is not permitted to save an item out of the base folder"
+              );
+              //notify('It is not permitted to save an item out of the base folder','error','Error');
             } else {
               fs.writeFile(filename, JSON.stringify(newItem, null, 2) , 'utf-8', (err) => {
                 if(err) {
-                  notify('failed to save','error','error');
+                  service.notification.error(
+                    'Error',
+                    "Failed to save item"
+                  );
+                  //notify('failed to save','error','error');
                   console.error(err);
                 } else {
 
@@ -177,7 +182,11 @@ module.exports = {
                   });
                   config.store.set('recent.ctdbPath',path.dirname(filename));
                   config.addDesktopItem(filename);
-                  notify(`Saved to <b>${relativeFilePath}</b> and added to your desktop` ,'success','Success');
+                  service.notification.success(
+                    'Success',
+                    `Saved to <b>${relativeFilePath}</b> and added to your desktop`
+                  );
+                  //notify(`Saved to <b>${relativeFilePath}</b> and added to your desktop` ,'success','Success');
                 }
               });
             }
@@ -213,23 +222,17 @@ module.exports = {
      */
     removeGroupFromDesktop : function(category) {
       let self = this;
-      (new PNotify({
-          title: 'Confirmation Needed',
-          text: "Are you sure you want to remove this group from your desktop ?",
-          icon: 'glyphicon glyphicon-question-sign',
-          hide: false,
-          confirm: { confirm: true},
-          buttons: { closer: false,  sticker: false  },
-          history: { history: false },
-          stack: {"dir1": "down", "dir2": "left", "modal": true, "overlay_close": true}
-      })).get().on('pnotify.confirm', function() {
+      service.notification.confirm(
+        'Confirmation Needed',
+        "Are you sure you want to remove this group from your desktop ?"
+      )
+      .on('confirm', ()=> {
         store.state.desktop
           .filter(item => (item.path.length > 0 && item.path[0] === category) || (item.path.length === 0 && category === "NO CATEGORY"))
           .forEach(item => {
             self.removeFromDesktop(item);
           });
       });
-
     },
     /**
      * Remove an item from the desktopn
@@ -257,12 +260,20 @@ module.exports = {
           // check if this file is under the CTBD base folder
           var relativeFilePath = file.replace(ctdbBasePath,'');
           if(relativeFilePath === file) {
-            notify('It is not permitted to select an item out of the base folder','error','Error');
+            service.notification.warning(
+              'Warning',
+              "It is not permitted to select an item out of the base folder"
+            );
+            //notify('It is not permitted to select an item out of the base folder','error','Error');
           } else {
              let newItemData = JSON.parse(fs.readFileSync(file, 'utf8'));
              if( store.getters.desktopItemById(newItemData._id) ) {
-               notify(`The item is already part of your desktop :
-                 <pre>${relativeFilePath}</pre>`,'warning','warning');
+               service.notification.warning(
+                 'Warning',
+                 `The item is already part of your desktop : <pre>${relativeFilePath}</pre>`
+               );
+               //notify(`The item is already part of your desktop :
+              //   <pre>${relativeFilePath}</pre>`,'warning','warning');
 
                // Animate (shake) the existing desktop item Modify directly the DOM using
                // the computed element id that has been defined by the template

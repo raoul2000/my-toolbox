@@ -1,6 +1,7 @@
 const validate    = require('validator');
 const notify      = require('../../../../../../../service/notification');
 const persistence = require('../../../../../../../service/persistence');
+const service     = require('../../../../../../../service/service').service;
 const shell       = require('electron').shell;
 
 module.exports = {
@@ -35,23 +36,11 @@ module.exports = {
     },
     deleteServlet : function() {
       let self = this;
-      (new PNotify({
-          title: 'Confirmation Needed',
-          text: `Are you sure you want to delete the servlet <code>${self.servlet.name}</code>?`,
-          icon: 'glyphicon glyphicon-question-sign',
-          hide: false,
-          confirm: {
-              confirm: true
-          },
-          buttons: {
-              closer: false,
-              sticker: false
-          },
-          history: {
-              history: false
-          },
-          stack: {"dir1": "down", "dir2": "left", "modal": true, "overlay_close": true}
-      })).get().on('pnotify.confirm', function() {
+      service.notification.confirm(
+        'Confirmation Needed',
+        `Are you sure you want to delete the servlet <code>${self.servlet.name}</code>?`
+      )
+      .on('confirm', ()=> {
         self.$store.commit('deleteServlet', {
           "item"      : self.item,
           "tomcat"    : self.tomcat,

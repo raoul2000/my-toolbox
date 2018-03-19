@@ -3,6 +3,7 @@
 const fs       = require('fs');
 const path     = require('path');
 const store    = require('../../../service/store/store');
+const service  = require('../../../service/service').service;
 const ACTION   = require('../lib/module').ACTION;
 
 
@@ -97,11 +98,17 @@ module.exports = {
       console.log('submitChanges');
       // validate changes
       if( this.metadata.version.length === 0 ) {
-        notify('A <b>version number</b> is required','error','error');
+        service.notification.error(
+          'Error', 'A <b>version number</b> is required'
+        );
       } else if( this.metadata.symlink.length === 0 ) {
-        notify('A <b>symlink</b> value is required','error','error');
+        service.notification.error(
+          'Error', 'A <b>symlink</b> is required'
+        );
       } else if( this.metadata.installFolder.length === 0 ) {
-        notify('A <b>install folder</b> value is required','error','error');
+        service.notification.error(
+          'Error', 'A <b>install folder</b> value is required'
+        );
       } else {
 
         // User input is Valid : update the store
@@ -123,7 +130,9 @@ module.exports = {
         try {
           fs.writeFileSync(metafilePath, JSON.stringify(newMeta, null ,2));
         } catch (e) {
-          notify( "Failed to save metadata file "+metafilePath,'error','error');
+          service.notification.error(
+            'Error', `Failed to save metadata file : ${metafilePath}`
+          );          
           console.warn("failed to save metadata file "+metafilePath,e);
         }
       }

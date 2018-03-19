@@ -2,6 +2,7 @@ const validate = require('validator');
 const notify   = require('../../../../../service/notification');
 const helper   = require('../../../../../lib/lib').helper;
 var persistence = require('../../../../../service/persistence');
+var service = require('../../../../../service/service').service;
 const version = require('../../../../../service/version/tomcat');
 
 const shell = require('electron').shell;
@@ -171,23 +172,11 @@ module.exports = {
     },
     deleteTomcat : function(){
       let self = this;
-      (new PNotify({
-          title: 'Confirmation Needed',
-          text: `Are you sure you want to delete the tomcat <code>${self.tomcat.id}</code> and all its webapps ?`,
-          icon: 'glyphicon glyphicon-question-sign',
-          hide: false,
-          confirm: {
-              confirm: true
-          },
-          buttons: {
-              closer: false,
-              sticker: false
-          },
-          history: {
-              history: false
-          },
-          stack: {"dir1": "down", "dir2": "left", "modal": true, "overlay_close": true}
-      })).get().on('pnotify.confirm', function() {
+      service.notification.confirm(
+        'Confirmation Needed',
+        `Are you sure you want to delete the tomcat <code>${self.tomcat.id}</code> and all its webapps ?`
+      )
+      .on('confirm', ()=> {
         self.$store.commit('deleteTomcat', {
           "item"   : self.item,
           "tomcat" : self.tomcat
@@ -208,16 +197,25 @@ module.exports = {
           this.validation.id = false;
         } else if( ! this.isUniqueTomcatId(arg.value)) {
           this.validation.id = false;
-          notify(`A Tomcat instance with the id <b>${arg.value}</b> is already in use`,'warning','warning');
+          service.notification.warning(
+            'Warning',
+            `A Tomcat instance with the id <b>${arg.value}</b> is already in use`
+          );
         } else {
           this.validation.id = true;
         }
       } else if( arg.name === "port") {
         this.validation.port = false;
         if( ! validate.isInt(arg.value+'',{ gt : 0}) ) {
-          notify("The PORT number should be an integer value",'warning','warning');
+          service.notification.warning(
+            'Warning',
+            "The PORT number should be an integer value"
+          );
         } else if( ! this.isUniqueTomcatPort(arg.value)) {
-          notify(`The port <b>${arg.value}</b> is already in use`,'warning','warning');
+          service.notification.warning(
+            'Warning',
+            `The port <b>${arg.value}</b> is already in use`
+          );           
         } else {
           this.validation.port = true;
           arg.value = parseInt(arg.value);

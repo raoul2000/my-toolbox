@@ -5,7 +5,7 @@ var validate    = require('validator');
 const { spawn } = require('child_process');
 const store     = require('../../../service/store/store'); // TODO : nod needed as already injected by parent (to check)
 const config    = require('../../../service/config');
-const notify    = require('../../../service/notification');
+const service   = require('../../../service/service').service;
 
 const VIEW_ID = "item-view";
 
@@ -53,7 +53,9 @@ module.exports = {
         // TODO : error handler if command fails (program file not found)
       } else {
         // no ip address available : error (sorry)
-        notify('No IP address or hostname provided','error','Error');
+        service.notification.error(
+          'Error','No IP address or hostname provided'
+        );
       }
     },
     /**
@@ -81,7 +83,9 @@ module.exports = {
         spawn(`"${config.store.get('winscpFilePath')}"`, [ uri ] , { shell: true });
       }  else {
         // no ip address available : error (sorry)
-        notify('No IP address or hostname provided','error','Error');
+        service.notification.error(
+          'Error','No IP address or hostname provided'
+        );
       }
     },
     /**

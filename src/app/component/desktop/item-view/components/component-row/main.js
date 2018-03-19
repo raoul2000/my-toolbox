@@ -21,30 +21,17 @@ module.exports = {
   methods : {
     deleteComponent : function() {
       let self = this;
-      (new PNotify({
-          title: 'Confirmation Needed',
-          text: `Are you sure you want to delete the component <code>${self.component.name}</code>?`,
-          icon: 'glyphicon glyphicon-question-sign',
-          hide: false,
-          confirm: {
-              confirm: true
-          },
-          buttons: {
-              closer: false,
-              sticker: false
-          },
-          history: {
-              history: false
-          },
-          stack: {"dir1": "down", "dir2": "left", "modal": true, "overlay_close": true}
-      })).get().on('pnotify.confirm', function() {
+      service.notification.confirm(
+        'Confirmation Needed',
+        `Are you sure you want to delete the component <code>${self.component.name}</code>?`
+      )
+      .on('confirm', ()=> {
         self.$store.commit('deleteComponent', {
           "item"      : self.item,
           "component" : self.component
         });
         persistence.saveDesktopItemToFile(self.item);
       });
-
     },
     changeValue: function(arg) {
       if (arg.name === "name") {
