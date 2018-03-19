@@ -11,7 +11,7 @@ module.exports = {
   components : {
     "inlineInput"    : require('../../../../lib/component/inline-input'),
     "inlineTextarea" : require('../../../../lib/component/inline-textarea'),
-    "autocomplete" : require('../../../../lib/component/auto-complete')
+    "autocomplete"   : require('../../../../lib/component/auto-complete')
   },
   template: require('./main.html'),
   data : function(){
@@ -101,7 +101,6 @@ module.exports = {
       persistence.saveDesktopItemToFile(this.item);
     }
   },
-
   /**
    * Build the summary view for the selected desktop item. The dekstop item
    * id is passed as a path param.

@@ -1,8 +1,8 @@
-const store     = require('../../../../service/store/store'); // TODO : nod needed as already injected by parent (to check)
-const helper    = require('../../../../lib/lib').helper;
-var persistence = require('../../../../service/persistence');
+const store       = require('../../../../service/store/store'); // TODO : nod needed as already injected by parent (to check)
+const helper      = require('../../../../lib/lib').helper;
+var persistence   = require('../../../../service/persistence');
 var tomcatVersion = require('../../../../service/version/tomcat');
-const config   = require('../../../../service/config');
+const config      = require('../../../../service/config');
 
 const VIEW_ID = "webapp-tab";
 
@@ -28,6 +28,10 @@ module.exports = {
     view : function() {
       return this.$store.getters['view/findById'](VIEW_ID);
     },
+    /**
+     * Returns array of tomcat mathing current filter.
+     * Match is done on the webapp reference ID contained by the tomcat
+     */
     filteredTomcats : function() {
       if( this.filterText.trim().length === 0) {
         return this.item.data.tomcats;
@@ -55,7 +59,7 @@ module.exports = {
   methods : {
     /**
      * Update version of all tomcat owner by this component.
-     *
+     * The actual version scan is delegated to the tomcatVersion service.
      */
     updateAllTomcatVersion : function() {
       tomcatVersion
@@ -142,8 +146,7 @@ module.exports = {
     }
   },
   /**
-   * Build the summary view for the selected desktop item. The dekstop item
-   * index is passed as a route query param
+   * Load the parent item using route param 'id' and install keyboard shortcuts
    */
    mounted : function(){
      // find the desktop item in the store

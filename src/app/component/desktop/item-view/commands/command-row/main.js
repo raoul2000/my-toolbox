@@ -24,23 +24,35 @@ module.exports = {
   },
   template: require('./main.html'),
   computed : {
+    /**
+     * Return the command execution task linked with this component.
+     * The task Id is initialized when the component is mounted
+     */
     runCmdTask : function(){
       return  this.$store.getters['tmptask/taskById'](this.runCmdTaskId);
     },
   },
   methods : {
+    /**
+     * Execute the command.
+     * The job of actually executing the command is delegated to the service.command
+     * which returns the result of command execution
+     */
     runCommand : function() {
       let self = this;
       this.allowEdit = false;
       service.command.runCommand(this.item.data,this.command._id)
       .then( result => {
-        debugger;
         self.cmdResult = result;
         service.command.finalize(this.command);
         self.allowEdit = true;
       });
-
     },
+    /**
+     * Delete the command associated with this component.
+     * The command is removed from the store and the file used to save the
+     * parent item is updated.
+     */
     deleteCommand : function() {
       let self = this;
       service.notification.confirm(
@@ -55,6 +67,9 @@ module.exports = {
         persistence.saveDesktopItemToFile(self.item);
       });
     },
+    /**
+     * Event Change handler
+     */
     changeValue: function(arg) {
       if (arg.name === "name") {
         if (validate.isEmpty(arg.value)) {

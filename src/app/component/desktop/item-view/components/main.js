@@ -18,8 +18,6 @@ module.exports = {
       item         : null
     };
   },
-  computed : {
-  },
   methods : {
     addComponent : function() {
       console.log('addComponent');
@@ -35,8 +33,7 @@ module.exports = {
     }
   },
   /**
-   * Build the summary view for the selected desktop item. The dekstop item
-   * id is passed as a path param.
+   * Load the parent item using route param 'id'
    */
   mounted : function(){
     // find the desktop item in the store
