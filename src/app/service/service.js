@@ -5,5 +5,6 @@ exports.service = {
   "persistence"   : require('./persistence'),
   "notification"  : require('./notification'),
   "config"        : require('./config'),
-  "command"       : require('./command/runner')
+  "command"       : require('./command/runner'),
+  "sshInfo"       : require('./ssh-connection')
 };
