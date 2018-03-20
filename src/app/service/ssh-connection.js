@@ -1,5 +1,9 @@
 "use strict";
 
+/**
+ * Create and return HTML for the input password field
+ * @return {string} HTML input password
+ */
 function createHTMLInputPassword() {
   return `<div class="form-group">
 							<label for="password" class="control-label">Password</label>
@@ -8,6 +12,10 @@ function createHTMLInputPassword() {
 					</div>`;
 }
 
+/**
+ * Create and return the HTML for the input field 'name'
+ * @return {string} HTML input text
+ */
 function createHTMLInputName() {
   return `<div class="form-group">
 							<label for="username" class="control-label">Username</label>
@@ -16,11 +24,17 @@ function createHTMLInputName() {
 					</div>`;
 }
 
+/**
+ * Create and returns HTML for the form submit button
+ * @return {string} HTML button
+ */
 function createHTMLSubmitButton(){
   return `<button  id="btn-submit" class="btn btn-success">Login</button>`;
 }
 
-
+/**
+ * List of available fields that can be added dynamically to the form
+ */
 const fieldCollection = [
   {
     "id"      : "username",
@@ -32,7 +46,15 @@ const fieldCollection = [
   }
 ];
 
-
+/**
+ * Validate the field value.
+ * This function is also responsible for rendering validation result as a success
+ * or error.
+ *
+ * @param  {string}  inputId field id
+ * @param  {string}  value   field value
+ * @return {Boolean}         validation result
+ */
 function isValid(inputId, value) {
   let result = false;
   let formGroup = $(`#generic-modal-body #${inputId}`).parent('.form-group');
@@ -125,7 +147,7 @@ exports.getInfo = function(itemData) {
   if( ! itemData) {
     throw new Error('missing argument : itemData');
   }
-
+/*
   let fieldIds = [];
   if( itemData.ssh.username.length === 0) {
     fieldIds.push('username');
@@ -133,7 +155,7 @@ exports.getInfo = function(itemData) {
   if( itemData.ssh.password.length === 0) {
     fieldIds.push('password');
   }
-
+*/
   showForm(['username','password'])
   .then(result => {
     console.log(result);
