@@ -192,36 +192,39 @@ module.exports = {
       return this.item.data.tomcats.findIndex( tc => tc.port === parseInt(port)) === -1 ;
     },
     changeValue : function(arg) {
-      if( arg.name === "id") {
-        if(  validate.isEmpty(arg.value)) {
-          this.validation.id = false;
-        } else if( ! this.isUniqueTomcatId(arg.value)) {
-          this.validation.id = false;
-          service.notification.warning(
-            'Warning',
-            `A Tomcat instance with the id <b>${arg.value}</b> is already in use`
-          );
-        } else {
-          this.validation.id = true;
+      if ( false ) {
+        if( arg.name === "id") {
+          if(  validate.isEmpty(arg.value)) {
+            this.validation.id = false;
+          } else if( ! this.isUniqueTomcatId(arg.value)) {
+            this.validation.id = false;
+            service.notification.warning(
+              'Warning',
+              `A Tomcat instance with the id <b>${arg.value}</b> is already in use`
+            );
+          } else {
+            this.validation.id = true;
+          }
+        } else if( arg.name === "port") {
+          this.validation.port = false;
+          if( ! validate.isInt(arg.value+'',{ gt : 0}) ) {
+            service.notification.warning(
+              'Warning',
+              "The PORT number should be an integer value"
+            );
+          } else if( ! this.isUniqueTomcatPort(arg.value)) {
+            service.notification.warning(
+              'Warning',
+              `The port <b>${arg.value}</b> is already in use`
+            );
+          } else {
+            this.validation.port = true;
+            arg.value = parseInt(arg.value);
+          }
+        } else if( arg.name === 'version') {
+          this.validation.version = true;
         }
-      } else if( arg.name === "port") {
-        this.validation.port = false;
-        if( ! validate.isInt(arg.value+'',{ gt : 0}) ) {
-          service.notification.warning(
-            'Warning',
-            "The PORT number should be an integer value"
-          );
-        } else if( ! this.isUniqueTomcatPort(arg.value)) {
-          service.notification.warning(
-            'Warning',
-            `The port <b>${arg.value}</b> is already in use`
-          );           
-        } else {
-          this.validation.port = true;
-          arg.value = parseInt(arg.value);
-        }
-      } else if( arg.name === 'version') {
-        this.validation.version = true;
+        
       }
       // always update even if not valid !
       let updateInfo = {
