@@ -6,5 +6,6 @@ exports.service = {
   "notification"  : require('./notification'),
   "config"        : require('./config'),
   "command"       : require('./command/runner'),
-  "sshInfo"       : require('./ssh-connection')
+  "sshInfo"       : require('./ssh-connection'),
+  "shell"         : require('./shell')
 };
