@@ -33,6 +33,14 @@ function createHTMLSubmitButton(){
 }
 
 /**
+ * Create and returns HTML for the form CANCEL button
+ * @return {string} HTML button
+ */
+function createHTMLCanceltButton(){
+  return `<button  id="btn-cancel" class="btn btn-default">Cancel</button>`;
+}
+
+/**
  * List of available fields that can be added dynamically to the form
  */
 const fieldCollection = [
@@ -101,12 +109,21 @@ function showForm(fieldIds) {
     fields
       .map( field => field.builder())
       .join(' ')
-      .concat(createHTMLSubmitButton())
+      .concat(
+        createHTMLSubmitButton(),
+        " ",
+        createHTMLCanceltButton()
+      )
   );
 
   // display the modal /////////////////////////////////////////////////////////
 
   $modal.modal("show");
+  // FIXME : focus does not work :(
+  $modal.on('hidden.bs.modal', function (e) {
+    $modalBody.find('input').get(0).focus();
+  });
+
 
   // Handle user interaction ///////////////////////////////////////////////////
 
@@ -114,6 +131,9 @@ function showForm(fieldIds) {
 
     $modal.on('hidden.bs.modal', function (e) {
       reject(false);  // operation canceled by user
+    });
+    $modal.find('#btn-cancel').on('click',function(ev) {  // Cancel form
+      resolve(false);
     });
 
     $modal.find('#btn-submit').on('click',function(ev) {  // submit form
@@ -129,9 +149,7 @@ function showForm(fieldIds) {
       if( validFields.length === fields.length) {         // all fields are valid
         let resultObj = {};
         validFields.forEach( field => {                   // create result object
-          Object.defineProperty(resultObj, field.id, {
-            "value" : field.value
-          });
+          resultObj[field.id] = field.value;
         });
         resolve(resultObj);                               // resolved by resultObj
       }
@@ -143,32 +161,39 @@ exports.resolveHost = function(itemData) {
   //item.
 };
 
-exports.getInfo = function(itemData) {
-  if( ! itemData) {
-    throw new Error('missing argument : itemData');
+/**
+ * Complete the sshOptions object if needed and returns the result.
+ *
+ * @param  {Object} sshOptions the original SSH options object
+ * @return {Promise}            Resolved as the completed SSH option object
+ */
+exports.getInfo = function(sshOptions) {
+  if( ! sshOptions ) {
+    return Promise.reject('missing argument : sshOptions');
   }
-/*
+
   let fieldIds = [];
-  if( itemData.ssh.username.length === 0) {
+  if( sshOptions.username.length === 0) {
     fieldIds.push('username');
   }
-  if( itemData.ssh.password.length === 0) {
+  if( sshOptions.password.length === 0) {
     fieldIds.push('password');
   }
-*/
-  showForm(['username','password'])
-  .then(result => {
-    console.log(result);
-    $('#generic-modal').modal('hide');
-  })
-  .catch(err => {
-    console.error(err);
-  });
-/*
-  if( ! itemData.ssh.host ) {
-    console.log('foo');
+
+  if(fieldIds.length === 0) {
+    // all fields are defined
+    return Promise.resolve(sshOptions);
+  } else {
+    // some fields have been entered by the user : complete the initial SSH options
+    // object and return the result
+    return showForm(fieldIds)
+    .then(result => {
+      $('#generic-modal').modal('hide');
+      if( result === false ) {
+        return Promise.reject("canceled-by-user");
+      } else {
+        return Object.assign({}, sshOptions, result);
+      }
+    });
   }
-  return {
-    'host' : exports.resolveHost(itemData)
-  };*/
 };

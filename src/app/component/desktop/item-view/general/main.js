@@ -6,6 +6,7 @@ var path               = require('path');
 const config           = require('../../../../service/config');
 var checkSSHConnection = require('../../../../lib/ssh/check-connection').checkConnection;
 var persistence        = require('../../../../service/persistence');
+var service        = require('../../../../service/service').service;
 
 module.exports = {
   components : {
@@ -41,18 +42,20 @@ module.exports = {
   computed : {
     canTestConnection : function(){
       return this.action === null
-        && this.item.data.ssh.host.length > 0
-        && this.item.data.ssh.username.length > 0
-        && this.item.data.ssh.password.length > 0;
+        && this.item.data.ssh.host.length > 0;
     }
   },
   methods : {
     testConnection : function() {
       let self = this;
       this.allowEdit = false;
-      this.action = "test-connection";
-      this.connectionOk = null;
-      checkSSHConnection(this.item.data.ssh)
+      service.sshInfo.getInfo(this.item.data.ssh)
+      .then( sshOptions => {
+        // now that we have ssh connection params, let's start the real work
+        this.action = "test-connection";
+        this.connectionOk = null;
+        return checkSSHConnection(sshOptions);
+      })
       .then( success => {
         this.connectionOk = true;
         this.action       = null;
@@ -60,8 +63,12 @@ module.exports = {
       })
       .catch(error => {
         this.action       = null;
-        this.connectionOk = false;
         self.allowEdit    = true;
+        if( error === "canceled-by-user") {
+          this.connectionOk = true;
+        } else {
+          this.connectionOk = false;
+        }
       });
     },
     /**

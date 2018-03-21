@@ -40,7 +40,7 @@ module.exports = `
                   :allowEdit="allowEdit"
                   inputType="text"
                   valueName="username"
-                  emptyValue="<em class='text-muted'>...</em>"
+                  emptyValue="<em class='text-muted'>(no username)</em>"
                   v-on:changeValue="changeSSHValue"/>
               </td>
             </tr>
@@ -52,6 +52,7 @@ module.exports = `
                   :valid="validation.password"
                   :allowEdit="allowEdit"
                   inputType="password"
+                  emptyValue="<em class='text-muted'>(no password)</em>"
                   valueName="password"
                   v-on:changeValue="changeSSHValue"/>
               </td>
