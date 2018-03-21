@@ -100,11 +100,9 @@ const app = new Vue({
      */
     showAbout : function() {
       var self = this;
-      service.sshInfo.getInfo("foo");
-      /*
       $('#modal').modal("show").one('hidden.bs.modal', function (e) {
         self.$emit('close');
-      });*/
+      });
     },
     /**
      * Hides/shows the main top toolbar depending on the current route name

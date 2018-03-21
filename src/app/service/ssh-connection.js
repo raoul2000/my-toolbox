@@ -24,6 +24,13 @@ function createHTMLInputName() {
 					</div>`;
 }
 
+function createHTMLRememberCheck() {
+  return `<div class="checkbox">
+    <label>
+      <input id="chk-save" type="checkbox"> Save for this session
+    </label>
+  </div>`;
+}
 /**
  * Create and returns HTML for the form submit button
  * @return {string} HTML button
@@ -81,6 +88,10 @@ function isValid(inputId, value) {
  * Create and show the modal dialog box to get field values.
  * Note that the order in the field ids array drive the form construction.
  *
+ * If the user fills all fields and press OK, the returned promise is resolved
+ * with the value entered. Otherwise, the returned promise is reject with
+ * the value 'canceled-by-user'.
+ *
  * @param  {[string]} fieldIds array of field ids from the collection fields
  * @return {Promise}          fields values entered by user
  */
@@ -110,6 +121,7 @@ function showForm(fieldIds) {
       .map( field => field.builder())
       .join(' ')
       .concat(
+        createHTMLRememberCheck(),
         createHTMLSubmitButton(),
         " ",
         createHTMLCanceltButton()
@@ -151,18 +163,21 @@ function showForm(fieldIds) {
         validFields.forEach( field => {                   // create result object
           resultObj[field.id] = field.value;
         });
+        if( $modal.find('#chk-save:checked').length === 1) {
+          // TODO : save those values for the current session
+          console.log('save credentials');
+        }
         resolve(resultObj);                               // resolved by resultObj
       }
     });
   });
 }
 
-exports.resolveHost = function(itemData) {
-  //item.
-};
 
 /**
  * Complete the sshOptions object if needed and returns the result.
+ * Is SSH connection info are missing the user is predented a modal dialog and
+ * can enter missing value.
  *
  * @param  {Object} sshOptions the original SSH options object
  * @return {Promise}            Resolved as the completed SSH option object
