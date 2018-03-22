@@ -141,6 +141,15 @@ function showForm(fieldIds) {
 
   return new Promise( (resolve, reject) => {
 
+    // do not propagate ESC keypress event because it would cause navigation to
+    // the desktop page.
+    $modal.keyup(function(e) {
+         if (e.keyCode == 27) { // escape key maps to keycode `27`
+           e.stopPropagation();
+           resolve(false);
+        }
+    });
+
     $modal.on('hidden.bs.modal', function (e) {
       reject(false);  // operation canceled by user
     });
