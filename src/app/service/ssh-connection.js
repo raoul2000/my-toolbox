@@ -8,7 +8,6 @@ function createHTMLInputPassword() {
   return `<div class="form-group">
 							<label for="password" class="control-label">Password</label>
 							<input type="password" class="form-control" id="password" name="password" value="" required="true" title="Please enter your password">
-							<span class="help-block"></span>
 					</div>`;
 }
 
@@ -20,7 +19,6 @@ function createHTMLInputName() {
   return `<div class="form-group">
 							<label for="username" class="control-label">Username</label>
 							<input type="text" class="form-control" id="username" name="username" value="" required="true" title="Please enter you username">
-							<span class="help-block"></span>
 					</div>`;
 }
 
@@ -131,11 +129,11 @@ function showForm(fieldIds) {
   // display the modal /////////////////////////////////////////////////////////
 
   $modal.modal("show");
-  // FIXME : focus does not work :(
-  $modal.on('hidden.bs.modal', function (e) {
-    $modalBody.find('input').get(0).focus();
-  });
 
+  // set focus on first input
+  $modal.on('shown.bs.modal', function (e) {
+    $(this).find("input:visible:first").focus();
+  });
 
   // Handle user interaction ///////////////////////////////////////////////////
 
