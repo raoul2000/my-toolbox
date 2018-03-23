@@ -16,7 +16,8 @@ module.exports = {
       desktopGroupByCategory : false,
       expandTomcatView       : false,
       expandWebappView       : false,
-      themeName              : ""
+      themeName              : "",
+      checkSavePwdToSession  : false
     };
   },
   template: require('./main.html'),
@@ -118,6 +119,7 @@ module.exports = {
       config.store.set('expandTomcatView',this.expandTomcatView);
       config.store.set('expandWebappView',this.expandWebappView);
       config.store.set('commandLibraryFilePath',this.commandLibraryFilePath);
+      config.store.set('checkSavePwdToSession',this.checkSavePwdToSession);
 
       if( ! this.persistentDesktop ) {
         config.clearDesktop();
@@ -137,6 +139,7 @@ module.exports = {
     this.expandTomcatView       = config.store.get('expandTomcatView');
     this.expandWebappView       = config.store.get('expandWebappView');
     this.commandLibraryFilePath = config.store.get('commandLibraryFilePath');
+    this.checkSavePwdToSession  = config.store.get('checkSavePwdToSession');
 
     Mousetrap.bind('esc', this.goBack, 'keyup');
   }

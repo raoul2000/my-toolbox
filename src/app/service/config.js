@@ -30,6 +30,8 @@ const store = new Store({
     "desktopGroupByCategory": false,
     "expandTomcatView"      : false,
     "expandWebappView"      : false,
+    // is the checkbox to save user entered password checked ?
+    "checkSavePwdToSession" : true,
     "recent" : {
       // "ctdbPath" : '/path/to/latest'
     },

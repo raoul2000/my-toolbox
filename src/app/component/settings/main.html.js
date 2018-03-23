@@ -200,6 +200,18 @@ module.exports = `
     </div>
     <!-- // END - expand Webapp View  -->
 
+    <!-- // BEGIN - check save PWD session -->
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-9">
+        <div class="checkbox">
+          <label>
+            <input v-model="checkSavePwdToSession" type="checkbox"> Check the "Remember my password for this session" by default
+          </label>
+        </div>
+      </div>
+    </div>
+    <!-- // END - check save PWD session  -->
+
     <!-- // BEGIN - theme -->
     <div class="form-group" style="display:none">
       <label for="theme-name" class="col-sm-3 control-label">Theme</label>
