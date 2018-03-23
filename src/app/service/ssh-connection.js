@@ -1,5 +1,7 @@
 "use strict";
 
+const config   = require('./config');
+const notification   = require('./notification');
 const cache = new Map();
 
 /**
@@ -25,9 +27,13 @@ function createHTMLInputName() {
 }
 
 function createHTMLRememberCheck() {
+  let checked = config.store.get('checkSavePwdToSession') === true
+    ? "checked"
+    : "";
+
   return `<div class="checkbox">
-    <label>
-      <input id="chk-save" type="checkbox"> Save for this session
+    <label title="remember until application is closed">
+      <input id="chk-save" type="checkbox" ${checked}> Remember for this time
     </label>
   </div>`;
 }
@@ -186,12 +192,26 @@ function showForm(fieldIds) {
 }
 
 function buildCacheKey(sshOptions, fieldId) {
-
+  return `${sshOptions.username}:${fieldId}@${sshOptions.host}`;
 }
 /**
+ * Remove the cached password or do nothing if no password were cached
+ * @param  {object} sshOptions the SSH options the password is related to
+ * @return {Boolea}            TRUE if the password could be deleted, FALSE
+ * if no password was cached
+ */
+exports.clearCachedPassword = function(sshOptions) {
+  return cache.delete(buildCacheKey(sshOptions,"password"));
+};
+
+/**
  * Complete the sshOptions object if needed and returns the result.
- * Is SSH connection info are missing the user is predented a modal dialog and
+ * If SSH connection info are missing the user is predented a modal dialog and
  * can enter missing value.
+ *
+ *  NOTE : initially this function could handle password and username but it has been
+ *  decided (by me) that username is mandatory... so the dynamic feature is not
+ *  really used. Too bad, it was nice
  *
  * @param  {Object} sshOptions the original SSH options object
  * @return {Promise}            Resolved as the completed SSH option object
@@ -201,12 +221,17 @@ exports.getInfo = function(sshOptions) {
     return Promise.reject('missing argument : sshOptions');
   }
 
-  let usernameKey = "username@".concat(sshOptions.host);
-  let passwordKey = "password@".concat(sshOptions.host);
+  if( ! sshOptions.username || sshOptions.username.length === 0) {
+    notification.error("username is missing","You must provide a username to be able to continue");
+    return Promise.reject('missing argument : sshOptions.username');
+  }
+  //let usernameKey = "username@".concat(sshOptions.host);
+  let passwordKey = buildCacheKey(sshOptions,"password");
 
   let resultSshOptions = Object.assign({},sshOptions);
 
   let fieldIds = [];
+  /*
   if( sshOptions.username.length === 0) {
     if( cache.has( usernameKey )) {
       resultSshOptions["username"] = cache.get(usernameKey);
@@ -216,6 +241,7 @@ exports.getInfo = function(sshOptions) {
   } else {
     cache.delete(usernameKey);
   }
+  */
 
   if( sshOptions.password.length === 0) {
     if( cache.has( passwordKey )) {
@@ -239,6 +265,16 @@ exports.getInfo = function(sshOptions) {
       if( result === false ) {
         return Promise.reject("canceled-by-user");
       } else {
+        if(result._save === true) {
+          // save the user entered values into the memory cache
+          if( result.password ){
+            cache.set(passwordKey, result.password);
+          }
+          /*
+          if( result.username ){
+            cache.set(usernameKey, result.username);
+          }*/
+        }
         return Object.assign(resultSshOptions, result);
       }
     });
