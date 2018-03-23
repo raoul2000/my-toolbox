@@ -24,6 +24,11 @@ module.exports = {
     },
     view : function() {
       return this.$store.getters['view/findById'](VIEW_ID);
+    },
+    webappCount : function() {
+      return this.item.data.tomcats.reduce( (acc, tomcat) => {
+        return acc + tomcat.webapps.length;
+      },0);
     }
   },
   methods : {
