@@ -36,6 +36,9 @@ module.exports = {
     }
   },
   methods : {
+    addItemToGroup : function(category) {
+      this.openDesktopItems(category);
+    },
     /**
      * Remove All items from the desktop and save the new desktop state (empty)
      * in the current config.
@@ -118,7 +121,15 @@ module.exports = {
     /**
      * Saves an empty item to file
      */
-    createItem : function() {
+    createItem : function(category) {
+      let defaultPath = config.getRecentCTDBPath();
+      if( category && typeof category === "string") {
+        defaultPath = path.join(
+          config.store.get("ctdbFolderPath"),
+          category
+        );
+      }
+
       //this.$router.push('/create');
       let newItem = {
         "_id" : helper.generateUUID(),
@@ -137,7 +148,7 @@ module.exports = {
       };
 
       var defaultFilename = path.join(
-        config.getRecentCTDBPath(),
+        defaultPath,
         "NO_NAME"
       );
       console.log('saving to ', defaultFilename);
@@ -315,13 +326,25 @@ module.exports = {
     /**
      * Opens a file selection dialog box (native) so the user can select one or more
      * item that will be added to the desktop.
+     *
+     *
+     * @param  {mixed} defaultPath  if a string is provided, it is assumed to be a
+     * path relative to CTDB folder path and is used to initialized the defaultPath.
+     * Otherwise it is ignored
      */
-    openDesktopItems : function() {
+    openDesktopItems : function(defaultPath) {
+      let defPath = config.getRecentCTDBPath();
+      if( defaultPath && typeof defaultPath === "string") {
+        defPath = path.join(
+          config.store.get("ctdbFolderPath"),
+          defaultPath
+        );
+      }
       remote.dialog.showOpenDialog(
         remote.getCurrentWindow(),  // is modal on the main window
         {
           "title"       : "Select Item",
-          "defaultPath" : config.getRecentCTDBPath(),
+          "defaultPath" : defPath,
           "properties"  : [ 'openFile', 'multiSelections']
         },
         this.addFilesToDesktop

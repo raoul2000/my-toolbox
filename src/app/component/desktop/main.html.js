@@ -42,13 +42,25 @@ module.exports = `
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title pull-left">
-            <span class="glyphicon glyphicon-th" aria-hidden="true"></span> {{category}}
+            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> {{category}}
           </h3>
           <div class="pull-right category-panel-icon">
             <span
-              title="remove from desktop"
+              title="add to this group"
+              @click.stop.prevent="addItemToGroup(category)"
+              class="glyphicon glyphicon-folder-open primary-hover"
+              aria-hidden="true"></span>
+
+            <span
+              title="create item for this group"
+              @click.stop.prevent="createItem(category)"
+              class="glyphicon glyphicon-plus primary-hover"
+              aria-hidden="true"></span>
+
+            <span
+              title="remove this group from desktop"
               @click.stop.prevent="removeGroupFromDesktop(category)"
-              class="glyphicon glyphicon-trash"
+              class="glyphicon glyphicon-trash danger-hover"
               aria-hidden="true"></span>
           </div>
           <div class="clearfix"></div>

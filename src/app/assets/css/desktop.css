@@ -1,12 +1,23 @@
 .category-panel-icon {
   margin-left: 4px;
-  margin-top: 5px;
+  margin-right: 4px;
+  /*margin-top: 5px;*/
   cursor: pointer;
 }
 
-.category-panel-icon:hover {
+.category-panel-icon span {
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.danger-hover:hover {
   color: red;
 }
+
+.primary-hover:hover {
+  color: blue;
+}
+
 
 .left-corner-icon {
   margin-left: 4px;
