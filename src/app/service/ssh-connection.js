@@ -1,5 +1,7 @@
 "use strict";
 
+const cache = new Map();
+
 /**
  * Create and return HTML for the input password field
  * @return {string} HTML input password
@@ -173,6 +175,9 @@ function showForm(fieldIds) {
         if( $modal.find('#chk-save:checked').length === 1) {
           // TODO : save those values for the current session
           console.log('save credentials');
+          resultObj._save = true;
+        } else {
+          resultObj._save = false;
         }
         resolve(resultObj);                               // resolved by resultObj
       }
@@ -180,7 +185,9 @@ function showForm(fieldIds) {
   });
 }
 
+function buildCacheKey(sshOptions, fieldId) {
 
+}
 /**
  * Complete the sshOptions object if needed and returns the result.
  * Is SSH connection info are missing the user is predented a modal dialog and
@@ -194,17 +201,35 @@ exports.getInfo = function(sshOptions) {
     return Promise.reject('missing argument : sshOptions');
   }
 
+  let usernameKey = "username@".concat(sshOptions.host);
+  let passwordKey = "password@".concat(sshOptions.host);
+
+  let resultSshOptions = Object.assign({},sshOptions);
+
   let fieldIds = [];
   if( sshOptions.username.length === 0) {
-    fieldIds.push('username');
+    if( cache.has( usernameKey )) {
+      resultSshOptions["username"] = cache.get(usernameKey);
+    } else {
+      fieldIds.push('username');
+    }
+  } else {
+    cache.delete(usernameKey);
   }
+
   if( sshOptions.password.length === 0) {
-    fieldIds.push('password');
+    if( cache.has( passwordKey )) {
+      resultSshOptions["password"] = cache.get(passwordKey);
+    } else {
+      fieldIds.push('password');
+    }
+  } else {
+    cache.delete(passwordKey);
   }
 
   if(fieldIds.length === 0) {
     // all fields are defined
-    return Promise.resolve(sshOptions);
+    return Promise.resolve(resultSshOptions);
   } else {
     // some fields have been entered by the user : complete the initial SSH options
     // object and return the result
@@ -214,7 +239,7 @@ exports.getInfo = function(sshOptions) {
       if( result === false ) {
         return Promise.reject("canceled-by-user");
       } else {
-        return Object.assign({}, sshOptions, result);
+        return Object.assign(resultSshOptions, result);
       }
     });
   }
