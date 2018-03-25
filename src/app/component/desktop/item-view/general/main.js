@@ -6,7 +6,7 @@ var path               = require('path');
 const config           = require('../../../../service/config');
 var checkSSHConnection = require('../../../../lib/ssh/check-connection').checkConnection;
 var persistence        = require('../../../../service/persistence');
-var service        = require('../../../../service/service').service;
+var service            = require('../../../../service/service').service;
 
 module.exports = {
   components : {
@@ -70,6 +70,7 @@ module.exports = {
         } else {
           this.connectionOk = false;
           service.sshInfo.clearCachedPassword(this.item.data.ssh);
+          service.notification.error(error,"Failed to connect");
         }
       });
     },

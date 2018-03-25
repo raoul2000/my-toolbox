@@ -1,7 +1,6 @@
 const store     = require('../../../../../service/store/store'); // TODO : nod needed as already injected by parent (to check)
 var persistence = require('../../../../../service/persistence');
 const validate  = require('validator');
-const notify    = require('../../../../../service/notification');
 const service   = require('../../../../../service/service').service;
 
 module.exports = {

@@ -2,7 +2,6 @@ var remote     = require('electron').remote;
 var fs         = require('fs');
 var path       = require('path');
 const store    = require('../../service/store/store');
-const notify   = require('../../service/notification');
 const config   = require('../../service/config');
 const helper   = require('../../lib/lib').helper;
 
@@ -47,6 +46,13 @@ module.exports = {
       if( store.state.desktop.length === 0) {
         return;
       }
+      notify1.error('error with only message');
+      notify1.error('message and custom title','my custom title');
+      notify1.warning('message and custom title and question icon','my custom title',
+      {"icon"  : 'glyphicon glyphicon-question-sign',});
+      notify1.success('message default title and question icon',
+    {"icon"  : 'glyphicon glyphicon-question-sign',});
+      return;
       let self = this;
       service.notification.confirm(
         'Confirmation Needed',
@@ -168,7 +174,6 @@ module.exports = {
             if(relativeFilePath === filename) {
               // TODO : wee how to highlight the existing item (css animate ?)
               service.notification.error(
-                '',
                 "It is not permitted to save an item out of the base folder"
               );
               //notify('It is not permitted to save an item out of the base folder','error','Error');
@@ -176,10 +181,8 @@ module.exports = {
               fs.writeFile(filename, JSON.stringify(newItem, null, 2) , 'utf-8', (err) => {
                 if(err) {
                   service.notification.error(
-                    'Error',
                     "Failed to save item"
                   );
-                  //notify('failed to save','error','error');
                   console.error(err);
                 } else {
 
@@ -194,10 +197,8 @@ module.exports = {
                   config.store.set('recent.ctdbPath',path.dirname(filename));
                   config.addDesktopItem(filename);
                   service.notification.success(
-                    'Success',
                     `Saved to <b>${relativeFilePath}</b> and added to your desktop`
                   );
-                  //notify(`Saved to <b>${relativeFilePath}</b> and added to your desktop` ,'success','Success');
                 }
               });
             }
@@ -272,7 +273,6 @@ module.exports = {
           var relativeFilePath = file.replace(ctdbBasePath,'');
           if(relativeFilePath === file) {
             service.notification.warning(
-              'Warning',
               "It is not permitted to select an item out of the base folder"
             );
             //notify('It is not permitted to select an item out of the base folder','error','Error');
@@ -280,11 +280,9 @@ module.exports = {
              let newItemData = JSON.parse(fs.readFileSync(file, 'utf8'));
              if( store.getters.desktopItemById(newItemData._id) ) {
                service.notification.warning(
-                 'Warning',
-                 `The item is already part of your desktop : <pre>${relativeFilePath}</pre>`
+                 `The item is already part of your desktop : <pre>${relativeFilePath}</pre>`,
+                 "Oups !"
                );
-               //notify(`The item is already part of your desktop :
-              //   <pre>${relativeFilePath}</pre>`,'warning','warning');
 
                // Animate (shake) the existing desktop item Modify directly the DOM using
                // the computed element id that has been defined by the template

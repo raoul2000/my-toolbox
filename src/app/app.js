@@ -24,7 +24,6 @@ const MavenDownload   = require('./component/maven-download/main');
 
 const store    = require('./service/store/store');
 const config   = require('./service/config');
-const notify   = require('./service/notification');
 const service  = require('./service/service').service;
 
 let shell = require('electron').shell;
@@ -118,10 +117,7 @@ const app = new Vue({
       // CTDB Path /////////////////////////////////////////////////////////////
 
       if(config.store.has('ctdbFolderPath') === false ) {
-        service.notification.error(
-          'Error',
-          'CTDB folder not defined'
-        );
+        service.notification.error(  'CTDB folder not defined');
         return;
       }
       var ctdbFolderPath = config.store.get('ctdbFolderPath');
@@ -130,10 +126,7 @@ const app = new Vue({
         if( fs.existsSync(path.dirname(ctdbFolderPath))) {
             fs.mkdirSync(ctdbFolderPath, 0744);
         } else {
-          service.notification.error(
-            'Error',
-            `Failed to create CTDB path : <b>${ctdbFolderPath}</b><br/> Make sure that parent folder exists`
-          );
+          service.notification.error(`Failed to create CTDB path : <b>${ctdbFolderPath}</b><br/> Make sure that parent folder exists`);
           return;
         }
       }
@@ -141,16 +134,12 @@ const app = new Vue({
       // webappCatalogFilePath /////////////////////////////////////////////////////
 
       if(config.store.has('webappCatalogFilePath') === false ) {
-        service.notification.error(
-          'Error', 'Web-App Catalog file path not configured'
-        );
+        service.notification.error('Web-App Catalog file path not configured');
         return;
       }
       var webappCatalogFilePath = config.store.get('webappCatalogFilePath');
       if ( fs.existsSync(webappCatalogFilePath) === false ) {
-        service.notification.error(
-          'Error', `Configured Web-App Catalog file path Not Found : <b>${webappCatalogFilePath}</b>`
-        );
+        service.notification.error(`Configured Web-App Catalog file path Not Found : <b>${webappCatalogFilePath}</b>`);
         return;
       }
       // load webapp Catalog
@@ -163,16 +152,12 @@ const app = new Vue({
       // commandLibrary /////////////////////////////////////////////////////
       //
       if(config.store.has('commandLibraryFilePath') === false ) {
-        service.notification.error(
-          'Error', 'Command Library file path not configured'
-        );
+        service.notification.error('Command Library file path not configured');
         return;
       }
       var commandLibraryFilePath = config.store.get('commandLibraryFilePath');
       if ( fs.existsSync(commandLibraryFilePath) === false ) {
-        service.notification.error(
-          'Error', `Configured Command Library file path Not Found : <b>${commandLibraryFilePath}</b>`
-        );
+        service.notification.error(`Configured Command Library file path Not Found : <b>${commandLibraryFilePath}</b>`);
         return;
       }
       // load webapp Catalog

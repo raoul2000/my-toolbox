@@ -1,5 +1,4 @@
 const validate    = require('validator');
-const notify      = require('../../../../../../service/notification');
 const persistence = require('../../../../../../service/persistence');
 const service     = require('../../../../../../service/service').service;
 const helper      = require('../../../../../../lib/lib').helper;
@@ -196,7 +195,6 @@ module.exports = {
           let existingWebapp = this.tomcat.webapps.find(webapp => webapp.contextPath === arg.value);
           if (existingWebapp) {
             service.notification.warning(
-              'Warning',
               `The contextPath <b>${arg.value}</b> is already in use by web app <b>${existingWebapp.name}</b>`
             );
             this.validation.contextPath = false;

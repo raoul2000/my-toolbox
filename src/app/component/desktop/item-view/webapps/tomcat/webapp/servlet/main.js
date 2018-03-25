@@ -1,5 +1,5 @@
 const validate    = require('validator');
-const notify      = require('../../../../../../../service/notification');
+
 const persistence = require('../../../../../../../service/persistence');
 const service     = require('../../../../../../../service/service').service;
 const shell       = require('electron').shell;

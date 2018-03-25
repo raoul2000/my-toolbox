@@ -6,6 +6,7 @@ const store         = require('../../../service/store/store');
 const tomcatScanner = require('../../../lib/lib').tomcatScanner;
 const helper        = require('../../../lib/lib').helper;
 const persistence   = require('../../../service/persistence');
+const service       = require('../../../service/service').service;
 const fs            = require('fs');
 
 module.exports = {
@@ -65,10 +66,8 @@ module.exports = {
         .filter( tomcat => tomcat.selected)
         .map( tomcat => tomcat.id);
 
-      console.log('start scan',tomcatIdsToScan);
-
       if( tomcatIdsToScan.length === 0) {
-        notify('Please select one or more Tomcat to scan','warning','No selection');
+        service.notification.warning('Please select one or more Tomcat to scan','No selection');
       } else {
         this.scanTomcats(tomcatIdsToScan);
       }

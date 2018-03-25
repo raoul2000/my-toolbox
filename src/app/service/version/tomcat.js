@@ -142,5 +142,6 @@ exports.updateTomcat = function(itemData, tomcatId, nodessh) {
         nodessh.dispose();
       }
       taskService.stopTask(taskId, false, err);
+      throw err;
     });
 };

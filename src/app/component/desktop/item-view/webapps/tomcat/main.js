@@ -1,5 +1,4 @@
 const validate  = require('validator');
-const notify    = require('../../../../../service/notification');
 const helper    = require('../../../../../lib/lib').helper;
 var persistence = require('../../../../../service/persistence');
 var service     = require('../../../../../service/service').service;
@@ -78,6 +77,11 @@ module.exports = {
         });
         // NOTE : it is not needed to update the file here because this will be done by a change
         // of the version value (see change() below)
+        version.finalize(self.tomcat);
+        self.allowEdit = true;
+      })
+      .catch( err => {
+        service.notification.error(err,"Failed to Connect");
         version.finalize(self.tomcat);
         self.allowEdit = true;
       });
