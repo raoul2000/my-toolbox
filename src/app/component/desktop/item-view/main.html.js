@@ -18,13 +18,13 @@ module.exports = `
 
       <ul class="nav nav-tabs">
         <li role="presentation" v-bind:class="{active : currentTabName == 'server-settings'}">
-          <a v-on:click.stop.prevent="openTabHome()" href="#">General <span class="badge"></span></a>
+          <a v-on:click.stop.prevent="openTabHome()" href="#">General</a>
         </li>
         <li role="presentation"  v-bind:class="{active : currentTabName == 'server-webapps'}">
           <a v-on:click.stop.prevent="openTabWebapp()" href="#">Web Apps <span class="badge">{{webappCount}}</span></a>
         </li>
         <li role="presentation"  v-bind:class="{active : currentTabName == 'server-components'}">
-          <a v-on:click.stop.prevent="openTabComponents()" href="#">Components</a>
+          <a v-on:click.stop.prevent="openTabComponents()" href="#">Components  <span class="badge">{{componentCount}}</span></a>
         </li>
         <li role="presentation"  v-bind:class="{active : currentTabName == 'server-commands'}">
           <a v-on:click.stop.prevent="openTabCommands()" href="#">Commands</a>

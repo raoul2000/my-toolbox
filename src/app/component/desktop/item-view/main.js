@@ -26,9 +26,17 @@ module.exports = {
       return this.$store.getters['view/findById'](VIEW_ID);
     },
     webappCount : function() {
-      return this.item.data.tomcats.reduce( (acc, tomcat) => {
+      let count = this.item.data.tomcats.reduce( (acc, tomcat) => {
         return acc + tomcat.webapps.length;
       },0);
+      return count !== 0
+        ? count
+        : "";
+    },
+    componentCount : function() {
+      return this.item.data.components.length !== 0
+        ? this.item.data.components.length
+        : "";
     }
   },
   methods : {
