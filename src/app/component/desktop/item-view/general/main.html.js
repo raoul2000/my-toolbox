@@ -12,7 +12,7 @@ module.exports = `
           </h3>
         </div>
         <div class="panel-body text-muted">
-          Info : Only the ip address is required. All other fields are optionals
+          Only the ip address and username are required. All other fields are optionals.
         </div>
 
 

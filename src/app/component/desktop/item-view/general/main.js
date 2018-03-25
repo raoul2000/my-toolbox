@@ -42,6 +42,7 @@ module.exports = {
   computed : {
     canTestConnection : function(){
       return this.action === null
+        && this.item.data.ssh.username.length !== 0
         && this.item.data.ssh.host.length > 0;
     }
   },
