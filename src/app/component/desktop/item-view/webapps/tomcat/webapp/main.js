@@ -50,8 +50,10 @@ module.exports = {
      */
     updateVersionTaskId : function() {
       return `webapp-version-${this.webapp._id}`;
+    },
+    referenceWebapp : function() {
+        return this.$store.state.webappDefinition.find( webapp => webapp.id === this.webapp.refId);
     }
-
   },
   watch : {
     /**

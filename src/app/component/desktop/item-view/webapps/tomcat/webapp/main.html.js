@@ -31,6 +31,25 @@ module.exports = `
     </td>
 
     <td class="tc-actions">
+
+    <div
+      v-if="referenceWebapp"
+      class="btn-group" style="vertical-align: baseline;">
+
+      <span
+        data-toggle="dropdown"
+        class="glyphicon glyphicon-info-sign" aria-hidden="true"/>
+
+      <ul class="dropdown-menu dropdown-menu-right">
+        <li class="dropdown-header">Open links</li>
+        <li title="open documentation in default browser"><a :href="referenceWebapp.url.doc">Documentation</a></li>
+        <li title="open CHANGES in default browser"><a :href="referenceWebapp.url.changes">Changes</a></li>
+        <li class="dropdown-header">Nexus</li>
+        <li title="open RELEASE repository"><a :href="referenceWebapp.url.release">Release</a></li>
+        <li title="open SNAPSHOT repository"><a :href="referenceWebapp.url.snapshot">Snapshot</a></li>
+      </ul>
+    </div>
+
       <span
         v-on:click="openWebappContext"
         :title="btTitleOpenContext"
