@@ -52,6 +52,13 @@ module.exports = `
       class="glyphicon glyphicon-refresh glyphicon-refresh-animate"
       aria-hidden="true" />
 
+
+
+    <span
+      v-on:click="editCommand()"
+      title="delete"
+      class="glyphicon glyphicon-pencil" aria-hidden="true"/>
+
     <span
       v-on:click="deleteCommand()"
       title="delete"

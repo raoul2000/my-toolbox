@@ -32,6 +32,10 @@ module.exports = {
     },
   },
   methods : {
+    editCommand : function() {
+      let $modal     = $('#edit-cmd-modal');
+      $modal.modal("show");
+    },
     /**
      * Execute the command.
      * The job of actually executing the command is delegated to the service.command

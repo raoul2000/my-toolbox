@@ -11,10 +11,12 @@ module.exports = `
   </td>
   <td></td>
   <td></td>
-  <td>
-    <button title="Delete this component" v-on:click="deleteComponent()" type="button" class="btn btn-danger btn-xs">
-      <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-    </button>
+  
+  <td class="tc-actions">
+    <span
+      v-on:click="deleteComponent()"
+      title="delete"
+      class="glyphicon glyphicon-remove" aria-hidden="true"/>
   </td>
 </tr>
 `;
