@@ -83,6 +83,8 @@ function ssh_from_catalina_jar(options) {
   );
 }
 
+// TODO : this does not work because if HTTP 404 is returned, the Promise
+// is considered as having failed.
 function http_manager_404(options) {
   console.log('strategy : http_manager_404');
 

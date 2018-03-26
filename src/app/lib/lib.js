@@ -17,5 +17,6 @@ exports.version = {
     "regex"           : require('./version/extractor/regex')
   },
   "tomcat" : require('./version/tomcat'),
+  "webapp" : require('./version/webapp'),
   "helper" : require('./helper')
 };
