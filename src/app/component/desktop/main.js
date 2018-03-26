@@ -46,13 +46,6 @@ module.exports = {
       if( store.state.desktop.length === 0) {
         return;
       }
-      notify1.error('error with only message');
-      notify1.error('message and custom title','my custom title');
-      notify1.warning('message and custom title and question icon','my custom title',
-      {"icon"  : 'glyphicon glyphicon-question-sign',});
-      notify1.success('message default title and question icon',
-    {"icon"  : 'glyphicon glyphicon-question-sign',});
-      return;
       let self = this;
       service.notification.confirm(
         'Confirmation Needed',

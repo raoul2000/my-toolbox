@@ -59,11 +59,11 @@ function createWindow () {
   // splash screen initialization
   if(ENABLE_SPLASH_SCREEN) {
     splash = new BrowserWindow({
-      width: 810,
-      height: 610,
-      transparent: true,
+      width: 500,
+      height: 500,
+      transparent: false,
       frame: false,
-      alwaysOnTop: true
+      alwaysOnTop: false
     });
     splash.loadURL(`file://${__dirname}/splash-2.html`);
     ipcMain.on('app-loaded', () => {
@@ -75,6 +75,7 @@ function createWindow () {
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'src/app/index.html'),
+    //pathname: path.join(__dirname, 'splash-2.html'),
     protocol: 'file:',
     slashes: true
   }));
