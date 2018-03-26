@@ -3,6 +3,9 @@
 #app[v-cloak] > *  { display:none; }
 .loading  { display:none; }
 
+.nav-tabs .badge {
+  font-size:11px;
+}
 
 .module-filter {
   width: 100%;
