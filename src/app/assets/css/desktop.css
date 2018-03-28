@@ -1,7 +1,25 @@
+.panelXXXXX div.card-name{
+  -webkit-animation: show linear 0.2s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-transform-origin: 50% 50%;
+  -webkit-animation-fill-mode:forwards; /*Chrome 16+, Safari 4+*/
+}
+
+@-webkit-keyframes show {
+  0% {
+    position:relative;
+    top:0px;
+  }
+  100% {
+    position:relative;
+    top:-43px;
+  }
+}
+
+
 .category-panel-icon {
   margin-left: 4px;
   margin-right: 4px;
-  /*margin-top: 5px;*/
   cursor: pointer;
 }
 
