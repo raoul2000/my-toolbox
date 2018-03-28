@@ -92,9 +92,9 @@ module.exports = {
         html = html.concat(`<div class="card-extra">${extraInfo}</div>`);
       }
       if( item.data.ssh.host ) {
-        html = html.concat(`<div class="card-extra">host : ${item.data.ssh.host}</div>`);
+        html = html.concat(`<div class="card-extra">${item.data.ssh.username}@${item.data.ssh.host}</div>`);
       } else {
-        html = html.concat(`<div class="card-extra">host : <span class="label label-danger">missing host</span></div>`);
+        html = html.concat(`<div class="card-extra"><span class="label label-danger">missing host</span></div>`);
       }
       return html;
     },

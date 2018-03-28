@@ -33,6 +33,7 @@ exports.finalize = function(tomcat) {
 exports.chooseBestResultValue = function( results ) {
   let resultValues = results
     .filter(result => result.resolved)
+    .filter( result => result.value.length !== 0)
     .map( result   => result.value);
   return lib.helper.maxOccurenceCountValue(resultValues);
 };

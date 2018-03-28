@@ -29,7 +29,7 @@ function ssh_from_version_script(options) {
   // strategy is applicable
   let installFolderPath =  options.tomcat.installFolderPath
     ? options.tomcat.installFolderPath
-    : `./tomcat-${options.tomcat.id}`;
+    : `./tomcat-${options.tomcat.id.toLowerCase()}`;
 
   return sshCommand.getVersion(
     {
