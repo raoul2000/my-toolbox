@@ -10,12 +10,11 @@ function addTrailingSlashToURL(url) {
     : url.concat('/');
 }
 
-
 function http_service_ui_info(options) {
   let url = addTrailingSlashToURL(options.url);
   let serviceUrl = `${url}service/ui/info`;
   return httpRequest.getVersion({
-    "url" : url,
+    "url" : serviceUrl,
     "versionExtractor" : require('./extractor/service-ui-info')
   });
 }
@@ -36,7 +35,6 @@ function parse_html_page(options) {
  * @return {Promise}         [description]
  */
 exports.getVersion = function(options) {
-
   if( ! options.url ) {
     return Promise.reject("property url is mandatory");
   }

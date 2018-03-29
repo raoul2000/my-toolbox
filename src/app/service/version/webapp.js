@@ -4,17 +4,22 @@ const lib         = require('../../lib/lib');
 const promiseUtil = require('../../lib/promise-utils');
 const NodeSSH     = require('node-ssh');
 const taskService = require('../task');
+const common      = require('./common');
 
+exports.chooseBestResultValue = common.chooseBestResultValue;
 
-exports.finalize = function(webappId) {
-  taskService.deleteTask(exports.buildTaskId(webappId));
+exports.finalize = function(webapp) {
+  taskService.deleteTask(exports.buildTaskId(webapp));
 };
 
-exports.buildTaskId = function(webappId) {
-  return `webapp-version-${webappId}`;
+exports.buildTaskId = function(webapp) {
+  return `webapp-version-${webapp._id}`;
 };
 
-exports.updateWebapp = function(itemData, webappIds) {
+function buildURL(itemData, tomcat, webapp) {
+  return `http://${itemData.ssh.host}:${tomcat.port}${webapp.contextPath}`;
+}
+exports.updateWebapps = function(itemData, webappIds) {
   let optionList = [];
   itemData.tomcats.forEach(tomcat => {
     let webappToUpdate = tomcat.webapps.find( webapp => webappIds.includes(webapp._id));
@@ -46,12 +51,16 @@ exports.updateWebapp = function(itemData, webappIds) {
  */
 exports.updateWebapp = function(itemData, tomcat, webappId) {
     // find the webapp object intance
-    let webapp = itemData.tomcat.webapps.find( webapp => webapp._id === webappId);
+    let webapp;
+    itemData.tomcats.find( tomcat => {
+      webapp = tomcat.webapps.find(webapp => webapp._id === webappId);
+      return webapp !== undefined;
+    });
     if( ! webapp ) {
       return Promise.reject(`webapp not found : id = ${webappId}`);
     }
     // create the update version task id
-    let taskId = exports.buildTaskId(webappId);
+    let taskId = exports.buildTaskId(webapp);
 
     // create or read a task
     let task = taskService.acquireTask(taskId);
@@ -64,7 +73,7 @@ exports.updateWebapp = function(itemData, tomcat, webappId) {
 
     // start the version extraction
     return lib.version.webapp.getVersion({
-      "url" : "url to set"
+      "url" : buildURL(itemData,tomcat,webapp)
     })
     .then( results => {
       taskService.stopTask(taskId, true, results);

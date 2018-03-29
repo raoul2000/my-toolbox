@@ -24,6 +24,7 @@ module.exports = `
       <inlineInput2
         :value="webapp.version"
         :valid="validation.version"
+        :allowEdit="allowEdit"
         inputType="text"
         emptyValue="<em class='text-muted'>version</em>"
         valueName="version"
@@ -56,10 +57,10 @@ module.exports = `
         class="glyphicon glyphicon-link" aria-hidden="true"/>
 
       <span
-        v-if="! updateVersionTask || updateVersionTask.progress != 'BUSY'"
+        v-if="! updateVersionTask || updateVersionTask.status != 'BUSY'"
         v-on:click="refreshVersion"
         title="refresh version"
-        class="glyphicon glyphicon-refresh update-version-button" aria-hidden="true"/>
+        class="glyphicon glyphicon-play update-version-button" aria-hidden="true"/>
       <span
         v-else
         title="version update in progress ..."

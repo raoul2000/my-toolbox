@@ -26,16 +26,19 @@ exports.groupBy = function groupBy(list, keyGetter) {
 };
 
 exports.maxOccurenceCountValue = function(values) {
+  if( ! Array.isArray(values)) {
+    throw new Error('failed to find maxOccurence : array must be provided');
+  }
   let winner = {
     "value" : null,
-    "count"   : 0
+    "count" : 0
   };
 
   const valueSet = new Set(values);// remove duplicates
   if( valueSet.size === 1) {
     winner.value = valueSet.values().next().value;
     winner.count = 1;
-  } else {
+  } else if( valueSet.size !== 0 ){
     let valueOccurence = new Map();
     values.forEach(value => {
       if( valueOccurence.has(value)) {

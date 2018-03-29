@@ -3,6 +3,7 @@ const persistence = require('../../../../../../service/persistence');
 const service     = require('../../../../../../service/service').service;
 const helper      = require('../../../../../../lib/lib').helper;
 const shell       = require('electron').shell;
+const version     = require('../../../../../../service/version/webapp');
 
 module.exports = {
   props: ['item', 'tomcat', 'webapp', 'expandWebapp'],
@@ -18,6 +19,8 @@ module.exports = {
         "version"     : true
       },
       expanded : this.expandWebapp,
+      updateVersionTaskId  : null,
+      allowEdit            : true,
       referenceWebappSelection : this.webapp.refId
     };
   },
@@ -44,12 +47,6 @@ module.exports = {
     updateVersionTask : function(){
       console.log('computed task');
       return  this.$store.getters['tmptask/taskById'](this.updateVersionTaskId);
-    },
-    /**
-     * Build the id for the task in charge of updating webapp version
-     */
-    updateVersionTaskId : function() {
-      return `webapp-version-${this.webapp._id}`;
     },
     referenceWebapp : function() {
         return this.$store.state.webappDefinition.find( webapp => webapp.id === this.webapp.refId);
@@ -97,10 +94,36 @@ module.exports = {
     }
   },
   methods: {
+    refreshVersion : function() {
+      let self = this;
+      this.allowEdit = false;
+      version.updateWebapp(this.item.data,this.tomcat, this.webapp._id)
+      .then( result => {
+        let finalVersion = version.chooseBestResultValue(result.values);
+        if( finalVersion) {
+          debugger;
+          self.$store.commit('updateWebapp',{
+            "item"       : self.item,
+            "tomcat"     : self.tomcat,
+            "webapp"     : self.webapp,
+            "updateWith" : {
+              "version" : finalVersion
+            }
+          });
+        }
+        version.finalize(self.webapp);
+        self.allowEdit = true;
+      })
+      .catch( err => {
+        service.notification.error(err,"Failed to Connect");
+        version.finalize(self.webapp);
+        self.allowEdit = true;
+      });
+    },
     /**
      * Start the webapp version update task
      */
-    refreshVersion : function(){
+    refreshVersion_old : function(){
       if( ! this.updateVersionTask) {
         this.$store.commit('tmptask/addTask',{
           "id"           : this.updateVersionTaskId,
@@ -204,6 +227,8 @@ module.exports = {
             this.validation.contextPath = true;
           }
         }
+      }else if( arg.name === 'version') {
+        this.validation.version = true;
       }
       // webapp.name is always valid (even if empty)
       let updateInfo = {
@@ -214,9 +239,11 @@ module.exports = {
       };
       updateInfo.updateWith[arg.name] = arg.value;
       this.$store.commit('updateWebapp', updateInfo);
-      // FIXME : in some case (to define) the JSON saved by next line is INVALID
-      // with additional closing brackets or some other characters
+      debugger;
       persistence.saveDesktopItemToFile(this.item);
     }
+  } ,
+  mounted : function() {
+    this.updateVersionTaskId = version.buildTaskId(this.webapp);
   }
 };

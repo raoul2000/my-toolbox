@@ -17,6 +17,6 @@ var request = require('request-promise-native');
 exports.getVersion = function(options) {
   return request(options.url)
     .then(function (htmlString) {
-        return options.versionExtractor ? options.versionExtractor(htmlString) : htmlString;
+        return options.versionExtractor ? options.versionExtractor.extract(htmlString) : htmlString;
     });
 };

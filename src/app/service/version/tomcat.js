@@ -4,7 +4,9 @@ const lib         = require('../../lib/lib');
 const promiseUtil = require('../../lib/promise-utils');
 const NodeSSH     = require('node-ssh');
 const taskService = require('../task');
+const common      = require('./common');
 
+exports.chooseBestResultValue = common.chooseBestResultValue;
 
 /**
  * Call this function to clean after the update version task is done
@@ -14,29 +16,6 @@ exports.finalize = function(tomcat) {
   taskService.deleteTask(exports.buildTaskId(tomcat));
 };
 
-/**
- * Choose the best result among a list of results.
- * The winner is the value that has more occurencies in the passed array. Note that
- * unresolved results are ignored.
- *
- * results = [
- *  {
- *    "error" : Error | null,
- *    "resolved" : boolean,
- *    "value" : string
- *   },
- *   etc ...
- * ]
- * @param  {[promiseUtilResult]} results [description]
- * @return {[type]}         [description]
- */
-exports.chooseBestResultValue = function( results ) {
-  let resultValues = results
-    .filter(result => result.resolved)
-    .filter( result => result.value.length !== 0)
-    .map( result   => result.value);
-  return lib.helper.maxOccurenceCountValue(resultValues);
-};
 
 /**
  * create a unique task id for a given tomcat and for an version update task

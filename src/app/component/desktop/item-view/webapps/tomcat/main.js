@@ -68,13 +68,15 @@ module.exports = {
       version.updateTomcat(this.item.data,this.tomcat._id)
       .then( result => {
         let finalVersion = version.chooseBestResultValue(result.values);
-        this.$store.commit('updateTomcat',{
-          "item"       : this.item,
-          "tomcat"     : this.tomcat,
-          "updateWith" : {
-            "version" : finalVersion.value
-          }
-        });
+        if (finalVersion ) {
+          this.$store.commit('updateTomcat',{
+            "item"       : this.item,
+            "tomcat"     : this.tomcat,
+            "updateWith" : {
+              "version" : finalVersion
+            }
+          });
+        }
         // NOTE : it is not needed to update the file here because this will be done by a change
         // of the version value (see change() below)
         version.finalize(self.tomcat);

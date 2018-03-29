@@ -11,7 +11,7 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 const url  = require('url');
 
-const ENABLE_SPLASH_SCREEN = true;
+const ENABLE_SPLASH_SCREEN = false;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

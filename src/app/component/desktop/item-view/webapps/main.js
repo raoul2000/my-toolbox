@@ -83,7 +83,7 @@ module.exports = {
                   "item"       : this.item,
                   "tomcat"     : tomcat,
                   "updateWith" : {
-                    "version" : finalVersion.value
+                    "version" : finalVersion
                   }
                 });
                 tomcatVersion.finalize(tomcat);
