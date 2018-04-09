@@ -30,7 +30,7 @@
   "dependencies": {
     "animate.css": "^3.5.2",
     "autosize": "^4.0.0",
-    "better-queue": "^3.8.6",
+    "better-queue": "^3.8.7",
     "bootstrap": "^3.3.7",
     "bootstrap-validator": "^0.11.9",
     "bootswatch": "^3.3.7",

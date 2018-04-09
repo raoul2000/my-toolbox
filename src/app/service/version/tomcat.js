@@ -5,6 +5,15 @@ const promiseUtil = require('../../lib/promise-utils');
 const NodeSSH     = require('node-ssh');
 const taskService = require('../task');
 const common      = require('./common');
+const Queue       = require('better-queue');
+
+
+var qTomcatVersion = new Queue(function (input, cb) {
+
+  // Some processing here ...
+
+  cb(null, result);
+});
 
 exports.chooseBestResultValue = common.chooseBestResultValue;
 
@@ -42,11 +51,16 @@ exports.upddateTomcats = function(itemData, tomcatIds, nodessh) {
       "nodessh"  : nodessh
   }));
 
+/*
+  qTomcatVersion.push(1,(error, result) => {
+
+  });*/
+
   // start to work
   return promiseUtil.parallel(optionList, function(options) {
     return exports.updateTomcat(options.itemData, options.tomcatId, options.nodessh);
-  }).
-  then( results => {
+  })
+  .then( results => {
     if( nodessh && usePrivateSSH) {
       nodessh.dispose();
     }
@@ -59,6 +73,39 @@ exports.upddateTomcats = function(itemData, tomcatIds, nodessh) {
   });
 };
 
+function simulateLongProcess(itemData, tomcatId, nodessh) {
+
+  // find the tomcat object intance
+  let tomcat = itemData.tomcats.find( tomcat => tomcat._id === tomcatId);
+  if( ! tomcat ) {
+    return Promise.reject(`tomcat not found : id = ${tomcatId}`);
+  }
+  // create the update version task id
+  let taskId = exports.buildTaskId(tomcat);
+
+  // create or read a task
+  let task = taskService.acquireTask(taskId);
+  if( task === false) {
+    return Promise.reject("failed to acquire task : such task may already exist and is still in progress");
+  }
+
+  // stop if task already exists
+  taskService.startTask(taskId);
+
+  return new Promise ( (resolve, reject) => {
+    setTimeout( () => {
+      for (var i = 0; i < 10000; i++) {
+        for (var j = 0; j < 100000; j++) {
+          var t = j +i;
+        }
+      }
+      taskService.stopTask(taskId, true, {});
+      resolve({});
+    },100);
+  });
+
+}
+
 /**
  * Entry point to update version of a tomcat instance.
  *
@@ -67,7 +114,7 @@ exports.upddateTomcats = function(itemData, tomcatIds, nodessh) {
  * @param  {object} nodessh  an optional nodessh instance
  * @return {Promise}
  */
-exports.updateTomcat = function(itemData, tomcatId, nodessh) {
+ function updateTomcat(itemData, tomcatId, nodessh) {
     // find the tomcat object intance
     let tomcat = itemData.tomcats.find( tomcat => tomcat._id === tomcatId);
     if( ! tomcat ) {
@@ -124,4 +171,6 @@ exports.updateTomcat = function(itemData, tomcatId, nodessh) {
       taskService.stopTask(taskId, false, err);
       throw err;
     });
-};
+}
+
+exports.updateTomcat = simulateLongProcess;
