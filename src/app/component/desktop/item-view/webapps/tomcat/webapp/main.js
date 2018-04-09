@@ -45,7 +45,6 @@ module.exports = {
      * task exists in the store
      */
     updateVersionTask : function(){
-      console.log('computed task');
       return  this.$store.getters['tmptask/taskById'](this.updateVersionTaskId);
     },
     referenceWebapp : function() {
@@ -212,23 +211,25 @@ module.exports = {
       });
     },
     changeValue: function(arg) {
-      if (arg.name === "contextPath") {
-        if (validate.isEmpty(arg.value)) {
-          this.validation.contextPath = false;
-        } else {
-          // check duplicate contextPath
-          let existingWebapp = this.tomcat.webapps.find(webapp => webapp.contextPath === arg.value);
-          if (existingWebapp) {
-            service.notification.warning(
-              `The contextPath <b>${arg.value}</b> is already in use by web app <b>${existingWebapp.name}</b>`
-            );
+      if( false ) {
+        if (arg.name === "contextPath") {
+          if (validate.isEmpty(arg.value)) {
             this.validation.contextPath = false;
           } else {
-            this.validation.contextPath = true;
+            // check duplicate contextPath
+            let existingWebapp = this.tomcat.webapps.find(webapp => webapp.contextPath === arg.value);
+            if (existingWebapp) {
+              service.notification.warning(
+                `The contextPath <b>${arg.value}</b> is already in use by web app <b>${existingWebapp.name}</b>`
+              );
+              this.validation.contextPath = false;
+            } else {
+              this.validation.contextPath = true;
+            }
           }
+        }else if( arg.name === 'version') {
+          this.validation.version = true;
         }
-      }else if( arg.name === 'version') {
-        this.validation.version = true;
       }
       // webapp.name is always valid (even if empty)
       let updateInfo = {
