@@ -7,6 +7,7 @@ const taskService = require('../task');
 const common      = require('./common');
 const Queue       = require('better-queue');
 
+const ipcRenderer  = require('electron').ipcRenderer ;
 
 var qTomcatVersion = new Queue(function (input, cb) {
 
@@ -73,7 +74,13 @@ exports.upddateTomcats = function(itemData, tomcatIds, nodessh) {
   });
 };
 
+ipcRenderer.on('background-response', (event, payload) => {
+		console.log('background-response',payload);
+});
+
 function simulateLongProcess(itemData, tomcatId, nodessh) {
+
+  ipcRenderer.send("background-start", itemData);
 
   // find the tomcat object intance
   let tomcat = itemData.tomcats.find( tomcat => tomcat._id === tomcatId);
