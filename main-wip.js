@@ -121,3 +121,15 @@ ipcMain.on('background-response', (event, payload) => {
   console.log("[B->M]");
   mainWindow.webContents.send('background-response', payload);
 });
+
+// Background task execution channel ///////////////////////////////////////////
+
+// Main -> background
+ipcMain.on('submit-task', (event, payload) => {
+  backgroundWindow.webContents.send('submit-task', payload);
+});
+
+// background -> Main
+ipcMain.on('update-task', (event, payload) => {
+  mainWindow.webContents.send('update-task', payload);
+});
