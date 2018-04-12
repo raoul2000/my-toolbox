@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "animate.css": "^3.5.2",
+    "async": "^2.6.0",
     "autosize": "^4.0.0",
     "better-queue": "^3.8.7",
     "bootstrap": "^3.3.7",

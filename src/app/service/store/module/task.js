@@ -2,6 +2,7 @@
 /**
  * task : {
  *  "id" : "username@127.2.3.4",
+ *  "name" : "update-tc-version"
  *  "step" : "INIT",
  *  "status" :  "BUSY", // IDLE | BUSY | SUCCESS | ERROR
  *   "progress" : 50, // optionnal
@@ -23,6 +24,11 @@ module.exports = {
     taskById : function(state, getters) {
       return function(taskId) {
         return state.tasks.find( item => item.id === taskId);
+      };
+    },
+    tasksByType : function(state, getters) {
+      return function(type) {
+        return state.tasks.filter( item => item.type === type);
       };
     }
   },

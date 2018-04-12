@@ -5,7 +5,8 @@ const DummyTaskService = require('../../service/dummy-task');
 module.exports = {
   store,
   components: {
-    "task-item": require('./task-item/main')
+    "task-item"  : require('./task-item/main'),
+    "dummy-item" : require('./dummy-item/main')
   },
 
   data: function() {
@@ -13,23 +14,36 @@ module.exports = {
       values : {
         "field1" : "value1",
         "field2" : "value2"
-      },
-      validation: {
-        "field1"        : true,
-        "field2"        : true
       }
     };
   },
   template: require('./main.html'),
   computed : {
     "tasks" : function() {
-      return  this.$store.state.tmptask.tasks;
+      //return  this.$store.state.tmptask.tasks;
+      let tasks =  this.$store.getters['tmptask/tasksByType']("dummy-task");
+      return tasks;
+    },
+    "items" : function() {
+      //return  this.$store.state.tmptask.tasks;
+      //store.state.task.someProp
+      return  this.$store.state.dummyItem.items;
     }
   },
   methods: {
+    createItems : function(){
+      for (var i = 0; i < 4; i++) {
+        this.$store.commit('dummyItem/addItem',{
+          "id" : i,
+          "name" : `bob (${i})`,
+          "age" : 40+i
+        });
+      }
+    },
     startLongTasks : function() {
       console.log('starting lon tasks ...');
-      DummyTaskService.submitManyTasks();
+      let taskIds = DummyTaskService.submitManyTasks("dummy-task");
+      console.log("taskIds = ",taskIds);
     }
   }
 };

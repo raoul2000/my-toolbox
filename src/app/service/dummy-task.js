@@ -8,13 +8,15 @@ const ipcRenderer = require('electron').ipcRenderer ;
  * Create and returns a single task object instance
  * @return {object} the task
  */
-function createTask() {
+function createTask(taskType) {
     return {
       "id"           : uuidv1(),
+      "type"         : taskType,
       "status"       : "IDLE",
       "progress"     : 0,
+      "input"        : null,
       "result"       : null,
-      "errorMessage" : ""
+      "error"        : null
     };
 }
 // TODO : add task validation (validate ID)
@@ -48,6 +50,10 @@ function submitToQueue(task) {
   ipcRenderer.send("submit-task", task);
 }
 
+// map containing resolve and reject methods to fullfill or reject
+// promises related to unfinished tasks
+let taskPromise = {};
+
 /**
  * Upon reception of an update event regarding a task, update the persistent
  * state of this task into the store.
@@ -55,18 +61,50 @@ function submitToQueue(task) {
 ipcRenderer.on('update-task', (event, task) => {
     console.log("update-task", task);
     updateStore(task);
+    if( task.status === "ERROR") {
+      taskPromise[task.id].reject(task.error);
+      taskPromise[task.id] = null;  // TODO: delete property instead ?
+    }else if(task.status === "SUCCESS") {
+      taskPromise[task.id].resolve(task.result);
+      taskPromise[task.id] = null;  // TODO: delete property instead ?
+    }
 });
+
+
+/**
+ * options = {
+ *  "type"  : "the task type",
+ *  "input" : any // taks input arguments
+ * }
+ * @param  {object} options task info
+ * @return {object}         new task object info
+ */
+function submitTask(options) {
+  let task = createTask(options.type);
+  addToStore(task);
+  let p = new Promise( (resolve, reject) => {
+    taskPromise[task.id] = {
+      "resolve" : resolve,
+      "reject"  : reject
+    };
+  });
+  submitToQueue(task);
+  return {
+    "id"      : task.id,
+    "promise" : p
+  };
+}
 
 /**
  * Create tasks and submit then for execution
  * @return {array} array of tasks ids submitted
  */
-function submitManyTasks(){
+function submitManyTasks(taskType){
   console.log("submiting many tasks");
 
   let taskIds = [];
   for (var i = 0; i < 3; i++) { // work on 10 dummy tasks
-    let task = createTask();
+    let task = createTask(taskType);
     addToStore(task);
     submitToQueue(task);
     taskIds.push(task.id);
@@ -74,7 +112,28 @@ function submitManyTasks(){
   return taskIds;
 }
 
+function submitManyTasks_promise(taskType){
+  console.log("submiting many tasks");
+
+  let p = [];
+  let taskInfo;
+  let taskIds = [];
+  for (var i = 0; i < 3; i++) { // work on 10 dummy tasks
+    taskInfo = submitTask({
+      "type" : taskType,
+      "input" : i
+    });
+    p.push(taskInfo.promise);
+    taskIds.push(taskInfo.id);
+  }
+  return {
+    "id"      : taskIds,
+    "promise" : Promise.all(p)
+  };
+}
+
 
 module.exports = {
-  "submitManyTasks" : submitManyTasks
+  "submitManyTasks" : submitManyTasks,
+  "submitTask"      : submitTask
 };
