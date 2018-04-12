@@ -46,11 +46,6 @@ function makeProgressFn(task) {
 }
 
 let qForDummyTasks = asyncMod.queue(function(task, callback) {
-		ipcRenderer.send('update-task', {
-			"id"     : task.id,
-			"status" : "BUSY"
-		});
-
     longAsyncWork({
 			"task"     : task,
 			"progress" : makeProgressFn(task)
@@ -80,8 +75,7 @@ window.onload = function () {
 
 	ipcRenderer.on('submit-task', (event,task) => {
     console.log("submit-task",task);
-		// TODO : use a better queue with progress indicator
-		qForDummyTasks.push(
+    qForDummyTasks.push(
 			Object.assign(task,{
 				"status"   : "BUSY",
 				"progress" : 0,

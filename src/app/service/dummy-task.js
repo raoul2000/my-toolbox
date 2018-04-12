@@ -8,13 +8,16 @@ const ipcRenderer = require('electron').ipcRenderer ;
  * Create and returns a single task object instance
  * @return {object} the task
  */
-function createTask(taskType) {
+function createTask(type, input) {
     return {
+      // public properties
+      "type"         : type,
+      "input"        : input,
+
+      // internal properties
       "id"           : uuidv1(),
-      "type"         : taskType,
       "status"       : "IDLE",
       "progress"     : 0,
-      "input"        : null,
       "result"       : null,
       "error"        : null
     };
@@ -44,15 +47,43 @@ function updateStore(task) {
 
 /**
  * Submit a task for backgropund execution
+ * The task STATUS is set to BUSY even if the task will not be executed immediately
  * @param  {object} task the task to execute in background
  */
 function submitToQueue(task) {
+  updateStore({
+    "id"     : task.id,
+    "status" : "BUSY"
+  });
   ipcRenderer.send("submit-task", task);
 }
 
+////////////////////////////////////////////////////////////////////////////////
 // map containing resolve and reject methods to fullfill or reject
 // promises related to unfinished tasks
-let taskPromise = {};
+
+let taskPromise = new Map();
+function rejectTaskPromise(key, error) {
+  if( taskPromise.has(key)) {
+    taskPromise.get(key).reject(error);
+    taskPromise.delete(key);
+  } else {
+    console.error("reject : task promise not found for key  "+key);
+  }
+}
+function resolveTaskPromise(key, result) {
+  if( taskPromise.has(key)) {
+    taskPromise.get(key).resolve(result);
+    taskPromise.delete(key);
+  } else {
+    console.error("resolve : task promise not found for key : "+key);
+  }
+}
+function buildKey(task) {
+  return `key-${task.type}-${task.id}`;
+}
+////////////////////////////////////////////////////////////////////////////////
+
 
 /**
  * Upon reception of an update event regarding a task, update the persistent
@@ -61,12 +92,11 @@ let taskPromise = {};
 ipcRenderer.on('update-task', (event, task) => {
     console.log("update-task", task);
     updateStore(task);
+    let k = buildKey(task);
     if( task.status === "ERROR") {
-      taskPromise[task.id].reject(task.error);
-      taskPromise[task.id] = null;  // TODO: delete property instead ?
+      rejectTaskPromise(k,task.error);
     }else if(task.status === "SUCCESS") {
-      taskPromise[task.id].resolve(task.result);
-      taskPromise[task.id] = null;  // TODO: delete property instead ?
+      resolveTaskPromise(k,task.result);
     }
 });
 
@@ -80,13 +110,13 @@ ipcRenderer.on('update-task', (event, task) => {
  * @return {object}         new task object info
  */
 function submitTask(options) {
-  let task = createTask(options.type);
+  let task = createTask(options.type, options.input);
   addToStore(task);
   let p = new Promise( (resolve, reject) => {
-    taskPromise[task.id] = {
+    taskPromise.set(buildKey(task), {
       "resolve" : resolve,
       "reject"  : reject
-    };
+    });
   });
   submitToQueue(task);
   return {
