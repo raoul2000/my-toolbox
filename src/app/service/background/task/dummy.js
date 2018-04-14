@@ -10,7 +10,7 @@ function getRandomInt(min, max) {
 }
 
 function longDummyProcessing(progress) {
-	for (var i = 0; i < 10000; i++) {
+	for (var i = 0; i < 50000; i++) {
 		for (var j = 0; j < 100000; j++) {
 			var t = j +i;
 		}
@@ -28,7 +28,7 @@ function run(task, notifyProgress) {
 			notifyProgress(90);
       let result = getRandomInt(0,1000);
 			resolve(`task done : result = ${result} - id = ${task.id} - type = ${task.type}`);
-		}, getRandomInt(0,1000))
+		}, getRandomInt(2000,3000))
 	});
 }
 

@@ -60,7 +60,8 @@ module.exports = {
         this.$store.commit('dummyItem/addItem',{
           "id" : i,
           "name" : `bob (${i})`,
-          "age" : 40+i
+          "age" : 40+i,
+          "result" : ""
         });
       }
     },

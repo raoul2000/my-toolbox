@@ -3,6 +3,7 @@ module.exports = `
     <td>{{item.id}}</td>
     <td>{{item.name}}</td>
     <td>{{item.age}}</td>
+    <td>{{item.result}}</td>
     <td>
       <span
         v-if="task === null || task.status !== 'BUSY'"

@@ -31,6 +31,12 @@ module.exports = {
       this.taskInfo = taskInfo;
       this.taskInfo.promise.then(result => {
         console.log("result = ",result);
+        this.$store.commit('dummyItem/updateItem',{
+          "id" : this.item.id,
+          "updateWith" : {
+            "result" : result
+          }
+        });
       })
       .catch(error => {
         console.error(error);

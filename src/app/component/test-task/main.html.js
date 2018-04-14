@@ -32,6 +32,7 @@ module.exports = `
               <th>id</th>
               <th>name</th>
               <th>age</th>
+              <th>result</th>
               <th>action</th>
             </tr>
           </thead>
