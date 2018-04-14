@@ -24,7 +24,7 @@ module.exports = {
   methods: {
     processItem : function() {
        let taskInfo = DummyTaskService.submitTask({
-        "type"  : "dummy-task",
+        "type"  : "dummy",
         "input" : this.item
       });
       this.taskId = taskInfo.id;

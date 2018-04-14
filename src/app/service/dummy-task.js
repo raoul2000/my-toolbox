@@ -106,6 +106,8 @@ ipcRenderer.on('update-task', (event, task) => {
  *  "type"  : "the task type",
  *  "input" : any // taks input arguments
  * }
+ * The returned object provides the task Id, and a promise of result
+ * for this task.
  * @param  {object} options task info
  * @return {object}         new task object info
  */

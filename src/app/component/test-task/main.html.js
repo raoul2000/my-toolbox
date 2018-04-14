@@ -10,8 +10,13 @@ module.exports = `
       Create Items
     </button>
     <button
+      @click="processAllItems"
+      type="button" class="btn btn-danger">
+      Process All
+    </button>
+    <button
       @click="startLongTasks"
-      type="button" class="btn btn-primary">
+      type="button" class="btn btn-defaut">
       Start long tasks
     </button>
   </div>

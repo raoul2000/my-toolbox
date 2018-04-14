@@ -31,6 +31,30 @@ module.exports = {
     }
   },
   methods: {
+    processAllItems : function() {
+      /*
+      if( this.items.length === 0 ) {
+        return;
+      }
+
+      let taskInfo = DummyTaskService.submitTask(
+        this.items.map( item => ({
+          "type"  : "dummy-task",
+          "input" : item
+        }))
+      );
+
+      this.taskId = taskInfo.id;
+      this.taskInfo = taskInfo;
+      this.taskInfo.promise.then(result => {
+        console.log("result = ",result);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+   }
+*/
+    },
     createItems : function(){
       for (var i = 0; i < 4; i++) {
         this.$store.commit('dummyItem/addItem',{

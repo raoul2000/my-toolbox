@@ -24,7 +24,7 @@ function createBackgroundWindow() {
 	backgroundWindow = new BrowserWindow({
 		show: true
 	});
-	backgroundWindow.loadURL(`file://${__dirname}/src/app/background.html`);
+	backgroundWindow.loadURL(`file://${__dirname}/src/app/service/background/index.html`);
   backgroundWindow.webContents.openDevTools();
   // Emitted when the window is closed.
   backgroundWindow.on('closed', function () {
