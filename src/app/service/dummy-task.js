@@ -8,14 +8,14 @@ const ipcRenderer = require('electron').ipcRenderer ;
  * Create and returns a single task object instance
  * @return {object} the task
  */
-function createTask(type, input) {
+function createTask(id , type, input) {
     return {
       // public properties
       "type"         : type,
       "input"        : input,
+      "id"           : id || uuidv1(),
 
       // internal properties
-      "id"           : uuidv1(),
       "status"       : "IDLE",
       "progress"     : 0,
       "result"       : null,
@@ -102,17 +102,25 @@ ipcRenderer.on('update-task', (event, task) => {
 
 
 /**
+ * Creates and submit a new task for background execution.
+ * 
  * options = {
+ *  "id"    : "taskId",
  *  "type"  : "the task type",
  *  "input" : any // taks input arguments
  * }
+ * If no "id" is provided, it is created when the task is created.
+ *
  * The returned object provides the task Id, and a promise of result
  * for this task.
  * @param  {object} options task info
  * @return {object}         new task object info
  */
 function submitTask(options) {
-  let task = createTask(options.type, options.input);
+  if( ! options.type ) {
+    throw new Error('missing task type parameter');
+  }
+  let task = createTask(options.id, options.type, options.input);
   addToStore(task);
   let p = new Promise( (resolve, reject) => {
     taskPromise.set(buildKey(task), {

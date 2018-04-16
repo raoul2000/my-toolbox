@@ -32,28 +32,28 @@ module.exports = {
   },
   methods: {
     processAllItems : function() {
-      /*
       if( this.items.length === 0 ) {
         return;
       }
 
-      let taskInfo = DummyTaskService.submitTask(
-        this.items.map( item => ({
-          "type"  : "dummy-task",
+      this.items.forEach( item => {
+        DummyTaskService.submitTask({
+          "id"    : `dummy-${item.id}`,
+          "type"  : "dummy",
           "input" : item
-        }))
-      );
-
-      this.taskId = taskInfo.id;
-      this.taskInfo = taskInfo;
-      this.taskInfo.promise.then(result => {
-        console.log("result = ",result);
-      })
-      .catch(error => {
-        console.error(error);
+        })
+        .promise.then(result => {
+          this.$store.commit('dummyItem/updateItem',{
+            "id" : item.id,
+            "updateWith" : {
+              "result" : result
+            }
+          });
+        })
+        .catch(error => {
+          console.error(error);
+        });
       });
-   }
-*/
     },
     createItems : function(){
       for (var i = 0; i < 4; i++) {

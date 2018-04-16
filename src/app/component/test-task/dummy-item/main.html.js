@@ -6,14 +6,13 @@ module.exports = `
     <td>{{item.result}}</td>
     <td>
       <span
-        v-if="task === null || task.status !== 'BUSY'"
+        v-if=" ! dummyTask  || dummyTask.status !== 'BUSY'"
         v-on:click="processItem"
         class="glyphicon glyphicon-play update-version-button" aria-hidden="true"/>
       <span
         v-else
         class="glyphicon glyphicon-refresh glyphicon-refresh-animate"
         aria-hidden="true" />
-
     </td>
   </tr>
 `;

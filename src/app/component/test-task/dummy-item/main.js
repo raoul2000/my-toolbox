@@ -1,13 +1,12 @@
 "use strict";
 
 const DummyTaskService = require('../../../service/dummy-task');
-
+const service   = require('../../../service/service').service;
 module.exports = {
   props : ['item'],
   data: function() {
     return {
-      "taskId"   : null,
-      "taskInfo" : null
+      "taskId"   : null
     };
   },
   template : require('./main.html'),
@@ -19,18 +18,22 @@ module.exports = {
       return  this.taskId === null
         ? null
         : this.$store.getters['tmptask/taskById'](this.taskId);
+    },
+    dummyTask : function() {
+      return this.$store.getters['tmptask/taskById'](this.dummyTaskId);
+    },
+    dummyTaskId : function() {
+      return `dummy-${this.item.id}`;
     }
   },
   methods: {
     processItem : function() {
-       let taskInfo = DummyTaskService.submitTask({
+      DummyTaskService.submitTask({
+         "id" : this.dummyTaskId,
         "type"  : "dummy",
         "input" : this.item
-      });
-      this.taskId = taskInfo.id;
-      this.taskInfo = taskInfo;
-      this.taskInfo.promise.then(result => {
-        console.log("result = ",result);
+      })
+      .promise.then(result => {
         this.$store.commit('dummyItem/updateItem',{
           "id" : this.item.id,
           "updateWith" : {
@@ -39,6 +42,9 @@ module.exports = {
         });
       })
       .catch(error => {
+        service.notification.error(
+          'failed to start task'
+        );
         console.error(error);
       });
     }

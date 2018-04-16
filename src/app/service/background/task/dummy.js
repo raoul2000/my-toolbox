@@ -17,7 +17,6 @@ function longDummyProcessing(progress) {
 	}
 }
 
-
 function run(task, notifyProgress) {
 
 	notifyProgress(20);
