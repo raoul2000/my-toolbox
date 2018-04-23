@@ -63,6 +63,7 @@ module.exports = {
      * Updates the version of the tomcat displayed by this component
      */
     refreshVersion : function() {
+      debugger;
       let self = this;
       this.allowEdit = false;
       version.updateTomcat(this.item.data,this.tomcat._id)
