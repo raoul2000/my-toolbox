@@ -24,6 +24,7 @@ function getTaskRunnerQueue(taskType) {
     queue = asyncMod.queue(function(task, callback) {
         taskModule.run(task, makeProgressFn(task))
     		.then( result => {
+					console.log(`%c <- SUCCESS : ${task.id}`,"background:#81ff59");
     			ipcRenderer.send('update-task', Object.assign(task, {
     				"status"   : "SUCCESS",
     				"progress" : 100,
@@ -33,6 +34,7 @@ function getTaskRunnerQueue(taskType) {
     			asyncMod.setImmediate( () => callback(null, result) );
     		})
     		.catch(error => {
+					console.log(`%c <- ERROR : ${task.id}`,"background:#f52a2a; color:white");
     			ipcRenderer.send('update-task', Object.assign(task, {
     				"status"   : "ERROR",
     				"progress" : 100,
@@ -59,8 +61,8 @@ window.onload = function () {
    * All other properties are optional
    */
 	ipcRenderer.on('submit-task', (event,task) => {
-    console.info(`${task.id} : submitting task`);
-    console.debug(task);
+		console.log(`%c -> SUBMIT : ${task.id}`,"background:#72cffd");
+    console.debug("task : ",task);
     try {
       getTaskRunnerQueue(task.type)
       .push(
@@ -71,9 +73,9 @@ window.onload = function () {
           "error"    : null
         })
       );
-      console.info(`%c${task.id} : task submitted`, "background:green; color:white");
     } catch (error) {
       console.error("failed to submit new task",error);
+			console.log(`%c <- ERROR : ${task.id}`,"background:#f52a2a; color:white");
       ipcRenderer.send('update-task', Object.assign(task, {
 				"status"   : "ERROR",
 				"progress" : 0,

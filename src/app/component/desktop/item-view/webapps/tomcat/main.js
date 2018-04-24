@@ -3,6 +3,7 @@ const helper    = require('../../../../../lib/lib').helper;
 var persistence = require('../../../../../service/persistence');
 var service     = require('../../../../../service/service').service;
 const version   = require('../../../../../service/version/tomcat');
+const DummyTaskService = require('../../../../../service/dummy-task');
 
 module.exports = {
   props : ['item', 'tomcat', 'expandTomcat', 'expandWebapp', 'filter'],
@@ -60,15 +61,27 @@ module.exports = {
   },
   methods : {
     /**
-     * Updates the version of the tomcat displayed by this component
+     * Updates the version of the tomcat displayed by this component.
+     * The update version operation is submitted as a background task.
      */
     refreshVersion : function() {
-      debugger;
       let self = this;
       this.allowEdit = false;
-      version.updateTomcat(this.item.data,this.tomcat._id)
-      .then( result => {
-        let finalVersion = version.chooseBestResultValue(result.values);
+      DummyTaskService.submitTask({
+        "id"    : this.updateVersionTaskId,
+        "type"  : "update-tomcat-version",
+        "input" : {
+          "item"       : this.item.data,
+          "tomcatId"   : this.tomcat._id // internal ID (not the name)
+        }
+      })
+      .promise
+      .then( results => {
+        let versions = results
+          .filter( result => result.resolved)
+          .map(    result => result.value);
+
+        let finalVersion = version.chooseBestResultValue(results);
         if (finalVersion ) {
           this.$store.commit('updateTomcat',{
             "item"       : this.item,
@@ -78,14 +91,10 @@ module.exports = {
             }
           });
         }
-        // NOTE : it is not needed to update the file here because this will be done by a change
-        // of the version value (see change() below)
-        version.finalize(self.tomcat);
         self.allowEdit = true;
       })
       .catch( err => {
         service.notification.error(err,"Failed to Connect");
-        version.finalize(self.tomcat);
         self.allowEdit = true;
       });
     },
@@ -186,6 +195,6 @@ module.exports = {
     }
   },
   mounted : function() {
-    this.updateVersionTaskId = version.buildTaskId(this.tomcat);
+    this.updateVersionTaskId = `tc-version-${this.tomcat._id}`; //version.buildTaskId(this.tomcat);
   }
 };

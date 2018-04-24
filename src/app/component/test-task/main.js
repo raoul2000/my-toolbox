@@ -8,7 +8,6 @@ module.exports = {
     "task-item"  : require('./task-item/main'),
     "dummy-item" : require('./dummy-item/main')
   },
-
   data: function() {
     return {
       values : {
