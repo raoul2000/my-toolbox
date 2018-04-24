@@ -61,5 +61,6 @@ function run(task, notifyProgress) {
 }
 
 module.exports = {
-  "run" : run
+  "run"          : run,
+  "updateTomcat" : updateTomcat
 };

@@ -2,7 +2,9 @@ const store       = require('../../../../service/store/store'); // TODO : nod ne
 const helper      = require('../../../../lib/lib').helper;
 var persistence   = require('../../../../service/persistence');
 var tomcatVersion = require('../../../../service/version/tomcat');
-const config      = require('../../../../service/config');
+const config           = require('../../../../service/config');
+const DummyTaskService = require('../../../../service/dummy-task');
+var service            = require('../../../../service/service').service;
 
 const VIEW_ID = "webapp-tab";
 
@@ -57,11 +59,42 @@ module.exports = {
     }
   },
   methods : {
+    updateAllTomcatVersion : function() {
+      let self = this;
+      this.allowEdit = false;
+      DummyTaskService.submitTask({
+        "id"    : this.updateVersionTaskId,
+        "type"  : "update-tomcat-version-batch",
+        "input" : {
+          "item"       : this.item.data,
+          "tomcatId"   : this.item.data.tomcats.map( tomcat => tomcat._id) // internal ID (not the name)
+        }
+      })
+      .promise
+      .then( results => {
+        /**
+         * results = [
+         *  {
+         *    "id" : "123e-9987r-998",
+         *    "result" : [
+         *      { "error" : .. , "resolved" : ..., "value" : "7.0.17"},
+         *      { "error" : .. , "resolved" : ..., "value" : "7.0.17"}
+         *    ]
+         *  }, ...
+         * ]
+         */
+        self.allowEdit = true;
+      })
+      .catch( err => {
+        service.notification.error(err,"Failed to Connect");
+        self.allowEdit = true;
+      });
+    },
     /**
      * Update version of all tomcat owner by this component.
      * The actual version scan is delegated to the tomcatVersion service.
      */
-    updateAllTomcatVersion : function() {
+    updateAllTomcatVersion_orig : function() {
       tomcatVersion
         .upddateTomcats(
           this.item.data,

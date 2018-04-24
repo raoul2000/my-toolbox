@@ -195,6 +195,6 @@ module.exports = {
     }
   },
   mounted : function() {
-    this.updateVersionTaskId = `tc-version-${this.tomcat._id}`; //version.buildTaskId(this.tomcat);
+    this.updateVersionTaskId = `tc-version-${this.tomcat._id}`;
   }
 };
