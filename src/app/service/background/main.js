@@ -34,6 +34,7 @@ function getTaskRunnerQueue(taskType) {
     			asyncMod.setImmediate( () => callback(null, result) );
     		})
     		.catch(error => {
+					console.error(error);
 					console.log(`%c <- ERROR : ${task.id}`,"background:#f52a2a; color:white");
     			ipcRenderer.send('update-task', Object.assign(task, {
     				"status"   : "ERROR",

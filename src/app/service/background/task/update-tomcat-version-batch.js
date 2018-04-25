@@ -1,12 +1,12 @@
 "use strict";
 
-const lib     = require('../../../lib/lib');
 const NodeSSH = require('node-ssh');
 const updateTomcatVersion = require('./update-tomcat-version');
 const asyncUtil = require('async');
 
 /**
- * Entry point to update version of a tomcat instance.
+ * Entry point to update version of many tomcat instance.
+ * Only one SSH connection is used to update in parallel all verison values.
  *
  * @param  {object} itemData a desktop item data instance
  * @param  {[string]} tomcatIds the ids of the tomcat to update
@@ -14,37 +14,43 @@ const asyncUtil = require('async');
  * @return {Promise}
  */
  function updateTomcatBatch(itemData, tomcatIds) {
-   // try to create a SSH connection wrapper if not obtained from arguments
 
-    let nodessh = new NodeSSH(itemData.ssh);
-    debugger;
-   let asyncFn = tomcatIds.map( id => {
-     return function(cb){
-       updateTomcatVersion.updateTomcat(itemData, id, nodessh)
-       .then( result => {cb(null,{ "id" : id, "result" : result})})
-       .catch(error  => {cb({"id" : id, "error" : error})});
-     };
-   });
-   return new Promise( (resolve,reject)=> {
-     asyncUtil.parallel(asyncFn,(err,results) => {
-       console.log("asyncUtil.parallel : done");
-       nodessh.dispose();
-       if( err ) {
-         reject(err);
-       } else {
-         resolve(results);
-       }
-     });
-   });
+    let nodessh = new NodeSSH();
 
+    console.log(`SSH LOGIN : ${itemData.ssh.host}`);
+    return nodessh.connect(itemData.ssh)
+    .then( result => {
+      let asyncFn = tomcatIds.map( tomcatId => {
+        return function(cb){
+          updateTomcatVersion.updateTomcat(itemData, tomcatId, nodessh)
+          .then( result => {cb(null,{ "tomcatId" : tomcatId, "result" : result})})
+          .catch(error  => {cb({"tomcatId" : tomcatId, "error" : error})});
+        };
+      });
+      return new Promise( (resolve,reject)=> {
+        asyncUtil.parallel(asyncFn,(err,results) => {
+          console.log(`SSH LOGOUT : ${itemData.ssh.host}`);
+          nodessh.dispose();
+          if( err ) {
+            reject(err);
+          } else {
+            resolve(results);
+          }
+        });
+      });
+    })
+    .catch(err => {
+      console.error(err);
+      console.log(`SSH LOGOUT : ${itemData.ssh.host}`);
+      nodessh.dispose();
+    });
 }
 
-
-function run(task, notifyProgress) {
-  let arg = task.input;
-  return updateTomcatBatch(arg.item,arg.tomcatId);
-}
+// Export //////////////////////////////////////////////////////////////////////
 
 module.exports = {
-  "run" : run
+  "run" : function(task, notifyProgress) {
+    let arg = task.input;
+    return updateTomcatBatch(arg.item,arg.tomcatId);
+  }
 };

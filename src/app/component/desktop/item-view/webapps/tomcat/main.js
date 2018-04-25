@@ -43,10 +43,9 @@ module.exports = {
     },
     /**
      * Returns the current version update task, or 'undefined' of no such
-     * task exists in the store
+     * task exists in the store. The task Id is created on mounted().
      */
     updateVersionTask : function(){
-      console.log('computed task');
       return  this.$store.getters['tmptask/taskById'](this.updateVersionTaskId);
     }
   },

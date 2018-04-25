@@ -3,7 +3,6 @@
 const lib     = require('../../../lib/lib');
 const NodeSSH = require('node-ssh');
 
-
 /**
  * Entry point to update version of a tomcat instance.
  *
@@ -19,15 +18,28 @@ const NodeSSH = require('node-ssh');
       return Promise.reject(`tomcat not found : id = ${tomcatId}`);
     }
 
-    // if no ssh connection object is provided, try to acquire one now
+    // if no SSH connection object is provided, try to acquire one now and open
+    // connection
     let usePrivateSSH = false;
+    let connect;
     if( ! nodessh ) {
         nodessh = new NodeSSH();
         usePrivateSSH = true;
+        console.log(`SSH LOGIN : ${itemData.ssh.host}`);
+        connect = nodessh.connect(itemData.ssh);
+    } else {
+      connect = Promise.resolve(true);
     }
 
+    let logoutSSH = function() {
+      if( nodessh && usePrivateSSH) {
+        console.log(`SSH LOGOUT : ${itemData.ssh.host}`);
+        nodessh.dispose();
+      }
+    };
+
     // start the version extraction
-    return nodessh.connect(itemData.ssh)
+    return connect
     .then( result => {
       return lib.version.tomcat.getVersion({
         "nodessh" : nodessh,
@@ -40,27 +52,22 @@ const NodeSSH = require('node-ssh');
       });
     })
     .then( results => {
-      if( nodessh && usePrivateSSH) {
-        nodessh.dispose();
-      }
+      logoutSSH();
       return results;
     })
     .catch(err => {
       console.error(err);
-      if( nodessh && usePrivateSSH) {
-        nodessh.dispose();
-      }
+      logoutSSH();
       throw err;
     });
 }
 
-
-function run(task, notifyProgress) {
-  let arg = task.input;
-  return updateTomcat(arg.item,arg.tomcatId, arg.nodessh);
-}
+// Exports /////////////////////////////////////////////////////////////////////
 
 module.exports = {
-  "run"          : run,
+  "run"          : function(task, notifyProgress) {
+    let arg = task.input;
+    return updateTomcat(arg.item,arg.tomcatId, arg.nodessh);
+  },
   "updateTomcat" : updateTomcat
 };
