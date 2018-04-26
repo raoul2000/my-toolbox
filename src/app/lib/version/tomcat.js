@@ -3,6 +3,7 @@
 const sshCommand  = require('./ssh-command');
 const httpRequest = require('./http-request');
 const promiseUtil = require('../promise-utils');
+const asyncUtil = require('async');
 
 /**
  * Extract Tomcat version using the embed TOMCAT_INSTALL/bin/version.sh script.
@@ -120,8 +121,23 @@ exports.getVersion = function(options) {
     ssh_from_version_script
     //http_manager_404
   ];
+  /*
+  let tasks = extractionStrategies.map( extractionFn => {
+    return asyncUtil.reflect( (cb) => {
+      extractionFn(options)
+      .then (result => { cb(null, result);})
+      .catch(error  => { cb(error);       });
+    });
+  });
+
+  let seqTasks = asyncUtil.seq(tasks);
+  debugger;
+  return seqTasks;
+*/
+
 
   return promiseUtil.serial(extractionStrategies, function(strategy) {
     return strategy(options);
   });
+  
 };
