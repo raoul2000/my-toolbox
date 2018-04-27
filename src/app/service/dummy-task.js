@@ -29,7 +29,7 @@ function createTask(id , type, input) {
  * @param       {object} task the task instance to add to the store
  * @return {string}
  */
-function addToStore(task) {
+function addTaskToStore(task) {
   if( ! task.hasOwnProperty('id')) {
     throw new Error("fail to add task to the store : missing task id");
   }
@@ -38,7 +38,12 @@ function addToStore(task) {
   return task.id;
 }
 
-function updateStore(task) {
+function deleteTaskFromStore(task) {
+  let taskId = typeof task === "string" ? task : task.id;
+  store.commit('tmptask/deleteTaskById',taskId);
+}
+
+function updateTaskInStore(task) {
   store.commit('tmptask/updateTask',{
     "id"           : task.id,
     "updateWith"   : task
@@ -51,7 +56,7 @@ function updateStore(task) {
  * @param  {object} task the task to execute in background
  */
 function submitToQueue(task) {
-  updateStore({
+  updateTaskInStore({
     "id"     : task.id,
     "status" : "BUSY"
   });
@@ -71,6 +76,7 @@ function rejectTaskPromise(key, error) {
     console.error("reject : task promise not found for key  "+key);
   }
 }
+
 function resolveTaskPromise(key, result) {
   if( taskPromise.has(key)) {
     taskPromise.get(key).resolve(result);
@@ -79,6 +85,7 @@ function resolveTaskPromise(key, result) {
     console.error("resolve : task promise not found for key : "+key);
   }
 }
+
 function buildKey(task) {
   return `key-${task.type}-${task.id}`;
 }
@@ -91,7 +98,7 @@ function buildKey(task) {
  */
 ipcRenderer.on('update-task', (event, task) => {
     console.log("update-task", task);
-    updateStore(task);
+    updateTaskInStore(task);
     let k = buildKey(task);
     if( task.status === "ERROR") {
       rejectTaskPromise(k,task.error);
@@ -103,7 +110,7 @@ ipcRenderer.on('update-task', (event, task) => {
 
 /**
  * Creates and submit a new task for background execution.
- * 
+ *
  * options = {
  *  "id"    : "taskId",
  *  "type"  : "the task type",
@@ -121,7 +128,7 @@ function submitTask(options) {
     throw new Error('missing task type parameter');
   }
   let task = createTask(options.id, options.type, options.input);
-  addToStore(task);
+  addTaskToStore(task);
   let p = new Promise( (resolve, reject) => {
     taskPromise.set(buildKey(task), {
       "resolve" : resolve,
@@ -145,35 +152,18 @@ function submitManyTasks(taskType){
   let taskIds = [];
   for (var i = 0; i < 3; i++) { // work on 10 dummy tasks
     let task = createTask(taskType);
-    addToStore(task);
+    addTaskToStore(task);
     submitToQueue(task);
     taskIds.push(task.id);
   }
   return taskIds;
 }
 
-function submitManyTasks_promise(taskType){
-  console.log("submiting many tasks");
-
-  let p = [];
-  let taskInfo;
-  let taskIds = [];
-  for (var i = 0; i < 3; i++) { // work on 10 dummy tasks
-    taskInfo = submitTask({
-      "type" : taskType,
-      "input" : i
-    });
-    p.push(taskInfo.promise);
-    taskIds.push(taskInfo.id);
-  }
-  return {
-    "id"      : taskIds,
-    "promise" : Promise.all(p)
-  };
-}
-
-
 module.exports = {
-  "submitManyTasks" : submitManyTasks,
-  "submitTask"      : submitTask
+  "submitManyTasks"     : submitManyTasks,
+  "submitTask"          : submitTask,
+  "createTask"          : createTask,
+  "addTaskToStore"      : addTaskToStore,
+  "updateTaskInStore"   : updateTaskInStore,
+  "deleteTaskFromStore" : deleteTaskFromStore
 };

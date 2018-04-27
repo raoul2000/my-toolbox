@@ -5,6 +5,7 @@ var tomcatVersion = require('../../../../service/version/tomcat');
 const config           = require('../../../../service/config');
 const DummyTaskService = require('../../../../service/dummy-task');
 var service            = require('../../../../service/service').service;
+const version          = require('../../../../service/version/tomcat');
 
 const VIEW_ID = "webapp-tab";
 
@@ -59,30 +60,37 @@ module.exports = {
     }
   },
   methods : {
+    /**
+     * Update version of all tomcat owner by this component.
+     * The actual version scan is delegated to the tomcatVersion service.
+     */
     updateAllTomcatVersion : function() {
       let self = this;
       this.allowEdit = false;
-      DummyTaskService.submitTask({
-        "id"    : this.updateVersionTaskId,
-        "type"  : "update-tomcat-version-batch",
-        "input" : {
-          "item"       : this.item.data,
-          "tomcatId"   : this.item.data.tomcats.map( tomcat => tomcat._id) // internal ID (not the name)
-        }
-      })
-      .promise
+      version.updateTomcatBatch(
+        this.item.data,
+        this.item.data.tomcats.map( tomcat => tomcat._id)
+      )
       .then( results => {
         /**
          * results = [
-         *  {
-         *    "id" : "123e-9987r-998",
-         *    "result" : [
-         *      { "error" : .. , "resolved" : ..., "value" : "7.0.17"},
-         *      { "error" : .. , "resolved" : ..., "value" : "7.0.17"}
-         *    ]
-         *  }, ...
+         *  { "tomcatId" : "123e-9987r-998", "version" : "1.2.0" },
+         *  { "tomcatId" : "3445-9987r-998", "version" : "1.3.0" },
+         *  ...
          * ]
          */
+        results.forEach( result => {
+          let tomcat = self.item.data.tomcats.find( tomcat => tomcat._id === result.tomcatId);
+          if(tomcat) {
+            self.$store.commit('updateTomcat',{
+              "item"       : self.item,
+              "tomcat"     : tomcat,
+              "updateWith" : {
+                "version" : result.version
+              }
+            });
+          }
+        });
         self.allowEdit = true;
       })
       .catch( err => {
@@ -90,42 +98,7 @@ module.exports = {
         self.allowEdit = true;
       });
     },
-    /**
-     * Update version of all tomcat owner by this component.
-     * The actual version scan is delegated to the tomcatVersion service.
-     */
-    updateAllTomcatVersion_orig : function() {
-      tomcatVersion
-        .upddateTomcats(
-          this.item.data,
-          this.item.data.tomcats.map( tomcat => tomcat._id)
-        )
-        .then(results => {
-          console.log(results);
 
-          results
-            .filter( result => result.resolved )
-            .map( result => result.value)
-            .forEach( result => {
-              let tomcat = this.item.data.tomcats.find( tomcat => tomcat._id === result._id);
-              if( tomcat ) {
-                let finalVersion = tomcatVersion.chooseBestResultValue(result.values);
-                // TODO : updating tomcat version will cause a saveToFile FOR EACH tomcat !
-                // There should be a way to update all tomcats version and then save to file only once
-                this.$store.commit('updateTomcat',{
-                  "item"       : this.item,
-                  "tomcat"     : tomcat,
-                  "updateWith" : {
-                    "version" : finalVersion
-                  }
-                });
-                tomcatVersion.finalize(tomcat);
-              } else {
-                console.warn("tomcat not found : id = "+result._id);
-              }
-            });
-        });
-    },
     closeScannerView : function() {
       this.$store.commit('view/update', {
         "id" : VIEW_ID,

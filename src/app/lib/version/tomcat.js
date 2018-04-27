@@ -2,7 +2,6 @@
 
 const sshCommand  = require('./ssh-command');
 const httpRequest = require('./http-request');
-const promiseUtil = require('../promise-utils');
 const asyncUtil = require('async');
 
 /**
@@ -121,7 +120,7 @@ exports.getVersion = function(options) {
     ssh_from_version_script
     //http_manager_404
   ];
-  /*
+
   let tasks = extractionStrategies.map( extractionFn => {
     return asyncUtil.reflect( (cb) => {
       extractionFn(options)
@@ -130,14 +129,10 @@ exports.getVersion = function(options) {
     });
   });
 
-  let seqTasks = asyncUtil.seq(tasks);
-  debugger;
-  return seqTasks;
-*/
-
-
-  return promiseUtil.serial(extractionStrategies, function(strategy) {
-    return strategy(options);
+  return new Promise( (resolve, reject) => {
+    asyncUtil.series(tasks, (err, results) => {
+      if(err) { reject(err);     }
+      else    { resolve(results);}
+    });
   });
-  
 };

@@ -59,11 +59,33 @@ module.exports = {
     }
   },
   methods : {
+    refreshVersion : function() {
+      let self = this;
+      this.allowEdit = false;
+      version.updateTomcat(
+        this.item.data,
+        this.tomcat._id
+      )
+      .then( result => {
+        self.$store.commit('updateTomcat',{
+          "item"       : self.item,
+          "tomcat"     : self.tomcat,
+          "updateWith" : {
+            "version" : result
+          }
+        });
+        self.allowEdit = true;
+      })
+      .catch( err => {
+        service.notification.error(err,"Failed to Connect");
+        self.allowEdit = true;
+      });
+    },
     /**
      * Updates the version of the tomcat displayed by this component.
      * The update version operation is submitted as a background task.
      */
-    refreshVersion : function() {
+    refreshVersion_orig : function() {
       let self = this;
       this.allowEdit = false;
       DummyTaskService.submitTask({
@@ -76,11 +98,30 @@ module.exports = {
       })
       .promise
       .then( results => {
-        let versions = results
-          .filter( result => result.resolved)
-          .map(    result => result.value);
+        /**
+         * The results may contains differents values retrieved using various extraction
+         * methods. We must now choose the best version number and to do so, we will use the one
+         * with max occurence.
+         *
+         * results = [
+         *  { "value" : "1.2.3" },
+         *  { "value" : "1.2.3" },
+         *  { "error" : {.. error description} }
+         * ]
+         */
+        let versionOccurency = results
+          .filter( result => result.hasOwnProperty('value') && result.value.length > 0 )
+          .map(result => result.value)
+          .reduce((acc, curr) => (acc[curr] = ++acc[curr] || 1, acc), {});
+          // versionOccurency = {
+          //  "value1" : 2, // occurence
+          //  "value2" : 1 // occurence
+          // }
+        let finalVersion = Object.keys(versionOccurency).reduce( (winner, curr) => {
+          if( winner === null) { return curr;          }
+          else {  return versionOccurency[curr] > versionOccurency[winner]   ?  curr  : winner;}
+        },null);
 
-        let finalVersion = version.chooseBestResultValue(results);
         if (finalVersion ) {
           this.$store.commit('updateTomcat',{
             "item"       : this.item,
@@ -194,6 +235,6 @@ module.exports = {
     }
   },
   mounted : function() {
-    this.updateVersionTaskId = `tc-version-${this.tomcat._id}`;
+    this.updateVersionTaskId = version.createUpdateTomcatTaskId(this.tomcat); //`tc-version-${this.tomcat._id}`;
   }
 };

@@ -42,6 +42,12 @@ module.exports = {
         state.tasks.splice(idx, 1);
       }
     },
+    deleteTaskById(state, taskId) {
+      let idx = state.tasks.findIndex( task => task.id === taskId);
+      if( idx !== -1) {
+        state.tasks.splice(idx, 1);
+      }
+    },
     updateTask(state, options) {
       try {
         let task   = state.tasks.find(task => task.id === options.id);
