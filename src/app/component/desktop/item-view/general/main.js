@@ -4,9 +4,9 @@ const validate         = require('validator');
 var fs                 = require('fs');
 var path               = require('path');
 const config           = require('../../../../service/config');
-var checkSSHConnection = require('../../../../lib/ssh/check-connection').checkConnection;
 var persistence        = require('../../../../service/persistence');
 var service            = require('../../../../service/service').service;
+var checkSSHConnection2            = require('../../../../service/ssh/check-connection');
 
 module.exports = {
   components : {
@@ -17,7 +17,6 @@ module.exports = {
   template: require('./main.html'),
   data : function(){
     return {
-      action       : null, // 'test-connection'
       connectionOk : true,
       item         : null,
       validation : {
@@ -27,7 +26,6 @@ module.exports = {
         "port"     : true,
         "notes"    : true
       },
-      allowEdit    : true,
       selection: '',
       suggestions: [
         { city: 'Bangalore', state: 'Karnataka' },
@@ -36,36 +34,61 @@ module.exports = {
         { city: 'Kolkata', state: 'West Bengal' },
         { city: 'Mumbai', state: 'Maharashtra' }
       ]
-
     };
   },
   computed : {
+    /**
+     * User can test SSH connection (button enabled) if :
+     * - no check task is in progress
+     * - host is not empty
+     * - username is nopt empty
+     * If password is empty it will be prompted.
+     */
     canTestConnection : function(){
-      return this.action === null
+      let task = this.checkSSHConnectionTask;
+      return ( ( task && task.status !== "BUSY") || !task)
         && this.item.data.ssh.username.length !== 0
         && this.item.data.ssh.host.length > 0;
+    },
+    /**
+     * Returns the current SSH connection check task, or 'undefined' of no such
+     * task exists in the store.
+     */
+    checkSSHConnectionTask : function(){
+      return  this.$store.getters['tmptask/taskById'](this.checkSSHConnectionTaskId);
+    },
+    /**
+     * Create the task ID. As it depends on the host/username, it must be computed
+     * and cannot be assigned on 'mounted'
+     */
+    checkSSHConnectionTaskId : function() {
+      return checkSSHConnection2.createTaskId(this.item.data.ssh);
+    },
+    /**
+     * SSH settings can be edited if no check connection task is in progress
+     */
+    allowEdit : function() {
+      return ! (this.checkSSHConnectionTask && this.checkSSHConnectionTask.status === "BUSY");
     }
   },
   methods : {
+    /**
+     * Test that current SSH connection settings are correct by trying to open a connection
+     * to host.
+     */
     testConnection : function() {
-      let self = this;
-      this.allowEdit = false;
-      service.sshInfo.getInfo(this.item.data.ssh)
+      service.sshInfo.getInfo(this.item.data.ssh) // user may be prompted
       .then( sshOptions => {
         // now that we have ssh connection params, let's start the real work
-        this.action = "test-connection";
         this.connectionOk = null;
-        return checkSSHConnection(sshOptions);
+        return service.ssh.checkConnection(sshOptions);
       })
       .then( success => {
         this.connectionOk = true;
-        this.action       = null;
-        self.allowEdit    = true;
       })
       .catch(error => {
-        this.action       = null;
-        self.allowEdit    = true;
         if( error === "canceled-by-user") {
+          // user has been prompted for password and pressed cancel
           this.connectionOk = true;
         } else {
           this.connectionOk = false;
@@ -75,7 +98,8 @@ module.exports = {
       });
     },
     /**
-     * Handle Notes update : updtae the store and the file
+     * Handle Notes update : updtae the store and the file is note have been updated
+     * by user
      */
     changeNotesValue : function(arg) {
       store.commit('updateDesktopItem', {

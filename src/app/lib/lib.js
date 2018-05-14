@@ -20,3 +20,7 @@ exports.version = {
   "webapp" : require('./version/webapp'),
   "helper" : require('./helper')
 };
+
+exports.ssh = {
+  "checkConnection" : require('./ssh/check-connection').checkConnection
+};

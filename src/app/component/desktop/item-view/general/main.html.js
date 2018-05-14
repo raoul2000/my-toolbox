@@ -75,7 +75,7 @@ module.exports = `
                 <button
                   v-bind:disabled="!canTestConnection"
                   v-on:click="testConnection" type="button" class="btn btn-default btn-block">
-                    <i v-show="action === 'test-connection'" class="fa fa-refresh fa-spin"></i>
+                    <i v-show="allowEdit === false" class="fa fa-refresh fa-spin"></i>
                     <span v-show="connectionOk === true" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                     <span v-show="connectionOk === false" class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red"></span>
 

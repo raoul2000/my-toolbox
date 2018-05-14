@@ -20,6 +20,6 @@ exports.checkConnection = function(options) {
   .catch(err => {
     console.error(err);
     ssh.dispose();
-    throw new Error(err);
+    throw err.message;
   });
 };

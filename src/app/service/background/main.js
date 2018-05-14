@@ -64,7 +64,7 @@ window.onload = function () {
 	ipcRenderer.on('submit-task', (event,task) => {
 		console.log(`%c -> SUBMIT : ${task.id}`,"background:#72cffd");
     console.debug("task : ",task);
-    try {
+		try {
       getTaskRunnerQueue(task.type)
       .push(
         Object.assign(task,{

@@ -7,5 +7,9 @@ exports.service = {
   "config"        : require('./config'),
   "command"       : require('./command/runner'),
   "sshInfo"       : require('./ssh-connection'),
-  "shell"         : require('./shell')
+  "shell"         : require('./shell'),
+  "ssh"           : {
+    "getInfo"          : require('./ssh/get-info').getInfo,
+    "checkConnection" : require('./ssh/check-connection').checkConnection
+  }
 };
