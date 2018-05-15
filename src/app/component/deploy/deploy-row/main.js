@@ -3,7 +3,7 @@
 const fs       = require('fs');
 const path     = require('path');
 const store    = require('../../../service/store/store');
-const service  = require('../../../service/service').service;
+const service  = require('../../../service/index');
 const ACTION   = require('../lib/module').ACTION;
 
 
@@ -132,7 +132,7 @@ module.exports = {
         } catch (e) {
           service.notification.error(
             'Error', `Failed to save metadata file : ${metafilePath}`
-          );          
+          );
           console.warn("failed to save metadata file "+metafilePath,e);
         }
       }

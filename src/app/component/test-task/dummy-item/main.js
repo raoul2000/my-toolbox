@@ -1,7 +1,7 @@
 "use strict";
 
 const DummyTaskService = require('../../../service/dummy-task');
-const service   = require('../../../service/service').service;
+const service   = require('../../../service/index');
 module.exports = {
   props : ['item'],
   data: function() {

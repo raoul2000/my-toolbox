@@ -80,7 +80,7 @@ module.exports = {
           this.connectionOk = true;
         } else {
           this.connectionOk = false;
-          service.sshInfo.clearCachedPassword(this.item.data.ssh);
+          service.ssh.clearCachedPassword(this.item.data.ssh);
           service.notification.error(error,"Failed to connect");
         }
       });

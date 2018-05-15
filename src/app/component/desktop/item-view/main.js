@@ -4,8 +4,8 @@ var remote      = require('electron').remote;
 var validate    = require('validator');
 const { spawn } = require('child_process');
 const store     = require('../../../service/store/store'); // TODO : nod needed as already injected by parent (to check)
-const config    = require('../../../service/config');
-const service   = require('../../../service/service').service;
+//const config    = require('../../../service/config');
+const service   = require('../../../service/index');
 
 const VIEW_ID = "item-view";
 
@@ -62,7 +62,7 @@ module.exports = {
 
         // run PUTTY
         console.log(cmdArg);
-        spawn(`"${config.store.get('puttyFilePath')}"`, cmdArg , { shell: true });
+        spawn(`"${service.config.store.get('puttyFilePath')}"`, cmdArg , { shell: true });
         // TODO : error handler if command fails (program file not found)
       } else {
         // no ip address available : error (sorry)
@@ -93,7 +93,7 @@ module.exports = {
           uri = uri.concat(`:${ssh.port}`);
         }
         console.log(uri);
-        spawn(`"${config.store.get('winscpFilePath')}"`, [ uri ] , { shell: true });
+        spawn(`"${service.config.store.get('winscpFilePath')}"`, [ uri ] , { shell: true });
       }  else {
         // no ip address available : error (sorry)
         service.notification.error(

@@ -2,10 +2,9 @@ var remote     = require('electron').remote;
 var fs         = require('fs');
 var path       = require('path');
 const store    = require('../../service/store/store');
-const config   = require('../../service/config');
 const helper   = require('../../lib/lib').helper;
 
-const service   = require('../../service/service').service;
+const service   = require('../../service/index');
 
 /**
  * The Desktop view allows the user to load one more items from the ctdb folder path into the main view
@@ -15,7 +14,7 @@ module.exports = {
   store,
   data : function(){
     return {
-      groupByCategory : config.store.get("desktopGroupByCategory")
+      groupByCategory : service.config.store.get("desktopGroupByCategory")
     };
   },
   template: require('./main.html'),
@@ -40,7 +39,7 @@ module.exports = {
     },
     /**
      * Remove All items from the desktop and save the new desktop state (empty)
-     * in the current config.
+     * in the current service.config.
      */
     clearDesktop : function(){
       if( store.state.desktop.length === 0) {
@@ -53,7 +52,7 @@ module.exports = {
       )
       .on('confirm', ()=> {
         self.$store.commit('removeAllItems');
-        config.clearDesktop();
+        service.config.clearDesktop();
       });
     },
     itemsByCategory : function(category) {
@@ -126,10 +125,10 @@ module.exports = {
      * Saves an empty item to file
      */
     createItem : function(category) {
-      let defaultPath = config.getRecentCTDBPath();
+      let defaultPath = service.config.getRecentCTDBPath();
       if( category && typeof category === "string") {
         defaultPath = path.join(
-          config.store.get("ctdbFolderPath"),
+          service.config.store.get("ctdbFolderPath"),
           category
         );
       }
@@ -166,7 +165,7 @@ module.exports = {
         function(filename) {
           console.log(filename);
           if( filename ) {
-            let ctdbBasePath = config.store.get("ctdbFolderPath");
+            let ctdbBasePath = service.config.store.get("ctdbFolderPath");
             // check if this file is under the CTBD base folder
             var relativeFilePath = filename.replace(ctdbBasePath,'');
             if(relativeFilePath === filename) {
@@ -192,8 +191,8 @@ module.exports = {
                                   .split(path.sep)
                                   .filter( token => token.length !== 0)
                   });
-                  config.store.set('recent.ctdbPath',path.dirname(filename));
-                  config.addDesktopItem(filename);
+                  service.config.store.set('recent.ctdbPath',path.dirname(filename));
+                  service.config.addDesktopItem(filename);
                   service.notification.success(
                     `Saved to <b>${relativeFilePath}</b> and added to your desktop`
                   );
@@ -210,7 +209,7 @@ module.exports = {
      */
     toggleGroup : function(){
       this.groupByCategory = ! this.groupByCategory;
-      config.store.set('desktopGroupByCategory', this.groupByCategory);
+      service.config.store.set('desktopGroupByCategory', this.groupByCategory);
     },
     /**
      * Opens a view for a specific item.
@@ -250,10 +249,10 @@ module.exports = {
      */
     removeFromDesktop : function(item) {
       let filePath = path.join(
-        config.store.get("ctdbFolderPath"),
+        service.config.store.get("ctdbFolderPath"),
         item.filename
       );
-      config.removeDesktopItem(filePath);
+      service.config.removeDesktopItem(filePath);
       store.commit('removeFromDesktopById',item.data._id);
     },
     /**
@@ -264,7 +263,7 @@ module.exports = {
      * @param  {[string]} filenames List of select filenames (absolute)
      */
     addFilesToDesktop : function(filenames) {
-      let ctdbBasePath = config.store.get("ctdbFolderPath");
+      let ctdbBasePath = service.config.store.get("ctdbFolderPath");
       if( Array.isArray(filenames) ) {
         filenames.forEach(file => {
           // check if this file is under the CTBD base folder
@@ -312,8 +311,8 @@ module.exports = {
                               .split(path.sep)
                               .filter( token => token.length !== 0)
               });
-              config.store.set('recent.ctdbPath',path.dirname(file));
-              config.addDesktopItem(file);
+              service.config.store.set('recent.ctdbPath',path.dirname(file));
+              service.config.addDesktopItem(file);
             }
           }
         });
@@ -329,10 +328,10 @@ module.exports = {
      * Otherwise it is ignored
      */
     openDesktopItems : function(defaultPath) {
-      let defPath = config.getRecentCTDBPath();
+      let defPath = service.config.getRecentCTDBPath();
       if( defaultPath && typeof defaultPath === "string") {
         defPath = path.join(
-          config.store.get("ctdbFolderPath"),
+          service.config.store.get("ctdbFolderPath"),
           defaultPath
         );
       }
@@ -351,11 +350,11 @@ module.exports = {
 
     // Desktop initialization //////////////////////////////////////////////////
 
-    if( config.store.get('persistentDesktop')
+    if( service.config.store.get('persistentDesktop')
         && store.state.desktopLoadedOnInit === false )
     {
       console.log('loading desktop from config file');
-      let persistentDekstopItems = config.getDesktopItems();
+      let persistentDekstopItems = service.config.getDesktopItems();
       if( persistentDekstopItems.length > 0 ){
         this.addFilesToDesktop(persistentDekstopItems);
       }

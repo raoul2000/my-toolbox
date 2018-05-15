@@ -25,7 +25,7 @@ const MavenDownload   = require('./component/maven-download/main');
 
 const store    = require('./service/store/store');
 const config   = require('./service/config');
-const service  = require('./service/service').service;
+const service  = require('./service/index');
 
 let shell = require('electron').shell;
 

@@ -3,7 +3,7 @@ var remote     = require('electron').remote;
 var fs         = require('fs');
 var path         = require('path');
 const store    = require('../../service/store/store');
-const service  = require('../../service/service').service;
+const service  = require('../../service/index');
 const config   = require('../../service/config');
 const moduleModel   = require('./lib/module');
 const deploySSH   = require('./lib/deploy-ssh');
@@ -150,7 +150,7 @@ module.exports = {
     if ( fs.existsSync(deployFolderPath) === false ) {
       service.notification.error(
         'Error', `Configured Deploy Folder Not Found : <b>${deployFolderPath}</b>`
-      ); 
+      );
       return;
     }
     console.log("deployFolderPath = ",deployFolderPath);
