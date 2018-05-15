@@ -1,6 +1,5 @@
 const validate    = require('validator');
-const persistence = require('../../../../../../service/persistence');
-const service     = require('../../../../../../service/service').service;
+const service     = require('../../../../../../service/index');
 const helper      = require('../../../../../../lib/lib').helper;
 const shell       = require('electron').shell;
 const version     = require('../../../../../../service/version/webapp');
@@ -150,7 +149,7 @@ module.exports = {
           }
         });
         // save updated item to file
-        persistence.saveDesktopItemToFile(self.item);
+        service.persistence.saveDesktopItemToFile(self.item);
         // delete the update version task
         self.$store.commit('tmptask/deleteTask',{
           "id" : self.updateVersionTaskId
@@ -184,7 +183,7 @@ module.exports = {
           "urlPatterns" : []
         }
       });
-      persistence.saveDesktopItemToFile(this.item);
+      service.persistence.saveDesktopItemToFile(this.item);
     },
 
     toggleDetailView : function() {
@@ -207,7 +206,7 @@ module.exports = {
           "tomcat"    : self.tomcat,
           "webapp"    : self.webapp
         });
-        persistence.saveDesktopItemToFile(self.item);
+        service.persistence.saveDesktopItemToFile(self.item);
       });
     },
     changeValue: function(arg) {
@@ -241,7 +240,7 @@ module.exports = {
       updateInfo.updateWith[arg.name] = arg.value;
       this.$store.commit('updateWebapp', updateInfo);
       debugger;
-      persistence.saveDesktopItemToFile(this.item);
+      service.persistence.saveDesktopItemToFile(this.item);
     }
   } ,
   mounted : function() {

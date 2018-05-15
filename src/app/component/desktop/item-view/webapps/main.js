@@ -1,16 +1,12 @@
-const store       = require('../../../../service/store/store'); // TODO : nod needed as already injected by parent (to check)
-const helper      = require('../../../../lib/lib').helper;
-var persistence   = require('../../../../service/persistence');
-var tomcatVersion = require('../../../../service/version/tomcat');
-const config           = require('../../../../service/config');
-const DummyTaskService = require('../../../../service/dummy-task');
-var service            = require('../../../../service/service').service;
-const version          = require('../../../../service/version/tomcat');
+'use strict';
+
+const helper  = require('../../../../lib/lib').helper;
+var service   = require('../../../../service/index');
+const version = require('../../../../service/version/tomcat');
 
 const VIEW_ID = "webapp-tab";
 
 module.exports = {
-  store,
   components : {
     "tomcat"    : require('./tomcat/main'),
     'scan'      : require('./scan/main')
@@ -148,7 +144,7 @@ module.exports = {
           "webapps" : []
         }
       });
-      persistence.saveDesktopItemToFile(this.item);
+      service.persistence.saveDesktopItemToFile(this.item);
     }
   },
   /**
@@ -161,8 +157,8 @@ module.exports = {
        this.$store.commit('view/add',{
          "id"          : VIEW_ID,
          "childViewId" : "TOMCAT_LIST",
-         "expandTomcat": config.store.get("expandTomcatView"),
-         "expandWebapp": config.store.get("expandWebappView")
+         "expandTomcat": service.config.store.get("expandTomcatView"),
+         "expandWebapp": service.config.store.get("expandWebappView")
        });
      }
 

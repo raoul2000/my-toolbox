@@ -2,10 +2,9 @@
 const smartCommand  = require('../../../../../lib/lib').smartCommand;
 const tomcatScanner = require('../../../../../lib/lib').tomcatScanner;
 const helper        = require('../../../../../lib/lib').helper;
-const persistence   = require('../../../../../service/persistence');
-const service       = require('../../../../../service/service').service;
-const NodeSSH = require('node-ssh');
-const fs         = require('fs');
+const service       = require('../../../../../service/index');
+const NodeSSH       = require('node-ssh');
+const fs            = require('fs');
 
 module.exports = Vue.component('modal-tc-scan',  {
   props : ['item'],
@@ -113,7 +112,7 @@ module.exports = Vue.component('modal-tc-scan',  {
               });
             }
           });
-          persistence.saveDesktopItemToFile(this.item);
+          service.persistence.saveDesktopItemToFile(this.item);
         })
         .catch(err => {
           console.log(err);

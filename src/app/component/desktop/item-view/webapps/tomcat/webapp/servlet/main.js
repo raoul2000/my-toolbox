@@ -1,7 +1,6 @@
 const validate    = require('validator');
 
-const persistence = require('../../../../../../../service/persistence');
-const service     = require('../../../../../../../service/service').service;
+const service     = require('../../../../../../../service/index');
 const shell       = require('electron').shell;
 
 module.exports = {
@@ -47,7 +46,7 @@ module.exports = {
           "webapp"    : self.webapp,
           "servlet"   : self.servlet
         });
-        persistence.saveDesktopItemToFile(self.item);
+        service.persistence.saveDesktopItemToFile(self.item);
       });
     },
     changeValue: function(arg) {
@@ -66,7 +65,7 @@ module.exports = {
       this.$store.commit('updateServlet', updateInfo);
       // FIXME : in some case (to define) the JSON saved by next line is INVALID
       // with additional closing brackets or some other characters
-      persistence.saveDesktopItemToFile(this.item);
+      service.persistence.saveDesktopItemToFile(this.item);
     }
   }
 };

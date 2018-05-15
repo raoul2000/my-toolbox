@@ -1,10 +1,6 @@
 'use strict';
 
-const validate         = require('validator');
-var fs                 = require('fs');
-var path               = require('path');
-const config           = require('../../../../service/config');
-var persistence        = require('../../../../service/persistence');
+var service        = require('../../../../service/index');
 const helper           = require('../../../../lib/lib').helper;
 
 module.exports = {
@@ -20,7 +16,6 @@ module.exports = {
   },
   methods : {
     addComponent : function() {
-      console.log('addComponent');
       this.$store.commit('addComponent', {
         "item"      : this.item,
         "component" : {
@@ -29,7 +24,7 @@ module.exports = {
           "version" : ""
         }
       });
-      persistence.saveDesktopItemToFile(this.item);
+      service.persistence.saveDesktopItemToFile(this.item);
     }
   },
   /**

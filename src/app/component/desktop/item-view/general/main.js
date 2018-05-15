@@ -1,11 +1,7 @@
 'use strict';
 
 const validate         = require('validator');
-var fs                 = require('fs');
-var path               = require('path');
-const config           = require('../../../../service/config');
-var persistence        = require('../../../../service/persistence');
-var service            = require('../../../../service/service').service;
+var service            = require('../../../../service/index');
 var checkSSHConnection2            = require('../../../../service/ssh/check-connection');
 
 module.exports = {
@@ -69,7 +65,7 @@ module.exports = {
      * connection to host.
      */
     testConnection : function() {
-      service.sshInfo.getInfo(this.item.data.ssh) // user may be prompted
+      service.ssh.getInfo(this.item.data.ssh) // user may be prompted
       .then( sshOptions => {
         // now that we have ssh connection params, let's start the real work
         this.connectionOk = null;
@@ -100,7 +96,7 @@ module.exports = {
           notes  : arg.value
         }
       });
-      persistence.saveDesktopItemToFile(this.item);
+      service.persistence.saveDesktopItemToFile(this.item);
     },
     /**
      * Handle SSH settings update : update the store and the file.
@@ -124,7 +120,7 @@ module.exports = {
       };
       updateData.updateWith[arg.name] = arg.value;
       store.commit('updateDesktopItem',updateData);
-      persistence.saveDesktopItemToFile(this.item);
+      service.persistence.saveDesktopItemToFile(this.item);
     }
   },
   /**

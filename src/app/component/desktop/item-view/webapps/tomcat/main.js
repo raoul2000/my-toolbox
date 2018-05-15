@@ -1,7 +1,6 @@
 const validate  = require('validator');
 const helper    = require('../../../../../lib/lib').helper;
-var persistence = require('../../../../../service/persistence');
-var service     = require('../../../../../service/service').service;
+const service     = require('../../../../../service/index');
 const version   = require('../../../../../service/version/tomcat');
 
 module.exports = {
@@ -111,7 +110,7 @@ module.exports = {
           "servlets"     : []
         }
       });
-      persistence.saveDesktopItemToFile(this.item);
+      service.persistence.saveDesktopItemToFile(this.item);
     },
     deleteTomcat : function(){
       let self = this;
@@ -124,7 +123,7 @@ module.exports = {
           "item"   : self.item,
           "tomcat" : self.tomcat
         });
-        persistence.saveDesktopItemToFile(self.item);
+        service.persistence.saveDesktopItemToFile(self.item);
       });
     },
     isUniqueTomcatId : function(id) {
@@ -177,7 +176,7 @@ module.exports = {
       };
       updateInfo.updateWith[arg.name] = arg.value;
       this.$store.commit('updateTomcat',updateInfo );
-      persistence.saveDesktopItemToFile(this.item);
+      service.persistence.saveDesktopItemToFile(this.item);
     }
   },
   mounted : function() {

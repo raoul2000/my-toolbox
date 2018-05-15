@@ -1,10 +1,6 @@
 'use strict';
 
-const validate         = require('validator');
-var fs                 = require('fs');
-var path               = require('path');
-const config           = require('../../../../service/config');
-var persistence        = require('../../../../service/persistence');
+var service            = require('../../../../service/index');
 const helper           = require('../../../../lib/lib').helper;
 
 module.exports = {
@@ -32,12 +28,12 @@ module.exports = {
           "source"  : ""
         }
       });
-      persistence.saveDesktopItemToFile(this.item);
+      service.persistence.saveDesktopItemToFile(this.item);
     }
   },
   /**
    * Load the parent item using route param 'id'
-   */  
+   */
   mounted : function(){
     // find the desktop item in the store
     this.item = this.$store.getters.desktopItemById(this.$route.params.id);

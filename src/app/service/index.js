@@ -1,8 +1,6 @@
 'user strict';
-// DEPRECATED
-// TODO : remove this file. Services should be loaded using index.js
 
-exports.service = {
+module.exports = {
   "task"          : require('./task'),
   "persistence"   : require('./persistence'),
   "notification"  : require('./notification'),

@@ -1,5 +1,5 @@
 const store     = require('../../../../../service/store/store'); // TODO : nod needed as already injected by parent (to check)
-var persistence = require('../../../../../service/persistence');
+const service   = require('../../../../../service/index');
 const validate  = require('validator');
 
 module.exports = {
@@ -29,7 +29,7 @@ module.exports = {
           "item"      : self.item,
           "component" : self.component
         });
-        persistence.saveDesktopItemToFile(self.item);
+        service.persistence.saveDesktopItemToFile(self.item);
       });
     },
     changeValue: function(arg) {
@@ -48,7 +48,7 @@ module.exports = {
       };
       updateInfo.updateWith[arg.name] = arg.value;
       this.$store.commit('updateComponent', updateInfo);
-      persistence.saveDesktopItemToFile(this.item);
+      service.persistence.saveDesktopItemToFile(this.item);
     }
   }
 };
