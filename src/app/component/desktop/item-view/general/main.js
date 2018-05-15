@@ -17,7 +17,7 @@ module.exports = {
   template: require('./main.html'),
   data : function(){
     return {
-      connectionOk : true,
+      connectionOk : null,
       item         : null,
       validation : {
         "host"     : true,
@@ -25,15 +25,7 @@ module.exports = {
         "password" : true,
         "port"     : true,
         "notes"    : true
-      },
-      selection: '',
-      suggestions: [
-        { city: 'Bangalore', state: 'Karnataka' },
-        { city: 'Chennai', state: 'Tamil Nadu' },
-        { city: 'Delhi', state: 'Delhi' },
-        { city: 'Kolkata', state: 'West Bengal' },
-        { city: 'Mumbai', state: 'Maharashtra' }
-      ]
+      }
     };
   },
   computed : {
@@ -73,8 +65,8 @@ module.exports = {
   },
   methods : {
     /**
-     * Test that current SSH connection settings are correct by trying to open a connection
-     * to host.
+     * Test that current SSH connection settings are correct by trying to open a
+     * connection to host.
      */
     testConnection : function() {
       service.sshInfo.getInfo(this.item.data.ssh) // user may be prompted
@@ -98,8 +90,8 @@ module.exports = {
       });
     },
     /**
-     * Handle Notes update : updtae the store and the file is note have been updated
-     * by user
+     * Handle Notes update : updtae the store and the file is note have been
+     * updated by user
      */
     changeNotesValue : function(arg) {
       store.commit('updateDesktopItem', {
