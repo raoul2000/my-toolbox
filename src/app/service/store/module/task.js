@@ -33,8 +33,11 @@ module.exports = {
     }
   },
   mutations: {
-    addTask : function(state,tcScanTask) {
-      state.tasks.push(tcScanTask);
+    addTask : function(state,newTask) {
+      if ( state.tasks.findIndex( task => task.id === newTask.id) !== -1) {
+        throw new Error("Add Task failed : duplicate id : "+newTask.id);
+      }
+      state.tasks.push(newTask);
     },
     deleteTask(state, taskToDelete) {
       let idx = state.tasks.findIndex( task => task.id === taskToDelete.id);

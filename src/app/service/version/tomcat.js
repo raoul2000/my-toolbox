@@ -134,6 +134,7 @@ exports.updateTomcatBatch = function(itemData, tomcatIds) {
     })
     .promise
     .then( results => {
+      DummyTaskService.deleteTaskFromStore(exports.createUpdateTomcatTaskId(tomcat));
       return findWinner(results);
     });
 }
