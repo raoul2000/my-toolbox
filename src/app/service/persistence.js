@@ -21,7 +21,13 @@ const queueWriteFile = new Queue(writeFileJob,{
   "batchSize" : 1
 });
 
-exports.saveDesktopItemToFile = function( item ) {
+/**
+ * Save the Item to the a file.
+ * The save request is not executed imediatelt but pushed to a queue.
+ * 
+ * @param  {object} item the item to save
+ */
+function saveDesktopItemToFile( item ) {
   let filePath = path.join(config.store.get("ctdbFolderPath"), item.filename);
   console.log("updating file "+filePath);
   queueWriteFile.push({
@@ -32,14 +38,9 @@ exports.saveDesktopItemToFile = function( item ) {
       console.error("failed to save file "+filePath,err);
     }
   });
-};
+}
 
-exports.saveDesktopItemToFile_orig = function( item ) {
-  let filePath = path.join(config.store.get("ctdbFolderPath"), item.filename);
-  console.log("updating file "+filePath);
-  fs.writeFile(filePath, JSON.stringify(item.data, null, 2) , 'utf-8', (err) => {
-    if(err) {
-      console.error(err);
-    }
-  });
+
+module.exports = {
+  "saveDesktopItemToFile" : saveDesktopItemToFile
 };
