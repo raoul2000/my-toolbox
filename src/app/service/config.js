@@ -1,7 +1,5 @@
 "use strict";
 
-//var remote = require('remote');
-//var app = remote.require('app');
 var app = require('electron').remote.app;
 // see https://github.com/sindresorhus/electron-store
 const Store = require('electron-store');

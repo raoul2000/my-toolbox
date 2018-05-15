@@ -1,12 +1,7 @@
 'use strict';
 
-
-const smartCommand  = require('../../lib/lib').smartCommand;
 const tomcatScanner = require('../../lib/lib').tomcatScanner;
 const helper        = require('../../lib/lib').helper;
-const persistence   = require('../../service/persistence');
-const NodeSSH       = require('node-ssh');
-const fs            = require('fs');
 const store         = require('../../service/store/store');
 
 module.exports = Vue.component('tc-scan',  {

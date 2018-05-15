@@ -1,12 +1,9 @@
 'use strict';
 
-const smartCommand  = require('../../../lib/lib').smartCommand;
-const NodeSSH       = require('node-ssh');
 const store         = require('../../../service/store/store');
 const tomcatScanner = require('../../../lib/lib').tomcatScanner;
 const helper        = require('../../../lib/lib').helper;
-const persistence   = require('../../../service/persistence');
-const service       = require('../../../service/service').service;
+const service       = require('../../../service/index');
 const fs            = require('fs');
 
 module.exports = {
@@ -155,7 +152,6 @@ module.exports = {
         });
 
         this.$emit("tc-scan-success");
-        //persistence.saveDesktopItemToFile(this.item);
       })
       .catch(err => {
         console.log(err);

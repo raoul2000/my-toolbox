@@ -3,7 +3,7 @@
 const smartCommand  = require('../../../lib/lib').smartCommand;
 const NodeSSH       = require('node-ssh');
 const store         = require('../../../service/store/store');
-var persistence     = require('../../../service/persistence');
+var service     = require('../../../service/index');
 
 module.exports = {
   store,
@@ -56,7 +56,7 @@ module.exports = {
      */
     importResult : function() {
       this.task.result.tomcats.forEach( this.addTomcat );
-      persistence.saveDesktopItemToFile(this.item);
+      service.persistence.saveDesktopItemToFile(this.item);
       this.$router.go(-1);
     }
   }

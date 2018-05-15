@@ -1,7 +1,6 @@
-var remote  = require('electron').remote;
-var config  = require('../../service/config');
-const store = require('../../service/store/store');
-const app   = require('electron').remote.app;
+const remote   = require('electron').remote;
+const service  = require('../../service/index');
+const app      = require('electron').remote.app;
 
 module.exports = {
   data : function(){
@@ -25,7 +24,6 @@ module.exports = {
     themeName : function() {
       if( this.themeName) {
         console.log('theme : '+this.themeName);
-        debugger;
       }
     }
   },
@@ -109,17 +107,18 @@ module.exports = {
     },
     onSave : function() {
       // TODO : validate Folder
-      config.store.set('ctdbFolderPath',this.ctdbFolderPath);
-      config.store.set('deployFolderPath',this.deployFolderPath);
-      config.store.set('webappCatalogFilePath',this.webappCatalogFilePath);
-      config.store.set('puttyFilePath',this.puttyFilePath);
-      config.store.set('winscpFilePath',this.winscpFilePath);
-      config.store.set('persistentDesktop',this.persistentDesktop);
-      config.store.set('desktopGroupByCategory',this.desktopGroupByCategory);
-      config.store.set('expandTomcatView',this.expandTomcatView);
-      config.store.set('expandWebappView',this.expandWebappView);
-      config.store.set('commandLibraryFilePath',this.commandLibraryFilePath);
-      config.store.set('checkSavePwdToSession',this.checkSavePwdToSession);
+      let cfgStore = service.config.store; // shorcut
+      cfgStore.set('ctdbFolderPath',this.ctdbFolderPath);
+      cfgStore.set('deployFolderPath',this.deployFolderPath);
+      cfgStore.set('webappCatalogFilePath',this.webappCatalogFilePath);
+      cfgStore.set('puttyFilePath',this.puttyFilePath);
+      cfgStore.set('winscpFilePath',this.winscpFilePath);
+      cfgStore.set('persistentDesktop',this.persistentDesktop);
+      cfgStore.set('desktopGroupByCategory',this.desktopGroupByCategory);
+      cfgStore.set('expandTomcatView',this.expandTomcatView);
+      cfgStore.set('expandWebappView',this.expandWebappView);
+      cfgStore.set('commandLibraryFilePath',this.commandLibraryFilePath);
+      cfgStore.set('checkSavePwdToSession',this.checkSavePwdToSession);
 
       if( ! this.persistentDesktop ) {
         config.clearDesktop();
@@ -128,18 +127,20 @@ module.exports = {
     }
   },
   mounted : function() {
-    this.deployFolderPath       = config.store.get('deployFolderPath');
-    this.ctdbFolderPath         = config.store.get('ctdbFolderPath');
-    this.webappCatalogFilePath  = config.store.get('webappCatalogFilePath');
-    this.puttyFilePath          = config.store.get('puttyFilePath');
-    this.winscpFilePath         = config.store.get('winscpFilePath');
-    this.persistentDesktop      = config.store.get('persistentDesktop');
-    this.desktopGroupByCategory = config.store.get('desktopGroupByCategory');
+    let cfgStore = service.config.store; // shorcut
 
-    this.expandTomcatView       = config.store.get('expandTomcatView');
-    this.expandWebappView       = config.store.get('expandWebappView');
-    this.commandLibraryFilePath = config.store.get('commandLibraryFilePath');
-    this.checkSavePwdToSession  = config.store.get('checkSavePwdToSession');
+    this.deployFolderPath       = cfgStore.get('deployFolderPath');
+    this.ctdbFolderPath         = cfgStore.get('ctdbFolderPath');
+    this.webappCatalogFilePath  = cfgStore.get('webappCatalogFilePath');
+    this.puttyFilePath          = cfgStore.get('puttyFilePath');
+    this.winscpFilePath         = cfgStore.get('winscpFilePath');
+    this.persistentDesktop      = cfgStore.get('persistentDesktop');
+    this.desktopGroupByCategory = cfgStore.get('desktopGroupByCategory');
+
+    this.expandTomcatView       = cfgStore.get('expandTomcatView');
+    this.expandWebappView       = cfgStore.get('expandWebappView');
+    this.commandLibraryFilePath = cfgStore.get('commandLibraryFilePath');
+    this.checkSavePwdToSession  = cfgStore.get('checkSavePwdToSession');
 
     Mousetrap.bind('esc', this.goBack, 'keyup');
   }
