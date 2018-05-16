@@ -13,5 +13,8 @@ module.exports = {
     "clearCachedPassword" : require('./ssh/get-info').clearCachedPassword,
     "checkConnection"     : require('./ssh/check-connection').checkConnection
   },
-  "store" : require('./store/store')
+  "store" : require('./store/store'),
+  "nexus" : {
+    "browse" : require('./nexus/browse')
+  }
 };

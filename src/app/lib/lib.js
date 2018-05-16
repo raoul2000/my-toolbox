@@ -24,3 +24,7 @@ exports.version = {
 exports.ssh = {
   "checkConnection" : require('./ssh/check-connection').checkConnection
 };
+
+exports.nexus = {
+  "browse" : require('./nexus/browse')
+};

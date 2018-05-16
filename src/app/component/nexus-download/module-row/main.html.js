@@ -6,19 +6,21 @@ module.exports = `
   </td>
   <td width="90px">
     <div class="btn-group">
-      <button type="button" class="btn btn-sm btn-default">
-        <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+      <button
+        v-on:click="loadVersionInfo()"
+        type="button" class="btn btn-sm btn-default">
+        <span v-if="loadingVersionInfo" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span>
+        <span v-else class="glyphicon glyphicon-download" aria-hidden="true"></span>
       </button>
       <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="caret"></span>
         <span class="sr-only">Toggle Dropdown</span>
       </button>
       <ul class="dropdown-menu">
-        <li><a href="#">Action</a></li>
-        <li><a href="#">Another action</a></li>
-        <li><a href="#">Something else here</a></li>
-        <li role="separator" class="divider"></li>
-        <li><a href="#">Separated link</a></li>
+        <li title="open documentation in default browser"><a :href="module.url.doc">Documentation</a></li>
+        <li title="open CHANGES in default browser"><a :href="module.url.changes">Changes</a></li>
+        <li title="open RELEASE repository"><a :href="module.url.release">Release</a></li>
+        <li title="open SNAPSHOT repository"><a :href="module.url.snapshot">Snapshot</a></li>
       </ul>
     </div>
   </td>
