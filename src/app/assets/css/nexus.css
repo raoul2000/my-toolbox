@@ -1,0 +1,18 @@
+table.nexus-module-list  {
+
+}
+
+.nexus-module-filter {
+  margin-bottom: 2em;
+}
+
+
+.module-name {
+  font-weight: bold;
+  vertical-align: middle;
+  font-size: 1.2em;
+  display:block;
+}
+
+.module-id {
+}

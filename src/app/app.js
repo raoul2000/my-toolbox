@@ -22,6 +22,7 @@ const ItemViewCommands    = require('./component/desktop/item-view/commands/main
 
 const Deploy          = require('./component/deploy/main');
 const MavenDownload   = require('./component/maven-download/main');
+const NexusDownload   = require('./component/nexus-download/main');
 
 const store    = require('./service/store/store');
 const config   = require('./service/config');
@@ -46,6 +47,7 @@ const router = new VueRouter({
     { path: '/test-task',        component: TestTask,         name : 'test-task'},
     { path: '/deploy',           component: Deploy,           name : 'deploy'},
     { path: '/maven-download',   component: MavenDownload,    name : 'maven-download'},
+    { path: '/nexus-download',   component: NexusDownload,    name : 'nexus-download'},
     { path: '/desktop',          component: Desktop,          name : 'desktop' },
     { path: '/settings',         component: Settings,         name : 'settings'},
     { path: '/create',           component: Create,           name : 'create'},

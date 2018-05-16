@@ -12,5 +12,6 @@ module.exports = {
     "getInfo"             : require('./ssh/get-info').getInfo,
     "clearCachedPassword" : require('./ssh/get-info').clearCachedPassword,
     "checkConnection"     : require('./ssh/check-connection').checkConnection
-  }
+  },
+  "store" : require('./store/store')
 };
