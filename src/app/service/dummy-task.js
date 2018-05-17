@@ -67,20 +67,23 @@ function submitToQueue(task) {
 // map containing resolve and reject methods to fullfill or reject
 // promises related to unfinished tasks
 
-let taskPromise = new Map();
+let taskPromiseMap = new Map();
+
 function rejectTaskPromise(key, error) {
-  if( taskPromise.has(key)) {
-    taskPromise.get(key).reject(error);
-    taskPromise.delete(key);
+  if( taskPromiseMap.has(key)) {
+    let taskPromise = taskPromiseMap.get(key);
+    taskPromiseMap.delete(key); // remove from the Map
+    taskPromise.reject(error);
   } else {
     console.error("reject : task promise not found for key  "+key);
   }
 }
 
 function resolveTaskPromise(key, result) {
-  if( taskPromise.has(key)) {
-    taskPromise.get(key).resolve(result);
-    taskPromise.delete(key);
+  if( taskPromiseMap.has(key)) {
+    let taskPromise = taskPromiseMap.get(key);
+    taskPromiseMap.delete(key);   // remove from the Map
+    taskPromise.resolve(result);
   } else {
     console.error("resolve : task promise not found for key : "+key);
   }
@@ -91,19 +94,35 @@ function buildKey(task) {
 }
 ////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Delete or update a task in the store depending on the task property 'persistAfterDone'.
+ * By default the task is removed from the store unless persistAfterDone is TRUE
+ * @param  {object} task the task to process
+ */
+function updateOrDeleteTask(task) {
+  if( task.persistAfterDone === true) {
+    updateTaskInStore(task);
+  } else {
+    deleteTaskFromStore(task);
+  }
+}
 
 /**
- * Upon reception of an update event regarding a task, update the persistent
- * state of this task into the store.
+ * Upon reception of an update event regarding a task :
+ * - update the store for this task (update or delete)
+ * - resolve or reject the related pending promise
  */
 ipcRenderer.on('update-task', (event, task) => {
     console.log("update-task", task);
-    updateTaskInStore(task);
     let k = buildKey(task);
     if( task.status === "ERROR") {
+      updateOrDeleteTask(task);
       rejectTaskPromise(k,task.error);
     }else if(task.status === "SUCCESS") {
       resolveTaskPromise(k,task.result);
+      updateOrDeleteTask(task);
+    } else {
+      updateTaskInStore(task);
     }
 });
 
@@ -130,7 +149,7 @@ function submitTask(options) {
   let task = createTask(options.id, options.type, options.input);
   addTaskToStore(task);
   let p = new Promise( (resolve, reject) => {
-    taskPromise.set(buildKey(task), {
+    taskPromiseMap.set(buildKey(task), {
       "resolve" : resolve,
       "reject"  : reject
     });
@@ -143,7 +162,7 @@ function submitTask(options) {
 }
 
 /**
- * Create tasks and submit then for execution
+ * Create tasks and submit them for execution
  * @return {array} array of tasks ids submitted
  */
 function submitManyTasks(taskType){
