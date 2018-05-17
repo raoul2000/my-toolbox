@@ -1,3 +1,25 @@
+/************************************************/
+
+ul.general-info {
+  padding: 0;
+  margin: 1em;
+}
+
+ul.general-info li {
+  list-style-position: inside;
+  list-style-type: none;
+  margin-bottom: 1em;
+}
+
+ul.general-info li .field-name {
+  font-size: smaller;
+}
+
+ul.general-info li .field-value {
+  font-size: 1.6em;
+}
+/************************************************/
+
 .panelXXXXX div.card-name{
   -webkit-animation: show linear 0.2s;
   -webkit-animation-iteration-count: 1;
@@ -87,7 +109,7 @@ h3.panel-title {
   font-size: 26px;
   white-space: nowrap;
   text-overflow: ellipsis;
-  overflow: hidden;  
+  overflow: hidden;
 }
 
 .card-extra {

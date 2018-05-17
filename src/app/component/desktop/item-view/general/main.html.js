@@ -5,88 +5,82 @@ module.exports = `
 
     <div v-if="item != null " class="col-xs-3">
 
+
+
+
       <div class="panel panel-default">
+
         <div class="panel-heading">
           <h3 class="panel-title">
             <span class="glyphicon glyphicon-th" aria-hidden="true"></span> Connection
           </h3>
         </div>
-        <div class="panel-body text-muted">
-          Only the ip address and username are required. All other fields are optionals.
-        </div>
 
+        <ul class="general-info">
+          <li>
+            <div class="field-name">host</div>
+            <div class="field-value">
+              <inlineInput
+                :initialValue="item.data.ssh.host"
+                :valid="validation.host"
+                :allowEdit="allowEdit"
+                inputType="text"
+                valueName="host"
+                emptyValue="<em class='text-muted'>???.???.???.???</em>"
+                v-on:changeValue="changeSSHValue"/>
+            </div>
+          </li>
+          <li>
+            <div class="field-name">username</div>
+            <div class="field-value">
+              <inlineInput
+                :initialValue="item.data.ssh.username"
+                :valid="validation.username"
+                :allowEdit="allowEdit"
+                inputType="text"
+                valueName="username"
+                emptyValue="<em class='text-muted'>(no username)</em>"
+                v-on:changeValue="changeSSHValue"/>
+            </div>
+          </li>
+          <li>
+            <div class="field-name">password</div>
+            <div class="field-value">
+              <inlineInput
+                :initialValue="item.data.ssh.password"
+                :valid="validation.password"
+                :allowEdit="allowEdit"
+                inputType="password"
+                emptyValue="<em class='text-muted'>(no password)</em>"
+                valueName="password"
+                v-on:changeValue="changeSSHValue"/>
+            </div>
+          </li>
+          <li>
+            <div class="field-name">SSH port</div>
+            <div class="field-value">
+              <inlineInput
+                :initialValue="item.data.ssh.port"
+                :valid="validation.port"
+                :allowEdit="allowEdit"
+                inputType="text"
+                valueName="port"
+                v-on:changeValue="changeSSHValue"/>
+            </div>
+          </li>
+        </ul>
+        <button
+          v-bind:disabled="!canTestConnection"
+          v-on:click="testConnection" type="button" class="btn btn-default btn-block">
+            <i v-show="allowEdit === false" class="fa fa-refresh fa-spin"></i>
+            <span v-show="connectionOk !== null">
+              <span v-show="connectionOk === true" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+              <span v-show="connectionOk === false" class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red"></span>
+            </span>
 
-        <table class="table table-hover">
-          <tbody>
-            <tr>
-              <th width="200px" class="field-label-right">host : </th>
-              <td data-field="host">
-                <inlineInput
-                  :initialValue="item.data.ssh.host"
-                  :valid="validation.host"
-                  :allowEdit="allowEdit"
-                  inputType="text"
-                  valueName="host"
-                  emptyValue="<em class='text-muted'>xxx.xxx.xxx.xxx</em>"
-                  v-on:changeValue="changeSSHValue"/>
-              </td>
-            </tr>
-            <tr>
-              <th class="field-label-right">username : </th>
-              <td>
-                <inlineInput
-                  :initialValue="item.data.ssh.username"
-                  :valid="validation.username"
-                  :allowEdit="allowEdit"
-                  inputType="text"
-                  valueName="username"
-                  emptyValue="<em class='text-muted'>(no username)</em>"
-                  v-on:changeValue="changeSSHValue"/>
-              </td>
-            </tr>
-            <tr>
-              <th class="field-label-right">password : </th>
-              <td>
-                <inlineInput
-                  :initialValue="item.data.ssh.password"
-                  :valid="validation.password"
-                  :allowEdit="allowEdit"
-                  inputType="password"
-                  emptyValue="<em class='text-muted'>(no password)</em>"
-                  valueName="password"
-                  v-on:changeValue="changeSSHValue"/>
-              </td>
-            </tr>
-            <tr>
-              <th class="field-label-right">SSH Port : </th>
-              <td>
-                <inlineInput
-                  :initialValue="item.data.ssh.port"
-                  :valid="validation.port"
-                  :allowEdit="allowEdit"
-                  inputType="text"
-                  valueName="port"
-                  v-on:changeValue="changeSSHValue"/>
-              </td>
-            </tr>
-            <tr>
-              <td></td>
-              <td>
-                <button
-                  v-bind:disabled="!canTestConnection"
-                  v-on:click="testConnection" type="button" class="btn btn-default btn-block">
-                    <i v-show="allowEdit === false" class="fa fa-refresh fa-spin"></i>
-                    <span v-show="connectionOk !== null">
-                      <span v-show="connectionOk === true" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                      <span v-show="connectionOk === false" class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red"></span>
-                    </span>
+            &nbsp;Test Connection
+        </button>
 
-                    &nbsp;Test Connection
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
 
       </div><!-- end of panel -->
     </div>
