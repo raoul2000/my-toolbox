@@ -131,7 +131,7 @@ module.exports = {
       // The nexusDownloader is starting download now. Note the "notifier" object
       // passed here. It will be used by the nexusDownloader to update the state
       // of the stored task
-      
+
       this.stopDownloadRequest = false;
       this.status = "DOWNLOAD_IN_PROGRESS";
 

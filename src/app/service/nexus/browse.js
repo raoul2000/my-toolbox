@@ -28,4 +28,25 @@ exports.createTaskId = function(nx_module) {
     });
 }
 
+function list(url) {
+  let taskId = url;
+
+  return DummyTaskService.submitTask({
+    "id"    : taskId,
+    "type"  : "list-nx",
+    "input" : url
+  })
+  .promise
+  .then(result => {
+    DummyTaskService.deleteTaskFromStore(taskId);
+    return result;
+  })
+  .catch(err => {
+    DummyTaskService.deleteTaskFromStore(taskId);
+    throw err;
+  });
+}
+
+
 exports.loadVersionInfo = loadVersionInfo;
+exports.list = list;

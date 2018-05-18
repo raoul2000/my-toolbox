@@ -25,6 +25,21 @@ module.exports = `
     </div>
   </td>
   <td>
+    <select
+      :disabled="status != 'IDLE'"
+      v-model="selectedModuleType">
+      <option v-for="option in moduleTypeOptions" v-bind:value="option">
+        {{ option }}
+      </option>
+    </select>
+    <select
+      :disabled="status != 'IDLE'"
+      v-model="selectedVersion">
+      <option :value="null" selected="selected">select version ...</option>
+      <option v-for="option in moduleVersionOptions" v-bind:value="option.resourceURI">
+        {{ option.text }}
+      </option>
+    </select>
   </td>
 
   <td>
