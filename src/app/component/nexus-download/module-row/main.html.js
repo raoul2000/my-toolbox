@@ -1,9 +1,5 @@
 module.exports = `
 <tr id="module.id" class="init" >
-  <td>
-    <span class="module-name">{{module.name}}</span>
-    <span class="module-id">{{module.id}}</span>
-  </td>
   <td width="90px">
     <div class="btn-group">
       <button
@@ -25,27 +21,64 @@ module.exports = `
     </div>
   </td>
   <td>
-    <select
-      :disabled="status != 'IDLE'"
-      v-model="selectedModuleType">
-      <option v-for="option in moduleTypeOptions" v-bind:value="option">
-        {{ option }}
-      </option>
-    </select>
-    <select
-      :disabled="status != 'IDLE'"
-      v-model="selectedVersion">
-      <option :value="null" selected="selected">select version ...</option>
-      <option v-for="option in moduleVersionOptions" v-bind:value="option.resourceURI">
-        {{ option.text }}
-      </option>
-    </select>
+    <span class="module-name">{{module.name}}</span>
+    <span class="module-id">{{module.id}}</span>
+  </td>
+  <td>
+    <div v-if="moduleTypeOptions.length != 0">
+      <select
+        :disabled="status != 'IDLE'"
+        v-model="selectedModuleType">
+        <option :value="null" selected="selected">select type ...</option>
+        <option v-for="option in moduleTypeOptions" v-bind:value="option">
+          {{ option }}
+        </option>
+      </select>
+    </div>
+
+
+    <div v-if="moduleVersionOptions.length > 1">
+      <select
+        :disabled="status != 'IDLE'"
+        v-model="selectedVersion">
+        <option :value="null" selected="selected">select version ...</option>
+        <option v-for="option in moduleVersionOptions" v-bind:value="option.resourceURI">
+          {{ option.text }}
+        </option>
+      </select>
+    </div>
+
+    <div v-if="version.file.length > 1">
+      <select
+        :disabled="status != 'IDLE'"
+        v-model="selectedFile">
+        <option :value="null" selected="selected">select file ...</option>
+        <option v-for="option in version.file" v-bind:value="option.resourceURI">
+          {{ option.text }}
+        </option>
+      </select>
+    </div>
+    <div v-else-if="version.file.length == 1">
+      {{version.file[0].text}}
+    </div>
+    <div v-else-if="version.file.length == 0">
+      <em style="color:#ababab;">no file available</em>
+    </div>
   </td>
 
   <td>
   </td>
 
   <td>
+    <div
+
+      <button
+        :disabled="selectedFile == null"
+        v-on:click="startDownload()"
+        type="button" class="btn btn-default btn-xs" title="start download">
+        <span class="glyphicon glyphicon-play"  aria-hidden="true"></span>
+      </button>
+
   </td>
 
   <td>

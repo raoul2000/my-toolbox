@@ -1,11 +1,9 @@
 'use strict';
 
 const service   = require('../../../service/index');
+const path     = require('path');
+const fs       = require('fs');
 
-/**
- * The Main vuesjs component
- * @type {Object}
- */
 module.exports = {
   template : require('./main.html'),
   props    : ['module'],
@@ -15,9 +13,11 @@ module.exports = {
       "selectedModuleType" : "release",
       "selectedVersion"    : null,
       "selectedFilename"   : "",
+      "selectedFile"       : null,
       "version"            : {
         "release"  : [],
-        "snapshot" : []
+        "snapshot" : [],
+        "file"     : []
       },
       "filenameOptions"       : [],
       "downloadFolder"        : "",
@@ -49,14 +49,73 @@ module.exports = {
     }
   },
   watch : {
+    selectedModuleType : function() {
+      this.selectedVersion = null;
+    },
     selectedVersion : function() {
-      debugger;
-      console.log(this.selectedModuleType);
-      console.log(this.selectedVersion);
-
+      if( this.selectedVersion !== null) {
+        this.loadfileList();
+      } else {
+        this.version.file = [];
+      }
+    },
+    selectedFile : function() {
+      console.log(this.selectedFile);
     }
   },
   methods : {
+
+    startDownload : function() {
+      let fileObject = this.version.file.find( item => item.resourceURI = this.selectedFile);
+      debugger;
+      console.log(fileObject);
+      if( ! fileObject) {
+        return;
+      }
+
+      // create local filepath /////////////////////////////////////////////////
+      //
+      let destinationFilepath = path.join(service.config.store.get('deployFolderPath') , fileObject.text);
+      console.log("destinationFilepath = "+destinationFilepath);
+
+      // if target file already exist, delete it ///////////////////////////////
+      //
+      if( fs.existsSync(destinationFilepath)) {
+        fs.unlinkSync(destinationFilepath);
+      }
+
+
+      service.nexus.download.start({
+        "url"           : fileObject.resourceURI,
+        "filename"      : fileObject.text, // webapp-2-3-6.war
+        "moduleId"      : this.module.id,
+        "destinationFilepath" : destinationFilepath
+      })
+      .catch(error => {
+        service.notification.error(error,"Oups ! Something is broken and the download failed");
+      });
+
+    },
+    /**
+     * this.selectedModuleType = snapshot | release
+     * this.selectedVersion = http://127.0.0.1:8080/nexus/content/repositories/public/webappName/3.0.10-SNAPSHOT/"
+     * @return {[type]} [description]
+     */
+    loadfileList : function() {
+      service.nexus.browse.list(this.selectedVersion)
+      .then( result => {
+        console.log(result);
+        this.version.file = result
+          .filter( item => item.leaf && item.text.toLowerCase().endsWith('.war') );
+
+        if( this.version.file.length === 1) {
+          this.selectedFile = this.version.file[0].resourceURI;
+        }
+      })
+      .catch(error => {
+        service.notification.error(error,"Failed to reach the Nexus !");
+      });
+    },
     /**
      * Loads version from the Nexus repository and populate the SNAPSHOT and RELEASE option
      * lists
