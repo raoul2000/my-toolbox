@@ -54,7 +54,7 @@ module.exports = {
         if(  ! validate.isEmpty(ssh.username)) {
           cmdArg.push(`-l "${ssh.username}"`);
           if( ! validate.isEmpty(ssh.password)) {
-            cmdArg.push(`-pw "${ssh.username}"`);
+            cmdArg.push(`-pw "${ssh.password}"`);
           }
         }
         cmdArg.push( ! validate.isEmpty(ssh.port+'')  ? `-P ${ssh.port}` : "-P 22");
