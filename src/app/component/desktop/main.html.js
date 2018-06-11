@@ -39,7 +39,7 @@ module.exports = `
   		class="col-xs-12"
     >
 
-      <div class="panel panel-default">
+      <div class="panel panel-default item-group-wrapper">
         <div class="panel-heading">
           <h3 class="panel-title pull-left">
             <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> {{category}}
