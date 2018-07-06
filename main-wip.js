@@ -12,6 +12,9 @@ const path = require('path');
 const url  = require('url');
 
 const ENABLE_SPLASH_SCREEN = true;
+const SHOW_BACKGROUND_WINDOW = false;
+const OPEN_DEVTOOLS = false
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -22,10 +25,13 @@ let backgroundWindow;
 
 function createBackgroundWindow() {
 	backgroundWindow = new BrowserWindow({
-		show: true
+		show: SHOW_BACKGROUND_WINDOW
 	});
-	backgroundWindow.loadURL(`file://${__dirname}/src/app/service/background/index.html`);
-  backgroundWindow.webContents.openDevTools();
+  backgroundWindow.loadURL(`file://${__dirname}/src/app/service/background/index.html`);
+  if( OPEN_DEVTOOLS ) {
+    backgroundWindow.webContents.openDevTools();
+  }
+
   // Emitted when the window is closed.
   backgroundWindow.on('closed', function () {
     // Dereference the window object, usually you would store windows
@@ -67,10 +73,12 @@ function createWindow () {
     slashes: true
   }));
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
-  require('vue-devtools').install();
-  require('devtron').install();
+  if( OPEN_DEVTOOLS ) {
+    // Open the DevTools.
+    mainWindow.webContents.openDevTools();
+    require('vue-devtools').install();
+    require('devtron').install();
+  }
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {

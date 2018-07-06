@@ -16,6 +16,7 @@ const View     = require('./component/view/main');
 
 const ItemView            = require('./component/desktop/item-view/main');
 const ItemViewSettings    = require('./component/desktop/item-view/general/main');
+const ItemViewEntities    = require('./component/desktop/item-view/entities/main');
 const ItemViewWebapps     = require('./component/desktop/item-view/webapps/main');
 const ItemViewComponents  = require('./component/desktop/item-view/components/main');
 const ItemViewCommands    = require('./component/desktop/item-view/commands/main');
@@ -59,6 +60,11 @@ const router = new VueRouter({
         path      : 'settings',
         name      : 'server-settings',
         component : ItemViewSettings
+      },
+      {
+        path      : 'entities',
+        name      : 'server-entities',
+        component : ItemViewEntities
       },
       {
         path      : 'webapps',

@@ -108,6 +108,12 @@ module.exports = {
       this.$router.push('webapps');
     },
     /**
+     * User click on Entitites tab
+     */
+    "openTabEntities" : function() {
+      this.$router.push('entitites');
+    },
+    /**
      * User click on 'settings' tab
      */
     "openTabHome" : function() {
