@@ -1,3 +1,5 @@
+WORK IN PROGRESS
+
 # my-toolbox
 > this is a toolbox, and that's mine ! :+1:
 
@@ -13,7 +15,7 @@
 
 ### Get Server State
 - [ ] scan server component (version, other info ...)
-- [ ] scan servlet (version, other info ...)
+- [X] scan servlet (version, other info ...)
 
 ### Monitor
 - [ ] tail -f on remote files
