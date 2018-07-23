@@ -33,7 +33,8 @@ const store = new Store({
     "recent" : {
       // "ctdbPath" : '/path/to/latest'
     },
-    "desktop" : []
+    "desktop" : [],
+    "toolbar" : []
   }
 });
 

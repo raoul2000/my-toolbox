@@ -8,11 +8,14 @@ module.exports = `
       <hr/>
 
       <div class="btn-group" role="group" style="margin-bottom:1em;">
-        <button title="open SSH session with Putty" v-on:click="openPuttySession()" type="button" class="btn btn-default">
-          <i class="fa fa-terminal" aria-hidden="true"></i> ssh
-        </button>
-        <button title="open WinSCP session" v-on:click="openWinscpSession()" type="button" class="btn btn-default">
-          <span class="glyphicon glyphicon-transfer" aria-hidden="true"/> sFtp
+        <button
+          v-for="(item, index)  in toolbarItems"
+          :title="item.description"
+          v-on:click="runToolbarAction(item.id)"
+          type="button" class="btn btn-default"
+        >
+          <i v-if="item.icon" :class="item.icon" aria-hidden="true"></i>
+          {{item.label}}
         </button>
       </div>
 
