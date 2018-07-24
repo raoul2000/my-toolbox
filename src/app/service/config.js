@@ -22,8 +22,6 @@ const store = new Store({
     "deployFolderPath"      : app.getPath('downloads'),
     "webappCatalogFilePath" : path.join(app.getPath('userData'),"web-app-catalog.json"),
     "commandLibraryFilePath": path.join(app.getPath('userData'),"commands.json"),
-    "puttyFilePath"         :'putty.exe',
-    "winscpFilePath"        :'winscp.exe',
     "persistentDesktop"     : true,
     "desktopGroupByCategory": false,
     "expandTomcatView"      : false,

@@ -9,8 +9,6 @@ module.exports = {
       ctdbFolderPath         : '',
       webappCatalogFilePath  : '',
       commandLibraryFilePath : '',
-      puttyFilePath          : '',
-      winscpFilePath         : '',
       persistentDesktop      : true,
       desktopGroupByCategory : false,
       expandTomcatView       : false,
@@ -46,23 +44,6 @@ module.exports = {
         }
       );
     },
-    selectPuttyFilePath : function() {
-      var self = this;
-      this.selectSingleFolder({
-        "title"       : "Select the putty.exe file",
-        "defaultPath" : app.getPath('documents'),
-        "properties"  : [ 'openFile ']
-      }, value => self.puttyFilePath=value );
-    },
-    selectWinscpFilePath : function() {
-      var self = this;
-      this.selectSingleFolder({
-        "title"       : "Select the winscp.exe file",
-        "defaultPath" : app.getPath('documents'),
-        "properties"  : [ 'openFile ']
-      }, value => self.winscpFilePath=value );
-    },
-
     selectDeployFolderPath : function() {
       var self = this;
       this.selectSingleFolder({
@@ -111,8 +92,6 @@ module.exports = {
       cfgStore.set('ctdbFolderPath',this.ctdbFolderPath);
       cfgStore.set('deployFolderPath',this.deployFolderPath);
       cfgStore.set('webappCatalogFilePath',this.webappCatalogFilePath);
-      cfgStore.set('puttyFilePath',this.puttyFilePath);
-      cfgStore.set('winscpFilePath',this.winscpFilePath);
       cfgStore.set('persistentDesktop',this.persistentDesktop);
       cfgStore.set('desktopGroupByCategory',this.desktopGroupByCategory);
       cfgStore.set('expandTomcatView',this.expandTomcatView);
@@ -132,8 +111,6 @@ module.exports = {
     this.deployFolderPath       = cfgStore.get('deployFolderPath');
     this.ctdbFolderPath         = cfgStore.get('ctdbFolderPath');
     this.webappCatalogFilePath  = cfgStore.get('webappCatalogFilePath');
-    this.puttyFilePath          = cfgStore.get('puttyFilePath');
-    this.winscpFilePath         = cfgStore.get('winscpFilePath');
     this.persistentDesktop      = cfgStore.get('persistentDesktop');
     this.desktopGroupByCategory = cfgStore.get('desktopGroupByCategory');
 

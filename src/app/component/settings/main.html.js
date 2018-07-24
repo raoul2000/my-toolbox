@@ -105,53 +105,6 @@ module.exports = `
     </div>
     <!--// END Command Library File Path -->
 
-
-    <!--// BEGIN putty File Path-->
-    <div class="form-group">
-      <label for="puttyfile-path" class="col-sm-3 control-label">Putty</label>
-      <div class="col-sm-9">
-        <div class="input-group">
-          <input id="puttyfile-path" v-model="puttyFilePath"
-            type="text" class="form-control" placeholder="">
-          <span class="input-group-btn">
-            <button
-              @click="selectPuttyFilePath()"
-              title="select the putty.exe file"
-              class="btn btn-default" type="button">
-              <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
-            </button>
-          </span>
-        </div>
-        <span id="helpBlock" class="help-block">
-          The Putty Program file is used to open an SSH console on the server
-        </span>
-      </div>
-    </div>
-    <!--// END putty File Path -->
-
-    <!--// BEGIN winscp File Path-->
-    <div class="form-group">
-      <label for="winscp-path" class="col-sm-3 control-label">WinSCP</label>
-      <div class="col-sm-9">
-        <div class="input-group">
-          <input id="winscp-path" v-model="winscpFilePath"
-            type="text" class="form-control" placeholder="">
-          <span class="input-group-btn">
-            <button
-              @click="selectWinscpFilePath()"
-              title="select the winscp.exe file"
-              class="btn btn-default" type="button">
-              <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
-            </button>
-          </span>
-        </div>
-        <span id="helpBlock" class="help-block">
-          WinSCP is used to open an SFTP connection to the server
-        </span>
-      </div>
-    </div>
-    <!--// END winscp File Path -->
-
     <!-- // BEGIN - persistent desktop -->
     <div class="form-group">
       <div class="col-sm-offset-3 col-sm-9">
