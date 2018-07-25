@@ -3,6 +3,8 @@ var fs         = require('fs');
 var path       = require('path');
 const store    = require('../../service/store/store');
 const helper   = require('../../lib/lib').helper;
+const electron = require('electron');
+const ipcRenderer = electron.ipcRenderer;
 
 const service   = require('../../service/index');
 
@@ -34,6 +36,9 @@ module.exports = {
     }
   },
   methods : {
+    toggleShowTask : function() {
+      ipcRenderer.send('toggle-task-view');
+    },
     addItemToGroup : function(category) {
       this.openDesktopItems(category);
     },

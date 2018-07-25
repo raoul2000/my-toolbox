@@ -30,6 +30,14 @@ module.exports = `
           <span class="glyphicon glyphicon-modal-window" aria-hidden="true"></span>
         </button>
       </div> <!-- toolbar end -->
+      <div class="btn-group" role="group" style="margin-bottom:1em;">
+        <button
+          @click="toggleShowTask"
+          title="toggle task view"
+          type="button" class="btn btn-default">
+          <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+        </button>
+      </div>
     </div>
   </div>
 

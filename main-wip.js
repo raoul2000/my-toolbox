@@ -22,8 +22,13 @@ let mainWindow;
 let splash;
 let backgroundWindow;
 
+// identifies who is responsible for window closing action : main or background window
+let closeRequestByMainWindow = false;
+
 
 function createBackgroundWindow() {
+  console.log("creating background window");
+
 	backgroundWindow = new BrowserWindow({
 		show: SHOW_BACKGROUND_WINDOW
 	});
@@ -31,6 +36,14 @@ function createBackgroundWindow() {
   if( OPEN_DEVTOOLS ) {
     backgroundWindow.webContents.openDevTools();
   }
+
+  // background window can only be closed after the main window is closed. This prevent
+  // the user from manually closing the bg window (tasks service would not be available anymore)
+  backgroundWindow.on('close', function (event) {
+    if(closeRequestByMainWindow === false) {
+      event.preventDefault();
+    }
+  });
 
   // Emitted when the window is closed.
   backgroundWindow.on('closed', function () {
@@ -86,8 +99,11 @@ function createWindow () {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     mainWindow = null;
-    backgroundWindow.close();
-    backgroundWindow = null;
+    if( backgroundWindow !== null) {
+      closeRequestByMainWindow = true;
+      backgroundWindow.close();
+      backgroundWindow = null;
+    }
   });
 }
 
@@ -115,6 +131,28 @@ app.on('activate', function () {
   if (mainWindow === null) {
     createWindow();
     createBackgroundWindow();
+  }
+});
+
+// Show/Hide the background Windows //////////////////////////////////////////////
+
+ipcMain.on('toggle-task-view', (event) => {
+  if( backgroundWindow.isVisible() ) {
+    backgroundWindow.hide();
+  } else {
+    backgroundWindow.show();
+  }
+});
+
+ipcMain.on('bg-window-show', (event) => {
+  if( ! backgroundWindow.isVisible() ) {
+    backgroundWindow.show();
+  }
+});
+
+ipcMain.on('bg-window-hide', (event) => {
+  if( backgroundWindow.isVisible() ) {
+    backgroundWindow.hide();
   }
 });
 
