@@ -108,6 +108,7 @@ module.exports = {
      * class to the class array returned to the view
      */
     cardItemStyle: function (item) {
+      console.log("cardItemStyle");
       let validEnv = {
         'dev'  : "project-success",
         'qa'   : "project-primary",
@@ -125,6 +126,16 @@ module.exports = {
         classes.push(validEnv[thisEnv[0]]);
       }
       return classes;
+    },
+    cardItemColor : function(item) {
+      console.log("card item color : ",item.data.color );
+      if( item.data.color) {
+        return {
+          borderRightColor : item.data.color
+        };
+      } else {
+        return {};
+      }
     },
     /**
      * Saves an empty item to file

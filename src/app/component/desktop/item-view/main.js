@@ -8,14 +8,20 @@ const store     = require('../../../service/store/store'); // TODO : nod needed 
 const service   = require('../../../service/index');
 const runExt   = require('../../../lib/run-external').run;
 
+
 const VIEW_ID = "item-view";
 
 module.exports = {
   store,
+  components : {
+    "color-picker"    : require('vue-color').Chrome
+  },  
   data : function(){
     return {
-      htmlHeader : '',
-      item       : null
+      htmlHeader  : '',
+      item        : null,
+      colors      : '#333',
+      optionColor : 'auto'
     };
   },
   template : require('./main.html'),
@@ -44,11 +50,13 @@ module.exports = {
     }
   },
   methods : {
+    updateColorValue : function(arg) {
+      this.colors = arg;
+    },
     /**
      * Execute an external program configured in the toolbar.
      */
     runToolbarAction : function(actionId) {
-      
       let action = service.config.store.get('toolbar').find( action => action.id === actionId);
       if(action) {
         let ssh = this.item.data.ssh; // shortcut
@@ -96,6 +104,31 @@ module.exports = {
     "openTabCommands" : function() {
       this.$router.push('commands');
     },
+    "openColorPicker" : function() {
+      $('#color-picker-modal').modal("show");
+      
+    },
+    "saveColor" : function(){
+      console.log(`saving updateColorValue :  type = ${this.optionColor}`);
+      console.log(this.colors);
+      let selectedColor = typeof this.colors === "object" ? this.colors.hex : this.colors;
+
+      let itemColor = null;
+      if( this.optionColor === 'manual') {
+        itemColor = selectedColor;
+      } 
+      if( this.item.data.color !== itemColor) {
+        store.commit('updateDesktopItem', {
+          id         : this.item.data._id,
+          updateWith : {
+            color : itemColor
+          }
+        });
+        service.persistence.saveDesktopItemToFile(this.item);
+      }
+
+      $('#color-picker-modal').modal('hide');
+    },
     /**
      * Create the HTML sub header out of the desktop item relative file path.
      */
@@ -134,7 +167,10 @@ module.exports = {
     } else {
       this.buildHTMLHeader();
     }
-
+    if( this.item.data.color) {
+      this.colors = this.item.data.color;
+      this.optionColor = 'manual';
+    } 
     // persistent view state ////////////////////////////////////////////////
     //
     if( this.view ) {

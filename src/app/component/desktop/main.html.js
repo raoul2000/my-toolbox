@@ -91,7 +91,7 @@ module.exports = `
       				>
       					<span class="glyphicon glyphicon-trash" aria-hidden="true"/>
       				</div>
-      				<div class="shape">
+      				<div class="shape" v-bind:style="cardItemColor(item)">
       					<div class="shape-text"/>
       				</div>
       				<div class="project-content">
@@ -113,7 +113,7 @@ module.exports = `
       <div
         v-for="(item, index)  in items"
         :title="item.file" class="card-container" :id="getItemElementId(item.data)">
-
+  
         <div
           @click="viewDetail(item, $event)"
           v-bind:class="cardItemStyle(item)">
@@ -124,11 +124,11 @@ module.exports = `
             class="left-corner-icon">
             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
           </div>
-          <div class="shape">
+          <div class="shape" v-bind:style="cardItemColor(item)">
             <div class="shape-text" >
             </div>
           </div>
-          <div class="project-content">
+          <div class="project-content">  
             <div v-html="cardItemContent(item)"></div>
           </div>
         </div>
