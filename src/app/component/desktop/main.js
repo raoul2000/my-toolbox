@@ -102,40 +102,10 @@ module.exports = {
       }
       return html;
     },
-    /**
-     * Provides the appropriate CSS classes to be attached to the card container block.
-     * Searched among the item path tokens for a specific string and add its matching
-     * class to the class array returned to the view
-     */
-    cardItemStyle: function (item) {
-      console.log("cardItemStyle");
-      let validEnv = {
-        'dev'  : "project-success",
-        'qa'   : "project-primary",
-        'prod' : "project-danger"
-      };
-      let validEnvKeys = Object.keys(validEnv);
-      let classes = [ "project"];
-      let thisEnv = item.path
-        .filter( token => validEnvKeys.indexOf(token.toLowerCase()) > -1 )
-        .map( token => token.toLowerCase());
-
-      if( thisEnv.length === 0) {
-        classes.push('project-default');
-      } else {
-        classes.push(validEnv[thisEnv[0]]);
-      }
-      return classes;
-    },
     cardItemColor : function(item) {
-      console.log("card item color : ",item.data.color );
-      if( item.data.color) {
-        return {
-          borderRightColor : item.data.color
-        };
-      } else {
-        return {};
-      }
+      return {
+        borderRightColor : service.ui.getItemColor(item)
+      };
     },
     /**
      * Saves an empty item to file

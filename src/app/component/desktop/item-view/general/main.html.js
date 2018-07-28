@@ -5,9 +5,6 @@ module.exports = `
 
     <div v-if="item != null " class="col-xs-3">
 
-
-
-
       <div class="panel panel-default">
 
         <div class="panel-heading">
@@ -15,7 +12,7 @@ module.exports = `
             <span class="glyphicon glyphicon-th" aria-hidden="true"></span> Connection
           </h3>
         </div>
-
+        
         <ul class="general-info">
           <li>
             <div class="field-name">host</div>

@@ -169,9 +169,6 @@ h3.panel-title {
   border-radius: 7px;
 }
 
-.project-default {
-  border-color: #999999;
-}
 
 .project-default .shape {
   border-color: transparent #999999 transparent transparent;

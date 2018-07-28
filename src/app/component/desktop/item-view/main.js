@@ -4,7 +4,6 @@ var remote      = require('electron').remote;
 var validate    = require('validator');
 const { spawn } = require('child_process');
 const store     = require('../../../service/store/store'); // TODO : nod needed as already injected by parent (to check)
-//const config    = require('../../../service/config');
 const service   = require('../../../service/index');
 const runExt   = require('../../../lib/run-external').run;
 
@@ -133,25 +132,12 @@ module.exports = {
      * Create the HTML sub header out of the desktop item relative file path.
      */
     buildHTMLHeader : function() {
-      let pathParts = [];
-      // compute the container class
-      let validEnv = {
-        'dev'  : "bg-success",
-        'qa'   : "bg-info",
-        'prod' : "bg-danger"
-      };
-      let validEnvKeys = Object.keys(validEnv);
-      if( this.item.path.length > 0 ) {
-        pathParts = this.item.path
-        .map( path => path.trim().toLowerCase())
-        .map( path => {
-          return validEnv.hasOwnProperty(path)
-            ? `<span class="label ${validEnv[path]}">${path.toUpperCase()}</span>`
-            : path;
-        });
-      }
-      this.htmlHeader = pathParts.concat([`<b>${this.item.name}</b>`]).join(' / ');
-    }
+      this.htmlHeader = this.item.path.concat([
+        `<span class="label" style="background-color : ${service.ui.getItemColor(this.item)}">
+          ${this.item.name}
+        </span>`
+      ]).join(' / ');
+    },
   },
   /**
    * Build the summary view for the selected desktop item. The dekstop item

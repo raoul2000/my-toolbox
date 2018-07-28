@@ -80,8 +80,8 @@ module.exports = `
       			:title="item.file" class="card-container" :id="getItemElementId(item.data)"
       		>
       			<div
-      				@click="viewDetail(item, $event)"
-      				v-bind:class="cardItemStyle(item)"
+              @click="viewDetail(item, $event)"
+      				class="project project-default"
       			>
       				<div
       					@click.stop.prevent="removeFromDesktop(item)"
@@ -116,7 +116,7 @@ module.exports = `
   
         <div
           @click="viewDetail(item, $event)"
-          v-bind:class="cardItemStyle(item)">
+          class="project project-default">
           <div
             @click.stop.prevent="removeFromDesktop(item)"
             title="remove from desktop"

@@ -17,5 +17,6 @@ module.exports = {
   "nexus" : {
     "browse"   : require('./nexus/browse'),
     "download" : require('./nexus/download')
-  }
+  },
+  "ui" : require('./ui')
 };
