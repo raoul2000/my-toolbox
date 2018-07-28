@@ -12,7 +12,7 @@ const path = require('path');
 const url  = require('url');
 
 const ENABLE_SPLASH_SCREEN = true;
-const SHOW_BACKGROUND_WINDOW = true;
+const SHOW_BACKGROUND_WINDOW = false;
 const OPEN_DEVTOOLS = true;
 
 
