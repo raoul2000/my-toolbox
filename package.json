@@ -28,6 +28,7 @@
     "vue-devtools": "^4.1.4"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.2.0",
     "animate.css": "^3.5.2",
     "async": "^2.6.1",
     "autosize": "^4.0.2",

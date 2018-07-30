@@ -13,7 +13,6 @@ const VIEW_ID = "item-view";
 module.exports = {
   store,
   components : {
-    "color-picker"    : require('vue-color').Chrome,
     "general-info"   : require('./general-info/main')
   },  
   data : function(){
@@ -26,9 +25,25 @@ module.exports = {
   },
   template : require('./main.html'),
   computed : {
+    /**
+     * Create the HTML sub header out of the desktop item relative file path.
+     */
+    headerHTML : function() {
+      return this.item.path.concat([
+        `<span class="label" style="background-color : ${service.ui.getItemColor(this.item)}">
+          ${this.item.name}
+        </span>`
+      ]).join(' / ');
+    },
+    /**
+     * Configured toolbar buttons
+     */
     toolbarItems : function() {
       return service.config.store.get('toolbar');
     },
+    /**
+     * Name of the active tab - used to render the tab header
+     */
     currentTabName : function() {
       return this.$route.name;
     },
@@ -50,9 +65,6 @@ module.exports = {
     }
   },
   methods : {
-    updateColorValue : function(arg) {
-      this.colors = arg;
-    },
     /**
      * Execute an external program configured in the toolbar.
      */
@@ -104,10 +116,23 @@ module.exports = {
     "openTabCommands" : function() {
       this.$router.push('commands');
     },
+    /**
+     * Update color event handler - emited by the color-picker component
+     * when the user chooses a color
+     */
+    updateColorValue : function(arg) {
+      this.colors = arg;
+    },
+    /**
+     * Opens the color picker modal 
+     */    
     "openColorPicker" : function() {
       $('#color-picker-modal').modal("show");
-      
     },
+    /**
+     * Invoked when the user save changes on the color picker modal.
+     * If color has changedn update and save the current item
+     */
     "saveColor" : function(){
       console.log(`saving updateColorValue :  type = ${this.optionColor}`);
       console.log(this.colors);
@@ -126,19 +151,8 @@ module.exports = {
         });
         service.persistence.saveDesktopItemToFile(this.item);
       }
-
       $('#color-picker-modal').modal('hide');
-    },
-    /**
-     * Create the HTML sub header out of the desktop item relative file path.
-     */
-    buildHTMLHeader : function() {
-      this.htmlHeader = this.item.path.concat([
-        `<span class="label" style="background-color : ${service.ui.getItemColor(this.item)}">
-          ${this.item.name}
-        </span>`
-      ]).join(' / ');
-    },
+    }
   },
   /**
    * Build the summary view for the selected desktop item. The dekstop item

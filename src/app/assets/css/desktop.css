@@ -1,5 +1,15 @@
 /************************************************/
 
+#color-picker {
+  float: left;
+    width: 1em;
+    background-color: red;
+    height: 1em;
+    border: 1px solid grey;
+    padding: 1px;
+    margin-right: 0.4em;
+    cursor: pointer;
+}
 ul.general-info {
   padding: 0;
   margin: 1em;

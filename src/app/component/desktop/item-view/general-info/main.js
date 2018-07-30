@@ -9,21 +9,29 @@ module.exports = {
   components : {
     "inlineInput"    : require('../../../../lib/component/inline-input'),
     "inlineTextarea" : require('../../../../lib/component/inline-textarea'),
-    "autocomplete"   : require('../../../../lib/component/auto-complete')
+    "autocomplete"   : require('../../../../lib/component/auto-complete'),
+    "color-picker"    : require('vue-color').Chrome
   },
   template: require('./main.html'),
   data : function(){
     return {
       connectionOk : null,
+      "colors"      : '#333',
+      "optionColor" : 'auto',
       validation : {
         "host"     : true,
         "username" : true,
         "password" : true,
-        "port"     : true
+        "port"     : true,
       }
     };
   },
   computed : {
+    itemBgColor : function(item) {
+      return {
+        "background-color" : service.ui.getItemColor(this.item)
+      };
+    },    
     /**
      * User can test SSH connection (button enabled) if :
      * - no check task is in progress
@@ -59,6 +67,31 @@ module.exports = {
     }
   },
   methods : {
+    updateColorValue : function(arg) {
+      this.colors = arg;
+    },    
+    openColorPicker : function() {
+      $('#color-picker-modal').modal("show");
+    },    
+    saveColor : function(){
+      let selectedColor = typeof this.colors === "object" ? this.colors.hex : this.colors;
+
+      let itemColor = null;
+      if( this.optionColor === 'manual') {
+        itemColor = selectedColor;
+      } 
+      if( this.item.data.color !== itemColor) {
+        store.commit('updateDesktopItem', {
+          id         : this.item.data._id,
+          updateWith : {
+            color : itemColor
+          }
+        });
+        service.persistence.saveDesktopItemToFile(this.item);
+      }
+
+      $('#color-picker-modal').modal('hide');
+    },    
     /**
      * Test that current SSH connection settings are correct by trying to open a
      * connection to host.
@@ -108,5 +141,11 @@ module.exports = {
       store.commit('updateDesktopItem',updateData);
       service.persistence.saveDesktopItemToFile(this.item);
     }
+  },
+  beforeMount : function() {
+    if( this.item.data.color) {
+      this.colors = this.item.data.color;
+      this.optionColor = 'manual';
+    } 
   }
 };
