@@ -165,9 +165,8 @@ module.exports = {
     this.item = store.getters.desktopItemById(itemId);
     if( ! this.item ) {
       console.warn('failed to load item : id = '+itemId);
-    } else {
-      this.buildHTMLHeader();
-    }
+      return;
+    } 
     if( this.item.data.color) {
       this.colors = this.item.data.color;
       this.optionColor = 'manual';
