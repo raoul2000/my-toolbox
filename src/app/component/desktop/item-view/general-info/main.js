@@ -5,6 +5,7 @@ var service            = require('../../../../service/index');
 var checkSSHConnection2            = require('../../../../service/ssh/check-connection');
 
 module.exports = {
+  props: ['item'],
   components : {
     "inlineInput"    : require('../../../../lib/component/inline-input'),
     "inlineTextarea" : require('../../../../lib/component/inline-textarea'),
@@ -14,13 +15,11 @@ module.exports = {
   data : function(){
     return {
       connectionOk : null,
-      item         : null,
       validation : {
         "host"     : true,
         "username" : true,
         "password" : true,
-        "port"     : true,
-        "notes"    : true
+        "port"     : true
       }
     };
   },
@@ -86,19 +85,6 @@ module.exports = {
       });
     },
     /**
-     * Handle Notes update : updtae the store and the file is note have been
-     * updated by user
-     */
-    changeNotesValue : function(arg) {
-      store.commit('updateDesktopItem', {
-        id          : this.item.data._id,
-        updateWith  : {
-          notes  : arg.value
-        }
-      });
-      service.persistence.saveDesktopItemToFile(this.item);
-    },
-    /**
      * Handle SSH settings update : update the store and the file.
      * Note that validation is not blocking the save operation.
      */
@@ -121,17 +107,6 @@ module.exports = {
       updateData.updateWith[arg.name] = arg.value;
       store.commit('updateDesktopItem',updateData);
       service.persistence.saveDesktopItemToFile(this.item);
-    }
-  },
-  /**
-   * Build the summary view for the selected desktop item. The dekstop item
-   * id is passed as a path param.
-   */
-  mounted : function(){
-    // find the desktop item in the store
-    this.item = this.$store.getters.desktopItemById(this.$route.params.id);
-    if( ! this.item ) {
-      console.warn("fail to load item : id = "+this.$route.params.id);
     }
   }
 };

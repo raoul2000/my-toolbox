@@ -15,7 +15,7 @@ const Create   = require('./component/create/main');
 const View     = require('./component/view/main');
 
 const ItemView            = require('./component/desktop/item-view/main');
-const ItemViewSettings    = require('./component/desktop/item-view/general/main');
+const ItemViewNotes       = require('./component/desktop/item-view/notes/main');
 const ItemViewEntities    = require('./component/desktop/item-view/entities/main');
 const ItemViewWebapps     = require('./component/desktop/item-view/webapps/main');
 const ItemViewComponents  = require('./component/desktop/item-view/components/main');
@@ -57,9 +57,9 @@ const router = new VueRouter({
     { path: '/item-view/:id',    component: ItemView,
       children : [
       {
-        path      : 'settings',
-        name      : 'server-settings',
-        component : ItemViewSettings
+        path      : 'notes',
+        name      : 'server-notes',
+        component : ItemViewNotes
       },
       {
         path      : 'entities',

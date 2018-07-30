@@ -206,7 +206,8 @@ module.exports = {
       if(event.target.closest(".btn") === null) { // make sure user clicked on the button
         // to push a route with a query param use :
         // this.$router.push({ path: '/item-view', query: { "id": item.data._id }})
-        this.$router.push({ path: `/item-view/${item.data._id}/settings`});
+        this.$router.push({ path: `/item-view/${item.data._id}/webapps`});
+
         event.stopPropagation();
       }
     },

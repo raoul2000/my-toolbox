@@ -13,7 +13,8 @@ const VIEW_ID = "item-view";
 module.exports = {
   store,
   components : {
-    "color-picker"    : require('vue-color').Chrome
+    "color-picker"    : require('vue-color').Chrome,
+    "general-info"   : require('./general-info/main')
   },  
   data : function(){
     return {
@@ -88,8 +89,8 @@ module.exports = {
     /**
      * User click on 'settings' tab
      */
-    "openTabHome" : function() {
-      this.$router.push('settings');
+    "openTabNotes" : function() {
+      this.$router.push('notes');
     },
     /**
      * User click on 'component' tab

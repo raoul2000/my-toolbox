@@ -18,11 +18,17 @@ module.exports = `
           {{item.label}}
         </button>
       </div>
+    </div>
+  </div>
 
+  <div class="row">
+    <div class="col-lg-2">
+      <general-info v-bind:item="item">
+      </general-info>
+    </div>
+    <div class="col-lg-10">
       <ul class="nav nav-tabs">
-        <li role="presentation" v-bind:class="{active : currentTabName == 'server-settings'}">
-          <a v-on:click.stop.prevent="openTabHome()" href="#">General</a>
-        </li>
+
         <li role="presentation"  v-bind:class="{active : currentTabName == 'server-webapps'}">
           <a v-on:click.stop.prevent="openTabWebapp()" href="#">Web Apps <span class="badge">{{webappCount}}</span></a>
         </li>
@@ -35,7 +41,13 @@ module.exports = `
         <li role="presentation"  v-bind:class="{active : currentTabName == 'server-commands'}">
           <a v-on:click.stop.prevent="openTabCommands()" href="#">Commands</a>
         </li>
+        <li role="presentation" v-bind:class="{active : currentTabName == 'server-notes'}">
+          <a v-on:click.stop.prevent="openTabNotes()" href="#">Notes</a>
+        </li>        
       </ul>
+
+      <router-view></router-view>
+
     </div>
   </div>
 
@@ -43,8 +55,7 @@ module.exports = `
   
   <div class="row">
     <div class="col-lg-12">
-      <router-view>
-      </router-view>
+
     </div>
   </div><!--// row -->
 
