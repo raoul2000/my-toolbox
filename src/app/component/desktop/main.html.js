@@ -94,7 +94,7 @@ module.exports = `
       				<div class="shape" v-bind:style="cardItemColor(item)">
       					<div class="shape-text"/>
       				</div>
-      				<div class="project-content">
+              <div class="project-content">             
       					<div v-html="cardItemContent(item)"/>
       				</div>
       			</div>

@@ -16,14 +16,13 @@ module.exports = {
   store,
   data : function(){
     return {
-      groupByCategory : service.config.store.get("desktopGroupByCategory")
+      groupByCategory : service.config.store.get("desktopGroupByCategory"),
+      items : store.state.desktop,
+      selectedItems : []
     };
   },
   template: require('./main.html'),
   computed : {
-    items : function(){
-      return store.state.desktop;
-    },
     topLevelCategories : function() {
       let keys = helper.groupBy(store.state.desktop, item => {
         if( item.path.length === 0) {
@@ -204,10 +203,24 @@ module.exports = {
      */
     viewDetail : function(item, event) {
       if(event.target.closest(".btn") === null) { // make sure user clicked on the button
-        // to push a route with a query param use :
-        // this.$router.push({ path: '/item-view', query: { "id": item.data._id }})
-        this.$router.push({ path: `/item-view/${item.data._id}/webapps`});
+        if(event.ctrlKey) {
+          let itemId = this.getItemElementId(item.data);
+          let el = document.getElementById(itemId).children[0];
+          let selectedItemIndex = this.selectedItems.lastIndexOf(itemId);
 
+          if( selectedItemIndex === -1) {
+            el.classList.add("selected-item");
+            this.selectedItems.push(itemId);
+          } else {
+            this.selectedItems.splice(selectedItemIndex,1);
+            el.classList.remove("selected-item");
+          }
+        } else {
+          this.selectedItems = [];
+          // to push a route with a query param use :
+          // this.$router.push({ path: '/item-view', query: { "id": item.data._id }})
+          this.$router.push({ path: `/item-view/${item.data._id}/webapps`});
+        }
         event.stopPropagation();
       }
     },
