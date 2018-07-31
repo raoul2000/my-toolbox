@@ -35,6 +35,38 @@ module.exports = {
     }
   },
   methods : {
+    /**
+     * Select/Unselect All desktop items
+     */
+    selectAll : function(select) {
+      this.items
+      .filter( item => {
+        if( select) {
+          return this.selectedItems.lastIndexOf(item.data._id) === -1;
+        } else {
+          return this.selectedItems.lastIndexOf(item.data._id) !== -1;
+        }
+      })
+      .forEach( item => {
+        this.toggleItemSelection(item);
+      });
+    },
+    /**
+     * Mark a desktop item as selected/unselected depending on its current state
+     */
+    toggleItemSelection : function(item) {
+      let itemId = this.getItemElementId(item.data);
+      let el = document.getElementById(itemId).children[0];
+      let selectedItemIndex = this.selectedItems.lastIndexOf(itemId);
+
+      if( selectedItemIndex === -1) {
+        el.classList.add("selected-item");
+        this.selectedItems.push(itemId);
+      } else {
+        this.selectedItems.splice(selectedItemIndex,1);
+        el.classList.remove("selected-item");
+      }
+    },    
     toggleShowTask : function() {
       ipcRenderer.send('toggle-task-view');
     },
@@ -204,18 +236,9 @@ module.exports = {
     viewDetail : function(item, event) {
       if(event.target.closest(".btn") === null) { // make sure user clicked on the button
         if(event.ctrlKey) {
-          let itemId = this.getItemElementId(item.data);
-          let el = document.getElementById(itemId).children[0];
-          let selectedItemIndex = this.selectedItems.lastIndexOf(itemId);
-
-          if( selectedItemIndex === -1) {
-            el.classList.add("selected-item");
-            this.selectedItems.push(itemId);
-          } else {
-            this.selectedItems.splice(selectedItemIndex,1);
-            el.classList.remove("selected-item");
-          }
+          this.toggleItemSelection(item);
         } else {
+          // clear pending selection
           this.selectedItems = [];
           // to push a route with a query param use :
           // this.$router.push({ path: '/item-view', query: { "id": item.data._id }})

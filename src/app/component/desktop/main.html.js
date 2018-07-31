@@ -30,6 +30,7 @@ module.exports = `
           <span class="glyphicon glyphicon-modal-window" aria-hidden="true"></span>
         </button>
       </div> <!-- toolbar end -->
+
       <div class="btn-group" role="group" style="margin-bottom:1em;">
         <button
           @click="toggleShowTask"
@@ -38,6 +39,25 @@ module.exports = `
           <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
         </button>
       </div>
+
+      <div class="btn-group" role="group" style="margin-bottom:1em;">
+        <button
+          @click="selectAll(true)"
+          v-bind:disabled="selectedItems.length === items.length "
+          title="select all"
+          type="button" class="btn btn-default">
+          <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+        </button>
+        <button
+          @click="selectAll(false)"
+          v-bind:disabled="selectedItems.length === 0 "
+          title="deselect all"
+          type="button" class="btn btn-default">
+          <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+        </button>
+      </div>
+
+
     </div>
   </div>
 
