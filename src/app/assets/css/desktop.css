@@ -123,8 +123,10 @@ h3.panel-title {
 }
 
 .card-extra {
-  font-stretch: extra-condensed;
-  font-style: italic;
+/*  font-stretch: extra-condensed;
+  font-style: italic;*/
+  font-size: 0.9em;
+  color: #7d7d7d;  
 }
 
 .shape {
