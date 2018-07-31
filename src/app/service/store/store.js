@@ -165,6 +165,8 @@ module.exports = new Vuex.Store({
       if( itemToUpdate ) {
         if( args.selector === 'ssh') {
           Object.assign(itemToUpdate.data.ssh, args.updateWith);
+        } else if ( args.selector === 'desktop') { // volatile state
+          Object.assign(itemToUpdate, args.updateWith);
         } else  {
           Object.assign(itemToUpdate.data, args.updateWith);
         }

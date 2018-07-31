@@ -35,6 +35,52 @@ module.exports = {
     }
   },
   methods : {
+    ping : function() {
+      if( this.selectedItems.length === 0) {
+        // no item selected
+        return;
+      }
+
+      this.selectedItems
+      .map( itemId => this.items.find( item => item.data._id === itemId ))
+      .map( currentItem => {
+        store.commit('updateDesktopItem', {
+          id         : currentItem.data._id,
+          selector   : 'desktop',
+          updateWith : {
+            inProgress : true,
+            isAlive    : null,
+            isAliveStatusMessage : null
+          }
+        });         
+        service.ssh.checkConnection(currentItem.data.ssh)
+        .then( success => {
+          console.log(success);
+          store.commit('updateDesktopItem', {
+            id         : currentItem.data._id,
+            selector   : 'desktop',
+            updateWith : {
+              inProgress : false,
+              isAlive : true,
+              isAliveStatusMessage : "server is alive"
+            }
+          });          
+        })
+        .catch(error => {
+          console.log(error);
+          store.commit('updateDesktopItem', {
+            id         : currentItem.data._id,
+            selector   : 'desktop',
+            updateWith : {
+              inProgress : false,
+              isAlive : false,
+              isAliveStatusMessage : error
+            }
+          });            
+        });
+      });
+
+    },
     /**
      * Select/Unselect All desktop items
      */
@@ -89,6 +135,7 @@ module.exports = {
       .on('confirm', ()=> {
         self.$store.commit('removeAllItems');
         service.config.clearDesktop();
+        self.selectedItems = [];
       });
     },
     itemsByCategory : function(category) {
@@ -271,6 +318,10 @@ module.exports = {
      * @param  {object} item the item in the current store
      */
     removeFromDesktop : function(item) {
+      let selectedItemIndex = this.selectedItems.lastIndexOf(item.data._id);
+      if( selectedItemIndex !== -1) {
+        this.selectedItems.splice(selectedItemIndex,1);
+      }        
       let filePath = path.join(
         service.config.store.get("ctdbFolderPath"),
         item.filename
@@ -329,6 +380,9 @@ module.exports = {
               store.commit('addToDesktop',{
                 "filename" : relativeFilePath,
                 "data"     : newItemData,
+                "isAlive"    : null,
+                "inProgress" : false,
+                "isAliveStatusMessage" : "",
                 "name"     : path.basename(relativeFilePath),
                 "path"     : path.dirname(relativeFilePath)
                               .split(path.sep)

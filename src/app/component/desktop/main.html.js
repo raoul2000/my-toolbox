@@ -62,6 +62,13 @@ module.exports = `
           type="button" class="btn btn-default">
           <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
         </button>
+        <button
+          @click="ping"
+          v-bind:disabled="selectedItems.length === 0 "
+          title="ping"
+          type="button" class="btn btn-default">
+          <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+        </button>
       </div>
 
     </div>
@@ -100,7 +107,7 @@ module.exports = `
           <div class="clearfix"></div>
         </div>
         <div class="panel-body">
-
+        
           <div
       			v-for="(item, index)  in itemsByCategory(category)"
       			:title="item.file" class="card-container" :id="getItemElementId(item.data)"
@@ -120,8 +127,26 @@ module.exports = `
       				<div class="shape" v-bind:style="cardItemColor(item)">
       					<div class="shape-text"/>
       				</div>
-              <div class="project-content">             
-      					<div v-html="cardItemContent(item)"/>
+              <div class="project-content">                    
+              <div v-html="cardItemContent(item)"/>
+              
+                <div class="alive-state">
+                  <i 
+                    v-if="item.inProgress === true" 
+                    class="fa fa-refresh fa-spin">
+                  </i>                  
+                  <span 
+                    v-if="item.isAlive === true" 
+                    :title="item.isAliveStatusMessage"
+                    class="glyphicon glyphicon-ok" aria-hidden="true" style="color:green">
+                  </span>
+                  <span 
+                    v-else-if="item.isAlive === false" 
+                    :title="item.isAliveStatusMessage"
+                    class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red">
+                  </span>
+                </div>  
+              
       				</div>
       			</div>
       		</div><!-- end v-for item-->
@@ -156,6 +181,24 @@ module.exports = `
           </div>
           <div class="project-content">  
             <div v-html="cardItemContent(item)"></div>
+
+            <div class="alive-state">
+              <i 
+                v-if="item.inProgress === true" 
+                class="fa fa-refresh fa-spin">
+              </i>                  
+              <span 
+                v-if="item.isAlive === true" 
+                :title="item.isAliveStatusMessage"
+                class="glyphicon glyphicon-ok" aria-hidden="true" style="color:green">
+              </span>
+              <span 
+                v-else-if="item.isAlive === false" 
+                :title="item.isAliveStatusMessage"
+                class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red">
+              </span>
+            </div>  
+
           </div>
         </div>
       </div> <!-- card-container -->

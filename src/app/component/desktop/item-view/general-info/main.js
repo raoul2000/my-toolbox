@@ -113,7 +113,11 @@ module.exports = {
         } else {
           this.connectionOk = false;
           service.ssh.clearCachedPassword(this.item.data.ssh);
-          service.notification.error(error,"Failed to connect");
+          service.notification.error(
+            `The server <b>${this.item.path.join(' / ')}</b> could not be reached.<br/> The error returned is : 
+            <pre>${error}</pre>`,
+            "Failed to connect"
+          );
         }
       });
     },
