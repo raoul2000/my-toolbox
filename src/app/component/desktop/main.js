@@ -32,17 +32,20 @@ module.exports = {
         }
       }).keys();
       return Array.from(keys);
+    },
+    /**
+     * Number of desktop items currently selected
+     */
+    selectedItemCount : function(){
+      return this.items.filter( item => item.isSelected).length;
     }
   },
   methods : {
+    /**
+     * Ping the selected server(s)
+     */
     ping : function() {
-      if( this.selectedItems.length === 0) {
-        // no item selected
-        return;
-      }
-
-      this.selectedItems
-      .map( itemId => this.items.find( item => item.data._id === itemId ))
+      this.items.filter( item => item.isSelected)
       .map( currentItem => {
         store.commit('updateDesktopItem', {
           id         : currentItem.data._id,
@@ -79,39 +82,32 @@ module.exports = {
           });            
         });
       });
-
     },
     /**
-     * Select/Unselect All desktop items
+     * Mark an item as selected or deselected depending on the **select** argument
      */
-    selectAll : function(select) {
-      this.items
-      .filter( item => {
-        if( select) {
-          return this.selectedItems.lastIndexOf(item.data._id) === -1;
-        } else {
-          return this.selectedItems.lastIndexOf(item.data._id) !== -1;
+    selectItem : function(item, select) {
+      store.commit('updateDesktopItem', {
+        id         : item.data._id,
+        selector   : 'desktop',
+        updateWith : {
+          isSelected : select ? true : false
         }
-      })
-      .forEach( item => {
-        this.toggleItemSelection(item);
-      });
+      });  
+    },
+    /**
+     * Select/deselect all desktop items
+     */
+    selectAllItems : function(select) {
+      this.items.forEach( item => {
+        this.selectItem(item, select);
+      }); 
     },
     /**
      * Mark a desktop item as selected/unselected depending on its current state
      */
     toggleItemSelection : function(item) {
-      let itemId = this.getItemElementId(item.data);
-      let el = document.getElementById(itemId).children[0];
-      let selectedItemIndex = this.selectedItems.lastIndexOf(itemId);
-
-      if( selectedItemIndex === -1) {
-        el.classList.add("selected-item");
-        this.selectedItems.push(itemId);
-      } else {
-        this.selectedItems.splice(selectedItemIndex,1);
-        el.classList.remove("selected-item");
-      }
+      this.selectItem(item, ! item.isSelected);
     },    
     toggleShowTask : function() {
       ipcRenderer.send('toggle-task-view');
@@ -139,7 +135,6 @@ module.exports = {
       });
     },
     itemsByCategory : function(category) {
-      console.log("itemsByCategory",category);
       return store.state.desktop.filter( item => {
         if( item.path.length === 0 && category === "NO CATEGORY") {
           return true;
@@ -318,6 +313,8 @@ module.exports = {
      * @param  {object} item the item in the current store
      */
     removeFromDesktop : function(item) {
+      //debugger;
+      //this.toggleItemSelection(item);
       let selectedItemIndex = this.selectedItems.lastIndexOf(item.data._id);
       if( selectedItemIndex !== -1) {
         this.selectedItems.splice(selectedItemIndex,1);
@@ -378,9 +375,10 @@ module.exports = {
                  newItemData.commands = [];
                }
               store.commit('addToDesktop',{
-                "filename" : relativeFilePath,
-                "data"     : newItemData,
-                "isAlive"    : null,
+                "data"       : newItemData,
+                "filename"   : relativeFilePath,
+                "isSelected" : false,
+                "isAlive"    : null, // NULL = don't know, TRUE = servier alive, FALSE = server not responding
                 "inProgress" : false,
                 "isAliveStatusMessage" : "",
                 "name"     : path.basename(relativeFilePath),
@@ -398,7 +396,6 @@ module.exports = {
     /**
      * Opens a file selection dialog box (native) so the user can select one or more
      * item that will be added to the desktop.
-     *
      *
      * @param  {mixed} defaultPath  if a string is provided, it is assumed to be a
      * path relative to CTDB folder path and is used to initialized the defaultPath.

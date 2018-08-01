@@ -3,8 +3,7 @@ module.exports = `
   <div class="row">
     <div class="col-lg-12">
 
-      <!-- toolbar BEGIN -->
-
+      <!-- toolbar BEGIN //////////////////////////////////////////////// -->
       <div class="btn-group" role="group" style="margin-bottom:1em;">
         <button
           @click="openDesktopItems"
@@ -33,10 +32,10 @@ module.exports = `
           <span class="glyphicon glyphicon-modal-window" aria-hidden="true"></span>
         </button>
       </div> 
+      <!-- toolbar end //////////////////////////////////////////////// -->
+      
 
-      <!-- toolbar end -->
-
-      <!-- toolbar BEGIN -->
+      <!-- toolbar BEGIN //////////////////////////////////////////////// -->
       <div class="btn-group" role="group" style="margin-bottom:1em;">
         <button
           @click="toggleShowTask"
@@ -45,31 +44,34 @@ module.exports = `
           <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
         </button>
       </div>
-      <!-- toolbar end -->
+      <!-- toolbar end //////////////////////////////////////////////// -->
+    
 
+      <!-- toolbar BEGIN //////////////////////////////////////////////// -->
       <div class="btn-group" role="group" style="margin-bottom:1em;">
         <button
-          @click="selectAll(true)"
-          v-bind:disabled="selectedItems.length === items.length "
+          @click="selectAllItems(true)"
+          v-bind:disabled="selectedItemCount === items.length "
           title="select all"
           type="button" class="btn btn-default">
           <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
         </button>
         <button
-          @click="selectAll(false)"
-          v-bind:disabled="selectedItems.length === 0 "
+          @click="selectAllItems(false)"
+          v-bind:disabled="selectedItemCount === 0 "
           title="deselect all"
           type="button" class="btn btn-default">
           <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
         </button>
         <button
           @click="ping"
-          v-bind:disabled="selectedItems.length === 0 "
+          v-bind:disabled="selectedItemCount === 0 "
           title="ping"
           type="button" class="btn btn-default">
           <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
         </button>
       </div>
+      <!-- toolbar end //////////////////////////////////////////////// -->
 
     </div>
   </div>
@@ -110,26 +112,28 @@ module.exports = `
         
           <div
       			v-for="(item, index)  in itemsByCategory(category)"
-      			:title="item.file" class="card-container" :id="getItemElementId(item.data)"
-      		>
-      			<div
+      			:title="item.file" class="card-container" :id="getItemElementId(item.data)">
+          
+            <div
               @click="viewDetail(item, $event)"
-      				class="project project-default"
-      			>
-      				<div
-      					@click.stop.prevent="removeFromDesktop(item)"
-      					title="remove from desktop"
-      					type="button"
-      					class="left-corner-icon"
-      				>
-      					<span class="glyphicon glyphicon-trash" aria-hidden="true"/>
-      				</div>
-      				<div class="shape" v-bind:style="cardItemColor(item)">
-      					<div class="shape-text"/>
-      				</div>
-              <div class="project-content">                    
-              <div v-html="cardItemContent(item)"/>
-              
+              class="project project-default"
+              v-bind:class="{ 'selected-item' : item.isSelected}">
+
+              <div
+                @click.stop.prevent="removeFromDesktop(item)"
+                title="remove from desktop"
+                type="button"
+                class="left-corner-icon">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+              </div>
+
+              <div class="shape" v-bind:style="cardItemColor(item)">
+                <div class="shape-text" >
+                </div>
+              </div>
+
+              <div class="project-content">  
+                <div v-html="cardItemContent(item)"></div>
                 <div class="alive-state">
                   <i 
                     v-if="item.inProgress === true" 
@@ -146,9 +150,9 @@ module.exports = `
                     class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red">
                   </span>
                 </div>  
-              
-      				</div>
-      			</div>
+              </div>
+            </div> <!-- // end of project -->  
+
       		</div><!-- end v-for item-->
 
          </div><!-- end panel body -->
@@ -167,7 +171,9 @@ module.exports = `
   
         <div
           @click="viewDetail(item, $event)"
-          class="project project-default">
+          class="project project-default"
+          v-bind:class="{ 'selected-item' : item.isSelected}">
+
           <div
             @click.stop.prevent="removeFromDesktop(item)"
             title="remove from desktop"
@@ -175,13 +181,14 @@ module.exports = `
             class="left-corner-icon">
             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
           </div>
+
           <div class="shape" v-bind:style="cardItemColor(item)">
             <div class="shape-text" >
             </div>
           </div>
+
           <div class="project-content">  
             <div v-html="cardItemContent(item)"></div>
-
             <div class="alive-state">
               <i 
                 v-if="item.inProgress === true" 
@@ -198,9 +205,9 @@ module.exports = `
                 class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red">
               </span>
             </div>  
-
           </div>
-        </div>
+        </div> <!-- // end of project --> 
+
       </div> <!-- card-container -->
 
     </div>
