@@ -68,13 +68,24 @@ module.exports = `
 
     <button
       v-bind:disabled="!canTestConnection"
-      v-on:click="testConnection" type="button" class="btn btn-default btn-block">
-        <i v-show="allowEdit === false" class="fa fa-refresh fa-spin"></i>
-        <span v-show="connectionOk !== null">
-          <span v-show="connectionOk === true" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-          <span v-show="connectionOk === false" class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red"></span>
-        </span>
+      v-on:click="ping" type="button" class="btn btn-default btn-block">
 
+      <div class="alive-state">
+        <i 
+          v-if="item.inProgress === true" 
+          class="fa fa-refresh fa-spin">
+        </i>                  
+        <span 
+          v-if="item.isAlive === true" 
+          :title="item.isAliveStatusMessage"
+          class="glyphicon glyphicon-ok" aria-hidden="true" style="color:green">
+        </span>
+        <span 
+          v-else-if="item.isAlive === false" 
+          :title="item.isAliveStatusMessage"
+          class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red">
+        </span>
+      </div>  
         &nbsp;Test Connection
     </button>
 

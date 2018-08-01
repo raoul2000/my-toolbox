@@ -1,8 +1,7 @@
 'use strict';
 
-const validate         = require('validator');
-var service            = require('../../../../service/index');
-var checkSSHConnection2            = require('../../../../service/ssh/check-connection');
+const validate = require('validator');
+const service  = require('../../../../service/index');
 
 module.exports = {
   props: ['item'],
@@ -10,12 +9,11 @@ module.exports = {
     "inlineInput"    : require('../../../../lib/component/inline-input'),
     "inlineTextarea" : require('../../../../lib/component/inline-textarea'),
     "autocomplete"   : require('../../../../lib/component/auto-complete'),
-    "color-picker"    : require('vue-color').Chrome
+    "color-picker"   : require('vue-color').Chrome
   },
   template: require('./main.html'),
   data : function(){
     return {
-      connectionOk : null,
       "colors"      : '#333',
       "optionColor" : 'auto',
       validation : {
@@ -27,6 +25,9 @@ module.exports = {
     };
   },
   computed : {
+    /**
+     * Returns CSS style color background for this item
+     */
     itemBgColor : function(item) {
       return {
         "background-color" : service.ui.getItemColor(this.item)
@@ -40,40 +41,99 @@ module.exports = {
      * If password is empty it will be prompted.
      */
     canTestConnection : function(){
-      let task = this.checkSSHConnectionTask;
-      return ( ( task && task.status !== "BUSY") || !task)
+      return this.item.inProgress !== true
         && this.item.data.ssh.username.length !== 0
         && this.item.data.ssh.host.length > 0;
-    },
-    /**
-     * Returns the current SSH connection check task, or 'undefined' of no such
-     * task exists in the store.
-     */
-    checkSSHConnectionTask : function(){
-      return  this.$store.getters['tmptask/taskById'](this.checkSSHConnectionTaskId);
-    },
-    /**
-     * Create the task ID. As it depends on the host/username, it must be computed
-     * and cannot be assigned on 'mounted'
-     */
-    checkSSHConnectionTaskId : function() {
-      return checkSSHConnection2.createTaskId(this.item.data.ssh);
     },
     /**
      * SSH settings can be edited if no check connection task is in progress
      */
     allowEdit : function() {
-      return ! (this.checkSSHConnectionTask && this.checkSSHConnectionTask.status === "BUSY");
+      return this.item.inProgress !== true; // inProgress could be NULL, FALSE or TRUE
     }
   },
   methods : {
+    /**
+     * Test that current SSH connection settings are correct by trying to open a
+     * connection to host.
+     * 
+     * Note that if no password is saved at the item level, user must enter it (and possibly
+     * temporary save it to cache for the session)
+     */    
+    ping : function() {
+      // Get SSH password : user is prompted to enter password if not saved in the item
+      service.ssh.getInfo(this.item.data.ssh) 
+        .then( sshOptions => {
+          // now that we have ssh connection params, let's start the real work
+          store.commit('updateDesktopItem', {
+            id         : this.item.data._id,
+            selector   : 'desktop',
+            updateWith : {
+              inProgress           : true,
+              isAlive              : null,
+              isAliveStatusMessage : null
+            }
+          }); 
+          return service.ssh.checkConnection(sshOptions)
+          .then( success => {
+            console.log(success);
+            store.commit('updateDesktopItem', {
+              id         : this.item.data._id,
+              selector   : 'desktop',
+              updateWith : {
+                inProgress           : false,
+                isAlive              : true,
+                isAliveStatusMessage : "server is alive"
+              }
+            });          
+          });
+        })
+        .catch(error => {
+          if( error !== "canceled-by-user") {
+            store.commit('updateDesktopItem', {
+              id         : this.item.data._id,
+              selector   : 'desktop',
+              updateWith : {
+                inProgress           : false,
+                isAlive              : false,
+                isAliveStatusMessage : error
+              }
+            });                
+            service.ssh.clearCachedPassword(this.item.data.ssh);
+            service.notification.error(
+              `The server <b>${this.item.path.join(' / ')}</b> could not be reached.<br/> The error returned is : 
+              <pre>${error}</pre>`,
+              "Failed to connect"
+            );
+          } else {
+            store.commit('updateDesktopItem', {
+              id         : this.item.data._id,
+              selector   : 'desktop',
+              updateWith : {
+                inProgress           : false,
+                isAlive              : null,
+                isAliveStatusMessage : null
+              }
+            });              
+          }
+        }
+      );
+    },    
+    /**
+     * Update the color value selected by the user. It is not saved to the item
+     * until user press "Save Changes"
+     */
     updateColorValue : function(arg) {
       this.colors = arg;
     },    
     openColorPicker : function() {
       $('#color-picker-modal').modal("show");
     },    
+    /**
+     * User wants to "Save Changes" o,n the item color
+     */
     saveColor : function(){
+      $('#color-picker-modal').modal('hide');      
       let selectedColor = typeof this.colors === "object" ? this.colors.hex : this.colors;
 
       let itemColor = null;
@@ -89,38 +149,7 @@ module.exports = {
         });
         service.persistence.saveDesktopItemToFile(this.item);
       }
-
-      $('#color-picker-modal').modal('hide');
     },    
-    /**
-     * Test that current SSH connection settings are correct by trying to open a
-     * connection to host.
-     */
-    testConnection : function() {
-      service.ssh.getInfo(this.item.data.ssh) // user may be prompted
-      .then( sshOptions => {
-        // now that we have ssh connection params, let's start the real work
-        this.connectionOk = null;
-        return service.ssh.checkConnection(sshOptions);
-      })
-      .then( success => {
-        this.connectionOk = true;
-      })
-      .catch(error => {
-        if( error === "canceled-by-user") {
-          // user has been prompted for password and pressed cancel
-          this.connectionOk = true;
-        } else {
-          this.connectionOk = false;
-          service.ssh.clearCachedPassword(this.item.data.ssh);
-          service.notification.error(
-            `The server <b>${this.item.path.join(' / ')}</b> could not be reached.<br/> The error returned is : 
-            <pre>${error}</pre>`,
-            "Failed to connect"
-          );
-        }
-      });
-    },
     /**
      * Handle SSH settings update : update the store and the file.
      * Note that validation is not blocking the save operation.

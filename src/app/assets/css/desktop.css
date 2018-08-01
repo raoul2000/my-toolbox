@@ -1,10 +1,15 @@
 /************************************************/
-.alive-state {
+.card-container .alive-state {
   float: right;
   position: relative;
   top: -2px;
   right: 17px;
 }
+
+.panel-default .alive-state {
+  display: inline;
+}
+
 #color-picker {
   float: left;
     width: 1em;
