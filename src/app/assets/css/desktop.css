@@ -70,14 +70,18 @@ ul.general-info li .field-value {
   margin-right: 2px;
 }
 
-.danger-hover:hover {
-  color: red;
-}
 
+
+.danger-hover,
+.primary-hover {
+  margin-right: 0.5em;
+}
 .primary-hover:hover {
   color: blue;
 }
-
+.danger-hover:hover {
+  color: red;
+}
 
 .left-corner-icon {
   margin-left: 4px;

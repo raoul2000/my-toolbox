@@ -26,10 +26,10 @@ module.exports = `
         </button>
         <button
           @click="toggleGroup"
-          title="toggle group"
+          title="group/un-group"
           :disabled="items.length == 0"
           type="button" class="btn btn-default">
-          <span class="glyphicon glyphicon-modal-window" aria-hidden="true"></span>
+          <i class="fa fa-object-group" aria-hidden="true"></i>
         </button>
       </div> 
       <!-- toolbar end //////////////////////////////////////////////// -->
@@ -85,29 +85,46 @@ module.exports = `
       <div class="panel panel-default item-group-wrapper">
         <div class="panel-heading">
           <h3 class="panel-title pull-left">
-            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> {{category}}
+            {{category}}
           </h3>
-          <div class="pull-right category-panel-icon">
-            <span
-              title="add to this group"
-              @click.stop.prevent="addItemToGroup(category)"
-              class="glyphicon glyphicon-folder-open primary-hover"
-              aria-hidden="true"></span>
 
-            <span
-              title="create item for this group"
-              @click.stop.prevent="createItem(category)"
-              class="glyphicon glyphicon-plus primary-hover"
-              aria-hidden="true"></span>
 
-            <span
-              title="remove this group from desktop"
-              @click.stop.prevent="removeGroupFromDesktop(category)"
-              class="glyphicon glyphicon-trash danger-hover"
-              aria-hidden="true"></span>
+          <div class="btn-group" style=" float: right;">
+            <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-default btn-xs dropdown-toggle">
+              <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span> 
+            </button> 
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li>
+              <a href="#" @click.stop.prevent="addItemToGroup(category)">
+                <span
+                  title="add to this group"
+                  class="glyphicon glyphicon-folder-open primary-hover"
+                  aria-hidden="true"></span> Add To group
+              </a>
+              </li> 
+              <li>
+                <a href="#" @click.stop.prevent="createItem(category)">
+                <span
+                  title="create item for this group"
+                  class="glyphicon glyphicon-plus primary-hover"
+                  aria-hidden="true"></span> Create Item in group          
+                </a>
+              </li> 
+              <li role="separator" class="divider"></li> 
+              <li>
+                <a href="#" @click.stop.prevent="removeGroupFromDesktop(category)">
+                <span
+                  title="remove this group from desktop"
+                  class="glyphicon glyphicon-trash danger-hover"
+                  aria-hidden="true"></span> Remove this group
+                </a>
+              </li>
+            </ul>
           </div>
           <div class="clearfix"></div>
         </div>
+
+
         <div class="panel-body">
         
           <div
