@@ -28,3 +28,5 @@ exports.ssh = {
 exports.nexus = {
   "browse" : require('./nexus/browse')
 };
+
+exports.encrypt = require('./encrypt');
