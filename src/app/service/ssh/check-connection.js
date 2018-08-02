@@ -1,6 +1,7 @@
 'user strict';
 
 const DummyTaskService = require('../dummy-task');
+const secret = require('../../lib/lib').secret;
 
 /**
  * create a unique task id a check connection task from the provided SSH connection
@@ -15,27 +16,27 @@ exports.createTaskId = function(ssh) {
 
 /**
  * Entry point to update version of a tomcat instance.
- *
+ * Note that if the password is encrypted, it will be automatically decrypted before
+ * server submition.
+ * 
  * options :
- * {
- *    'host' : '127.0.0.1',
- *    'port' : 22,
- *    'username' : 'user',
- *    'password' : '*****'
- * }
- * @param  {object} itemData a desktop item data instance
- * @param  {string} tomcatId the id of the tomcat to update
- * @param  {object} nodessh  an optional nodessh instance
+ * ```
+  {
+    'host' : '127.0.0.1',
+    'port' : 22,
+    'username' : 'user',
+    'password' : '*****'
+  }
+  ```
+ * @param  {object} sshConnectionSettings SSH connection settings
  * @return {Promise}
  */
  function checkConnection(sshConnectionSettings) {
 
-    let taskId = exports.createTaskId(sshConnectionSettings);
-
     return DummyTaskService.submitTask({
-      "id"    : taskId,
+      "id"    : exports.createTaskId(sshConnectionSettings),
       "type"  : "check-ssh-connection",
-      "input" : sshConnectionSettings
+      "input" : secret.decryptPassword(sshConnectionSettings)
     })
     .promise;
 }

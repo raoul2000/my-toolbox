@@ -44,7 +44,8 @@ exports.runCommand = function(itemData, commandId, nodessh) {
   }
 
   // start the command execution
-  return nodessh.connect(itemData.ssh)
+  
+  return nodessh.connect(lib.secret.decryptPassword(itemData.ssh))
   .then( result => {
     return lib.smartCommand.run(nodessh, {
       "command" : command.source

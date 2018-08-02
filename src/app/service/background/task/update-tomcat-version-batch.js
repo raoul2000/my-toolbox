@@ -1,8 +1,9 @@
 "use strict";
 
-const NodeSSH = require('node-ssh');
+const NodeSSH             = require('node-ssh');
 const updateTomcatVersion = require('./update-tomcat-version');
-const asyncUtil = require('async');
+const asyncUtil           = require('async');
+const lib                 = require('../../../lib/lib');
 
 /**
  * Entry point to update version of many tomcat instance.
@@ -18,7 +19,7 @@ const asyncUtil = require('async');
     let nodessh = new NodeSSH();
 
     console.log(`SSH LOGIN : ${itemData.ssh.host}`);
-    return nodessh.connect(itemData.ssh)
+    return nodessh.connect(lib.secret.decryptPassword(itemData.ssh))
     .then( result => {
       let asyncFn = tomcatIds.map( tomcatId => {
         return function(cb){

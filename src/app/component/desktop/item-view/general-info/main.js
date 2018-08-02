@@ -21,7 +21,8 @@ module.exports = {
         "username" : true,
         "password" : true,
         "port"     : true,
-      }
+      },
+      "fieldPassword" : null
     };
   },
   computed : {
@@ -155,6 +156,7 @@ module.exports = {
      * Note that validation is not blocking the save operation.
      */
     changeSSHValue : function(arg){
+      let valueToSave = arg.value;
       if( arg.name === "host") {
         // host is actually IP
         // TODO : change property name from 'host' to 'ip'
@@ -162,6 +164,8 @@ module.exports = {
       } else if( arg.name === "port") {
         // port is not required (default is 22) but if set, it must  be valid
         this.validation[arg.name] = validate.isEmpty(arg.value) ? true : validate.isInt(arg.value+'',{ gt : 0});
+      } else if( arg.name === 'password') {
+        valueToSave = service.secret.encrypt(arg.value);
       }
 
       // update store and file is ALWAYS done (even if validation fails)
@@ -170,7 +174,7 @@ module.exports = {
         selector   : 'ssh',
         updateWith : {}
       };
-      updateData.updateWith[arg.name] = arg.value;
+      updateData.updateWith[arg.name] = valueToSave;
       store.commit('updateDesktopItem',updateData);
       service.persistence.saveDesktopItemToFile(this.item);
     }
@@ -180,5 +184,6 @@ module.exports = {
       this.colors = this.item.data.color;
       this.optionColor = 'manual';
     } 
+    this.fieldPassword = this.item.data.ssh.password;
   }
 };

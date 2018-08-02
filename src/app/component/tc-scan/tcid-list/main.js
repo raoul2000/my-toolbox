@@ -1,5 +1,6 @@
 'use strict';
 
+const service  = require('../../../service/index');
 const smartCommand  = require('../../../lib/lib').smartCommand;
 const NodeSSH       = require('node-ssh');
 const store         = require('../../../service/store/store');
@@ -46,7 +47,7 @@ module.exports = {
     scanTomcatIds : function(ssh) {
       let cmdByFolderName = `set -o pipefail; ls -d -- tomcat-*/ |  cut -d '-' -f 2 |  cut -d '/' -f 1  | tr '[:lower:]' '[:upper:]'`;
       let cmdByEntityName =  `. .bash_profile; set -o pipefail; cat $HOME/cfg/eomvar.dtd | grep TOMCAT_ | cut -d ' ' -f 2 | cut -d '_' -f 2 | sort > $TMPDIR/$$.tmp && uniq $TMPDIR/$$.tmp && rm $TMPDIR/$$.tmp`;
-      return ssh.connect(this.item.data.ssh)
+      return ssh.connect(service.secret.decryptPassword(this.item.data.ssh))
       .then( () => {
         return smartCommand.run(ssh,{
           "command"    : cmdByFolderName,

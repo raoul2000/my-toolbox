@@ -122,7 +122,7 @@ module.exports = {
       } else {
         // in prod mode, perform actual scan on tomcat ids recevied
         scanResultPromise = tomcatScanner.run({
-          ssh     : this.item.data.ssh,
+          ssh     : service.secret.decryptPassword(this.item.data.ssh),
           tomcats : tomcatIds.map(id => ({ "id" : id}))
         });
       }

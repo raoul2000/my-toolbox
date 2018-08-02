@@ -43,7 +43,7 @@ module.exports = `
         <div class="field-name">password</div>
         <div class="field-value">
           <inlineInput
-            :initialValue="item.data.ssh.password"
+            :initialValue="fieldPassword"
             :valid="validation.password"
             :allowEdit="allowEdit"
             inputType="password"

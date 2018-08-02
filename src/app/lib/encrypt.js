@@ -3,7 +3,7 @@
 const { createCipher, createCipheriv, createDecipher, createDecipheriv, randomBytes } = require('crypto');
 
 const algorithm = 'aes-256-ctr';
-const key = 'b2df428b9929d3ace7c598bbf4e496b2';
+const key = 'b2df428b9929d3ace7c598bbf4e496b2'; // should be provided by user
 const inputEncoding = 'utf8';
 const outputEncoding = 'hex';
 const prefix = 'crypt';
@@ -46,8 +46,22 @@ let decrypt = (value) => {
         return value;
     }
 }
-
+/**
+ * Decrypt if necessary the password property of the SSH Connection Param object
+ * passed as argument. If no 'password' property exists, a unmodified clone of the SSH 
+ * connection opbject is returned.
+ * 
+ * **NOTE** : the returned object is ALWAYS a clone of the input argument
+ */
+let decryptPassword = (sshConnectionParams) => {
+    let result = Object.assign({},sshConnectionParams);
+    if( result.hasOwnProperty('password')) {
+        result.password = decrypt(sshConnectionParams.password);
+    }
+    return result;
+}
 module.exports = {
     "encrypt": encrypt,
-    "decrypt": decrypt
+    "decrypt": decrypt,
+    "decryptPassword" : decryptPassword
 };

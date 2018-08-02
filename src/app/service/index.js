@@ -18,5 +18,6 @@ module.exports = {
     "browse"   : require('./nexus/browse'),
     "download" : require('./nexus/download')
   },
-  "ui" : require('./ui')
+  "ui" : require('./ui'),
+  "secret" : require('../lib/encrypt')
 };

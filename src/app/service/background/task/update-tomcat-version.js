@@ -3,6 +3,7 @@
 const lib     = require('../../../lib/lib');
 const NodeSSH = require('node-ssh');
 
+
 /**
  * Entry point to update version of a tomcat instance.
  *
@@ -26,7 +27,7 @@ const NodeSSH = require('node-ssh');
         nodessh = new NodeSSH();
         usePrivateSSH = true;
         console.log(`SSH LOGIN : ${itemData.ssh.host}`);
-        connect = nodessh.connect(itemData.ssh);
+        connect = nodessh.connect(lib.secret.decryptPassword(itemData.ssh));
     } else {
       connect = Promise.resolve(true);
     }

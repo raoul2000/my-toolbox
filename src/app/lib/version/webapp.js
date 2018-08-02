@@ -1,6 +1,5 @@
 "use strict";
 
-const sshCommand  = require('./ssh-command');
 const httpRequest = require('./http-request');
 const promiseUtil = require('../promise-utils');
 
