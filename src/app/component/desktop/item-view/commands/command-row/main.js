@@ -17,7 +17,8 @@ module.exports = {
       },
       runCmdTaskId : "",
       allowEdit    : true,
-      cmdResult    : null
+      cmdResult    : null,
+      viewCommand  : false
       
     };
   },

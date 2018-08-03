@@ -11,7 +11,7 @@ module.exports = `
 
       <div v-if="item.data.commands.length !== 0 ">
         <table
-          class="table table-striped table-hover table-condensed">
+          class="table table-hover table-condensed">
           <thead>
             <tr>
               <th>Name</th>

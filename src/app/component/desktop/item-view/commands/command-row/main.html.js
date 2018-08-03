@@ -25,10 +25,14 @@ module.exports = `
           v-on:click="deleteCommand()"
           title="delete this command"
           class="glyphicon glyphicon-remove" aria-hidden="true"/>      
+        <span
+          v-on:click="viewCommand = ! viewCommand"
+          title="view/edit this command"
+          class="glyphicon glyphicon-eye-open" aria-hidden="true"/>            
       </div>
   </td>
   <td>
-    <div style="font-family: monospace;">
+    <div v-if="viewCommand" style="font-family: monospace;">
       <inlineInput
         :initialValue="command.source"
         :valid="validation.source"

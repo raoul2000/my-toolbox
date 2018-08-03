@@ -50,6 +50,9 @@ module.exports = {
     view : function() {
       return this.$store.getters['view/findById'](VIEW_ID);
     },
+    /**
+     * Returns the total amount of webapp for all existing tomcats
+     */
     webappCount : function() {
       let count = this.item.data.tomcats.reduce( (acc, tomcat) => {
         return acc + tomcat.webapps.length;
@@ -72,34 +75,16 @@ module.exports = {
       service.toolbar.runExternalAction(actionId,this.item.data.ssh);
     },
     /**
-     * User click on webapp tab
-     */
-    "openTabWebapp" : function() {
-      this.$router.push('webapps');
-    },
-    /**
      * User click on Entitites tab
      */
     "openTabEntities" : function() {
       this.$router.push('entitites');
     },
     /**
-     * User click on 'settings' tab
-     */
-    "openTabNotes" : function() {
-      this.$router.push('notes');
-    },
-    /**
      * User click on 'component' tab
      */
     "openTabComponents" : function() {
       this.$router.push('components');
-    },
-    /**
-     * User click on 'commands' tab
-     */
-    "openTabCommands" : function() {
-      this.$router.push('commands');
     },
     /**
      * Update color event handler - emited by the color-picker component
