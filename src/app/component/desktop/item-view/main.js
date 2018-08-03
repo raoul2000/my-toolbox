@@ -69,22 +69,7 @@ module.exports = {
      * Execute an external program configured in the toolbar.
      */
     runToolbarAction : function(actionId) {
-      let action = service.config.store.get('toolbar').find( action => action.id === actionId);
-      if(action) {
-        let ssh = this.item.data.ssh; // shortcut
-        runExt(action.command, {
-          "PORT" : ssh.port,
-          "HOST" : ssh.host,
-          "USERNAME" : ssh.username,
-          "PASSWORD" : ssh.password
-        })
-        .catch( (err) => {
-          console.error(err);
-          service.notification.error(
-            `failed to run ${action.label}`
-          );
-        });        
-      }
+      service.toolbar.runExternalAction(actionId,this.item.data.ssh);
     },
     /**
      * User click on webapp tab

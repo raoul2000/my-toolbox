@@ -1,7 +1,6 @@
 'user strict';
 
 const lib         = require('../../lib/lib');
-const promiseUtil = require('../../lib/promise-utils');
 const NodeSSH     = require('node-ssh');
 const taskService = require('../task');
 
@@ -17,12 +16,16 @@ exports.buildTaskId = function(command) {
   return `cmd-run-${command._id}`;
 };
 
-exports.runCommand = function(itemData, commandId, nodessh) {
-  // find the command object intance
-  let command = itemData.commands.find( command => command._id === commandId);
-  if( ! command ) {
-    return Promise.reject(`command not found : id = ${commandId}`);
-  }
+/**
+ * Run a bash command on a remote server through an SSH connection.
+ *  
+ * @param {object} sshConnectionParams SSH connection settings. If password is encrypted, it is 
+ * decrypted by this function
+ * @param {object} command the command to execute
+ * @param {object} nodessh an optional SSH connection object that will be used if provided
+ * @returns {Promise} 
+ */
+exports.runCommand = function(sshConnectionParams, command, nodessh) {
 
   // create the update version task id
   let taskId = exports.buildTaskId(command);
@@ -43,9 +46,9 @@ exports.runCommand = function(itemData, commandId, nodessh) {
       usePrivateSSH = true;
   }
 
-  // start the command execution
+  // start the command execution (decrypt password if needed)
   
-  return nodessh.connect(lib.secret.decryptPassword(itemData.ssh))
+  return nodessh.connect(lib.secret.decryptPassword(sshConnectionParams))
   .then( result => {
     return lib.smartCommand.run(nodessh, {
       "command" : command.source
@@ -58,7 +61,7 @@ exports.runCommand = function(itemData, commandId, nodessh) {
     taskService.stopTask(taskId, true, result);
     
     return Object.assign(result, {
-      "_id"     : commandId,
+      "_id"     : command._id,
       "taskId"  : taskId
     });
   })

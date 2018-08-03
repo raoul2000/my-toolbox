@@ -6,18 +6,18 @@ module.exports = {
   "notification"  : require('./notification'),
   "config"        : require('./config'),
   "command"       : require('./command/runner'),
-  //"sshInfo"       : require('./ssh-connection'),
   "shell"         : require('./shell'),
   "ssh"           : {
     "getInfo"             : require('./ssh/get-info').getInfo,
     "clearCachedPassword" : require('./ssh/get-info').clearCachedPassword,
     "checkConnection"     : require('./ssh/check-connection').checkConnection
   },
-  "store" : require('./store/store'),
-  "nexus" : {
-    "browse"   : require('./nexus/browse'),
-    "download" : require('./nexus/download')
+  "store"         : require('./store/store'),
+  "nexus"         : {
+    "browse"              : require('./nexus/browse'),
+    "download"            : require('./nexus/download')
   },
-  "ui" : require('./ui'),
-  "secret" : require('../lib/encrypt')
+  "ui"            : require('./ui'),
+  "secret"        : require('../lib/encrypt'),
+  "toolbar"       : require('./toolbar')
 };

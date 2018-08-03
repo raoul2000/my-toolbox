@@ -43,7 +43,7 @@ module.exports = {
     runCommand : function() {
       let self = this;
       this.allowEdit = false;
-      service.command.runCommand(this.item.data,this.command._id)
+      service.command.runCommand(this.item.data.ssh,this.command)
       .then( result => {
         self.cmdResult = result;
         service.command.finalize(this.command);

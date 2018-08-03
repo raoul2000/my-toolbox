@@ -32,7 +32,7 @@ module.exports = `
 
     <span
       v-if="cmdResult && cmdResult.code === 0"
-      :title="success"
+      title="success"
       class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
     <span
       v-else-if="cmdResult && cmdResult.code !== 0"
