@@ -17,8 +17,7 @@ module.exports = {
   data : function(){
     return {
       groupByCategory : service.config.store.get("desktopGroupByCategory"),
-      items : store.state.desktop,
-      selectedItems : []
+      items : store.state.desktop
     };
   },
   template: require('./main.html'),
@@ -122,17 +121,33 @@ module.exports = {
     clearDesktop : function(){
       if( store.state.desktop.length === 0) {
         return;
+      } else {
+        let self = this;
+        let selectedItems = this.items.filter( item => item.isSelected );
+        if(selectedItems.length !== 0) {
+          // delete only selected items
+          service.notification.confirm(
+            'Confirmation Needed',
+            "Are you sure you want to remove the selected item(s) from your desktop ?"
+          )
+          .on('confirm', ()=> {
+            selectedItems.forEach( item => {
+              self.removeFromDesktop(item);
+            })
+          });
+        } else {
+          // delete all items
+          service.notification.confirm(
+            'Confirmation Needed',
+            "Are you sure you want to clear your desktop ?"
+          )
+          .on('confirm', ()=> {
+            self.$store.commit('removeAllItems');
+            service.config.clearDesktop();
+            self.selectedItems = [];
+          });
+        }
       }
-      let self = this;
-      service.notification.confirm(
-        'Confirmation Needed',
-        "Are you sure you want to clear your desktop ?"
-      )
-      .on('confirm', ()=> {
-        self.$store.commit('removeAllItems');
-        service.config.clearDesktop();
-        self.selectedItems = [];
-      });
     },
     itemsByCategory : function(category) {
       return store.state.desktop.filter( item => {
@@ -281,7 +296,7 @@ module.exports = {
           this.toggleItemSelection(item);
         } else {
           // clear pending selection
-          this.selectedItems = [];
+          //this.selectedItems = [];
           // to push a route with a query param use :
           // this.$router.push({ path: '/item-view', query: { "id": item.data._id }})
           this.$router.push({ path: `/item-view/${item.data._id}/webapps`});
@@ -309,16 +324,10 @@ module.exports = {
       });
     },
     /**
-     * Remove an item from the desktopn
+     * Remove an item from the desktop
      * @param  {object} item the item in the current store
      */
-    removeFromDesktop : function(item) {
-      //debugger;
-      //this.toggleItemSelection(item);
-      let selectedItemIndex = this.selectedItems.lastIndexOf(item.data._id);
-      if( selectedItemIndex !== -1) {
-        this.selectedItems.splice(selectedItemIndex,1);
-      }        
+    removeFromDesktop : function(item) {     
       let filePath = path.join(
         service.config.store.get("ctdbFolderPath"),
         item.filename

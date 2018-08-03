@@ -19,7 +19,7 @@ module.exports = `
         </button>
         <button
           @click="clearDesktop"
-          title="clear desktop"
+          title="remove from desktop"
           :disabled="items.length == 0"
           type="button" class="btn btn-default">
           <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
