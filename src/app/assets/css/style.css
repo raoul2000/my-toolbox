@@ -224,3 +224,24 @@ h3.tomcat-id small {
   height: 2px;
   margin-bottom: 5px;
 }
+
+.toolbar-1 {
+  white-space: nowrap;
+  padding-right: 4px;
+}
+.toolbar-1 .glyphicon {
+  padding:1em;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+.toolbar-1 .glyphicon:hover {
+  cursor: pointer;
+  color:blue;
+}
+.toolbar-1 .glyphicon-remove:hover {
+  color:red;
+}
+
+.cmd-row {
+  border-left: 10px solid #d8d8d8;
+}

@@ -16,8 +16,6 @@ module.exports = `
             <tr>
               <th>Name</th>
               <th></th>
-              <th></th>
-              <th></th>
             </tr>
           </thead>
           <tbody>

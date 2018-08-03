@@ -18,6 +18,7 @@ module.exports = {
       runCmdTaskId : "",
       allowEdit    : true,
       cmdResult    : null
+      
     };
   },
   template: require('./main.html'),
@@ -29,6 +30,17 @@ module.exports = {
     runCmdTask : function(){
       return  this.$store.getters['tmptask/taskById'](this.runCmdTaskId);
     },
+    borderColor : function() {
+      if(this.cmdResult) {
+        if (this.cmdResult.code !== 0) {
+          return "red";
+        } else if( this.cmdResult.code === 0 ) {
+          return "green";
+        }
+      } else {
+        return "grey";
+      }
+    }
   },
   methods : {
     editCommand : function() {
