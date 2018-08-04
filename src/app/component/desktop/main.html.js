@@ -90,7 +90,8 @@ module.exports = `
 
 
           <div class="btn-group" style=" float: right;">
-            <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-default btn-xs dropdown-toggle">
+            <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-default btn-xs dropdown-toggle"
+              style="border: none; background-color: inherit;">
               <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span> 
             </button> 
             <ul class="dropdown-menu dropdown-menu-right">
