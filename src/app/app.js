@@ -142,7 +142,7 @@ const app = new Vue({
       }
 
       // load DB metadata
-      service.persistence.db.loadDbMetadata(true);
+      service.db.open();
 
       // webappCatalogFilePath /////////////////////////////////////////////////////
 

@@ -19,5 +19,6 @@ module.exports = {
   },
   "ui"            : require('./ui'),
   "secret"        : require('../lib/encrypt'),
-  "toolbar"       : require('./toolbar')
+  "toolbar"       : require('./toolbar'),
+  "db"            : require('./db')
 };

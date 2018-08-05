@@ -19,7 +19,8 @@ module.exports = {
       // filter : passed to the tomcat component to be applied on
       // webapps
       filterText    : "",
-      openScanModal : false
+      openScanModal : false,
+      isReadOnly    : service.db.isReadOnly()
     };
   },
   template: require('./main.html'),

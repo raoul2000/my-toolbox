@@ -5,7 +5,8 @@ module.exports = `
     <div v-if="view.childViewId == 'TOMCAT_LIST'" class="col-lg-12">
 
 
-      <div class="btn-group btn-group-sm secondary-toolbar" role="group" >
+      <div
+        class="btn-group btn-group-sm secondary-toolbar" role="group" >
         <button title="Add Tomcat" v-on:click="addTomcat()" type="button" class="btn btn-default btn-xs">
           <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Tomcat
         </button>
