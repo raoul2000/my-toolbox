@@ -50,7 +50,8 @@ module.exports = {
      * SSH settings can be edited if no check connection task is in progress
      */
     allowEdit : function() {
-      return this.item.inProgress !== true; // inProgress could be NULL, FALSE or TRUE
+      return service.persistence.db.isReadOnly() === false &&
+       this.item.inProgress !== true; // inProgress could be NULL, FALSE or TRUE
     }
   },
   methods : {

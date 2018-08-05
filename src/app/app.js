@@ -141,6 +141,9 @@ const app = new Vue({
         }
       }
 
+      // load DB metadata
+      service.persistence.db.loadDbMetadata(true);
+
       // webappCatalogFilePath /////////////////////////////////////////////////////
 
       if(config.store.has('webappCatalogFilePath') === false ) {
