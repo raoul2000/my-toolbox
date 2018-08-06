@@ -12,7 +12,7 @@ module.exports = `
           aria-hidden="true"></span>
       </td>
 
-      <td class="header-tomcat-text">
+      <td class="header-tomcat-text" style="padding: 0.3em;">
         <span style="color:#c3c3c3;">Tomcat</span>
       </td>
 
@@ -50,32 +50,46 @@ module.exports = `
           v-on:changeValue="changeValue"/>
       </td>
 
-      <td class="tc-actions">
-        <span
-          v-on:click="openTomcatManager"
-          :title="btTitleOpenManager"
-          class="glyphicon glyphicon-link" aria-hidden="true"/>
+      <td style="white-space: nowrap">
 
-        <span
-          v-if="! updateVersionTask || updateVersionTask.status != 'BUSY'"
-          v-on:click="refreshVersion"
-          title="refresh version"
-          class="glyphicon glyphicon-play update-version-button" aria-hidden="true"/>
-        <span
-          v-else
-          title="version update in progress ..."
-          class="glyphicon glyphicon-refresh glyphicon-refresh-animate"
-          aria-hidden="true" />
+          <a href="#" @click.stop.prevent="openTomcatManager()" :title="btTitleOpenManager" style="font-size: smaller;">
+            Manager
+          </a>
 
-        <span
-          v-on:click="deleteTomcat()"
-          title="delete"
-          class="glyphicon glyphicon-remove" aria-hidden="true"/>
-
-        <span
-          v-on:click="checkTomcatIsAlive()"
-          title="is alive"
-          class="glyphicon glyphicon-star" aria-hidden="true"/>
+          <div class="btn-group">
+            <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-default btn-xs dropdown-toggle"
+              style="border: none; background-color: inherit;">
+              <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span> 
+            </button> 
+            <ul class="dropdown-menu dropdown-menu-right">             
+              <li >
+                <a href="#" @click.stop.prevent="checkTomcatIsAlive()">
+                  <span class="glyphicon glyphicon-star" aria-hidden="true"/> check is alive
+                </a>
+              </li> 
+              <li>
+                <a href="#" @click.stop.prevent="refreshVersion()">
+                  <span
+                    v-if="! updateVersionTask || updateVersionTask.status != 'BUSY'"
+                    title="refresh version"
+                    class="glyphicon glyphicon-play update-version-button" aria-hidden="true"/>
+                  <span
+                    v-else
+                    title="version update in progress ..."
+                    class="glyphicon glyphicon-refresh glyphicon-refresh-animate"
+                    aria-hidden="true" /> Refresh Version
+                </a>
+              </li> 
+              <li role="separator" class="divider"></li> 
+              <li>
+                <a href="#" @click.stop.prevent="deleteTomcat()">
+                  <span class="glyphicon glyphicon-remove" aria-hidden="true"/> Delete
+                </a>
+              </li>
+            </ul>
+          </div>
+          
+          
       </td>
 
     </tr>
