@@ -31,6 +31,9 @@ module.exports = {
     runCmdTask : function(){
       return  this.$store.getters['tmptask/taskById'](this.runCmdTaskId);
     },
+    /**
+     * Command row border color reflect command exit code : success/error/not set
+     */
     borderColor : function() {
       if(this.cmdResult) {
         if (this.cmdResult.code !== 0) {
@@ -39,7 +42,7 @@ module.exports = {
           return "green";
         }
       } else {
-        return "grey";
+        return "#eee";
       }
     }
   },

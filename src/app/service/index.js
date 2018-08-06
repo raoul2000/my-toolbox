@@ -20,5 +20,6 @@ module.exports = {
   "ui"            : require('./ui'),
   "secret"        : require('../lib/encrypt'),
   "toolbar"       : require('./toolbar'),
-  "db"            : require('./db')
+  "db"            : require('./db'),
+  "tomcat"        : require('./tomcat')
 };

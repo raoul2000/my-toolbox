@@ -1,7 +1,7 @@
 module.exports = `
 <div>
   <table class="header-tomcat">
-    <tr ssstyle="background-color: #f7f7f7;color: grey;">
+    <tr class="cmd-row" v-bind:style="{ borderLeftColor : borderColor }">
 
       <td style="padding-right:4px;padding-left: 8px;">
         <span
@@ -71,6 +71,11 @@ module.exports = `
           v-on:click="deleteTomcat()"
           title="delete"
           class="glyphicon glyphicon-remove" aria-hidden="true"/>
+
+        <span
+          v-on:click="checkTomcatIsAlive()"
+          title="is alive"
+          class="glyphicon glyphicon-star" aria-hidden="true"/>
       </td>
 
     </tr>

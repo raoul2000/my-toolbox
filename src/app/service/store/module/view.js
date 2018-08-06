@@ -37,5 +37,5 @@ module.exports = {
         console.error("failed to update view",options, e);
       }
     }
-  },
+  }
 };

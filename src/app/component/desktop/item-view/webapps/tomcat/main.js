@@ -1,7 +1,8 @@
 const validate  = require('validator');
 const helper    = require('../../../../../lib/lib').helper;
-const service     = require('../../../../../service/index');
+const service   = require('../../../../../service/index');
 const version   = require('../../../../../service/version/tomcat');
+
 
 module.exports = {
   props : ['item', 'tomcat', 'expandTomcat', 'expandWebapp', 'filter'],
@@ -18,7 +19,8 @@ module.exports = {
       },
       expanded             : this.expandTomcat,
       updateVersionTaskId  : null,
-      allowEdit            : true
+      allowEdit            : true,
+      tomcatIsAlive        : null
     };
   },
   template: require('./main.html'),
@@ -45,7 +47,19 @@ module.exports = {
      */
     updateVersionTask : function(){
       return  this.$store.getters['tmptask/taskById'](this.updateVersionTaskId);
-    }
+    },
+    /**
+     * Command row border color reflect tomcat alive status : alive/not responding/not set
+     */    
+    borderColor : function() {
+      if(this.tomcatIsAlive === true) {
+        return "green";
+      } else if(this.tomcatIsAlive === false) {
+        return "red";
+      } else {
+        return "#eee";
+      }
+    }    
   },
   watch : {
     /**
@@ -57,6 +71,23 @@ module.exports = {
     }
   },
   methods : {
+    /**
+     * Check that the tomcat instance for this component is alive
+     */
+    checkTomcatIsAlive : function() {
+      this.allowEdit = false;
+      this.tomcatIsAlive = null;
+      let self = this;
+      service.tomcat.isAlive(this.item.data, this.tomcat._id)
+      .then( (result) => {
+        self.allowEdit = true;
+        self.tomcatIsAlive = true;
+      })
+      .catch( (error) => {
+        self.allowEdit = true;
+        self.tomcatIsAlive = false;
+      });
+    },
     /**
      * Updates the version of the tomcat displayed by this component.
      * The update version operation is submitted as a background task.
@@ -178,6 +209,22 @@ module.exports = {
       this.$store.commit('updateTomcat',updateInfo );
       service.persistence.saveDesktopItemToFile(this.item);
     }
+  },
+  beforeMount : function() {
+    /*
+    // this was an attempt to create a storage in vuex for each component instance, allowing this way 
+    // data persistence during while the app is running
+    let componentInstanceId = `tomcat-${this.tomcat._id}`;
+    let itemId = `item-${this.item.data.ssh.username}@${this.item.data.ssh.host}`;
+    this.vars = this.$store.getters['component/findById'](componentInstanceId);
+    if( ! this.vars ) {
+      console.log('creating vuex storage for component');
+      this.vars = this.$store.commit('component/add',{
+        "id"          : componentInstanceId,
+        "itemId"      : itemId,
+        "tomcatAlive" : null
+      });
+    }*/
   },
   mounted : function() {
     this.updateVersionTaskId = version.createUpdateTomcatTaskId(this.tomcat); //`tc-version-${this.tomcat._id}`;
