@@ -20,18 +20,14 @@ module.exports = `
           v-else
           title="command in progress ..."
           class="glyphicon glyphicon-refresh glyphicon-refresh-animate"
-          aria-hidden="true" />
-        <span
-          v-on:click="deleteCommand()"
-          title="delete this command"
-          class="glyphicon glyphicon-remove" aria-hidden="true"/>      
+          aria-hidden="true" />    
         <span
           v-on:click="viewCommand = ! viewCommand"
           title="view/edit this command"
           class="glyphicon glyphicon-eye-open" aria-hidden="true"/>            
       </div>
   </td>
-  <td>
+  <td  width="90%" >
     <div v-if="viewCommand" style="font-family: monospace;">
       <inlineInput
         :initialValue="command.source"
@@ -45,6 +41,12 @@ module.exports = `
     <div v-if="cmdResult">
       <pre>{{cmdResult.stdout || cmdResult.stderr }}</pre>
     </div>
+  </td>
+  <td>
+    <span
+      v-on:click="deleteCommand()"
+      title="delete this command"
+      class="glyphicon glyphicon-remove" aria-hidden="true"/>  
   </td>
 </tr>
 `;
