@@ -3,6 +3,7 @@ const path = require('path');
 const config = require('./config');
 
 let dbMetadata = null;
+/** Default dbMetadata model */
 let defaultDbMetadata = {
     readOnly: false
 };
@@ -56,5 +57,6 @@ function isReadOnly() {
 module.exports = {
     "open" : open,
     "isReadOnly": isReadOnly,
-    "loadDbMetadata": loadDbMetadata
+    "loadDbMetadata": loadDbMetadata,
+    "metadata" : dbMetadata
 };
