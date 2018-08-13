@@ -5,6 +5,7 @@ module.exports = `
     <inlineInput2
       :value="servlet.name"
       :valid="validation.name"
+      :allowEdit="!isReadOnly"
       inputType="text"
       valueName="name"
       emptyValue="<em class='text-muted'>servlet name</em>"
@@ -14,6 +15,7 @@ module.exports = `
     <inlineInput2
       :value="servlet.class"
       :valid="validation.class"
+      :allowEdit="!isReadOnly"
       inputType="text"
       valueName="class"
       emptyValue=""
@@ -23,6 +25,7 @@ module.exports = `
     <inlineInput2
       :value="displayUrlPatterns"
       :valid="validation.urlPatterns"
+      :allowEdit="!isReadOnly"
       inputType="text"
       valueName="urlPatterns"
       emptyValue=""
@@ -34,6 +37,7 @@ module.exports = `
       :title="btTitleOpenServletURL"
       class="glyphicon glyphicon-link" aria-hidden="true"/>
     <span
+      v-if="!isReadOnly"
       v-on:click="deleteServlet()"
       title="delete"
       class="glyphicon glyphicon-remove" aria-hidden="true"/>

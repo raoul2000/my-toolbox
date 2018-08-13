@@ -17,7 +17,8 @@ module.exports = {
   data : function(){
     return {
       groupByCategory : service.config.store.get("desktopGroupByCategory"),
-      items : store.state.desktop
+      items : store.state.desktop,
+      isReadOnly : service.db.isReadOnly()
     };
   },
   template: require('./main.html'),

@@ -5,6 +5,7 @@ module.exports = `
         <inlineInput
           :initialValue="command.name"
           :valid="validation.name"
+          :allowEdit="allowEdit"
           inputType="text"
           valueName="name"
           emptyValue="<em class='text-muted'>Enter command name ...</em>"
@@ -32,6 +33,7 @@ module.exports = `
       <inlineInput
         :initialValue="command.source"
         :valid="validation.source"
+        :allowEdit="allowEdit"
         inputType="text"
         valueName="source"
         emptyValue="<em class='text-muted'>Enter your command ...</em>"
@@ -44,6 +46,7 @@ module.exports = `
   </td>
   <td>
     <span
+      v-if="! isReadOnly"
       v-on:click="deleteCommand()"
       title="delete this command"
       class="glyphicon glyphicon-remove" aria-hidden="true"/>  

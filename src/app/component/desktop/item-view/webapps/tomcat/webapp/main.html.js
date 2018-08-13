@@ -3,77 +3,86 @@ module.exports = `
 
   <table class="header-webapp">
     <tr>
-    <td style="padding-right:4px">
-      <span
-        v-on:click="toggleDetailView"
-        v-bind:class="toggleButtonClass()"
-        style="cursor:pointer;color: #999;"
-        title="expand/collapse"
-        aria-hidden="true"></span>
-    </td>
-    <td class="header-webapp-text" width="100%">
-      <inlineInput2
-        :value="webapp.name"
-        :valid="validation.name"
-        inputType="text"
-        emptyValue="<em class='text-muted'>ENTER WEBAPP NAME HERE ...</em>"
-        valueName="name"
-        v-on:changeValue="changeValue"/>
-    </td>
-    <td class="webapp-version">
-      <inlineInput2
-        :value="webapp.version"
-        :valid="validation.version"
-        :allowEdit="allowEdit"
-        inputType="text"
-        emptyValue="<em class='text-muted'>version</em>"
-        valueName="version"
-        v-on:changeValue="changeValue"/>
-    </td>
+      <td style="padding-right:4px">
+        <span
+          v-on:click="toggleDetailView"
+          v-bind:class="toggleButtonClass()"
+          style="cursor:pointer;color: #999;"
+          title="expand/collapse"
+          aria-hidden="true"></span>
+      </td>
+      <td class="header-webapp-text" width="100%">
+        <inlineInput2
+          :value="webapp.name"
+          :valid="validation.name"
+          :allowEdit="allowEdit"
+          inputType="text"
+          emptyValue="<em class='text-muted'>ENTER WEBAPP NAME HERE ...</em>"
+          valueName="name"
+          v-on:changeValue="changeValue"/>
+      </td>
+      <td class="webapp-version">
+        <inlineInput2
+          :value="webapp.version"
+          :valid="validation.version"
+          :allowEdit="allowEdit"
+          inputType="text"
+          emptyValue="<em class='text-muted'>version</em>"
+          valueName="version"
+          v-on:changeValue="changeValue"/>
+      </td>
 
-    <td class="tc-actions">
+      <td class="tc-actions">
 
-    <div
-      v-if="referenceWebapp"
-      class="btn-group" style="vertical-align: baseline;">
+        <div
+          v-if="referenceWebapp"
+          class="btn-group" style="vertical-align: baseline;">
 
-      <span
-        data-toggle="dropdown"
-        class="glyphicon glyphicon-info-sign" aria-hidden="true"/>
+          <span
+            data-toggle="dropdown"
+            class="glyphicon glyphicon-info-sign" aria-hidden="true"/>
 
-      <ul class="dropdown-menu dropdown-menu-right">
-        <li class="dropdown-header">Open links</li>
-        <li title="open documentation in default browser"><a :href="referenceWebapp.url.doc">Documentation</a></li>
-        <li title="open CHANGES in default browser"><a :href="referenceWebapp.url.changes">Changes</a></li>
-        <li class="dropdown-header">Nexus</li>
-        <li title="open RELEASE repository"><a :href="referenceWebapp.url.release">Release</a></li>
-        <li title="open SNAPSHOT repository"><a :href="referenceWebapp.url.snapshot">Snapshot</a></li>
-      </ul>
-    </div>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li class="dropdown-header">Open links</li>
+            <li title="open documentation in default browser"><a :href="referenceWebapp.url.doc">Documentation</a></li>
+            <li title="open CHANGES in default browser"><a :href="referenceWebapp.url.changes">Changes</a></li>
+            <li class="dropdown-header">Nexus</li>
+            <li title="open RELEASE repository"><a :href="referenceWebapp.url.release">Release</a></li>
+            <li title="open SNAPSHOT repository"><a :href="referenceWebapp.url.snapshot">Snapshot</a></li>
+          </ul>
+        </div>
 
-      <span
-        v-on:click="openWebappContext"
-        :title="btTitleOpenContext"
-        class="glyphicon glyphicon-link" aria-hidden="true"/>
-
-      <span
-        v-if="! updateVersionTask || updateVersionTask.status != 'BUSY'"
-        v-on:click="refreshVersion"
-        title="refresh version"
-        class="glyphicon glyphicon-play update-version-button" aria-hidden="true"/>
-      <span
-        v-else
-        title="version update in progress ..."
-        class="glyphicon glyphicon-refresh glyphicon-refresh-animate"
-        aria-hidden="true" />
-
-      <span
-        v-on:click="deleteWebapp()"
-        title="delete"
-        class="glyphicon glyphicon-remove" aria-hidden="true"/>
-    </td>
+        <span
+          v-on:click="openWebappContext"
+          :title="btTitleOpenContext"
+          class="glyphicon glyphicon-link" aria-hidden="true">
+        </span>
 
 
+        <div v-if="!isReadOnly" style="display:inline">
+
+          <span
+            v-if="! updateVersionTask || updateVersionTask.status != 'BUSY'"
+            v-on:click="refreshVersion"
+            title="refresh version"
+            class="glyphicon glyphicon-play update-version-button" aria-hidden="true">
+          </span>
+
+          <span
+            v-else
+            title="version update in progress ..."
+            class="glyphicon glyphicon-refresh glyphicon-refresh-animate"
+            aria-hidden="true">
+          </span>
+
+          <span
+            v-on:click="deleteWebapp()"
+            title="delete"
+            class="glyphicon glyphicon-remove" aria-hidden="true">
+          </span>
+          
+        </div>
+      </td>
     </tr>
   </table>
 
@@ -89,6 +98,7 @@ module.exports = `
           <inlineInput2
             :value="webapp.contextPath"
             :valid="validation.contextPath"
+            :allowEdit="allowEdit"
             inputType="text"
             emptyValue=""
             valueName="contextPath"
@@ -96,6 +106,7 @@ module.exports = `
         </td>
         <td width="50%" colspan="3">
           <select
+            v-if="! isReadOnly"
             v-model="referenceWebappSelection">
             <option :value="null" selected="selected">** Custom Webapp **</option>
             <option
@@ -115,6 +126,7 @@ module.exports = `
           <th>
             servlets
             <button
+              v-if="!isReadOnly"
               title="Add Servlet"
               v-on:click="addServlet()"
               class="btn btn-default btn-xs"

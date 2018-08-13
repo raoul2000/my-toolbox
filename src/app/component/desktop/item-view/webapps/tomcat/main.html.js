@@ -67,7 +67,7 @@ module.exports = `
                   <span class="glyphicon glyphicon-star" aria-hidden="true"/> check is alive
                 </a>
               </li> 
-              <li>
+              <li v-if="! isReadOnly" >
                 <a href="#" @click.prevent="refreshVersion()">
                   <span
                     v-if="! updateVersionTask || updateVersionTask.status != 'BUSY'"
@@ -80,8 +80,9 @@ module.exports = `
                     aria-hidden="true" /> Refresh Version
                 </a>
               </li> 
-              <li role="separator" class="divider"></li> 
-              <li>
+              <li v-if="! isReadOnly"
+                role="separator" class="divider"></li> 
+              <li v-if="! isReadOnly">
                 <a href="#" @click.prevent="deleteTomcat()">
                   <span class="glyphicon glyphicon-remove" aria-hidden="true"/> Delete
                 </a>
@@ -99,7 +100,7 @@ module.exports = `
     class="webapps-container"
     v-if="expanded">
 
-    <div class="btn-group btn-group-sm secondary-toolbar" role="group" style="margin-left: 1.8em;">
+    <div v-if="! isReadOnly" class="btn-group btn-group-sm secondary-toolbar" role="group" style="margin-left: 1.8em;">
       <button title="Add Webapp" v-on:click="addWebapp()" type="button" class="btn btn-default btn-xs">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add webapp
       </button>

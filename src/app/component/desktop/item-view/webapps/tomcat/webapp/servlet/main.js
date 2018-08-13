@@ -14,7 +14,8 @@ module.exports = {
         "name"        : true,
         "class"       : true,
         "urlPatterns" : true
-      }
+      },
+      isReadOnly : service.db.isReadOnly(),
     };
   },
   template: require('./main.html'),

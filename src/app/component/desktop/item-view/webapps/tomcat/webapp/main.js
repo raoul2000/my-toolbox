@@ -17,9 +17,10 @@ module.exports = {
         "contextPath" : true,
         "version"     : true
       },
-      expanded : this.expandWebapp,
-      updateVersionTaskId  : null,
-      allowEdit            : true,
+      expanded                 : this.expandWebapp,
+      updateVersionTaskId      : null,
+      allowEdit                : ! service.db.isReadOnly(),
+      isReadOnly               : service.db.isReadOnly(),
       referenceWebappSelection : this.webapp.refId
     };
   },
@@ -110,12 +111,12 @@ module.exports = {
           });
         }
         version.finalize(self.webapp);
-        self.allowEdit = true;
+        self.allowEdit = ! service.db.isReadOnly();
       })
       .catch( err => {
         service.notification.error(err,"Failed to Connect");
         version.finalize(self.webapp);
-        self.allowEdit = true;
+        self.allowEdit = ! service.db.isReadOnly();;
       });
     },
     /**

@@ -19,7 +19,8 @@ module.exports = {
       },
       expanded             : this.expandTomcat,
       updateVersionTaskId  : null,
-      allowEdit            : true,
+      allowEdit            : ! service.db.isReadOnly(),
+      isReadOnly           : service.db.isReadOnly(),
       tomcatIsAlive        : null
     };
   },
@@ -80,11 +81,11 @@ module.exports = {
       let self = this;
       service.tomcat.isAlive(this.item.data, this.tomcat._id)
       .then( (result) => {
-        self.allowEdit = true;
+        self.allowEdit = ! service.db.isReadOnly();
         self.tomcatIsAlive = true;
       })
       .catch( (error) => {
-        self.allowEdit = true;
+        self.allowEdit = ! service.db.isReadOnly();
         self.tomcatIsAlive = false;
       });
     },
@@ -107,11 +108,11 @@ module.exports = {
             "version" : result
           }
         });
-        self.allowEdit = true;
+        self.allowEdit = ! service.db.isReadOnly();
       })
       .catch( err => {
         service.notification.error(err,"Failed to Connect");
-        self.allowEdit = true;
+        self.allowEdit = ! service.db.isReadOnly();
       });
     },
     /**

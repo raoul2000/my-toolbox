@@ -13,6 +13,7 @@ module.exports = `
         <inlineTextarea
           :initialValue="item.data.notes"
           :valid="validation.notes"
+          :allowEdit="!isReadOnly"
           inputType="markdown"
           valueName="notes"
           emptyValue="enter a note..."

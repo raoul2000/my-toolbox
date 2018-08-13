@@ -17,6 +17,7 @@ module.exports = {
     </span>
 
     <span
+      v-if="allowEdit "
       v-on:click="startEdit"
       title="edit"
       style="float:right"
@@ -31,7 +32,11 @@ module.exports = {
     "valueName"    : [String, Number],
     "valid"        : [Boolean],
     "inputType"    : [String], // text, password
-    "emptyValue"   : [String]
+    "emptyValue"   : [String],
+    "allowEdit"    : {
+      "type"    : Boolean,
+      "default" : true
+    }    
   },
   data : function() {
     return {
@@ -52,6 +57,9 @@ module.exports = {
   },
   methods : {
     startEdit : function() {
+      if( ! this.allowEdit ) {
+        return;
+      }      
       this.inputValue = "".concat(this.value);
       this.editing = true;
       var self = this;

@@ -1,8 +1,6 @@
 'use strict';
 
-const validate         = require('validator');
-var service            = require('../../../../service/index');
-var checkSSHConnection2            = require('../../../../service/ssh/check-connection');
+const service  = require('../../../../service/index');
 
 module.exports = {
   components : {
@@ -12,18 +10,11 @@ module.exports = {
   data : function(){
     return {
       item         : null,
-      validation : {
-        "notes"    : true
+      isReadOnly   : service.db.isReadOnly(),
+      validation   : {
+        "notes"  : true
       }
     };
-  },
-  computed : {
-    /**
-     * SSH settings can be edited if no check connection task is in progress
-     */
-    allowEdit : function() {
-      return ! (this.checkSSHConnectionTask && this.checkSSHConnectionTask.status === "BUSY");
-    }
   },
   methods : {
     /**

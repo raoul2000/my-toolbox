@@ -12,6 +12,7 @@ module.exports = `
           <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
         </button>
         <button
+          v-if="isReadOnly === false"
           @click="createItem"
           title="create item"
           type="button" class="btn btn-default">

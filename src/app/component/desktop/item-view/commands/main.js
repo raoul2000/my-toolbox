@@ -11,7 +11,8 @@ module.exports = {
   template: require('./main.html'),
   data : function(){
     return {
-      item         : null
+      item         : null,
+      isReadOnly   : service.db.isReadOnly()
     };
   },
   methods : {

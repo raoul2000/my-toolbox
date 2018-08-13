@@ -9,7 +9,7 @@ module.exports = {
     v-bind:class="{ 'inline-editing' : editing, 'inline-validation-error' : !valid}">
 
     <span
-      v-if="! editing"
+      v-if="! editing && allowEdit"
       v-on:click="startEdit"
       title="edit"
       style="float:left"
@@ -20,7 +20,7 @@ module.exports = {
       class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red"></span>
 
 
-    <div v-if="!editing">
+    <div v-if="!editing ">
       <div v-if="inputType=='markdown'" class="html-value" v-html="displayValue" />
       <div v-else class="text-value">{{currentVal}}</div>
     </div>
@@ -41,7 +41,11 @@ module.exports = {
       default : "text" // text | markdown
     },
     "valid"        : [Boolean],
-    "emptyValue"   : [ String ]
+    "emptyValue"   : [ String ],
+    "allowEdit"    : {
+      "type"    : Boolean,
+      "default" : true
+    }    
   },
   data : function() {
     return {
@@ -66,6 +70,9 @@ module.exports = {
   methods : {
 
     startEdit : function() {
+      if( this.allowEdit === false) {
+        return;
+      }      
       var self = this;
       this.currentVal = this.currentVal.trim();
       this.editing = true;  // start edit now
@@ -77,6 +84,9 @@ module.exports = {
       });
     },
     stopEdit : function() {
+      if( this.allowEdit === false) {
+        return;
+      }      
       this.editing = false;
       let newValue = this.fieldElement.value;
       if( newValue !== this.currentVal) {

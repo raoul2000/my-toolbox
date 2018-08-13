@@ -3,7 +3,9 @@ module.exports = `
   <div class="row">
     <div class="col-lg-12">
 
-      <div class="btn-group btn-group-sm secondary-toolbar" role="group" >
+      <div 
+        v-if="!isReadOnly"
+        class="btn-group btn-group-sm secondary-toolbar" role="group" >
         <button title="Add Command" v-on:click="addCCommand()" type="button" class="btn btn-default btn-xs">
           <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Command
         </button>

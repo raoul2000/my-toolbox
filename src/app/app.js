@@ -90,7 +90,8 @@ const app = new Vue({
   router,
   data : function() {
     return {
-      loading       : true
+      loading       : true,
+      isReadOnly    : service.db.isReadOnly()
     };
   },
   watch: {

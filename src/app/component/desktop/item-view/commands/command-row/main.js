@@ -16,7 +16,8 @@ module.exports = {
         "source" : true
       },
       runCmdTaskId : "",
-      allowEdit    : true,
+      allowEdit    : ! service.db.isReadOnly(),
+      isReadOnly   : service.db.isReadOnly(),
       cmdResult    : null,
       viewCommand  : false
       
@@ -63,7 +64,7 @@ module.exports = {
       .then( result => {
         self.cmdResult = result;
         service.command.finalize(this.command);
-        self.allowEdit = true;
+        self.allowEdit = ! service.db.isReadOnly();
       });
     },
     /**
