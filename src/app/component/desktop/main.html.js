@@ -96,7 +96,7 @@ module.exports = `
             </button> 
             <ul class="dropdown-menu dropdown-menu-right">
               <li>
-              <a href="#" @click.stop.prevent="addItemToGroup(category)">
+              <a href="#" @click.prevent="addItemToGroup(category)">
                 <span
                   title="add to this group"
                   class="glyphicon glyphicon-folder-open primary-hover"
@@ -104,7 +104,7 @@ module.exports = `
               </a>
               </li> 
               <li>
-                <a href="#" @click.stop.prevent="createItem(category)">
+                <a href="#" @click.prevent="createItem(category)">
                 <span
                   title="create item for this group"
                   class="glyphicon glyphicon-plus primary-hover"
@@ -113,7 +113,7 @@ module.exports = `
               </li> 
               <li role="separator" class="divider"></li> 
               <li>
-                <a href="#" @click.stop.prevent="removeGroupFromDesktop(category)">
+                <a href="#" @click.prevent="removeGroupFromDesktop(category)">
                 <span
                   title="remove this group from desktop"
                   class="glyphicon glyphicon-trash danger-hover"
