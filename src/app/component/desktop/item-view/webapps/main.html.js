@@ -49,6 +49,16 @@ module.exports = `
             class="glyphicon glyphicon-refresh"
             aria-hidden="true"></span>
         </button>
+
+        <button
+          title="check Tomcat alive"
+          v-on:click="checkAllTomcatsAlive()"
+          type="button" class="btn btn-default btn-xs"
+        >
+          <span
+            class="glyphicon glyphicon-star"
+            aria-hidden="true"></span>
+        </button>
       </div><!-- end toolbar expand/collapse -->
 
       <input

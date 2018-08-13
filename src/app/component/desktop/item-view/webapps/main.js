@@ -58,6 +58,12 @@ module.exports = {
   },
   methods : {
     /**
+     * Trigger all tomcvat is Alive menu items
+     */
+    checkAllTomcatsAlive : function() {
+      $('.check-tc-alive').trigger('click');
+    },
+    /**
      * Update version of all tomcat owner by this component.
      * The actual version scan is delegated to the tomcatVersion service.
      */

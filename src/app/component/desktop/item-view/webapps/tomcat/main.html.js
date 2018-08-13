@@ -62,9 +62,9 @@ module.exports = `
               <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span> 
             </button> 
             <ul class="dropdown-menu dropdown-menu-right">             
-              <li >
-                <a href="#" @click.prevent="checkTomcatIsAlive()">
-                  <span class="glyphicon glyphicon-star" aria-hidden="true"/> check is alive
+              <li>
+                <a href="#" @click.prevent="checkTomcatIsAlive()" >
+                  <span class="glyphicon glyphicon-star check-tc-alive" aria-hidden="true" /> check is alive
                 </a>
               </li> 
               <li v-if="! isReadOnly" >
