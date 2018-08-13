@@ -63,12 +63,12 @@ module.exports = `
             </button> 
             <ul class="dropdown-menu dropdown-menu-right">             
               <li >
-                <a href="#" @click.stop.prevent="checkTomcatIsAlive()">
+                <a href="#" @click.prevent="checkTomcatIsAlive()">
                   <span class="glyphicon glyphicon-star" aria-hidden="true"/> check is alive
                 </a>
               </li> 
               <li>
-                <a href="#" @click.stop.prevent="refreshVersion()">
+                <a href="#" @click.prevent="refreshVersion()">
                   <span
                     v-if="! updateVersionTask || updateVersionTask.status != 'BUSY'"
                     title="refresh version"
@@ -82,7 +82,7 @@ module.exports = `
               </li> 
               <li role="separator" class="divider"></li> 
               <li>
-                <a href="#" @click.stop.prevent="deleteTomcat()">
+                <a href="#" @click.prevent="deleteTomcat()">
                   <span class="glyphicon glyphicon-remove" aria-hidden="true"/> Delete
                 </a>
               </li>

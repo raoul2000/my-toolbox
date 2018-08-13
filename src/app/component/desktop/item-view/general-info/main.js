@@ -22,7 +22,7 @@ module.exports = {
         "password" : true,
         "port"     : true,
       },
-      "fieldPassword" : null
+      "fieldPassword" : "*******"
     };
   },
   computed : {
@@ -185,6 +185,5 @@ module.exports = {
       this.colors = this.item.data.color;
       this.optionColor = 'manual';
     } 
-    this.fieldPassword = this.item.data.ssh.password;
   }
 };
