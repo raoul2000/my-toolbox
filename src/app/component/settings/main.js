@@ -1,3 +1,5 @@
+"use strict";
+
 const remote   = require('electron').remote;
 const service  = require('../../service/index');
 const app      = require('electron').remote.app;
@@ -89,19 +91,30 @@ module.exports = {
     onSave : function() {
       // TODO : validate Folder
       let cfgStore = service.config.store; // shorcut
-      cfgStore.set('ctdbFolderPath',this.ctdbFolderPath);
+
+      // if the DB folder was changed we must reset the items in the desktop and the 
+      //recent CTDB path values
+      if( this.ctdbFolderPath !== cfgStore.get('deployFolderPath')) {
+        service.config.clearDesktop();
+        service.store.commit('removeAllItems');
+        service.config.clearRecentCTDBPath();
+        cfgStore.set('ctdbFolderPath',this.ctdbFolderPath);
+      }
+
       cfgStore.set('deployFolderPath',this.deployFolderPath);
       cfgStore.set('webappCatalogFilePath',this.webappCatalogFilePath);
+
       cfgStore.set('persistentDesktop',this.persistentDesktop);
+      if( ! this.persistentDesktop ) {
+        service.config.clearDesktop();
+      }
+
       cfgStore.set('desktopGroupByCategory',this.desktopGroupByCategory);
       cfgStore.set('expandTomcatView',this.expandTomcatView);
       cfgStore.set('expandWebappView',this.expandWebappView);
       cfgStore.set('commandLibraryFilePath',this.commandLibraryFilePath);
       cfgStore.set('checkSavePwdToSession',this.checkSavePwdToSession);
 
-      if( ! this.persistentDesktop ) {
-        config.clearDesktop();
-      }
       this.goBack();
     }
   },

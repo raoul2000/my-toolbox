@@ -59,6 +59,9 @@ module.exports = {
     }
     return result;
   },
+  "clearRecentCTDBPath" : function() {
+    store.set('recent.ctdbPath',null);
+  },
   /**
    * Add a desktop item to the persistent config. This is to allow
    * reload of the last used desktop
