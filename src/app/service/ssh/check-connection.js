@@ -36,7 +36,7 @@ exports.createTaskId = function(ssh) {
     return DummyTaskService.submitTask({
       "id"    : exports.createTaskId(sshConnectionSettings),
       "type"  : "check-ssh-connection",
-      "input" : secret.decryptPassword(sshConnectionSettings)
+      "input" : secret.decryptPassword(sshConnectionSettings) // TODO : pwd should be decrypted in background window
     })
     .promise;
 }

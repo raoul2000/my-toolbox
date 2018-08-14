@@ -5,8 +5,10 @@ var validate    = require('validator');
 const { spawn } = require('child_process');
 const store     = require('../../../service/store/store'); // TODO : nod needed as already injected by parent (to check)
 const service   = require('../../../service/index');
-const runExt   = require('../../../lib/run-external').run;
+const runExt    = require('../../../lib/run-external').run;
 
+const fs        = require('fs-extra');
+const timestamp = require('time-stamp');
 
 const VIEW_ID = "item-view";
 
@@ -68,6 +70,17 @@ module.exports = {
     }
   },
   methods : {
+    startPrime : function() {
+      console.log("startPrime");
+      service.prime.launch({
+        "template" : `<methodeDomain name="LEquipe-DEV" secureLogin="no">
+        <ns orbInit="-ORBInitRef LEquipe-DEV=corbaloc:iiop:10.160.86.70:3900/NameService" name="LEquipe-DEV"/>
+        <nc ncPath="/EOM/Notifiers/Notifierdev01" repName="meth01_SERV1" ncName="Notifierdev01" popSeconds="10" pollSecondsToEomdb="60"/>
+        <nc ncPath="/EOM/Notifiers/Notifierdev01" repName="meth01_PROD1" ncName="Notifierdev01" popSeconds="10" pollSecondsToEomdb="60"/>
+      </methodeDomain>
+  `});
+
+    },
     /**
      * Execute an external program configured in the toolbar.
      */

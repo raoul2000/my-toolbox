@@ -18,6 +18,15 @@ module.exports = `
           {{item.label}}
         </button>
       </div>
+
+      <div class="btn-group" role="group" style="margin-bottom:1em;">
+        <button
+          title="test"
+          v-on:click="startPrime()"
+          type="button" class="btn btn-default">
+          Prime
+        </button>
+      </div>
     </div>
   </div>
 
@@ -32,12 +41,16 @@ module.exports = `
         <li role="presentation"  v-bind:class="{active : currentTabName == 'server-webapps'}">
           <a v-on:click.stop.prevent="$router.push('webapps')" href="#">Web Apps <span class="badge">{{webappCount}}</span></a>
         </li>
-        <!--li role="presentation"  v-bind:class="{active : currentTabName == 'server-entities'}">
-          <a v-on:click.stop.prevent="$router.push('entitites')" href="#">Entities</span></a>
-        </li>
-        <li role="presentation"  v-bind:class="{active : currentTabName == 'server-components'}">
+        <!-- li role="presentation"  v-bind:class="{active : currentTabName == 'server-components'}">
           <a v-on:click.stop.prevent="openTabComponents()" href="#">Components  <span class="badge">{{componentCount}}</span></a>
         </li -->
+        <li role="presentation"  v-bind:class="{active : currentTabName == 'server-entities'}">
+          <a v-on:click.stop.prevent="$router.push('entities')" href="#">Entities
+            <span v-if="item.data.vars.length !== 0 " class="badge" aria-hidden="true">
+              {{item.data.vars.length}}
+            </span>              
+          </a>
+        </li>        
         <li role="presentation"  v-bind:class="{active : currentTabName == 'server-commands'}">
           <a v-on:click.stop.prevent="$router.push('commands')" href="#">Commands
             <span v-if="item.data.commands.length !== 0 " 

@@ -21,5 +21,7 @@ module.exports = {
   "secret"        : require('../lib/encrypt'),
   "toolbar"       : require('./toolbar'),
   "db"            : require('./db'),
-  "tomcat"        : require('./tomcat')
+  "tomcat"        : require('./tomcat'),
+  "prime"         : require('./prime-launcher'),
+  "entities"      : require('./entities')
 };

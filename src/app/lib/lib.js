@@ -29,4 +29,6 @@ exports.nexus = {
   "browse" : require('./nexus/browse')
 };
 
-exports.secret = require('./encrypt');
+exports.secret   = require('./encrypt');
+exports.entities = require('./entities');
+

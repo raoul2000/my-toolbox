@@ -219,10 +219,14 @@ module.exports = {
           "password"     : '',
           "readyTimeout" : 50000
         },
-        "entities"   : [],
+        //"entities"   : [],
         "tomcats"    : [],
         "components" : [],
-        "commands"   : []
+        "commands"   : [],
+        "repo"       : {
+          template : null
+        },
+        "vars"       : {} // name/value pair for environment variables and entities
       };
 
       var defaultFilename = path.join(
@@ -353,7 +357,6 @@ module.exports = {
             service.notification.warning(
               "It is not permitted to select an item out of the base folder"
             );
-            //notify('It is not permitted to select an item out of the base folder','error','Error');
           } else {
              let newItemData = JSON.parse(fs.readFileSync(file, 'utf8'));
              if( store.getters.desktopItemById(newItemData._id) ) {
@@ -381,9 +384,19 @@ module.exports = {
                  },100);
                }
              } else {
+               // normalize the item to ensure that some properties (added lately) are set
                if( ! newItemData.commands ) {
                  newItemData.commands = [];
                }
+               if( ! newItemData.repo ) {
+                newItemData.repo = {
+                   template : null
+                 };
+               }
+               if( ! newItemData.vars ) {
+                newItemData.vars = [];
+               }
+               // store the item
               store.commit('addToDesktop',{
                 "data"       : newItemData,
                 "filename"   : relativeFilePath,

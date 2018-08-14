@@ -101,7 +101,6 @@ module.exports = {
         self.allowEdit = true;
       });
     },
-
     closeScannerView : function() {
       this.$store.commit('view/update', {
         "id" : VIEW_ID,
