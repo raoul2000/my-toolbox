@@ -61,7 +61,7 @@ module.exports = `
       <div v-if="templateCheck.error">
         <div class="alert alert-danger" role="alert">
           <p style="margin-bottom: 1em;">
-            <b>Failed to resolve the template</b> - see below for more information on the cause of the error.<br/>
+            <b>Failed to resolve the template</b> - see below for more information on the root cause of the error.<br/>
           </p>
           <pre>{{templateCheck.error.message}}</pre>
           <div v-if="templateCheck.error.parsererror">
@@ -74,7 +74,7 @@ module.exports = `
       <div v-else>
         <div class="alert alert-success" role="alert">
           <p style="margin-bottom: 1em;">
-            <b>Congratulations</b> the template seems to be valid.<br/>
+            <b>Congratulations</b> the XML configuration is well formed and entities have been resolved.<br/>
           </p>
           <pre>{{templateCheck.value}}</pre>
           

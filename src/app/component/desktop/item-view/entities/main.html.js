@@ -7,15 +7,14 @@ module.exports = `
         <button
           v-on:click="refreshEntities"
           type="button" class="btn btn-default btn-xs"
+          title="Refresh entities"
           :disabled="task && task.status == 'BUSY'">
 
           <span
             v-if="! task || task.status != 'BUSY'"  
-            title="Refresh entities"
             class="glyphicon glyphicon-refresh" aria-hidden="true"/>
           <span
             v-else
-            title="refreshing entities ..."
             class="glyphicon glyphicon-refresh glyphicon-refresh-animate"
             aria-hidden="true" />  
 
@@ -24,9 +23,9 @@ module.exports = `
         <button
           v-on:click="deleteAllVars"
           :disabled="item.data.vars.length === 0"
+          title="Delete All Vars"
           type="button" class="btn btn-default btn-xs">
           <span
-            title="Delete All Vars"
             class="glyphicon glyphicon-remove" 
             aria-hidden="true">
           </span>

@@ -64,7 +64,7 @@ function createCfgFileContent(ts, template,values) {
     //let contentXML = resolveTemplate(template,values);
     let contentXML = resolveXMLTemplate(template,values);
     let result = 
-`<?xml version="1.0" encoding="ISO-8859-1"?>
+`<?xml version="1.0" encoding="UTF-8"?>
 <methodeConnections>
     <!-- created by myowntoolbox (${ts})-->
     ${contentXML}
@@ -76,7 +76,7 @@ function createCfgFileContent(ts, template,values) {
  * options : 
  * ```json
 {
-   "cmd"      : "prime.exe",
+   "cmd"      : "methode.exe",
    "template" : '<methodeDomain name="ENV_DEV1" secureLogin="no"> etc...',
    "values"   : [
            { "name": "VAR_NAME1", "value": "3850" },
@@ -88,7 +88,6 @@ function createCfgFileContent(ts, template,values) {
  * @param {*} options 
  */
 function launchPrime(options) {
-    console.log("startPrime");
  
     let primeCmd = options.cmd || defaultCommand;
 
@@ -113,7 +112,6 @@ function launchPrime(options) {
 
 
 function resolveCfgTemplate(options) {
-    
     try {
         let ts = timestamp('YYYY-MM-DD_HHmmss');
         return {
