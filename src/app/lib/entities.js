@@ -2,6 +2,7 @@
 
 const lib     = require('./lib');
 const NodeSSH = require('node-ssh');
+const asyncUtil = require("async");
 
 /**
  * Parses the string passed as argument into an hash object where property is the entity name
@@ -87,6 +88,69 @@ function loadFromServer(sshConnectionSettings) {
         } else {
             return Promise.reject(result);
         }
+    });
+}
+
+
+function loadFromServerEx(sshConnectionSettings) {
+
+    let nodessh = new NodeSSH();
+    let extractors = [
+        {
+            'cmd' : `if [  -f ./cfg/eomvar.dtd ]; then
+                cat ./cfg/eomvar.dtd
+            fi`,
+            'source' : './cfg/eomvar.dtd',
+            'parser' : parseEntities
+        },
+        {
+            'cmd' : `if [  -f ./cfg/hosts.dtd ]; then
+                cat ./cfg/hosts.dtd
+            fi`,
+            'source' : './cfg/hosts.dtd',
+            'parser' : parseEntities
+        },
+        {
+            'cmd' : `if [  -f ./cfg/emivar.dtd ]; then
+                cat ./cfg/emivar.dtd
+            fi`,
+            'source' : './cfg/emivar.dtd',
+            'parser' : parseEntities
+        },
+        {
+            'cmd' : `env`,
+            'source' : 'ENV',
+            'parser' : parseEnvironmentVars
+        },
+    ];
+
+    return nodessh.connect(
+        lib.secret.decryptPassword(sshConnectionSettings)
+    )
+    .then( result => {
+        let tasks = extractors.map( ext => {
+
+            return (cb) => {
+                nodessh.execCommand(ext.cmd,[],{stream : 'stdout'})
+                .then( stdout => {
+                    cb(null, {
+                        "source" : ext.source,
+                        "values" : ext.parser(stdout)
+                    });
+                })
+                .catch( error => { cb(error);})
+            }
+        });
+        return asyncUtil.seq(tasks);
+    })
+    .then( result => {
+        console.log(result);
+        nodessh.dispose();
+        return result;
+    })
+    .catch( error => {
+        console.log(error);
+        nodessh.dispose();
     });
 }
 

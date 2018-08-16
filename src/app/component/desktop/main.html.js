@@ -132,7 +132,7 @@ module.exports = `
           <div
       			v-for="(item, index)  in itemsByCategory(category)"
       			:title="item.file" class="card-container" :id="getItemElementId(item.data)">
-          
+            
             <div
               @click="viewDetail(item, $event)"
               class="project project-default"
@@ -140,7 +140,7 @@ module.exports = `
 
               <div
                 @click.stop.prevent="removeFromDesktop(item)"
-                title="remove from desktop"
+                title="remove from desktop !"
                 type="button"
                 class="left-corner-icon">
                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
@@ -153,6 +153,7 @@ module.exports = `
 
               <div class="project-content">  
                 <div v-html="cardItemContent(item)"></div>
+
                 <div class="alive-state">
                   <i 
                     v-if="item.inProgress === true" 
@@ -168,7 +169,8 @@ module.exports = `
                     :title="item.isAliveStatusMessage"
                     class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red">
                   </span>
-                </div>  
+                </div> 
+
               </div>
             </div> <!-- // end of project -->  
 
