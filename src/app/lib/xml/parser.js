@@ -94,6 +94,7 @@ function parseNoEntities(strXML) {
 	}
   return dom;
 }
+exports.parseNoEntities = parseNoEntities;
 
 /**
  * Parse and returns a Document from the XML string passed as argument.

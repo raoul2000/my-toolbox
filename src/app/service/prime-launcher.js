@@ -3,6 +3,9 @@
 const runner    = require('../lib/run-external');
 const fs        = require('fs-extra');
 const timestamp = require('time-stamp');
+const xmlParser = require('../lib/xml/parser');
+
+const xmldom = require('xmldom');
 
 const targetFolderPath = "C:\\Program Files\\EidosMedia\\Methode\\cfg";
 const cfgFilename      = "repositories.cfg";
@@ -23,9 +26,43 @@ function resolveTemplate(template, values) {
     }
 }
 
+function resolveXMLTemplate(template, values) {
+
+    // convert the values array into an entity name/value map
+    let entities = {};
+    values.forEach( val => {
+        entities[val.name] = val.value;
+    })
+
+    // let's resolve entities
+
+    let missingEntities = [];
+    let strXML = xmlParser.entityResolver(template, entities, (missingEntityName) => {
+        missingEntities.push(missingEntityName);
+    });
+    if( missingEntities.length != 0) {
+        throw {
+            "message" : "Following entities could not be resolved : " + missingEntities.join(', ')
+        };
+    }
+    // we should now have an XML string ready to be parsed. Let's try
+    let oDOM = new DOMParser().parseFromString(strXML, "application/xml");    
+
+    let parserErrorNode = oDOM.querySelector('parsererror');
+    if( parserErrorNode ) {
+        throw {
+            "message"     : "It seems that the XML is not valid.",
+            "parsererror" : new XMLSerializer().serializeToString(oDOM.querySelector('parsererror > div'))
+        }
+    }
+    return new XMLSerializer().serializeToString(oDOM);
+}
+
+
 function createCfgFileContent(ts, template,values) {
 
-    let contentXML = resolveTemplate(template,values);
+    //let contentXML = resolveTemplate(template,values);
+    let contentXML = resolveXMLTemplate(template,values);
     let result = 
 `<?xml version="1.0" encoding="ISO-8859-1"?>
 <methodeConnections>
@@ -41,11 +78,11 @@ function createCfgFileContent(ts, template,values) {
 {
    "cmd"      : "prime.exe",
    "template" : '<methodeDomain name="ENV_DEV1" secureLogin="no"> etc...',
-   "values"   : {
-       "VAR_NAME1" : "VALUE_1",
-       "VAR_NAME2" : "VALUE_2",
-       "VAR_NAME3" : "VALUE_3"
-   }
+   "values"   : [
+           { "name": "VAR_NAME1", "value": "3850" },
+           { "name": "VAR_NAME2", "value": "22" },
+           etc ...
+   ]
 }
  * ```
  * @param {*} options 
@@ -74,6 +111,22 @@ function launchPrime(options) {
     runner.run(primeCmd);
 }
 
+
+function resolveCfgTemplate(options) {
+    
+    try {
+        let ts = timestamp('YYYY-MM-DD_HHmmss');
+        return {
+            "resolvedTemplate" : createCfgFileContent(ts,options.template, options.values)
+        }
+    }catch(error) {
+        return {
+            "error" : error
+        }
+    }
+}
+
 module.exports = {
-    "launch" : launchPrime
+    "launch" : launchPrime,
+    "resolveCfgTemplate" : resolveCfgTemplate
   };

@@ -226,7 +226,7 @@ module.exports = {
         "repo"       : {
           template : null
         },
-        "vars"       : {} // name/value pair for environment variables and entities
+        "vars"       : [] // name/value pair for environment variables and entities
       };
 
       var defaultFilename = path.join(

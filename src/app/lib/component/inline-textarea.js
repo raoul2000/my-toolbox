@@ -22,6 +22,9 @@ module.exports = {
 
     <div v-if="!editing ">
       <div v-if="inputType=='markdown'" class="html-value" v-html="displayValue" />
+      <div v-if="inputType=='pre'" >
+        <pre>{{currentVal}}</pre>
+      </div>
       <div v-else class="text-value">{{currentVal}}</div>
     </div>
     <textarea

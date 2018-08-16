@@ -66,6 +66,14 @@ module.exports = `
               aria-hidden="true"></span>
           </a>
         </li>        
+        <li role="presentation" v-bind:class="{active : currentTabName == 'server-repo'}">
+          <a v-on:click.stop.prevent="$router.push('repo')" href="#">Repository 
+          <span v-if="item.data.repo.template !== null " 
+            title="Configuration available"
+            class="glyphicon glyphicon-star" 
+            aria-hidden="true"></span>          
+          </a>
+        </li>        
       </ul>
 
       <router-view></router-view>

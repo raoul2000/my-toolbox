@@ -72,14 +72,19 @@ module.exports = {
   methods : {
     startPrime : function() {
       console.log("startPrime");
-      service.prime.launch({
-        "template" : `<methodeDomain name="LEquipe-DEV" secureLogin="no">
-        <ns orbInit="-ORBInitRef LEquipe-DEV=corbaloc:iiop:10.160.86.70:3900/NameService" name="LEquipe-DEV"/>
-        <nc ncPath="/EOM/Notifiers/Notifierdev01" repName="meth01_SERV1" ncName="Notifierdev01" popSeconds="10" pollSecondsToEomdb="60"/>
-        <nc ncPath="/EOM/Notifiers/Notifierdev01" repName="meth01_PROD1" ncName="Notifierdev01" popSeconds="10" pollSecondsToEomdb="60"/>
-      </methodeDomain>
-  `});
-
+      if( this.item.data.repo.template !== null) {
+        try {
+          service.prime.launch({
+            "template" : this.item.data.repo.template,
+            "values"   : this.item.data.vars
+          });
+        } catch (error) {
+          service.notification.error(error.message);
+        }
+      } else {
+        this.$router.push('repo');
+        service.notification.warning("No repository configuration is defined for this item : create one now");
+      }
     },
     /**
      * Execute an external program configured in the toolbar.

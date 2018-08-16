@@ -83,17 +83,12 @@ module.exports = `
         </div>
       </div>
       <div v-else>
-        <div class="row">
-          <div class="col-md-6 col-md-offset-3">
-            <div class="alert alert-info" role="alert">
-              <p>
-                <b>No tomcat</b> on this server.<br/>
-                You can add Tomcat manually, or try your luck with the scanner stuff ...
-              </p>
-            </div>
-          </div>
-        </div>
-
+        <div class="alert alert-info" role="alert">
+          <p>
+            <b>No tomcat</b> on this server.<br/>
+            You can add Tomcat manually, or try your luck with the scanner stuff ...
+          </p>
+         </div>
       </div>
 
     </div><!-- col-lg-12 -->
