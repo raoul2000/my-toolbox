@@ -61,6 +61,9 @@ module.exports = `
                 style="float:right; font-weight: normal;"
                 v-model="filterValueText" type="text" placeholder="filter on value ..."/>                   
             </th>
+            <th>
+              Source
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -68,6 +71,9 @@ module.exports = `
             <td>{{variable.name}}</td>
             <td>
               <div style="word-break: break-all;">{{variable.value}}</div>
+            </td>
+            <td>
+              {{variable.source}}
             </td>
           </tr>
         </tbody>

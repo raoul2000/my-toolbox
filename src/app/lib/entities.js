@@ -46,13 +46,22 @@ function parseEntities(inputStr) {
 }
 
 function parseEnvironmentVars(inputStr) {
-    let result = [];
+
     let lines = inputStr.split("\n");
-    let re = /^[\t ]+([0-9a-zA-Z_]+)+="(.*)">$/;
+    let re = /^[\t ]*([0-9a-zA-Z_]+)+=(.*)$/;
     let match;
     return lines.map( line => {
         match = re.exec(line);
-    });
+		if(match !== null) {
+            return {
+                "name"  : match[1],
+                "value" : match[2]
+            };
+		} else {
+            return null;
+        }
+    })
+    .filter( v => v );
 }
 
 /**
@@ -118,7 +127,7 @@ function loadFromServerEx(sshConnectionSettings) {
             'parser' : parseEntities
         },
         {
-            'cmd' : `env`,
+            'cmd' : `. .bash_profile; env`,
             'source' : 'ENV',
             'parser' : parseEnvironmentVars
         },
@@ -132,21 +141,44 @@ function loadFromServerEx(sshConnectionSettings) {
 
             return (cb) => {
                 nodessh.execCommand(ext.cmd,[],{stream : 'stdout'})
-                .then( stdout => {
+                .then( result => {
                     cb(null, {
-                        "source" : ext.source,
-                        "values" : ext.parser(stdout)
+                        "source"    : ext.source,
+                        "variables" : ext.parser(result.stdout)
                     });
                 })
                 .catch( error => { cb(error);})
             }
         });
-        return asyncUtil.seq(tasks);
+        return new Promise( (resolve, reject) => {
+            asyncUtil.series(tasks, (err, results) => {
+                if(err) {
+                    reject(err);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
     })
     .then( result => {
-        console.log(result);
+        let finalResult = [];
+        result.forEach( item => {
+            // processing source : item.source
+            item.variables.forEach( variable => {
+                let existingEntry = finalResult.find( v => v.name === variable.name && v.value === variable.value );
+                if( existingEntry) {
+                    existingEntry.source.push(item.source);
+                } else {
+                    finalResult.push( {
+                        "name"   : variable.name,
+                        "value"  : variable.value,
+                        "source" : [item.source]
+                    });
+                }
+            });
+        });
         nodessh.dispose();
-        return result;
+        return finalResult;
     })
     .catch( error => {
         console.log(error);
@@ -155,5 +187,5 @@ function loadFromServerEx(sshConnectionSettings) {
 }
 
 module.exports = {
-  "loadFromServer" : loadFromServer
+  "loadFromServer" : loadFromServerEx
 };
