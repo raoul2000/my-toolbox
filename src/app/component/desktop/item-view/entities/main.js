@@ -8,7 +8,8 @@ module.exports = {
     return {
       item       : null,
       taskId     : null,
-      filterText : ""
+      filterNameText  : "",
+      filterValueText : ""      
     };
   },
   computed : {
@@ -24,23 +25,42 @@ module.exports = {
     },
     /**
      * Get the list of variable names possibly filtered by user input
-     * If no variable is available for the current item, returns an empty array
+     * If no variable is available for the current item, returns an empty array.
+     * Filters are applied in order and cumulative :
+     * - by variable name
+     * - by variable value
+     * 
+     * Filter syntax is regular expression.
      */
     filteredVars : function() {
       if( this.item.data.vars.length === 0) {
         return []; // no vars available
       } else {
+        let normNameFilter = this.filterNameText.toLowerCase();
+        let normValueFilter = this.filterValueText.toLowerCase();
+        
+        if( normNameFilter.length !== 0 || normValueFilter.length !== 0) {
+          let result = this.item.data.vars;
+          // the var NAME filter is applied first
+          if( normNameFilter.length !== 0 ) {
+            let filteredName = this.item.data.vars.filter( v => {
+              return v.name.toLowerCase().match(normNameFilter);
+            });
+            result = filteredName;
+          }
 
-        if( this.filterText.trim().length === 0) {
-          return this.item.data.vars; // no filter : return all variables
+          if( normValueFilter.length !== 0 ) {
+            let filteredValue = result.filter( v => {
+              return v.value.toLowerCase().match(normValueFilter);
+            });
+            result = filteredValue;
+          }
+          return result;
         } else {
-          let normalizedFilter = this.filterText.toLowerCase();
-          return this.item.data.vars.filter( v => {
-            return v.name.toLowerCase().match(normalizedFilter);
-          });
+          return this.item.data.vars; // no filter : return all variables
         }
       }
-    } 
+    }
   },
   methods : {
     /**

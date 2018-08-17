@@ -33,34 +33,45 @@ module.exports = `
         
       </div>
 
-      <input
-        v-if="item.data.vars.length !== 0"
-        ref="inputVarNameFilter"
-        title="(ctrl+f) filter by name"
-        class="webapp-filter"
-        v-model="filterText" type="text" placeholder="enter filter ..."/>      
+   
     
       <div 
         v-if=" item.data.vars.length === 0 "
         class="alert alert-info" role="alert">
           No entity has been loaded yet
       </div>
-      <div v-else>
-        <table class="table table-striped table-hover table-condensed">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="variable in filteredVars">
-              <td>{{variable.name}}</td>
-              <td>{{variable.value}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <table v-else class="table table-striped table-hover table-condensed" style="table-layout: fixed;">
+        <thead>
+          <tr>
+            <th>
+              Name
+              <input
+                ref="inputVarNameFilter"
+                title="(ctrl+f) filter by name"
+                class="webapp-filter"
+                style="float:right; font-weight: normal;"
+                v-model="filterNameText" type="text" placeholder="filter on name..."/>  
+            </th>
+            <th>
+              Value
+              <input
+                ref="inputVarValueFilter"
+                title="filter by value"
+                class="webapp-filter"
+                style="float:right; font-weight: normal;"
+                v-model="filterValueText" type="text" placeholder="filter on value ..."/>                   
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="variable in filteredVars">
+            <td>{{variable.name}}</td>
+            <td>
+              <div style="word-break: break-all;">{{variable.value}}</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
     </div>
   </div>
