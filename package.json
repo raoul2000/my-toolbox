@@ -3,12 +3,12 @@
   "productName": "my-toolbox",
   "version": "0.0.1",
   "description": "My Toolbox",
-  "main": "main.js",
+  "main": "main-wip.js",
   "scripts": {
     "start": "electron .",
     "dev": "electron . --debug",
     "wip": "electron main-wip.js --debug",
-    "buildEXE": "electron-packager . my-toolbox --platform=win32 --arch=x64",
+    "buildEXE": "electron-packager . my-toolbox --platform=win32 --arch=x64 --overwrite",
     "jsonserver": "json-server --delay 1000 --static ./test/data/nexus/static --routes ./test/data/nexus/routes.json ./test/data/nexus/db.json"
   },
   "repository": "https://github.com/raoul2000/my-toolbox",
@@ -24,7 +24,8 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "devtron": "^1.4.0",
-    "electron": "^2.0.2",
+    "electron": "^3.0.10",
+    "electron-packager": "^12.2.0",
     "vue-devtools": "^4.1.4"
   },
   "dependencies": {
