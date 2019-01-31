@@ -3,11 +3,10 @@
   "productName": "my-toolbox",
   "version": "0.0.1",
   "description": "My Toolbox",
-  "main": "main-wip.js",
+  "main": "main.js",
   "scripts": {
-    "start": "electron .",
-    "dev": "electron . --debug",
-    "wip": "electron main-wip.js --debug",
+    "start": "electron main.js",
+    "dev": "electron main.js --debug",
     "buildEXE": "electron-packager . my-toolbox --platform=win32 --arch=x64 --overwrite",
     "jsonserver": "json-server --delay 1000 --static ./test/data/nexus/static --routes ./test/data/nexus/routes.json ./test/data/nexus/db.json"
   },

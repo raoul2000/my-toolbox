@@ -13,11 +13,11 @@ const url  = require('url');
 
 const ENABLE_SPLASH_SCREEN = true;
 const SHOW_BACKGROUND_WINDOW = false;
-const OPEN_DEVTOOLS = true;
-
+const OPEN_DEVTOOLS = false;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
+
 let mainWindow;
 let splash;
 let backgroundWindow;
@@ -25,6 +25,8 @@ let backgroundWindow;
 // identifies who is responsible for window closing action : main or background window
 let closeRequestByMainWindow = false;
 
+
+//console.log(app.commandLine.hasSwitch('debug'));
 
 function createBackgroundWindow() {
   console.log("creating background window");
